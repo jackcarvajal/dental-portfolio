@@ -2,10 +2,389 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-10-29
+   Última actualización automática: 2026-11-03
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "celtra-duo-vita-enamic-2026-11-03-e0cb",
+  "titulo": "Comparativa Clínica de Cerámicas Híbridas CAD/CAM: Celtra Duo vs Vita Enamic",
+  "subtitulo": "Este artículo técnico compara Celtra Duo (ZLS) y Vita Enamic (PICN), dos cerámicas híbridas CAD/CAM. Se analizan sus propiedades, resistencia al desgaste y supervivencia clínica a medio plazo, basándose en la evidencia actual.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-11-03",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-3",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El avance de las tecnologías de diseño y fabricación asistidos por ordenador (CAD/CAM) ha transformado la odontología restauradora, permitiendo enfoques de tratamiento mínimamente invasivos y la creación de restauraciones de alta calidad (Spitznagel et al., 2018). Dentro de este panorama, las cerámicas híbridas han emergido como una opción prometedora para restauraciones monolíticas, como inlays, onlays y coronas posteriores (Spitznagel et al., 2018). Este artículo técnico compara dos de los materiales más relevantes en esta categoría: Celtra Duo, una cerámica de silicato de litio reforzada con zirconia (ZLS) de Dentsply Sirona, y Vita Enamic, una red cerámica infiltrada con polímero (PICN) de Vita Zahnfabrik, analizando sus propiedades mecánicas, resistencia al desgaste, biocompatibilidad y supervivencia clínica a medio plazo, basándose en la evidencia publicada en revistas de alto impacto."
+    },
+    {
+      "t": "h2",
+      "c": "Composición y Clasificación: Celtra Duo (ZLS) vs. Vita Enamic (PICN)"
+    },
+    {
+      "t": "p",
+      "c": "Los materiales CAD/CAM para restauraciones definitivas se clasifican en diversas categorías, incluyendo las cerámicas de silicato de litio reforzadas con zirconia (ZLS) y las redes cerámicas infiltradas con polímero (PICN) (Komine et al., 2020; Zarone et al., 2021). Celtra Duo es un ejemplo de ZLS, caracterizado por su composición de silicato de litio con refuerzo de zirconia, lo que le confiere propiedades biológico-mecánicas específicas (Zarone et al., 2021). Por otro lado, Vita Enamic representa los materiales PICN, que son cerámicas híbridas polímero-infiltradas (Spitznagel et al., 2018; Komine et al., 2020). Los materiales ZLS disponibles en el mercado para sistemas CAD/CAM, como Vita Suprinity PC y Celtra Duo, son similares en su composición química, microestructura y propiedades biológico-mecánicas (Zarone et al., 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas y Módulo Elástico"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son cruciales para la longevidad de las restauraciones dentales. Los materiales ZLS, como Celtra Duo, presentan propiedades biológico-mecánicas que son objeto de estudio en la literatura (Zarone et al., 2021). Aunque los resúmenes no proporcionan valores numéricos específicos para el módulo elástico o la resistencia a la flexión de cada material individualmente, se sabe que los materiales ZLS son similares en sus propiedades mecánicas (Zarone et al., 2021). Los materiales PICN, como Vita Enamic, son clasificados como materiales resina-cerámica (Laborie et al., 2024; Komine et al., 2020), lo que sugiere una combinación de propiedades de ambos componentes. La evolución constante de los sistemas cerámicos CAD/CAM busca satisfacer las demandas de restauraciones duraderas (Spitznagel et al., 2018)."
+    },
+    {
+      "t": "h2",
+      "c": "Resistencia al Desgaste"
+    },
+    {
+      "t": "p",
+      "c": "La resistencia al desgaste es un factor crítico para la funcionalidad y longevidad de las restauraciones, especialmente en zonas de alta carga oclusal. Una revisión sistemática reciente sobre el desgaste de materiales resina-cerámica, que incluye los PICN, en comparación con las cerámicas de disilicato de litio, concluyó que las características de desgaste de estos materiales aún no están claras (Laborie et al., 2024). Esta falta de claridad subraya la necesidad de más investigación para establecer comparaciones definitivas en cuanto a la resistencia al desgaste entre Celtra Duo y Vita Enamic, y otros materiales resina-cerámica."
+    },
+    {
+      "t": "h2",
+      "c": "Biocompatibilidad y Adaptación Clínica"
+    },
+    {
+      "t": "p",
+      "c": "La biocompatibilidad es un requisito fundamental para cualquier material restaurador. Los materiales cerámicos CAD/CAM, en general, son desarrollados para cumplir con las exigencias de restauraciones altamente estéticas, biocompatibles y duraderas (Spitznagel et al., 2018). Específicamente, los materiales ZLS, como Celtra Duo, son similares en sus propiedades biológicas (Zarone et al., 2021). Los materiales PICN también se consideran parte de las opciones innovadoras que buscan cumplir con estos requisitos (Spitznagel et al., 2018). La facilidad de aplicación de las tecnologías CAD/CAM y el desarrollo de nuevos conceptos de tratamiento han permitido la evolución de la prostodoncia moderna hacia enfoques mínimamente invasivos (Spitznagel et al., 2018)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Celtra Duo (ZLS)",
+        "Vita Enamic (PICN)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Tipo de Material",
+          "Cerámica de silicato de litio reforzada con zirconia",
+          "Red cerámica infiltrada con polímero",
+          "(Zarone et al., 2021; Komine et al., 2020)"
+        ],
+        [
+          "Composición",
+          "Silicato de litio con refuerzo de zirconia",
+          "Red cerámica infiltrada con polímero",
+          "(Zarone et al., 2021; Komine et al., 2020)"
+        ],
+        [
+          "Propiedades Mecánicas",
+          "Similares en propiedades biológico-mecánicas dentro de ZLS",
+          "Materiales resina-cerámica",
+          "(Zarone et al., 2021; Komine et al., 2020)"
+        ],
+        [
+          "Resistencia al Desgaste",
+          "Características de desgaste poco claras en comparación con disilicato de litio",
+          "Características de desgaste poco claras en comparación con disilicato de litio",
+          "(Laborie et al., 2024)"
+        ],
+        [
+          "Supervivencia Cl��nica",
+          "Evidencia clínica aún limitada para longevidad",
+          "Evidencia clínica aún limitada para longevidad",
+          "(Banh et al., 2021)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia Clínica a Medio Plazo (3-5 años)"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación de la supervivencia clínica es esencial para determinar la fiabilidad a largo plazo de los materiales restauradores. Una revisión sistemática y metaanálisis reciente que evaluó la supervivencia y el éxito clínico de restauraciones indirectas de PICN y ZLS, encontró que la evidencia clínica para ambos materiales aún es limitada (Banh et al., 2021). Aunque se han realizado estudios sobre el rendimiento clínico de la rehabilitación de boca completa con diferentes materiales y técnicas, incluyendo periodos de al menos 3 años (Fan et al., 2025), y revisiones sobre los resultados clínicos de coronas individuales fabricadas con materiales CAD/CAM a base de resina (Komine et al., 2020), la evidencia comparativa directa y robusta sobre la longevidad específica de Celtra Duo y Vita Enamic sigue siendo un área con necesidad de mayor investigación (Banh et al., 2021)."
+    },
+    {
+      "t": "quote",
+      "c": "La evidencia clínica para la supervivencia y el éxito de las restauraciones indirectas de PICN y ZLS aún es limitada.",
+      "author": "Banh et al., Materials (Basel), 2021"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal ventaja de los materiales CAD/CAM como Celtra Duo y Vita Enamic?",
+      "a": "La principal ventaja radica en la posibilidad de realizar restauraciones chairside en una sola visita, lo que se alinea con los enfoques de odontología mínimamente invasiva y satisface la demanda de restauraciones estéticas y duraderas (Spitznagel et al., 2018)."
+    },
+    {
+      "q": "¿Existe una diferencia clara en la resistencia al desgaste entre Celtra Duo y Vita Enamic?",
+      "a": "Según una revisión sistemática, las características de desgaste de los materiales resina-cerámica (como Vita Enamic) en comparación con las cerámicas de disilicato de litio (como Celtra Duo) aún no están claras, lo que indica la necesidad de más investigación para establecer conclusiones definitivas (Laborie et al., 2024)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Laborie M, Naveau A, Menard A.",
+      "titulo": "CAD-CAM resin-ceramic material wear: A systematic review",
+      "revista": "J Prosthet Dent",
+      "año": "2024",
+      "vol": "131",
+      "num": "5",
+      "pags": "812-818",
+      "doi": "10.1016/j.prosdent.2022.01.027",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35459543/",
+      "verificada": true
+    },
+    {
+      "autores": "Spitznagel FA, Boldt J, Gierthmuehlen PC.",
+      "titulo": "CAD/CAM Ceramic Restorative Materials for Natural Teeth",
+      "revista": "J Dent Res",
+      "año": "2018",
+      "vol": "97",
+      "num": "10",
+      "pags": "1082-1091",
+      "doi": "10.1177/0022034518779759",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29906206/",
+      "verificada": true
+    },
+    {
+      "autores": "Fan J, Wang B, Wang L, Xu B, Wang L, Wang C, et al.",
+      "titulo": "Clinical performance of minimally invasive full-mouth rehabilitation using different materials and techniques for patients with moderate to severe tooth wear: a systematic review and meta-analysis",
+      "revista": "Clin Oral Investig",
+      "año": "2025",
+      "vol": "29",
+      "num": "2",
+      "pags": "96",
+      "doi": "10.1007/s00784-025-06181-z",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39875663/",
+      "verificada": true
+    },
+    {
+      "autores": "Banh W, Hughes J, Sia A, Chien DCH, Tadakamadla SK, Figueredo CM, et al.",
+      "titulo": "Longevity of Polymer-Infiltrated Ceramic Network and Zirconia-Reinforced Lithium Silicate Restorations: A Systematic Review and Meta-Analysis",
+      "revista": "Materials (Basel)",
+      "año": "2021",
+      "vol": "14",
+      "num": "17",
+      "pags": "",
+      "doi": "10.3390/ma14175058",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34501148/",
+      "verificada": true
+    },
+    {
+      "autores": "Komine F, Honda J, Kusaba K, Kubochi K, Takata H, Fujisawa M.",
+      "titulo": "Clinical outcomes of single crown restorations fabricated with resin-based CAD/CAM materials",
+      "revista": "J Oral Sci",
+      "año": "2020",
+      "vol": "62",
+      "num": "4",
+      "pags": "353-355",
+      "doi": "10.2334/josnusd.20-0195",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32741852/",
+      "verificada": true
+    },
+    {
+      "autores": "Zarone F, Ruggiero G, Leone R, Breschi L, Leuci S, Sorrentino R.",
+      "titulo": "Zirconia-reinforced lithium silicate (ZLS) mechanical and biological properties: A literature review",
+      "revista": "J Dent",
+      "año": "2021",
+      "vol": "109",
+      "num": "",
+      "pags": "103661",
+      "doi": "10.1016/j.jdent.2021.103661",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33864886/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "cementacion-adhesiva-ceramicas-2026-11-03-b104",
+  "titulo": "Protocolos de Cementación Adhesiva para Restauraciones CAD/CAM: Evidencia Actual",
+  "subtitulo": "Guía basada en evidencia para la selección de tratamientos de superficie y cementos resinosos en restauraciones CAD/CAM de disilicato de litio, cerámicas híbridas y zirconia.",
+  "categoria": "clinica",
+  "chip": "Protocolos",
+  "fecha": "2026-11-03",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🔬",
+  "grad": "grad-5",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La tecnología CAD/CAM ha transformado la odontología restauradora, permitiendo la fabricación de restauraciones indirectas en una sola visita a partir de materiales como vitrocerámicas, zirconia, redes cerámicas infiltradas con polímeros (PICN) y nanocerámicas de resina (Flueras et al., 2026). La unión adhesiva es un factor esencial para la longevidad clínica de estas restauraciones indirectas (Spitznagel et al., 2014). La introducción de nuevos materiales y técnicas adhesivas ha impulsado la necesidad de protocolos basados en evidencia para asegurar el éxito a largo plazo (Araujo et al., 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "La Importancia de la Unión Adhesiva en Restauraciones CAD/CAM"
+    },
+    {
+      "t": "p",
+      "c": "La longevidad clínica de las restauraciones indirectas depende fundamentalmente de una unión adhesiva eficaz (Spitznagel et al., 2014). Las estrategias adhesivas son cruciales para el rendimiento a largo plazo de los materiales CAD/CAM, incluyendo vitrocerámicas, zirconia, PICN y nanocerámicas de resina, integrando resultados mecánicos, adhesivos y clínicos (Flueras et al., 2026). La estabilidad y resistencia de la unión cerámica pueden verse influenciadas por diversos factores (Shadid et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Tratamientos de Superficie para Vitrocerámicas de Disilicato de Litio"
+    },
+    {
+      "t": "p",
+      "c": "Para las vitrocerámicas de disilicato de litio, un material común en restauraciones CAD/CAM (Flueras et al., 2026), el grabado con ácido fluorhídrico (HF) es un paso crítico en el protocolo de tratamiento de superficie. Se ha investigado el efecto del grabado con HF en vitrocerámicas de disilicato de litio para evaluar su rendimiento adhesivo en combinación con adhesivos universales y cementos de composite (Tang et al., 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Estrategias Adhesivas para Cerámicas Híbridas y Zirconia"
+    },
+    {
+      "t": "p",
+      "c": "Las cerámicas híbridas, como las cerámicas de matriz de resina (resin matrix glass-ceramic) y las redes cerámicas infiltradas con polímeros (PICN), son materiales CAD/CAM que requieren estrategias adhesivas específicas (Flueras et al., 2026). Para las restauraciones de cerámica de matriz de resina, se ha demostrado que diversos tratamientos de superficie mecánicos, como el arenado con Al2O3 de 50 µm, la limpieza con punta de diamante ultrasónica o con fresas de diamante, impactan la resistencia de unión microtensil (µTBS) (Pereira et al., 2025). En el caso de la zirconia, otro material ampliamente utilizado en CAD/CAM (Flueras et al., 2026), también son fundamentales las estrategias adhesivas para su rendimiento a largo plazo (Flueras et al., 2026)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Sustrato Cerámico CAD/CAM",
+        "Tratamiento de Superficie",
+        "Impacto Reportado"
+      ],
+      "rows": [
+        [
+          "Vitrocerámica de Disilicato de Litio",
+          "Grabado con Ácido Fluorhídrico (HF)",
+          "Evalúa el rendimiento adhesivo (Tang et al., 2023)"
+        ],
+        [
+          "Cerámica de Matriz de Resina",
+          "Arenado con Al2O3 de 50 µm",
+          "Afecta la resistencia de unión microtensil (Pereira et al., 2025)"
+        ],
+        [
+          "Cerámica de Matriz de Resina",
+          "Limpieza con punta de diamante ultrasónica",
+          "Afecta la resistencia de unión microtensil (Pereira et al., 2025)"
+        ],
+        [
+          "Cerámica de Matriz de Resina",
+          "Limpieza con fresas de diamante",
+          "Afecta la resistencia de unión microtensil (Pereira et al., 2025)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Selección de Cementos Resinosos y Resistencia de Unión"
+    },
+    {
+      "t": "p",
+      "c": "La elección del cemento resinoso es un componente crítico del protocolo de cementación. Se ha investigado el rendimiento de unión de combinaciones de adhesivos universales y cementos de composite, como la combinación Scotchbond Universal Plus/RelyX Universal (3M Oral Care), evaluando su rendimiento adhesivo en vitrocerámicas de disilicato de litio (Tang et al., 2023). La resistencia de unión microtensil (µTBS) es una medida clave para evaluar el impacto de los tratamientos de superficie en la unión de restauraciones CAD/CAM (Pereira et al., 2025). Factores como los métodos de adhesión pueden influir significativamente en la estabilidad y resistencia de la unión cerámica (Shadid et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Longevidad Clínica y Factores Clave para el Éxito"
+    },
+    {
+      "t": "p",
+      "c": "La longevidad clínica de las restauraciones indirectas está intrínsecamente ligada a la calidad de la unión adhesiva (Spitznagel et al., 2014). Una revisión sistemática reciente ha integrado los resultados mecánicos, adhesivos, relacionados con el envejecimiento y clínicos de los materiales CAD/CAM, incluyendo vitrocerámicas, zirconia, PICN y nanocerámicas de resina, proporcionando una visión integral de su rendimiento a largo plazo (Flueras et al., 2026). La comprensión de los factores que afectan la estabilidad y resistencia de la unión cerámica es crucial para optimizar los resultados clínicos y minimizar los fallos (Shadid et al., 2025)."
+    },
+    {
+      "t": "quote",
+      "c": "La unión adhesiva es esencial para la longevidad clínica de las restauraciones indirectas.",
+      "author": "Spitznagel et al., J Esthet Restor Dent, 2014"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el tratamiento de superficie recomendado para las vitrocerámicas de disilicato de litio?",
+      "a": "Para las vitrocerámicas de disilicato de litio, el grabado con ácido fluorhídrico (HF) es un tratamiento de superficie clave que se evalúa por su impacto en el rendimiento adhesivo (Tang et al., 2023)."
+    },
+    {
+      "q": "¿Qué cemento resinoso se ha evaluado en combinación con adhesivos universales para restauraciones CAD/CAM?",
+      "a": "La combinación Scotchbond Universal Plus/RelyX Universal (3M Oral Care) ha sido evaluada en su rendimiento adhesivo con vitrocerámicas de disilicato de litio (Tang et al., 2023)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Araujo E, Perdigão J.",
+      "titulo": "Anterior Veneer Restorations - An Evidence-based Minimal-Intervention Perspective",
+      "revista": "J Adhes Dent",
+      "año": "2021",
+      "vol": "23",
+      "num": "2",
+      "pags": "91-110",
+      "doi": "10.3290/j.jad.b1079529",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33825424/",
+      "verificada": true
+    },
+    {
+      "autores": "Pereira LM, de Melo BI, Netto VPS, Bernardes P, Raposo LHA, Prudente MS, et al.",
+      "titulo": "Surface characteristics of resin composite cores and bond strength to CAD/CAM resin matrix glass-ceramic restorations after different treatment protocols",
+      "revista": "Odontology",
+      "año": "2025",
+      "vol": "113",
+      "num": "3",
+      "pags": "878-888",
+      "doi": "10.1007/s10266-024-01034-9",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39627598/",
+      "verificada": true
+    },
+    {
+      "autores": "Spitznagel FA, Horvath SD, Guess PC, Blatz MB.",
+      "titulo": "Resin bond to indirect composite and new ceramic/polymer materials: a review of the literature",
+      "revista": "J Esthet Restor Dent",
+      "año": "2014",
+      "vol": "26",
+      "num": "6",
+      "pags": "382-93",
+      "doi": "10.1111/jerd.12100",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/24754327/",
+      "verificada": true
+    },
+    {
+      "autores": "Shadid RM.",
+      "titulo": "Retention of CAD-CAM Implant-Supported Ceramic Restorations Luted to Titanium Bases: A Systematic Review of in-vitro Studies",
+      "revista": "Clin Cosmet Investig Dent",
+      "año": "2025",
+      "vol": "17",
+      "num": "",
+      "pags": "305-333",
+      "doi": "10.2147/CCIDE.S540951",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40766791/",
+      "verificada": true
+    },
+    {
+      "autores": "Flueras R, Lile IE, Marian D, Popovici RA, Muntean C, Moleriu RD, et al.",
+      "titulo": "Advances in Chairside and Restorative Dental Materials: A Systematic Review of Material Properties, Adhesive Strategies, and Long-Term Performance",
+      "revista": "J Funct Biomater",
+      "año": "2026",
+      "vol": "17",
+      "num": "8",
+      "pags": "",
+      "doi": "10.3390/jfb17080381",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42646184/",
+      "verificada": true
+    },
+    {
+      "autores": "Tang C, Mercelis B, Ahmed MH, Yoshihara K, Peumans M, Van Meerbeek B.",
+      "titulo": "Adhesive Performance Assessment of Universal Adhesives and Universal Adhesive/Composite Cement Combinations",
+      "revista": "J Adhes Dent",
+      "año": "2023",
+      "vol": "25",
+      "num": "",
+      "pags": "241-256",
+      "doi": "10.3290/j.jad.b4646953",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37975313/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
