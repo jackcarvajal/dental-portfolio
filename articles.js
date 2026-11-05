@@ -2,10 +2,382 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-11-03
+   Última actualización automática: 2026-11-05
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "alineadores-invisalign-vs-oe-2026-11-05-5438",
+  "titulo": "Eficacia y Precisión de la Terapia con Alineadores Transparentes: Una Revisión Clínica",
+  "subtitulo": "Análisis basado en evidencia de la efectividad del movimiento dental y la predictibilidad en el tratamiento con alineadores transparentes.",
+  "categoria": "ortodoncia",
+  "chip": "Ortodoncia Digital",
+  "fecha": "2026-11-05",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "📐",
+  "grad": "grad-3",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Invisalign_aligner.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Clear aligners",
+  "img_link": "https://en.wikipedia.org/wiki/Clear%20aligners",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La terapia con alineadores transparentes (CAT, por sus siglas en inglés) ha transformado la práctica ortodóntica, ofreciendo una alternativa discreta y cómoda a los aparatos fijos tradicionales. Desde la introducción del sistema Invisalign por Align Technology en 1999, que inicialmente estuvo disponible para ortodoncistas y luego para odontólogos generales, la popularidad de los alineadores ha crecido significativamente (AlMogbel, 2023). Estos sistemas utilizan alineadores personalizados, fabricados a medida, diseñados para guiar los dientes a las posiciones deseadas (AlMogbel, 2023). Sin embargo, las características del material y las propiedades biomecánicas de los alineadores transparentes difieren de los aparatos fijos, presentando desafíos clínicos únicos (Wang et al., 2025)."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Invisalign_aligner.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Invisalign vs alineadores de laboratorio — eficacia clínica 2025",
+      "caption": "Wikipedia — Clear aligners · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Eficacia del Movimiento Dental Específico"
+    },
+    {
+      "t": "p",
+      "c": "La eficacia de los alineadores transparentes en el control del movimiento dental ha sido objeto de revisiones sistemáticas. Se ha reportado una intrusión media de 0.72 mm (Rossini et al., 2015). Sin embargo, la extrusión se identifica como el movimiento más difícil de controlar, con una precisión de aproximadamente el 30% (Rossini et al., 2015). La rotación también se considera un movimiento de dificultad elevada (Rossini et al., 2015). En general, la precisión del movimiento dental con alineadores transparentes se sitúa alrededor del 50% en comparación con los resultados predichos, mientras que los aparatos fijos muestran una mayor precisión y predictibilidad (Upadhyay & Arqub, 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Biomecánica y Precisión de los Alineadores"
+    },
+    {
+      "t": "p",
+      "c": "La biomecánica de los alineadores transparentes implica el uso de termoplásticos con propiedades que pueden afectar el rendimiento clínico (Upadhyay & Arqub, 2022). Las discrepancias entre los resultados esperados y los obtenidos clínicamente son un desafío inherente a la terapia con alineadores (Upadhyay & Arqub, 2022). Para que un tratamiento con alineadores transparentes sea considerado efectivo, debe mejorar la maloclusión inicial del paciente y garantizar la equivalencia entre los resultados predichos y los obtenidos clínicamente (Muro et al., 2023)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Tipo de Movimiento Dental",
+        "Precisión Reportada",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Intrusión (media)",
+          "0.72 mm",
+          "(Rossini et al., 2015)"
+        ],
+        [
+          "Extrusión",
+          "30% de precisión",
+          "(Rossini et al., 2015)"
+        ],
+        [
+          "Rotación",
+          "Dificultad alta",
+          "(Rossini et al., 2015)"
+        ],
+        [
+          "Precisión general del movimiento",
+          "Alrededor del 50%",
+          "(Upadhyay & Arqub, 2022)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Resultados Clínicos y Predictibilidad del Tratamiento"
+    },
+    {
+      "t": "p",
+      "c": "La efectividad de la terapia con alineadores transparentes ha sido evaluada en diversas revisiones sistemáticas. La mayoría de los estudios incluidos en una revisión sistemática de 2020 (seis de siete) presentaron un riesgo de sesgo moderado, y uno tuvo un riesgo de sesgo alto (Robertson et al., 2020). Otra revisión sistemática de 2015 también destacó deficiencias metodológicas en los estudios, con un riesgo de sesgo moderado para seis de once estudios (Rossini et al., 2015). Una revisión de alcance de 2023 identificó 33 estudios que evaluaron la efectividad y/o predictibilidad del tratamiento con alineadores, con la mayoría (76%) enfocándose en estos aspectos (Muro et al., 2023)."
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas para el Paciente y Consideraciones Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "Las ventajas de la terapia con alineadores transparentes para el paciente incluyen su invisibilidad virtual, la comodidad de uso y la posibilidad de retirarlos para comer y cepillarse los dientes (AlMogbel, 2023). Estas características contribuyen a una mayor aceptación por parte de los pacientes que buscan una alternativa más discreta a los aparatos fijos tradicionales (AlMogbel, 2023). Sin embargo, el éxito clínico de la terapia con alineadores transparentes depende de una selección adecuada del caso, la comprensión de los principios de la terapia, los procedimientos clínicos y la gestión de posibles complicaciones (Wang et al., 2025)."
+    },
+    {
+      "t": "quote",
+      "c": "La precisión del movimiento dental con alineadores transparentes aún se sitúa alrededor del 50%, lo que subraya la importancia de comprender las propiedades biomecánicas de los materiales termoplásticos y las limitaciones inherentes a la terapia.",
+      "author": "Upadhyay & Arqub, J World Fed Orthod, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la principal limitación de los alineadores transparentes en el movimiento dental?",
+      "a": "La extrusión es el movimiento más difícil de controlar con alineadores transparentes, con una precisión reportada de aproximadamente el 30% (Rossini et al., 2015). La precisión general del movimiento dental con alineadores se sitúa alrededor del 50% (Upadhyay & Arqub, 2022)."
+    },
+    {
+      "q": "¿Qué factores son cruciales para el éxito clínico de la terapia con alineadores transparentes?",
+      "a": "El éxito clínico depende de una selección adecuada del caso, la comprensión de los principios biomecánicos de la terapia, la correcta ejecución de los procedimientos clínicos y la gestión proactiva de posibles complicaciones (Wang et al., 2025)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Rossini G, Parrini S, Castroflorio T, Deregibus A, Debernardi CL.",
+      "titulo": "Efficacy of clear aligners in controlling orthodontic tooth movement: a systematic review",
+      "revista": "Angle Orthod",
+      "año": "2015",
+      "vol": "85",
+      "num": "5",
+      "pags": "881-9",
+      "doi": "10.2319/061614-436.1",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25412265/",
+      "verificada": true
+    },
+    {
+      "autores": "Upadhyay M, Arqub SA.",
+      "titulo": "Biomechanics of clear aligners: hidden truths & first principles",
+      "revista": "J World Fed Orthod",
+      "año": "2022",
+      "vol": "11",
+      "num": "1",
+      "pags": "12-21",
+      "doi": "10.1016/j.ejwf.2021.11.002",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34965910/",
+      "verificada": true
+    },
+    {
+      "autores": "Wang Y, Long H, Zhao Z, Bai D, Han X, Wang J, et al.",
+      "titulo": "Expert consensus on the clinical strategies for orthodontic treatment with clear aligners",
+      "revista": "Int J Oral Sci",
+      "año": "2025",
+      "vol": "17",
+      "num": "1",
+      "pags": "19",
+      "doi": "10.1038/s41368-025-00350-2",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40074738/",
+      "verificada": true
+    },
+    {
+      "autores": "AlMogbel A.",
+      "titulo": "Clear Aligner Therapy: Up to date review article",
+      "revista": "J Orthod Sci",
+      "año": "2023",
+      "vol": "12",
+      "num": "",
+      "pags": "37",
+      "doi": "10.4103/jos.jos_30_23",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37881665/",
+      "verificada": true
+    },
+    {
+      "autores": "Robertson L, Kaur H, Fagundes NCF, Romanyk D, Major P, Flores Mir C.",
+      "titulo": "Effectiveness of clear aligner therapy for orthodontic treatment: A systematic review",
+      "revista": "Orthod Craniofac Res",
+      "año": "2020",
+      "vol": "23",
+      "num": "2",
+      "pags": "133-142",
+      "doi": "10.1111/ocr.12353",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31651082/",
+      "verificada": true
+    },
+    {
+      "autores": "Muro MP, Caracciolo ACA, Patel MP, Feres MFN, Roscoe MG.",
+      "titulo": "Effectiveness and predictability of treatment with clear orthodontic aligners: A scoping review",
+      "revista": "Int Orthod",
+      "año": "2023",
+      "vol": "21",
+      "num": "2",
+      "pags": "100755",
+      "doi": "10.1016/j.ortho.2023.100755",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37086643/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "emax-cad-2025-2026-11-05-1467",
+  "titulo": "Análisis Clínico de Cerámicas de Disilicato de Litio Monolíticas",
+  "subtitulo": "Exploración de la supervivencia clínica y el rol de las cerámicas de disilicato de litio en la prostodoncia fija digital.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-11-05",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-1",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Inlay_krone_lithium-disilikat_situ.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Lithium disilicate",
+  "img_link": "https://en.wikipedia.org/wiki/Lithium%20disilicate",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología restauradora ha experimentado una transformación significativa con el desarrollo de nuevos materiales cerámicos, particularmente las vitrocerámicas. Estos materiales ofrecen características de resistencia mejoradas y propiedades ópticas deseables, lo que los convierte en opciones ideales para la fabricación de coronas y carillas estéticas (El-Mowafy et al., 2018). La integración de flujos de trabajo completamente digitalizados ha permitido avances en la prostodoncia fija, facilitando la creación de restauraciones con precisión y eficiencia (Joda et al., 2017). Dentro de este contexto, las cerámicas de disilicato de litio han emergido como un pilar fundamental para restauraciones monolíticas, ofreciendo un equilibrio entre estética y durabilidad."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/e/e2/Inlay_krone_lithium-disilikat_situ.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "IPS e.max CAD Ivoclar — propiedades y casos clínicos 2025",
+      "caption": "Wikipedia — Lithium disilicate · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Avances en Materiales Cerámicos para Restauraciones Fijas"
+    },
+    {
+      "t": "p",
+      "c": "El desarrollo continuo en la ciencia de los materiales dentales ha llevado a la creación de vitrocerámicas con propiedades mecánicas y estéticas superiores. Estos materiales son cruciales para las restauraciones estéticas en dientes anteriores y posteriores (El-Mowafy et al., 2018). La selección del material restaurador es un desafío creciente debido a la rápida evolución en este campo, con opciones que combinan la estabilidad mecánica con el potencial estético de las cerámicas (Strasding et al., 2024). Las coronas totalmente cerámicas, en particular, han sido objeto de numerosos estudios para evaluar su rendimiento a largo plazo (Sailer et al., 2015)."
+    },
+    {
+      "t": "h2",
+      "c": "Supervivencia Clínica de Coronas Monolíticas de Disilicato de Litio"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación de la supervivencia a largo plazo de las restauraciones es fundamental para determinar su éxito clínico. Un metaanálisis reciente ha evaluado las tasas de supervivencia a cinco años de diversas coronas unitarias soportadas por dientes. Para las coronas monolíticas de cerámica de disilicato de litio reforzada con vidrio, se reportó una tasa de supervivencia del 98.5% a los cinco años (Pjetursson et al., 2026). Esta alta tasa de supervivencia subraya la fiabilidad de este material en aplicaciones clínicas. En comparación, otras opciones como la zirconia densamente sinterizada monolítica mostraron una tasa de supervivencia del 96.8% (Pjetursson et al., 2026)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Tipo de Corona Unitaria",
+        "Tasa de Supervivencia a 5 Años (%)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Cerámica de disilicato de litio monolítica reforzada con vidrio",
+          "98.5%",
+          "Pjetursson et al., 2026"
+        ],
+        [
+          "Zirconia densamente sinterizada con recubrimiento",
+          "97.3%",
+          "Pjetursson et al., 2026"
+        ],
+        [
+          "Metal-cerámica",
+          "97.1%",
+          "Pjetursson et al., 2026"
+        ],
+        [
+          "Zirconia densamente sinterizada monolítica",
+          "96.8%",
+          "Pjetursson et al., 2026"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "El Flujo de Trabajo Digital y las Cerámicas CAD/CAM"
+    },
+    {
+      "t": "p",
+      "c": "El avance hacia un entorno virtual completo en prostodoncia fija, sin situaciones de modelo físico, ha sido impulsado por el desarrollo continuo en el procesamiento dental (Joda et al., 2017). Los flujos de trabajo completamente digitalizados se comparan favorablemente con los enfoques convencionales o mixtos, especialmente en términos de resultados estéticos y centrados en el paciente (Joda et al., 2017). La selección de materiales y pilares para prótesis fijas soportadas por implantes CAD/CAM en pacientes parcialmente edéntulos también destaca la importancia de la estabilidad mecánica y el potencial estético de las cerámicas (Strasding et al., 2024). Aunque las fuentes no detallan el protocolo de cristalización específico del horno Programat o las translucideces por bloque (LT, MO, HT, BL) para el disilicato de litio, la capacidad de procesar estos materiales mediante CAD/CAM es inherente a su uso en flujos digitales."
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Biomecánicas y Estéticas"
+    },
+    {
+      "t": "p",
+      "c": "La restauración de dientes con pérdida estructural significativa, como los tratados endodónticamente, presenta desafíos biomecánicos que afectan el pronóstico a largo plazo (Mously et al., 2025). La elección de materiales cerámicos con propiedades mecánicas adecuadas es crucial para garantizar la longevidad de la restauración. Las nuevas vitrocerámicas están diseñadas para ofrecer una resistencia mejorada, lo que contribuye a su rendimiento biomecánico (El-Mowafy et al., 2018). Además de la resistencia, las propiedades ópticas son fundamentales para lograr resultados estéticos satisfactorios, especialmente en la zona anterior (El-Mowafy et al., 2018). La combinación de estabilidad mecánica y potencial estético es una característica distintiva de las cerámicas modernas (Strasding et al., 2024)."
+    },
+    {
+      "t": "h2",
+      "c": "Implicaciones Clínicas y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La evidencia actual sugiere que las coronas monolíticas de cerámica de disilicato de litio reforzada con vidrio ofrecen una excelente tasa de supervivencia a cinco años, posicionándolas como una opción altamente confiable para restauraciones unitarias (Pjetursson et al., 2026). La continua evolución de los materiales cerámicos y los flujos de trabajo digitales promete seguir mejorando la eficiencia y los resultados clínicos en la prostodoncia fija. La selección de materiales debe basarse en una comprensión profunda de sus propiedades y un análisis riguroso de la evidencia clínica disponible."
+    },
+    {
+      "t": "quote",
+      "c": "Las vitrocerámicas de disilicato de litio monolíticas demuestran una alta tasa de supervivencia a cinco años, lo que las convierte en una opción robusta para restauraciones dentales.",
+      "author": "Pjetursson et al., International Journal of Prosthodontics, 2026"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la tasa de supervivencia a 5 años de las coronas de disilicato de litio monolíticas?",
+      "a": "Las coronas monolíticas de cerámica de disilicato de litio reforzada con vidrio presentan una tasa de supervivencia del 98.5% a los cinco años, según un metaanálisis reciente (Pjetursson et al., 2026)."
+    },
+    {
+      "q": "¿Cómo se comparan las cerámicas de disilicato de litio con otros materiales en términos de supervivencia?",
+      "a": "Las cerámicas de disilicato de litio monolíticas tienen una tasa de supervivencia a 5 años del 98.5%, superando a la zirconia densamente sinterizada con recubrimiento (97.3%), metal-cerámica (97.1%) y zirconia densamente sinterizada monolítica (96.8%) (Pjetursson et al., 2026)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "El-Mowafy O, El-Aawar N, El-Mowafy N.",
+      "titulo": "Porcelain veneers: An update",
+      "revista": "Dent Med Probl",
+      "año": "2018",
+      "vol": "55",
+      "num": "2",
+      "pags": "207-211",
+      "doi": "10.17219/dmp/90729",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30152626/",
+      "verificada": true
+    },
+    {
+      "autores": "Joda T, Zarone F, Ferrari M.",
+      "titulo": "The complete digital workflow in fixed prosthodontics: a systematic review",
+      "revista": "BMC Oral Health",
+      "año": "2017",
+      "vol": "17",
+      "num": "1",
+      "pags": "124",
+      "doi": "10.1186/s12903-017-0415-0",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28927393/",
+      "verificada": true
+    },
+    {
+      "autores": "Sailer I, Makarov NA, Thoma DS, Zwahlen M, Pjetursson BE.",
+      "titulo": "All-ceramic or metal-ceramic tooth-supported fixed dental prostheses (FDPs)? A systematic review of the survival and complication rates. Part I: Single crowns (SCs)",
+      "revista": "Dent Mater",
+      "año": "2015",
+      "vol": "31",
+      "num": "6",
+      "pags": "603-23",
+      "doi": "10.1016/j.dental.2015.02.011",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25842099/",
+      "verificada": true
+    },
+    {
+      "autores": "Pjetursson BE, Pitta J, Balet A, Bjarnadottir GR, Sailer I, Romandini P.",
+      "titulo": "A Systematic Review and Meta-analysis Evaluating the Survival, Failure, and Complication Rates of Metal-Ceramic, Veneered, and Monolithic All-Ceramic Tooth-Supported Single Crowns-Part 1",
+      "revista": "Int J Prosthodont",
+      "año": "2026",
+      "vol": "39",
+      "num": "3",
+      "pags": "308-324",
+      "doi": "10.11607/ijp.9633",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41489982/",
+      "verificada": true
+    },
+    {
+      "autores": "Mously HA, Naguib GH, Abougazia AO, Almabadi AA, Qutub OA, Hamed MT.",
+      "titulo": "Anterior Endocrowns as An Alternative to Core Crown restorations: A Systematic Review",
+      "revista": "Int Dent J",
+      "año": "2025",
+      "vol": "75",
+      "num": "1",
+      "pags": "59-74",
+      "doi": "10.1016/j.identj.2024.07.1216",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39306490/",
+      "verificada": true
+    },
+    {
+      "autores": "Strasding M, Marchand L, Merino E, Zarauz C, Pitta J.",
+      "titulo": "Material and abutment selection for CAD/CAM implant-supported fixed dental prostheses in partially edentulous patients - A narrative review",
+      "revista": "Clin Oral Implants Res",
+      "año": "2024",
+      "vol": "35",
+      "num": "8",
+      "pags": "984-999",
+      "doi": "10.1111/clr.14315",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38864592/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
