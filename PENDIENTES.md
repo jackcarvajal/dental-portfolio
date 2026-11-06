@@ -1,7 +1,7 @@
 # PRODIGY — PENDIENTES MAESTRO
 > Solo tareas activas. Última revisión: 2026-09-07 (sesión autónoma continua)
 > Completadas → eliminar. Nuevas → agregar arriba de su bloque.
-
+
 - 🟡 **Agente de research propio** (idea 13-oct, aplazada): montar un agente que vigile X/Reddit/YouTube/Instagram buscando tendencias de odontología digital, quejas de labs y movidas de la competencia, y lo resuma solo. Herramientas candidatas (vetar antes de instalar — cadena de suministro): Scrapling, Patchright Enhanced, Agent-Reach. NO prioritario (primero PRODIGY + Ads/marketing).
 ---
 
@@ -74,13 +74,12 @@ trabajo — son `count head:true`). Los estados reales de esos buckets serían: 
 distinto de "en producción" (`EN_PRODUCCION`/`FRESADO_INICIADO`/`EN_IMPRESION`). Falta que el equipo
 defina qué debe mostrar cada bucket antes de corregir (no adivinar la métrica). Ver `docs/CONTRATO-ESTADOS.md`.
 
-## 🟡 Alejandro `full-arch-cad.html` — contenido de wax-up (copia sin terminar) [audit SEO 2026-09-10]
-El archivo tiene nombre de full-arch pero TODO su contenido (title, description, og, h1, Schema Service,
-body: casos de uso, "Desde $15 USD por diente") es de **Wax-Up Digital** → duplicate content con
-`wax-up-digital.html`. Estaba en sitemap e indexable (huérfano, sin enlaces internos). **Ya mitigado:**
-noindex + sacado del sitemap (frena el daño SEO). **Falta (decisión del usuario):** escribir el contenido
-real de full-arch (precio/servicio propios — no los inventé) y volver a indexar, O borrar la página si
-no se ofrece ese servicio. Al resolver, quitar el noindex y re-agregar al sitemap.
+## ✅ RESUELTO (2026-11-05) — Alejandro `full-arch-cad.html` era duplicado huérfano de wax-up
+El archivo tenía nombre de full-arch pero TODO su contenido era de Wax-Up Digital (duplicate content con
+`wax-up-digital.html`), noindex, huérfano, fuera del sitemap. **Resolución: se borró** — el full-arch real
+ya existe como `diseno-full-arch.html` (/diseno-full-arch, indexado, enlazado desde index/carillas/guías/
+links, con contenido All-on-4/All-on-6 propio). No había que escribir contenido nuevo; solo sobraba el
+archivo viejo. Redirect 301 `/full-arch-cad → /diseno-full-arch.html` en `_redirects`. Audit estático OK.
 
 ## 🟡 BACKLOG del health-check (2026-08-26) — infra sólida, quedan estos
 
