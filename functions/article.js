@@ -29,6 +29,9 @@ class PonerTexto {
   constructor(texto) { this.texto = texto; }
   element(el) { el.setInnerContent(this.texto); }
 }
+class Quitar {
+  element(el) { el.remove(); }
+}
 
 function extraerMeta(txt, id) {
   const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -63,7 +66,11 @@ export async function onRequest(context) {
   // El canonical SIEMPRE se corrige (no depende de los datos) → arregla el "alternativo"
   let rw = new HTMLRewriter()
     .on('link#canonical', new PonerAttr('href', selfUrl))
-    .on('meta#og-url', new PonerAttr('content', selfUrl));
+    .on('meta#og-url', new PonerAttr('content', selfUrl))
+    // hreflang: es/x-default al self; el 'en' es fantasma (no hay artículos en inglés) → se quita
+    .on('link[hreflang="es"]', new PonerAttr('href', selfUrl))
+    .on('link[hreflang="x-default"]', new PonerAttr('href', selfUrl))
+    .on('link[hreflang="en"]', new Quitar());
 
   if (meta && meta.titulo) {
     const full = meta.titulo + ' | PRODIGY Lab Dental';
