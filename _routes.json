@@ -3,6 +3,7 @@
   "description": "Optimizacion serverless: Cloudflare sirve lo estatico (paginas, /js, /css, /assets, /images, /app, /en, i18n, sw, sitemap...) DIRECTO, sin invocar Functions. Solo /api/* y los archivos internos que bloquea functions/_middleware.js pasan por el Worker. Antes, al existir un _middleware.js en la raiz, Pages enrutaba CADA request por el Worker (cada visita = 1 invocacion). Mantiene identica la seguridad: todo lo que el middleware 404-ea sigue entrando por Functions.",
   "include": [
     "/api/*",
+    "/article",
     "/sql/*",
     "/supabase/*",
     "/scripts/*",
