@@ -9,7 +9,18 @@
 
 ---
 
-## 2026-11-07  (SEO · hreflang de artículos server-side)
+## 2026-11-07  (SEO · hreflang de artículos + páginas ES/EN)
+
+- ✅ **hreflang de páginas (34 archivos)**: auditoría descubrió que `?lang=en` era un alternate **fantasma**
+  en ~27 páginas ES (el parámetro no lo lee ningún JS — i18n solo usa `localStorage`; y las páginas de
+  contenido no tienen `data-i18n`). Inglés indexable real = solo 6 páginas `/en/`. Fix: **quitado** el
+  `hreflang en → ?lang=en` de las 27 ES; enlazados los 4 pares reales recíprocos
+  (`carillas↔/en/veneers`, `diseno-remoto↔/en/global-design`, `guias-quirurgicas↔/en/surgical-guides`,
+  `alineadores-cad↔/en/dental-aligners`); corregidos los back-links `es`/`x-default` mal puestos en las EN
+  (3 apuntaban a `/diseno-remoto`). `en/zirconia-crowns` y `en/veneer-terms` quedan EN-only → ES pendiente
+  en `PENDIENTES.md`. 💡 «inglés en todo vía `?lang=en`» = proyecto de traducción aparte (no viable hoy).
+- ✅ **`tools/audit-live.mjs`**: ya no marca los `404 /api/*` locales como fallo (el server de python no corre
+  Functions) → la auditoría runtime da limpio de verdad (0 problemas en 104 págs). Commit `cd7f810`.
 
 - ✅ **`functions/article.js`**: además del canonical, ahora corrige el **hreflang** de cada artículo.
   El `article.html` estático declaraba `hreflang="es"`/`x-default` → `/article` (genérico, sin `?id=`) y un

@@ -20,6 +20,10 @@
 5. ✅ **Decidido 2-oct:** cada negocio por separado (métricas solo PRODIGY) · contabilidad SÍ ve ingresos, Mayra NO ·
    taller con estados reales. SQL v2 corrido.
 6. 💳 **Antes de cobrar en línea:** redesplegar `wompi-signature` + webhook de Stripe (`docs/ACTIVAR-PAGOS.md`).
+7. 🟡 **SEO inglés (7-nov):** hoy el inglés indexable son solo 6 páginas `/en/`. `en/zirconia-crowns` y
+   `en/veneer-terms` son EN-only sin gemelo ES → crear su versión ES y enlazar hreflang recíproco. El
+   «inglés en todo» (vía `?lang=en`) NO es viable hoy: el parámetro no se lee en el front y las páginas de
+   contenido no tienen `data-i18n` → es un proyecto de traducción aparte (escribir `/en/<slug>` dedicadas).
 
 ## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado
 **SQL para correr** (Supabase SQL Editor):
