@@ -9,6 +9,21 @@
 
 ---
 
+## 2026-11-06  (SEO · indexación de los 46 artículos — canonical server-side)
+
+- ✅ **`functions/article.js`** (nueva Pages Function): intercepta `/article?id=X`, sirve el `article.html`
+  estático (`next()`) y con **HTMLRewriter inyecta del lado del SERVIDOR** el `canonical`/`og:url` correctos
+  (self-URL, sin depender de datos) y —best-effort leyendo `/articles.js`— el título/descripción/og reales.
+  Arregla el hallazgo de Search Console **"Página alternativa con etiqueta canónica adecuada" (23 págs)**: el
+  canonical estático de `article.html` apunta a `/journal` y solo lo corregía el JS en el cliente; ahora
+  Googlebot ve el canonical correcto en su primera pasada. El JS del cliente queda igual (idempotente).
+  Extracción validada contra el `articles.js` real (46 ids). 🟡 **verificar en vivo tras deploy** (curl del
+  HTML crudo de un `/article?id=…` y confirmar `<link rel=canonical>` self).
+- 💡 Paridad: Alejandro también usa `article.html` client-side — portar el mismo patrón (su fuente de datos
+  difiere, se adapta aparte).
+
+---
+
 ## 2026-10-22  (desambiguación de marca · entidad PRODIGY Lab Dental)
 
 - ✅ **HOME PÚBLICA** (fin del mantenimiento): se comentó el redirect inline a `/mantenimiento` en `index.html`
