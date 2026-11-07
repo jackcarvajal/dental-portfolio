@@ -51,7 +51,9 @@ async function connect() {
   ws.onmessage = e => {
     const d = JSON.parse(e.data);
     if (d.method === 'Runtime.exceptionThrown') errs.push((((d.params.exceptionDetails.exception || {}).description) || d.params.exceptionDetails.text || '').split('\n')[0].slice(0, 100));
-    if (d.method === 'Network.responseReceived') { const r = d.params.response; if (r.status >= 400 && /supabase|\/api\//.test(r.url) && !/\/api\/track-event/.test(r.url)) net.push(r.status + ' ' + r.url.replace(/\?.*/, '').slice(-60)); }
+    // Un 404 en /api/* es artefacto local (python http.server no corre Functions) → se ignora.
+    // Señal real: 4xx de Supabase (pega a la nube real) y /api/* 5xx.
+    if (d.method === 'Network.responseReceived') { const r = d.params.response; if (r.status >= 400 && /supabase|\/api\//.test(r.url) && !/\/api\/track-event/.test(r.url) && !(r.status === 404 && /\/api\//.test(r.url))) net.push(r.status + ' ' + r.url.replace(/\?.*/, '').slice(-60)); }
     if (d.id && pend.has(d.id)) { pend.get(d.id)(d.result); pend.delete(d.id); }
   };
   await new Promise(r => ws.onopen = r);
