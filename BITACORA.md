@@ -21,6 +21,11 @@
   en `PENDIENTES.md`. 💡 «inglés en todo vía `?lang=en`» = proyecto de traducción aparte (no viable hoy).
 - ✅ **`tools/audit-live.mjs`**: ya no marca los `404 /api/*` locales como fallo (el server de python no corre
   Functions) → la auditoría runtime da limpio de verdad (0 problemas en 104 págs). Commit `cd7f810`.
+- ✅ **JSON-LD de artículos server-side** (`functions/article.js`): el `<script id="jsonld-schema">` iba **vacío**
+  en el HTML crudo (solo lo llenaba el JS). Ahora la Function inyecta `Article`+`BreadcrumbList` (réplica de
+  `buildSchema`) leyendo titulo/subtitulo/fecha/chip/og_img de `/articles.js`; se escapa `<`→`<` y se usa
+  `setInnerContent(..,{html:true})`. El JS del cliente igual lo sobre-escribe al renderizar (y añade FAQPage).
+  Validado 46/46 contra datos reales.
 
 - ✅ **`functions/article.js`**: además del canonical, ahora corrige el **hreflang** de cada artículo.
   El `article.html` estático declaraba `hreflang="es"`/`x-default` → `/article` (genérico, sin `?id=`) y un

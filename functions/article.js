@@ -32,6 +32,10 @@ class PonerTexto {
 class Quitar {
   element(el) { el.remove(); }
 }
+class PonerJSONLD {
+  constructor(json) { this.json = json; }
+  element(el) { el.setInnerContent(this.json, { html: true }); }  // JSON crudo, no HTML-escapado
+}
 
 function extraerMeta(txt, id) {
   const esc = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -42,7 +46,45 @@ function extraerMeta(txt, id) {
     const r = new RegExp('"' + n + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"').exec(slice);
     return r ? r[1].replace(/\\"/g, '"').replace(/\\n/g, ' ').replace(/\\\\/g, '\\') : null;
   };
-  return { titulo: campo('titulo'), subtitulo: campo('subtitulo'), og_img: campo('og_img') };
+  return { titulo: campo('titulo'), subtitulo: campo('subtitulo'), og_img: campo('og_img'), fecha: campo('fecha'), chip: campo('chip') };
+}
+
+// Replica server-side de buildSchema(art) de article.html (Article + BreadcrumbList).
+// El JS del cliente igual lo sobre-escribe al renderizar (y añade FAQPage); esto es
+// para que Googlebot vea los datos estructurados en su PRIMERA pasada (sin JS).
+function construirSchema(meta, selfUrl) {
+  const img = meta.og_img ? (meta.og_img.startsWith('http') ? meta.og_img : DOMINIO + meta.og_img) : null;
+  const articulo = {
+    '@type': ['Article', 'MedicalWebPage'],
+    'headline': meta.titulo,
+    'description': meta.subtitulo,
+    'datePublished': meta.fecha,
+    'dateModified': meta.fecha,
+    'inLanguage': 'es-CO',
+    'author': { '@type': 'Organization', 'name': 'PRODIGY Lab Dental', 'url': DOMINIO },
+    'publisher': { '@type': 'Organization', 'name': 'PRODIGY Lab Dental', 'url': DOMINIO, 'logo': { '@type': 'ImageObject', 'url': DOMINIO + '/assets/icons/icon-192.png' } },
+    'mainEntityOfPage': selfUrl,
+    'keywords': (meta.chip || '') + ', CAD/CAM dental, odontología digital, laboratorio dental Colombia',
+    'medicalAudience': { '@type': 'MedicalAudience', 'audienceType': 'Dentist' },
+    'about': { '@type': 'MedicalCondition', 'name': 'Restauraciones dentales CAD/CAM' },
+    'speakable': { '@type': 'SpeakableSpecification', 'cssSelector': ['h1', 'h2', '.article-subtitulo', '.article-meta'] }
+  };
+  if (img) articulo.image = { '@type': 'ImageObject', 'url': img, 'width': 1200, 'height': 630 };
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      articulo,
+      {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Inicio', 'item': DOMINIO + '/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Journal', 'item': DOMINIO + '/journal' },
+          { '@type': 'ListItem', 'position': 3, 'name': meta.titulo, 'item': selfUrl }
+        ]
+      }
+    ]
+  };
+  return JSON.stringify(schema).replace(/</g, '\\u003c');  // evita romper el </script>
 }
 
 export async function onRequest(context) {
@@ -91,6 +133,11 @@ export async function onRequest(context) {
     rw = rw
       .on('meta#og-image', new PonerAttr('content', img))
       .on('meta#tw-image', new PonerAttr('content', img));
+  }
+
+  // JSON-LD Article + BreadcrumbList server-side (el <script id=jsonld-schema> va vacío en estático)
+  if (meta && meta.titulo && meta.fecha) {
+    rw = rw.on('script#jsonld-schema', new PonerJSONLD(construirSchema(meta, selfUrl)));
   }
 
   return rw.transform(res);
