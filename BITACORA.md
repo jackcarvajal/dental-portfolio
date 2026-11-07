@@ -9,6 +9,17 @@
 
 ---
 
+## 2026-11-07  (SEO · hreflang de artículos server-side)
+
+- ✅ **`functions/article.js`**: además del canonical, ahora corrige el **hreflang** de cada artículo.
+  El `article.html` estático declaraba `hreflang="es"`/`x-default` → `/article` (genérico, sin `?id=`) y un
+  `hreflang="en"` → `/article?lang=en` **fantasma** (no existen artículos en inglés) en los 46 artículos.
+  HTMLRewriter pone `es`/`x-default` al **self-URL** y **elimina** el `en`. ✅ verificado en vivo
+  (`curl` de `/article?id=titanio-vs-zirconia-…` muestra ambos al self y sin `en`). Commit `7d6a7d8`.
+  Paridad aplicada en Alejandro (`038bf9d`).
+
+---
+
 ## 2026-11-06  (SEO · indexación de los 46 artículos — canonical server-side)
 
 - ✅ **`functions/article.js`** (nueva Pages Function): intercepta `/article?id=X`, sirve el `article.html`
