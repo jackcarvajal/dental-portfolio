@@ -11,6 +11,12 @@
 
 ## 2026-11-07  (SEO · hreflang de artículos + páginas ES/EN)
 
+- ✅ **Validación de schema (270 bloques JSON-LD, ambos repos): 0 inválidos.** Cobertura sólida
+  (Service, FAQPage, HowTo, BreadcrumbList, LocalBusiness/MedicalOrganization). Fix: añadidos `logo`
+  (icon-512) + `image` (og-index) al `LocalBusiness+MedicalOrganization` del home de PRODIGY —antes sin
+  imagen, requisito de Google para rich result/Knowledge Panel. `aggregateRating` se omite a propósito
+  (sin reseñas reales aún). Home de Alejandro es `Person` (marca personal) + completo → sin cambio.
+
 - ✅ **hreflang de páginas (34 archivos)**: auditoría descubrió que `?lang=en` era un alternate **fantasma**
   en ~27 páginas ES (el parámetro no lo lee ningún JS — i18n solo usa `localStorage`; y las páginas de
   contenido no tienen `data-i18n`). Inglés indexable real = solo 6 páginas `/en/`. Fix: **quitado** el
