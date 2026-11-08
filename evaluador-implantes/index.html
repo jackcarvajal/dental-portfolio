@@ -113,6 +113,7 @@
   .crit li{font-size:.9rem;color:#dbe3ee;padding-left:4px} .crit strong{color:#fff}
   .crit .placeholder{color:var(--muted);text-align:center;padding:40px 10px}
   .spin{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
   @keyframes sp{to{transform:rotate(360deg)}}
 
   .score-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}

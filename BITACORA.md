@@ -32,6 +32,9 @@
   mantenimiento). Fix quirúrgico en `footer.js`: `/carillas` → col Servicios, `/calidad` → col Empresa,
   `/mapa-sitio` → barra inferior. Cache-buster `?v=20261108a` en 47 páginas. Preview verificado. (Las 4
   páginas EN quedan enlazadas vía hreflang de sus gemelas ES; no se añade nav EN — es otro proyecto.)
+- ✅ **Cumplimiento CLAUDE.md §5 (a11y/flash):** auditados los 111 HTML contra las reglas maestras. Único
+  gap: `evaluador-implantes/index.html` tenía spinner `animation infinite` sin el bloque
+  `prefers-reduced-motion` → añadido. Resto del repo ya cumplía (0 dark sin color-scheme, 0 infinite sin PRM).
 - ✅ **`/evaluador-implantes/` — faltaba preview social + hreflang fantasma:** no tenía NI og:image NI
   twitter → al compartirlo salía sin imagen. Añadido og:image (og-index.jpg 1200×630) + twitter card.
   Además quitado el `hreflang="en" → ?lang=en` (la página es bilingüe por JS pero su canonical es sin
