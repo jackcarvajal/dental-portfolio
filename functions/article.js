@@ -120,13 +120,20 @@ export async function onRequest(context) {
       .on('title', new PonerTexto(full))
       .on('meta#meta-title', new PonerAttr('content', full))
       .on('meta#og-title', new PonerAttr('content', meta.titulo))
-      .on('meta#tw-title', new PonerAttr('content', meta.titulo));
+      .on('meta#tw-title', new PonerAttr('content', meta.titulo))
+      // Hero VISIBLE server-side → mata el CLS (el h1/chip dejan de nacer vacíos y
+      // crecer cuando el JS llega) y adelanta el LCP (el h1 pinta en la 1ª pasada).
+      // El JS del cliente los re-escribe al mismo valor, sin salto de layout.
+      .on('h1#article-title', new PonerTexto(meta.titulo))
+      .on('div#hero-chip', new PonerTexto(meta.chip || ''))
+      .on('div#article-meta', new PonerAttr('style', 'min-height:46px')); // reserva la meta (2 líneas móvil)
   }
   if (meta && meta.subtitulo) {
     rw = rw
       .on('meta#meta-desc', new PonerAttr('content', meta.subtitulo))
       .on('meta#og-desc', new PonerAttr('content', meta.subtitulo))
-      .on('meta#tw-desc', new PonerAttr('content', meta.subtitulo));
+      .on('meta#tw-desc', new PonerAttr('content', meta.subtitulo))
+      .on('p#article-sub', new PonerTexto(meta.subtitulo)); // subtítulo visible server-side (anti-CLS)
   }
   if (meta && meta.og_img) {
     const img = meta.og_img.startsWith('http') ? meta.og_img : DOMINIO + meta.og_img;

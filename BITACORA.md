@@ -11,6 +11,13 @@
 
 ## 2026-11-07  (SEO · hreflang de artículos + páginas ES/EN)
 
+- ✅ **Core Web Vitals (medición en vivo, Edge headless + emulación móvil, throttling CPU 4x/Slow-4G):**
+  home público (`/mantenimiento`) y páginas internas (carillas, diseño-remoto) 🟢. La plantilla `/article`
+  fallaba **CLS ~0.32 🔴** (y LCP 4.2s) porque el hero (`#article-title` h1, `#article-sub`, `#hero-chip`)
+  nacía vacío y crecía al llegar el JS. **Fix en `functions/article.js`**: inyección server-side del
+  título/subtítulo/chip + `min-height` reservado en `#article-meta` → el hero pinta a tamaño final en la 1ª
+  pasada (CLS→~0, LCP adelantado). El `index.html` pesado (TBT 1s 🔴) queda como deuda, pero está tras
+  modo-mantenimiento → no afecta a usuarios/SEO hoy (al relanzar: diferir audio-manager/orbiting-ecosystem).
 - ✅ **Validación de schema (270 bloques JSON-LD, ambos repos): 0 inválidos.** Cobertura sólida
   (Service, FAQPage, HowTo, BreadcrumbList, LocalBusiness/MedicalOrganization). Fix: añadidos `logo`
   (icon-512) + `image` (og-index) al `LocalBusiness+MedicalOrganization` del home de PRODIGY —antes sin
