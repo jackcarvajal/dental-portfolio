@@ -35,6 +35,12 @@
 - ✅ **Cumplimiento CLAUDE.md §5 (a11y/flash):** auditados los 111 HTML contra las reglas maestras. Único
   gap: `evaluador-implantes/index.html` tenía spinner `animation infinite` sin el bloque
   `prefers-reduced-motion` → añadido. Resto del repo ya cumplía (0 dark sin color-scheme, 0 infinite sin PRM).
+- ✅ **Home `/` agregado al sitemap:** la home es pública+index desde el 22-oct pero nunca se agregó al
+  sitemap (83→84 URLs, priority 1.0) → Google no la tenía listada como página principal. Detectado con el
+  export de Coverage de GSC (8-nov): PRODIGY solo tiene **8 páginas indexadas** (bajando de 12 en sep) de ~40
+  indexables. Buckets: 30 noindex (intencional) + 23 canónica-alternativa (dedup benigno) + 9 robots
+  (intencional) + 8 redirect + **9 rastreadas-sin-indexar (a diagnosticar)** + 1 404 + 1 soft404. El home
+  estaba fuera del sitemap = parte del problema de descubrimiento.
 - ✅ **A11y — controles de solo-icono:** auditados img-sin-alt y `<a>/<button>` de solo icono sin nombre
   accesible. Único gap público: `flujo-impresion.html` (3 botones de cerrar modal `fa-xmark` sin aria-label)
   → añadido `aria-label="Cerrar"`. 🟡 Pendiente (menor, interno): 13 controles solo-icono + 1 img sin alt en
