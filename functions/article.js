@@ -92,9 +92,15 @@ export async function onRequest(context) {
   const url = new URL(request.url);
   const id = url.searchParams.get('id');
 
+  // /article sin id, o con un id basura de template literal que Google extrajo del JS inline
+  // (${r.id}, ${encodeURIComponent(next.id)}…) → 301 al blog en vez de un soft-404/noindex que gasta rastreo.
+  if (!id || /[\${}()]/.test(id)) {
+    return Response.redirect(DOMINIO + '/journal', 301);
+  }
+
   const res = await next();                       // sirve el article.html estático
   const ct = res.headers.get('content-type') || '';
-  if (!id || !ct.includes('text/html')) return res;
+  if (!ct.includes('text/html')) return res;
 
   const selfUrl = DOMINIO + '/article?id=' + encodeURIComponent(id);
 

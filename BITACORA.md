@@ -41,6 +41,16 @@
   indexables. Buckets: 30 noindex (intencional) + 23 canónica-alternativa (dedup benigno) + 9 robots
   (intencional) + 8 redirect + **9 rastreadas-sin-indexar (a diagnosticar)** + 1 404 + 1 soft404. El home
   estaba fuera del sitemap = parte del problema de descubrimiento.
+- 🔴 **CAUSA RAÍZ encontrada (GSC Sitemaps):** `sitemap.xml` **última lectura de Google = 23-may-2026**
+  (¡6 meses!) + un sitemap basura `/portafolio` enviado que da error. Por eso todo el diagnóstico de GSC
+  es viejo: Google no relee el sitemap ni rastrea seguido. **Acción del usuario:** borrar el sitemap
+  `/portafolio` + reenviar `sitemap.xml`. El 404 (`cdn-cgi/l/email-protection`) es artefacto de Cloudflare
+  (benigno, ya en robots).
+- ✅ **Soft 404 + URLs basura de template literal (fix en `functions/article.js`):** GSC tenía como Soft 404
+  `/article` (sin id) y como noindex varias `/article?id=${r.id}`, `/article?id=${encodeURIComponent(next.id)}`
+  — Google extrae esas cadenas de JS del `<script>` inline de article.html (recientes/relacionados) y las
+  rastrea como URLs basura (gasta crawl budget). Fix: el Function hace **301 a `/journal`** cuando no hay id
+  o el id trae `${}()` (ningún slug real los tiene). Gemelo en Alejandro (→ `/blog`).
 - ✅ **A11y — controles de solo-icono:** auditados img-sin-alt y `<a>/<button>` de solo icono sin nombre
   accesible. Único gap público: `flujo-impresion.html` (3 botones de cerrar modal `fa-xmark` sin aria-label)
   → añadido `aria-label="Cerrar"`. 🟡 Pendiente (menor, interno): 13 controles solo-icono + 1 img sin alt en
