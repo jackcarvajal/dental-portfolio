@@ -20,10 +20,16 @@
 5. ✅ **Decidido 2-oct:** cada negocio por separado (métricas solo PRODIGY) · contabilidad SÍ ve ingresos, Mayra NO ·
    taller con estados reales. SQL v2 corrido.
 6. 💳 **Antes de cobrar en línea:** redesplegar `wompi-signature` + webhook de Stripe (`docs/ACTIVAR-PAGOS.md`).
-7. 🟡 **SEO inglés (7-nov):** hoy el inglés indexable son solo 6 páginas `/en/`. `en/zirconia-crowns` y
-   `en/veneer-terms` son EN-only sin gemelo ES → crear su versión ES y enlazar hreflang recíproco. El
-   «inglés en todo» (vía `?lang=en`) NO es viable hoy: el parámetro no se lee en el front y las páginas de
-   contenido no tienen `data-i18n` → es un proyecto de traducción aparte (escribir `/en/<slug>` dedicadas).
+7. ✅ **SEO inglés — hreflang verificado sano (8-nov):** auditoría de reciprocidad en todo el sitio
+   (64 HTML, 42 con hreflang) → **0 asimetrías y 0 destinos rotos entre páginas indexables.** Revisado el
+   backlog previo: `en/veneer-terms` es **noindex a propósito** (Terms of Service; el ES legal ya existe en
+   `terminos-y-legal.html`) → NO necesita gemelo ES ni hreflang. `en/zirconia-crowns` está correcta
+   (indexable, en sitemap, hreflang `en`+`x-default` auto-referenciado). WARN cosméticos: ~5 páginas noindex
+   (caso, seguimiento-caso, terminos-y-legal, instalar-app) cargan hreflang que Google ignora → limpieza
+   opcional, cero impacto. 🟡 **Único hueco real (decisión de contenido, NO hreflang):** no hay landing de
+   servicio ES de coronas de zirconia (solo artículos de blog); la IA de PRODIGY consolida servicios en
+   diseno-cad/fresado-cam, así que una página ES dedicada de zirconia es opcional. El «inglés en todo» (vía
+   `?lang=en`) sigue NO viable (el parámetro no se lee; sin `data-i18n`) → proyecto de traducción aparte.
 
 ## 🎯 EN TU CANCHA AHORA (resumen sesión 2026-09-07) — todo lo de código ya está pusheado
 **SQL para correr** (Supabase SQL Editor):

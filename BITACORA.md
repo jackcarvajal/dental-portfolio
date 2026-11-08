@@ -9,6 +9,24 @@
 
 ---
 
+## 2026-11-08  (SEO · auditoría de reciprocidad hreflang en todo el sitio)
+
+- ✅ **hreflang verificado sano (ambos repos):** script de auditoría de reciprocidad (origen↔destino,
+  existencia de destino, noindex) sobre todo el sitio — PRODIGY 64 HTML/42 con hreflang, Alejandro 49/40 →
+  **0 asimetrías y 0 destinos rotos entre páginas indexables.** El grafo de alternancia ES/EN está íntegro.
+- ✅ **Backlog «SEO inglés» corregido con hechos:** `en/veneer-terms` (ambos) es **noindex a propósito**
+  (Terms of Service; el ES ya existe en `terminos-y-legal.html`) → no necesita gemelo ES ni hreflang; la
+  tarea previa de «crear versión ES» estaba de más. `en/zirconia-crowns` (PRODIGY) está correcta
+  (indexable, en sitemap, hreflang `en`+`x-default` auto-referenciado). `_plantilla-publica.html` ya está
+  bloqueado en `_redirects` (302→404), no se sirve en vivo.
+- 🟡 **Cruft cosmético (no urgente):** ~5 páginas noindex (caso, seguimiento-caso, terminos-y-legal,
+  instalar-app; en Alejandro también `article` base) cargan tags hreflang que Google ignora → limpieza
+  opcional, cero impacto de ranking.
+- 🟡 **Hueco de contenido (decisión del usuario):** no hay landing de servicio ES de coronas de zirconia
+  (solo artículos de blog); evaluar si se crea o se mantiene consolidado en diseno-cad/fresado-cam.
+
+---
+
 ## 2026-11-07  (SEO · hreflang de artículos + páginas ES/EN)
 
 - ✅ **Core Web Vitals (medición en vivo, Edge headless + emulación móvil, throttling CPU 4x/Slow-4G):**
