@@ -46,7 +46,7 @@ function extraerMeta(txt, id) {
     const r = new RegExp('"' + n + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"').exec(slice);
     return r ? r[1].replace(/\\"/g, '"').replace(/\\n/g, ' ').replace(/\\\\/g, '\\') : null;
   };
-  return { titulo: campo('titulo'), subtitulo: campo('subtitulo'), og_img: campo('og_img'), fecha: campo('fecha'), chip: campo('chip') };
+  return { titulo: campo('titulo'), subtitulo: campo('subtitulo'), og_img: campo('og_img'), fecha: campo('fecha'), chip: campo('chip'), categoria: campo('categoria') };
 }
 
 // Replica server-side de buildSchema(art) de article.html (Article + BreadcrumbList).
@@ -140,6 +140,14 @@ export async function onRequest(context) {
     rw = rw
       .on('meta#og-image', new PonerAttr('content', img))
       .on('meta#tw-image', new PonerAttr('content', img));
+  }
+
+  // Portada (anti-CLS): el slot #article-cover va reservado por CSS desde el 1er pintado.
+  // Si el artículo NO tendrá portada (sin og_img y categoría sin imagen de respaldo), lo
+  // quitamos para que no quede un hueco. Si meta no se pudo leer, se deja (fallback al cliente).
+  const CATS_CON_PORTADA = new Set(['ia', 'materiales', 'impresion3d', 'equipo', 'flujos']);
+  if (meta && !meta.og_img && !CATS_CON_PORTADA.has(meta.categoria)) {
+    rw = rw.on('div#article-cover', new Quitar());
   }
 
   // JSON-LD Article + BreadcrumbList server-side (el <script id=jsonld-schema> va vacío en estático)

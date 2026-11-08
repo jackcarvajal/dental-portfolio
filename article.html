@@ -85,6 +85,11 @@
     .grad-2{background:linear-gradient(135deg,#001a1f,#0d1525);}
     .grad-3{background:linear-gradient(135deg,#1a1000,#0d1525);}
     .grad-4{background:linear-gradient(135deg,#001a10,#0d1525);}
+    /* Portada: espacio RESERVADO en el 1er pintado (anti-CLS). El servidor quita este
+       bloque en artículos sin portada; el cliente lo rellena con la imagen (sin salto). */
+    .article-cover{aspect-ratio:16/9;max-height:400px;margin:28px 0 8px;border-radius:14px;overflow:hidden;background:#0d1520;}
+    .article-cover img{width:100%;height:100%;object-fit:cover;display:block;}
+    .article-cover.is-ph{display:flex;align-items:center;justify-content:center;border:1px dashed rgba(212,175,55,.3);background:linear-gradient(135deg,rgba(212,175,55,.05),rgba(0,210,255,.04));}
 
     /* ── CONTENT ── */
     .article-body{color:var(--text2);}
@@ -233,6 +238,7 @@ html,body{overflow-x:clip;}
     </div>
 
     <!-- Body rendered by JS -->
+    <div id="article-cover" class="article-cover"></div>
     <div class="article-body" id="article-body" aria-live="polite"></div>
 
     <!-- FAQ -->
@@ -503,33 +509,30 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   const imgSrc    = art.og_img || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].src : null);
   const imgCredit = art.img_credit || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].credit : null);
 
-  if (imgSrc) {
-    const coverWrap = document.createElement('figure');
-    coverWrap.style.cssText = 'margin:28px 0 4px;border-radius:14px;overflow:hidden;max-height:400px;display:flex;align-items:center;justify-content:center;background:#0d1520;';
+  /* Portada → va en el slot RESERVADO #article-cover (espacio apartado en el 1er pintado,
+     anti-CLS). El servidor ya quitó el slot en artículos sin portada. */
+  const coverSlot = document.getElementById('article-cover');
+  if (coverSlot && imgSrc) {
     const coverImg = document.createElement('img');
     coverImg.src = imgSrc;
     coverImg.alt = art.titulo;
     coverImg.loading = 'eager';
     coverImg.fetchPriority = 'high';
-    coverImg.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-    coverImg.onerror = function(){ coverWrap.parentElement && coverWrap.parentElement.remove(); };
-    const figWrap = document.createElement('div');
-    figWrap.style.cssText = 'margin:28px 0 8px;';
-    coverWrap.appendChild(coverImg);
-    figWrap.appendChild(coverWrap);
+    coverImg.onerror = function(){ coverSlot.remove(); };
+    coverSlot.appendChild(coverImg);
     if (imgCredit) {
       const cap = document.createElement('p');
-      cap.style.cssText = 'text-align:center;font-size:.72rem;color:#475569;margin-top:6px;font-style:italic;';
+      cap.style.cssText = 'text-align:center;font-size:.72rem;color:#475569;margin:6px 0 0;font-style:italic;';
       cap.textContent = '📷 ' + imgCredit;
-      figWrap.appendChild(cap);
+      coverSlot.after(cap);
     }
-    document.getElementById('article-body').before(figWrap);
-  } else if (EXOCAD_PENDING.includes(art.id)) {
-    /* Placeholder para artículos con screenshot de Exocad pendiente */
-    const ph = document.createElement('div');
-    ph.style.cssText = 'margin:28px 0 8px;border-radius:14px;border:1px dashed rgba(212,175,55,.3);background:linear-gradient(135deg,rgba(212,175,55,.05),rgba(0,210,255,.04));padding:32px;text-align:center;';
-    ph.innerHTML = '<div style="font-size:2rem;margin-bottom:8px;">🖥️</div><div style="font-size:.8rem;font-weight:700;color:#D4AF37;margin-bottom:4px;">Captura de Exocad pendiente</div><div style="font-size:.72rem;color:#475569;">Imagen del flujo real en Exocad — próximamente</div>';
-    document.getElementById('article-body').before(ph);
+  } else if (coverSlot && EXOCAD_PENDING.includes(art.id)) {
+    /* Screenshot de Exocad pendiente — mismo slot reservado */
+    coverSlot.classList.add('is-ph');
+    coverSlot.innerHTML = '<div style="text-align:center;padding:16px;"><div style="font-size:2rem;margin-bottom:8px;">🖥️</div><div style="font-size:.8rem;font-weight:700;color:#D4AF37;margin-bottom:4px;">Captura de Exocad pendiente</div><div style="font-size:.72rem;color:#475569;">Imagen del flujo real en Exocad — próximamente</div></div>';
+  } else if (coverSlot) {
+    /* Slot reservado pero sin contenido → liberar el espacio (no debería ocurrir: el servidor ya lo quita) */
+    coverSlot.remove();
   }
 
   /* Body */

@@ -18,6 +18,13 @@
   título/subtítulo/chip + `min-height` reservado en `#article-meta` → el hero pinta a tamaño final en la 1ª
   pasada (CLS→~0, LCP adelantado). El `index.html` pesado (TBT 1s 🔴) queda como deuda, pero está tras
   modo-mantenimiento → no afecta a usuarios/SEO hoy (al relanzar: diferir audio-manager/orbiting-ecosystem).
+- ✅ **CLS del artículo — fix decisivo (la portada):** el server-render del hero bajó el LCP (4.2→1.2s 🟢)
+  pero el CLS seguía ~0.29 🔴. Causa real: la **imagen de portada** se insertaba por JS con
+  `.before(#article-body)` **sin espacio reservado** → empujaba el cuerpo en el fold. Fix: slot
+  `#article-cover` con `aspect-ratio:16/9` **reservado en el 1er pintado** (CSS), el cliente lo rellena
+  (img en el hueco, sin salto) y `functions/article.js` **quita el slot** en artículos sin portada
+  (sin og_img y categoría fuera de `{ia,materiales,impresion3d,equipo,flujos}`) para no dejar hueco.
+  Verificado con preview (og_img + fallback categoría). Porta a Alejandro.
 - ✅ **Validación de schema (270 bloques JSON-LD, ambos repos): 0 inválidos.** Cobertura sólida
   (Service, FAQPage, HowTo, BreadcrumbList, LocalBusiness/MedicalOrganization). Fix: añadidos `logo`
   (icon-512) + `image` (og-index) al `LocalBusiness+MedicalOrganization` del home de PRODIGY —antes sin
