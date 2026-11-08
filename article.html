@@ -552,23 +552,27 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
     document.getElementById('refs-section').style.display = 'none';
   }
 
-  /* Recientes */
-  document.getElementById('recientes').innerHTML = renderRecientes(getRecientes(id));
-
-  /* Relacionados */
-  const relGrid = document.getElementById('related-grid');
-  const relacionados = getRelacionados(art, 4);
-  if (relacionados.length) {
-    const CAT_EMOJI = { clinico:'🦷', tecnologia:'⚙️', ciencia:'🔬', materiales:'💎', negocio:'📊' };
-    relGrid.innerHTML = relacionados.map(r => `
-      <a href="/article?id=${encodeURIComponent(r.id)}" class="hover-card-mg" style="display:block;background:var(--bg-card,#1a2332);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-decoration:none;">
-        <div style="font-size:1.5rem;margin-bottom:8px;">${_aEscH(r.emoji || CAT_EMOJI[r.categoria] || '📄')}</div>
-        <div style="font-size:.82rem;font-weight:700;color:var(--text,#e2e8f0);line-height:1.35;margin-bottom:6px;">${_aEscH(r.titulo)}</div>
-        <div style="font-size:.72rem;color:#64748b;">${_aEscH(r.chip)} · ${_aEscH(r.lectura)}</div>
-      </a>`).join('');
-  } else {
-    document.getElementById('related-section').style.display = 'none';
-  }
+  /* Recientes + Relacionados: widgets below-the-fold (navegación, sin valor SEO) →
+     a requestIdleCallback para sacarlos de la tarea de render crítica y bajar el TBT. */
+  const pintarRelacionados = () => {
+    const recEl = document.getElementById('recientes');
+    if (recEl) recEl.innerHTML = renderRecientes(getRecientes(id));
+    const relGrid = document.getElementById('related-grid');
+    const relacionados = getRelacionados(art, 4);
+    if (relacionados.length) {
+      const CAT_EMOJI = { clinico:'🦷', tecnologia:'⚙️', ciencia:'🔬', materiales:'💎', negocio:'📊' };
+      relGrid.innerHTML = relacionados.map(r => `
+        <a href="/article?id=${encodeURIComponent(r.id)}" class="hover-card-mg" style="display:block;background:var(--bg-card,#1a2332);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-decoration:none;">
+          <div style="font-size:1.5rem;margin-bottom:8px;">${_aEscH(r.emoji || CAT_EMOJI[r.categoria] || '📄')}</div>
+          <div style="font-size:.82rem;font-weight:700;color:var(--text,#e2e8f0);line-height:1.35;margin-bottom:6px;">${_aEscH(r.titulo)}</div>
+          <div style="font-size:.72rem;color:#64748b;">${_aEscH(r.chip)} · ${_aEscH(r.lectura)}</div>
+        </a>`).join('');
+    } else {
+      document.getElementById('related-section').style.display = 'none';
+    }
+  };
+  if ('requestIdleCallback' in window) requestIdleCallback(pintarRelacionados, { timeout: 2000 });
+  else setTimeout(pintarRelacionados, 1);
 
   /* Share */
   const shareText = encodeURIComponent('📖 ' + art.titulo + ' — PRODIGY Lab Dental\n' + canonicalUrl);

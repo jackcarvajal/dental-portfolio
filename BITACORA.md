@@ -25,6 +25,10 @@
   (img en el hueco, sin salto) y `functions/article.js` **quita el slot** en artículos sin portada
   (sin og_img y categoría fuera de `{ia,materiales,impresion3d,equipo,flujos}`) para no dejar hueco.
   Verificado con preview (og_img + fallback categoría). Porta a Alejandro.
+- ✅ **TBT del artículo (idle):** la tarea de render era una sola síncrona (~260ms = casi todo el TBT).
+  Los widgets below-the-fold **recientes + relacionados** (navegación, sin SEO) pasan a
+  `requestIdleCallback` → sacan ese trabajo de la tarea crítica. Cuerpo/FAQ/refs siguen síncronos.
+  Verificado: se pintan tras idle, 0 errores JS. Gemelo en Alejandro.
 - ✅ **Validación de schema (270 bloques JSON-LD, ambos repos): 0 inválidos.** Cobertura sólida
   (Service, FAQPage, HowTo, BreadcrumbList, LocalBusiness/MedicalOrganization). Fix: añadidos `logo`
   (icon-512) + `image` (og-index) al `LocalBusiness+MedicalOrganization` del home de PRODIGY —antes sin
