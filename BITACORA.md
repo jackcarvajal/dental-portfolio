@@ -26,6 +26,12 @@
   (solo artículos de blog); evaluar si se crea o se mantiene consolidado en diseno-cad/fresado-cam.
 - ✅ **Integridad on-page verificada (ambos repos):** 0 títulos duplicados, 0 títulos vacíos, 0 og:image
   rotas, `<h1>` único en todas. Solo avisos cosméticos (títulos/descripciones largos que se truncan en SERP).
+- ✅ **Enlazado interno — huérfanas al footer (paridad con Alejandro):** análisis de huérfanas detectó
+  `carillas` (0 enlaces internos), `mapa-sitio` (0) y `calidad` (solo desde términos) — indexables y en el
+  sitemap pero sin enlace interno (el home consolida servicios en diseno-cad/diseno-remoto y está en
+  mantenimiento). Fix quirúrgico en `footer.js`: `/carillas` → col Servicios, `/calidad` → col Empresa,
+  `/mapa-sitio` → barra inferior. Cache-buster `?v=20261108a` en 47 páginas. Preview verificado. (Las 4
+  páginas EN quedan enlazadas vía hreflang de sus gemelas ES; no se añade nav EN — es otro proyecto.)
 - ✅ **`/evaluador-implantes/` — faltaba preview social + hreflang fantasma:** no tenía NI og:image NI
   twitter → al compartirlo salía sin imagen. Añadido og:image (og-index.jpg 1200×630) + twitter card.
   Además quitado el `hreflang="en" → ?lang=en` (la página es bilingüe por JS pero su canonical es sin

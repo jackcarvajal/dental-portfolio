@@ -148,6 +148,7 @@
         '<ul>' +
           '<li><a href="/diseno-cad">Diseño CAD — Exocad · 3Shape</a></li>' +
           '<li><a href="/diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
+          '<li><a href="/carillas">Carillas Dentales Digitales</a></li>' +
           '<li><a href="/fresado-cam">Fresado & Manufactura CAM</a></li>' +
           '<li><a href="/escaner-domicilio">Escaneos a Domicilio</a></li>' +
           '<li><a href="/catalogo">Catálogo de Materiales</a></li>' +
@@ -177,6 +178,7 @@
         '<ul>' +
           '<li><a href="/nosotros">Nosotros · Equipo</a></li>' +
           '<li><a href="/nosotros#contacto">Contacto</a></li>' +
+          '<li><a href="/calidad">Calidad y Certificaciones</a></li>' +
           '<li><a href="/para-laboratorios">Software para Laboratorios</a></li>' +
           '<li><a href="/soporte">Centro de Soporte</a></li>' +
           '<li><a href="/instalar-app">Instalar App Móvil</a></li>' +
@@ -201,7 +203,8 @@
     '<div class="pfoot-copy">' +
       '<p>© 2026 PRODIGY Digital Dentistry · Bogotá, Colombia · Todos los derechos reservados · ' +
         '<a href="/terminos-y-legal">Términos</a> · ' +
-        '<a href="/terminos-y-legal#privacidad">Privacidad</a>' +
+        '<a href="/terminos-y-legal#privacidad">Privacidad</a> · ' +
+        '<a href="/mapa-sitio">Mapa del sitio</a>' +
       '</p>' +
       '<p style="font-size:.72rem;color:#94a3b8;margin-top:8px;line-height:1.6;">' +
         'Las marcas registradas Exocad®, 3Shape®, Ivoclar®, Vita®, Amann Girrbach®, Dentsply Sirona®, Renfert®, ' +
