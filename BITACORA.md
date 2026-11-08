@@ -24,6 +24,13 @@
   opcional, cero impacto de ranking.
 - 🟡 **Hueco de contenido (decisión del usuario):** no hay landing de servicio ES de coronas de zirconia
   (solo artículos de blog); evaluar si se crea o se mantiene consolidado en diseno-cad/fresado-cam.
+- ✅ **Integridad on-page verificada (ambos repos):** 0 títulos duplicados, 0 títulos vacíos, 0 og:image
+  rotas, `<h1>` único en todas. Solo avisos cosméticos (títulos/descripciones largos que se truncan en SERP).
+- ✅ **`/evaluador-implantes/` — faltaba preview social + hreflang fantasma:** no tenía NI og:image NI
+  twitter → al compartirlo salía sin imagen. Añadido og:image (og-index.jpg 1200×630) + twitter card.
+  Además quitado el `hreflang="en" → ?lang=en` (la página es bilingüe por JS pero su canonical es sin
+  parámetro → el EN colapsa al ES, el hreflang era inefectivo); único straggler que saltó la limpieza
+  del 7-nov (subcarpeta). Alejandro ya estaba limpio.
 
 ---
 
