@@ -35,6 +35,10 @@
 - ✅ **Cumplimiento CLAUDE.md §5 (a11y/flash):** auditados los 111 HTML contra las reglas maestras. Único
   gap: `evaluador-implantes/index.html` tenía spinner `animation infinite` sin el bloque
   `prefers-reduced-motion` → añadido. Resto del repo ya cumplía (0 dark sin color-scheme, 0 infinite sin PRM).
+- ✅ **A11y — controles de solo-icono:** auditados img-sin-alt y `<a>/<button>` de solo icono sin nombre
+  accesible. Único gap público: `flujo-impresion.html` (3 botones de cerrar modal `fa-xmark` sin aria-label)
+  → añadido `aria-label="Cerrar"`. 🟡 Pendiente (menor, interno): 13 controles solo-icono + 1 img sin alt en
+  páginas `app/*` (staff autenticado, noindex) → pase de a11y dedicado a herramientas internas.
 - ✅ **`/evaluador-implantes/` — faltaba preview social + hreflang fantasma:** no tenía NI og:image NI
   twitter → al compartirlo salía sin imagen. Añadido og:image (og-index.jpg 1200×630) + twitter card.
   Además quitado el `hreflang="en" → ?lang=en` (la página es bilingüe por JS pero su canonical es sin
