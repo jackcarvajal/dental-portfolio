@@ -9,6 +9,26 @@
 
 ---
 
+## 2026-11-10  (SEO · páginas de servicio sobre implantes + CLAUDE.md mandamientos)
+
+- ✅ **Nueva página `/coronas-sobre-implantes`** (adaptada de Alejandro `estetica-implantes`): atornillada/cementada,
+  zirconia/disilicato/Ti-base, +100 sistemas. En vivo, render verificado (liquid-hero OK).
+- ✅ **Nueva página `/rehabilitacion-sobre-implantes` (Full Arch)** — adaptada de Alejandro `diseno-full-arch` al rol de
+  **laboratorio que fabrica** (no solo diseña): All-on-4/6, barra híbrida de titanio, zirconia monolítica full arch,
+  provisional de carga inmediata (PMMA), provisional+híbrida. Schema Service + **FAQPage**. En vivo, desktop+móvil OK.
+  Integrada: `publicPages` (header.js?v=20261110c), sitemap 0.9, `_headers` no-cache, footer link,
+  `_redirects` (`/full-arch` `/all-on-4` `/all-on-6` `/rehabilitacion-oral` `/protesis-hibrida` → 301).
+- 💡 **Candado = lista blanca, NO sitio caído.** Verificado: sitemap↔publicPages coinciden (0 fugas), ninguna nav/footer
+  enlaza a páginas gateadas. Lo que sigue tapado a propósito: tools internas, `/lista-precios`, `/pagar`, previews,
+  landings aparcadas (`/servicios`, `/dr`). **No quitar el candado**; publicar = agregar a `publicPages`.
+- ✅ **`docs/GUIA-PAGINAS-NUEVAS.md`**: documentado el paso OBLIGATORIO publicPages (origen del bug del candado).
+- ✅ **`CLAUDE.md`**: subidos mandamientos de oro que solo vivían en memoria → firma 💎 (§1), mantenimiento=lista blanca (§3),
+  preview visual obligatorio (§5), datos de pacientes→temporal/ y SQL nunca en chat (§7), cerrar con "Mejoras e ideas" (§6).
+- 🔴 **Pendiente:** OG propias `og-coronas-sobre-implantes.jpg` y `og-rehabilitacion-sobre-implantes.jpg` (hoy usan fallback
+  `og-index.jpg`). **Paridad:** evaluar portar estas 2 páginas a Alejandro con su rol (él ya tiene las fuentes).
+
+---
+
 ## 2026-11-08  (SEO · auditoría de reciprocidad hreflang en todo el sitio)
 
 - ✅ **hreflang verificado sano (ambos repos):** script de auditoría de reciprocidad (origen↔destino,
