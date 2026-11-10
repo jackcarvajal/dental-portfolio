@@ -2,10 +2,400 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-11-05
+   Última actualización automática: 2026-11-10
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "pmma-provisional-multicapa-2026-11-10-ff34",
+  "titulo": "PMMA en Prótesis Provisionales CAD/CAM: Propiedades y Aplicaciones Clínicas",
+  "subtitulo": "Análisis basado en evidencia de las propiedades mecánicas, biocompatibilidad y fabricación digital del PMMA para restauraciones provisionales.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-11-10",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-4",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "El poli(metil metacrilato) (PMMA) ha sido un material fundamental en prostodoncia, especialmente para restauraciones provisionales. Con el avance de las tecnologías de fabricación asistida por ordenador (CAD/CAM), el PMMA ha evolucionado, ofreciendo nuevas posibilidades para la creación de prótesis provisionales y de larga duración. Estas tecnologías, que incluyen métodos sustractivos (fresado) y aditivos (impresión 3D), han mejorado la predictibilidad, precisión y reproducibilidad de las restauraciones (Ionescu et al., 2022; Pituru et al., 2020). La comprensión de las propiedades mecánicas y la biocompatibilidad de estos materiales es crucial para el éxito clínico y la seguridad del paciente."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas de las Restauraciones Provisionales de PMMA"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son determinantes para la durabilidad y funcionalidad de las restauraciones provisionales. La resistencia a la flexión es una propiedad clave evaluada en restauraciones provisionales fabricadas con diferentes resinas, incluyendo las obtenidas por impresión 3D (Saini et al., 2024). Además de la resistencia a la flexión, otros parámetros mecánicos como la dureza, la resistencia a la fractura, la rugosidad superficial y la adaptación marginal son esenciales para el éxito clínico. Estudios han comparado estas propiedades entre materiales impresos en 3D y los fresados, destacando la importancia de la tecnología de fabricación (Danila et al., 2025)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Resistencia a la flexión: Capacidad del material para soportar cargas sin fracturarse, fundamental en restauraciones provisionales (Saini et al., 2024).",
+        "Dureza: Resistencia a la indentación y abrasión, influyendo en la longevidad de la restauración (Danila et al., 2025).",
+        "Resistencia a la fractura: Habilidad para resistir la propagación de grietas bajo estrés (Danila et al., 2025).",
+        "Rugosidad superficial: Afecta la acumulación de placa bacteriana, la higiene y la estética de la restauración (Danila et al., 2025).",
+        "Adaptación marginal: Crucial para prevenir la microfiltración y asegurar la integridad de la restauración (Danila et al., 2025)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Biocompatibilidad y Comportamiento del PMMA en el Entorno Oral"
+    },
+    {
+      "t": "p",
+      "c": "Los materiales a base de PMMA interactúan de manera compleja con el entorno oral. La biocompatibilidad es un aspecto fundamental, que incluye la interacción con células epiteliales orales, fibroblastos o células de la pulpa dental, la respuesta al estrés oxidativo salival y la posible liberación de monómeros (Pituru et al., 2020). A pesar de estas preocupaciones, los estudios confirman que los materiales a base de PMMA ofrecen ventajas significativas y su rendimiento clínico ha sido probado a lo largo del tiempo (Pituru et al., 2020; Ionescu et al., 2022). La calidad de los materiales convencionales de PMMA para prótesis implantosoportadas es reconocida por su rendimiento clínico (Ionescu et al., 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Fabricación Digital (CAD/CAM) y Precisión en Restauraciones Provisionales"
+    },
+    {
+      "t": "p",
+      "c": "Las tecnologías de fabricación digital, como el fresado CAD/CAM y la impresión 3D, han transformado la odontología protésica. Estas técnicas ofrecen una fabricación rápida y rentable, eliminando el desperdicio de material en la producción de restauraciones indirectas (Lins et al., 2025). La fabricación computarizada proporciona predictibilidad, precisión y reproducibilidad, elementos clave para el éxito de las restauraciones provisionales y definitivas (Ionescu et al., 2022). Es importante considerar que parámetros como el ángulo de impresión en 3D pueden afectar significativamente las propiedades físicas del material impreso (Lins et al., 2025)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad Mecánica",
+        "Relevancia Clínica",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Resistencia a la Flexión",
+          "Capacidad de soportar cargas oclusales sin fractura",
+          "(Saini et al., 2024; Danila et al., 2025)"
+        ],
+        [
+          "Dureza",
+          "Resistencia a la abrasión y deformación superficial",
+          "(Danila et al., 2025)"
+        ],
+        [
+          "Resistencia a la Fractura",
+          "Capacidad de resistir la propagación de grietas",
+          "(Danila et al., 2025)"
+        ],
+        [
+          "Rugosidad Superficial",
+          "Impacto en la higiene, acumulación de placa y estética",
+          "(Danila et al., 2025)"
+        ],
+        [
+          "Adaptación Marginal",
+          "Ajuste preciso para prevenir microfiltración y caries secundaria",
+          "(Danila et al., 2025)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Adhesión y Mantenimiento de Restauraciones Provisionales Digitales"
+    },
+    {
+      "t": "p",
+      "c": "El uso creciente de coronas provisionales impresas en 3D ha generado interés en la efectividad de los materiales de rebase y la influencia de los tratamientos de superficie en la fuerza de unión. La fuerza de unión entre los materiales de rebase de PMMA y otros materiales utilizados para coronas provisionales impresas en 3D es un factor crítico para la estabilidad y longevidad de estas restauraciones. Los procedimientos de post-polimerización y los tratamientos de superficie pueden influir en esta fuerza de unión, siendo un área de investigación activa para optimizar el rendimiento clínico (Monteiro et al., 2026)."
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones y Perspectivas Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "El PMMA, en combinación con las tecnologías CAD/CAM, sigue siendo un material de elección para restauraciones provisionales debido a sus propiedades mecánicas, biocompatibilidad y la precisión que ofrecen los métodos de fabricación digital. La evaluación continua de sus propiedades y la optimización de los protocolos de fabricación y mantenimiento son esenciales para maximizar su éxito clínico."
+    },
+    {
+      "t": "quote",
+      "c": "La tecnología de impresión 3D ha revolucionado la odontología, particularmente en la fabricación de restauraciones provisionales.",
+      "author": "Saini et al., BMC Oral Health, 2024"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuáles son las principales ventajas del PMMA fabricado por CAD/CAM para restauraciones provisionales?",
+      "a": "Las ventajas incluyen una mayor predictibilidad, precisión y reproducibilidad en la fabricación, así como propiedades mecánicas adecuadas como resistencia a la flexión, dureza y resistencia a la fractura, esenciales para la función y durabilidad (Ionescu et al., 2022; Danila et al., 2025)."
+    },
+    {
+      "q": "¿Qué consideraciones de biocompatibilidad son importantes al usar PMMA para prótesis provisionales?",
+      "a": "Es fundamental considerar la interacción del PMMA con las células orales, la respuesta al estrés oxidativo salival y la posible liberación de monómeros. Sin embargo, los estudios confirman que los materiales a base de PMMA son biocompatibles y tienen un rendimiento clínico probado (Pituru et al., 2020)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Saini RS, Gurumurthy V, Quadri SA, Bavabeedu SS, Abdelaziz KM, Okshah A, et al.",
+      "titulo": "The flexural strength of 3D-printed provisional restorations fabricated with different resins: a systematic review and meta-analysis",
+      "revista": "BMC Oral Health",
+      "año": "2024",
+      "vol": "24",
+      "num": "1",
+      "pags": "66",
+      "doi": "10.1186/s12903-023-03826-x",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38200473/",
+      "verificada": true
+    },
+    {
+      "autores": "Pituru SM, Greabu M, Totan A, Imre M, Pantea M, Spinu T, et al.",
+      "titulo": "A Review on the Biocompatibility of PMMA-Based Dental Materials for Interim Prosthetic Restorations with a Glimpse into their Modern Manufacturing Techniques",
+      "revista": "Materials (Basel)",
+      "año": "2020",
+      "vol": "13",
+      "num": "13",
+      "pags": "",
+      "doi": "10.3390/ma13132894",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/32605174/",
+      "verificada": true
+    },
+    {
+      "autores": "Danila AI, Breban-Schwarzkopf D, Daescu E, Olariu I, Dinu S.",
+      "titulo": "Systematic Review of the Quality of Stereolithographic Three-Dimensionally Printed Materials for Provisional Dental Restorations",
+      "revista": "Materials (Basel)",
+      "año": "2025",
+      "vol": "18",
+      "num": "3",
+      "pags": "",
+      "doi": "10.3390/ma18030721",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39942383/",
+      "verificada": true
+    },
+    {
+      "autores": "Ionescu RN, Totan AR, Imre MM, Țâncu AMC, Pantea M, Butucescu M, et al.",
+      "titulo": "Prosthetic Materials Used for Implant-Supported Restorations and Their Biochemical Oral Interactions: A Narrative Review",
+      "revista": "Materials (Basel)",
+      "año": "2022",
+      "vol": "15",
+      "num": "3",
+      "pags": "",
+      "doi": "10.3390/ma15031016",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/35160962/",
+      "verificada": true
+    },
+    {
+      "autores": "Lins LBC, Leão RS, Pellizzer EP, Vasconcelos BCDE, de Moraes SLD.",
+      "titulo": "Effect of three-dimensional print angle on integrity of interim crowns: A systematic review",
+      "revista": "J Prosthet Dent",
+      "año": "2025",
+      "vol": "134",
+      "num": "5",
+      "pags": "1567-1576",
+      "doi": "10.1016/j.prosdent.2024.07.023",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39181773/",
+      "verificada": true
+    },
+    {
+      "autores": "Monteiro JR, Lins LBC, Neves PTO, de Souza Leão R.",
+      "titulo": "Evaluation of bond strength between relining materials and 3D printed interim crown materials: A systematic review and meta-analysis",
+      "revista": "J Prosthet Dent",
+      "año": "2026",
+      "vol": "",
+      "num": "",
+      "pags": "",
+      "doi": "10.1016/j.prosdent.2026.09.002",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/42810904/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "vita-suprinity-zirconia-litio-2026-11-10-7d6b",
+  "titulo": "Vita Suprinity PC: Caracterización Clínica y Técnica de una Vitrocerámica ZLS",
+  "subtitulo": "Una revisión basada en evidencia de las propiedades, adhesión y estética de Vita Suprinity PC, una vitrocerámica de silicato de litio reforzada con zirconio para CAD/CAM.",
+  "categoria": "materiales",
+  "chip": "Materiales",
+  "fecha": "2026-11-10",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "💎",
+  "grad": "grad-5",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado la práctica clínica, permitiendo la fabricación de restauraciones con materiales cerámicos avanzados. Entre estos, las vitrocerámicas de silicato de litio reforzadas con zirconio (ZLS), como Vita Suprinity PC (Vita Zahnfabrik), han ganado relevancia. Estos materiales combinan la estética de las vitrocerámicas con una mejora en las propiedades mecánicas, ofreciendo una alternativa prometedora para diversas aplicaciones restauradoras (Zarone et al., 2021; Sorrentino et al., 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Composición y Propiedades de Vita Suprinity PC"
+    },
+    {
+      "t": "p",
+      "c": "Vita Suprinity PC es una vitrocerámica de silicato de litio reforzada con zirconio (ZLS), diseñada para sistemas CAD/CAM. Este material se distingue por su composición que incluye partículas de zirconio, lo que contribuye a sus propiedades mecánicas. En el mercado, Vita Suprinity PC y Celtra Duo (Dentsply Sirona) son los dos tipos de ZLS disponibles para sistemas CAD/CAM, mostrando similitudes en su composición química y microestructura (Zarone et al., 2021). Las propiedades mecánicas y biológicas de las vitrocerámicas ZLS han sido objeto de extensas revisiones en la literatura científica (Zarone et al., 2021)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Vita Suprinity PC es una vitrocerámica de silicato de litio reforzada con zirconio (ZLS) (Zarone et al., 2021).",
+        "Es un material diseñado específicamente para sistemas CAD/CAM (Zarone et al., 2021).",
+        "Comparte similitudes en composición química y microestructura con otros materiales ZLS como Celtra Duo (Zarone et al., 2021).",
+        "Sus propiedades mecánicas y biológicas han sido ampliamente revisadas en la literatura (Zarone et al., 2021).",
+        "Las vitrocerámicas ZLS son consideradas para restauraciones indirectas (Banh et al., 2021)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Adhesión con Cementos Resinosos"
+    },
+    {
+      "t": "p",
+      "c": "La adhesión de las restauraciones cerámicas a la estructura dental es un factor crítico para su éxito clínico a largo plazo. La fuerza de unión de los composites de resina a las vitrocerámicas de silicato de litio reforzadas con zirconio (ZLS) ha sido un área de investigación activa. Revisiones sistemáticas han comparado la fuerza de unión de los composites de resina tanto a ZLS como al disilicato de litio (LD) (Zhang et al., 2022). Además, las propiedades de adhesión de las cerámicas ZLS son un aspecto fundamental que se ha abordado en la literatura científica (Sorrentino et al., 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Evaluación Estética y Translucidez: ZLS vs. Disilicato de Litio"
+    },
+    {
+      "t": "p",
+      "c": "La estética es un pilar fundamental en la odontología restauradora, y la translucidez de los materiales cerámicos juega un papel crucial. Se ha realizado una revisión sistemática y metaanálisis para evaluar las diferencias en la translucidez entre las vitrocerámicas de silicato de litio reforzadas con zirconio (ZLS) y las vitrocerámicas de disilicato de litio (LD) después de ser sometidas a envejecimiento artificial (Potdukhe et al., 2024). Los resultados de estos estudios han indicado la existencia de diferencias estadísticamente significativas en la translucidez entre ambos materiales tras el envejecimiento (Potdukhe et al., 2024). Las propiedades ópticas de las cerámicas ZLS también han sido objeto de análisis en revisiones narrativas (Sorrentino et al., 2021)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Zirconia-reinforced Lithium Silicate (ZLS)",
+        "Disilicato de Litio (LD)",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Composición",
+          "Vidrio-cerámica reforzada con zirconio",
+          "Vidrio-cerámica (implícito por comparación)",
+          "Zarone et al., 2021"
+        ],
+        [
+          "Evaluación de la fuerza de unión con resinas",
+          "Objeto de comparación en revisiones sistemáticas",
+          "Objeto de comparación en revisiones sistemáticas",
+          "Zhang et al., 2022"
+        ],
+        [
+          "Evaluación de la translucidez post-envejecimiento",
+          "Diferencias estadísticamente significativas observadas",
+          "Diferencias estadísticamente significativas observadas",
+          "Potdukhe et al., 2024"
+        ],
+        [
+          "Disponibilidad para CAD/CAM",
+          "Sí",
+          "Sí (implícito por comparación)",
+          "Zarone et al., 2021"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Longevidad Clínica y Aplicaciones de las Restauraciones ZLS"
+    },
+    {
+      "t": "p",
+      "c": "La longevidad y el éxito clínico de las restauraciones indirectas son aspectos cruciales para la toma de decisiones en la práctica odontológica. Una revisión sistemática y metaanálisis ha evaluado la supervivencia y el éxito clínico de las restauraciones indirectas de silicato de litio reforzado con zirconio (ZLS) (Banh et al., 2021). Aunque la evidencia clínica para estos materiales aún se está consolidando, las cerámicas ZLS se consideran para diversas indicaciones clínicas (Sorrentino et al., 2021). Además, el comportamiento biomecánico de las endocrowns totalmente cerámicas fabricadas con CAD/CAM, donde ZLS podría ser un material de elección, también ha sido objeto de revisión sistemática (AlHelal, 2024)."
+    },
+    {
+      "t": "quote",
+      "c": "La evidencia clínica para la longevidad y el éxito de las restauraciones de silicato de litio reforzado con zirconio (ZLS) aún es limitada.",
+      "author": "Banh et al., Materials (Basel), 2021"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ventajas ofrece Vita Suprinity PC frente a otras cerámicas?",
+      "a": "Vita Suprinity PC es una vitrocerámica de silicato de litio reforzada con zirconio (ZLS), lo que le confiere propiedades mecánicas mejoradas en comparación con vitrocerámicas de silicato de litio no reforzadas, manteniendo una estética favorable. Es un material diseñado para sistemas CAD/CAM (Zarone et al., 2021)."
+    },
+    {
+      "q": "¿Es la fuerza de unión de Vita Suprinity PC comparable a la del disilicato de litio?",
+      "a": "Revisiones sistemáticas han comparado la fuerza de unión de los composites de resina a las vitrocerámicas ZLS y al disilicato de litio. La literatura científica evalúa si existen diferencias significativas en la adhesión entre estos materiales (Zhang et al., 2022; Sorrentino et al., 2021)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Zarone F, Ruggiero G, Leone R, Breschi L, Leuci S, Sorrentino R.",
+      "titulo": "Zirconia-reinforced lithium silicate (ZLS) mechanical and biological properties: A literature review",
+      "revista": "J Dent",
+      "año": "2021",
+      "vol": "109",
+      "num": "",
+      "pags": "103661",
+      "doi": "10.1016/j.jdent.2021.103661",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33864886/",
+      "verificada": true
+    },
+    {
+      "autores": "Zhang LX, Hong DW, Zheng M, Yu H.",
+      "titulo": "Is the bond strength of zirconia-reinforced lithium silicate lower than that of lithium disilicate? - A systematic review and meta-analysis",
+      "revista": "J Prosthodont Res",
+      "año": "2022",
+      "vol": "66",
+      "num": "4",
+      "pags": "530-537",
+      "doi": "10.2186/jpr.JPR_D_20_00112",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34853237/",
+      "verificada": true
+    },
+    {
+      "autores": "Banh W, Hughes J, Sia A, Chien DCH, Tadakamadla SK, Figueredo CM, et al.",
+      "titulo": "Longevity of Polymer-Infiltrated Ceramic Network and Zirconia-Reinforced Lithium Silicate Restorations: A Systematic Review and Meta-Analysis",
+      "revista": "Materials (Basel)",
+      "año": "2021",
+      "vol": "14",
+      "num": "17",
+      "pags": "",
+      "doi": "10.3390/ma14175058",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34501148/",
+      "verificada": true
+    },
+    {
+      "autores": "AlHelal AA.",
+      "titulo": "Biomechanical behavior of all-ceramic endocrowns fabricated using CAD/CAM: A systematic review",
+      "revista": "J Prosthodont Res",
+      "año": "2024",
+      "vol": "68",
+      "num": "1",
+      "pags": "50-62",
+      "doi": "10.2186/jpr.JPR_D_22_00296",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37286503/",
+      "verificada": true
+    },
+    {
+      "autores": "Potdukhe S, Iyer J, More A.",
+      "titulo": "Effect of Artificial Aging on Translucency of Zirconia Reinforced Lithium Silicate and Lithium Disilicate Ceramics: A Systematic Review",
+      "revista": "Eur J Prosthodont Restor Dent",
+      "año": "2024",
+      "vol": "32",
+      "num": "2",
+      "pags": "153-161",
+      "doi": "10.1922/EJPRD_2602Potdukhe09",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38299373/",
+      "verificada": true
+    },
+    {
+      "autores": "Sorrentino R, Ruggiero G, Di Mauro MI, Breschi L, Leuci S, Zarone F.",
+      "titulo": "Optical behaviors, surface treatment, adhesion, and clinical indications of zirconia-reinforced lithium silicate (ZLS): A narrative review",
+      "revista": "J Dent",
+      "año": "2021",
+      "vol": "112",
+      "num": "",
+      "pags": "103722",
+      "doi": "10.1016/j.jdent.2021.103722",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/34118284/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
