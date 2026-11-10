@@ -167,6 +167,11 @@
 /implante-dental-unitario  /coronas-sobre-implantes  301
 /coronas-implantes         /coronas-sobre-implantes  301
 /corona-sobre-implante     /coronas-sobre-implantes  301
+/full-arch                 /rehabilitacion-sobre-implantes  301
+/all-on-4                  /rehabilitacion-sobre-implantes  301
+/all-on-6                  /rehabilitacion-sobre-implantes  301
+/rehabilitacion-oral       /rehabilitacion-sobre-implantes  301
+/protesis-hibrida          /rehabilitacion-sobre-implantes  301
 /full-arch-digital         /diseno-remoto    301
 /carillas-porcelana        /carillas         301
 /encerado-diagnostico      /diseno-remoto    301

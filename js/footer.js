@@ -150,6 +150,7 @@
           '<li><a href="/diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
           '<li><a href="/carillas">Carillas Dentales Digitales</a></li>' +
           '<li><a href="/coronas-sobre-implantes">Coronas sobre Implantes</a></li>' +
+          '<li><a href="/rehabilitacion-sobre-implantes">Rehabilitación Full Arch</a></li>' +
           '<li><a href="/fresado-cam">Fresado & Manufactura CAM</a></li>' +
           '<li><a href="/escaner-domicilio">Escaneos a Domicilio</a></li>' +
           '<li><a href="/catalogo">Catálogo de Materiales</a></li>' +
