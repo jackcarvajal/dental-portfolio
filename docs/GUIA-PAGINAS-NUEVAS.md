@@ -120,6 +120,22 @@ fetch(SURL+'/auth/v1/token?grant_type=password', {method:'POST',...})
 - Ratio actual: 1 USD ≈ 4.000 COP (ajustar según TRM)
 - Local Colombia +20% sobre convenio CDR · Internacional +80% sobre convenio CDR
 
+## Segmentar bloques por mercado (local vs internacional)
+Para que el mercado LOCAL no vea precios/ofertas/condiciones del exterior y viceversa, `geo-detect.js`
+(cargado en todo el sitio vía footer.js; usa `/api/geo` = país de Cloudflare) gatea bloques enteros:
+```html
+<!-- ambos arrancan hidden: no hay parpadeo y si el JS falla no se filtra ninguno -->
+<section data-geo="local" hidden> ...precios/ofertas Colombia + LATAM... </section>
+<section data-geo="intl"  hidden> ...precios/ofertas exterior (USD)...    </section>
+```
+`local` = Colombia + LATAM · `intl` = resto del mundo. Se revela solo el del mercado del visitante.
+- **Base recomendada:** poner lo internacional en las páginas `/en/` y lo local en ES/cotizador — se separan
+  solos por idioma, sin truco y sin riesgo SEO. Usar `data-geo` solo para bloques en páginas compartidas.
+- **OJO (no es un candado):** el bloque oculto SIGUE en el HTML → un local con VPN de USA o viendo el código
+  fuente lo ve. Para precios REALMENTE confidenciales: en el cotizador o tras login, nunca en HTML público.
+- **No hacer cloaking:** Googlebot rastrea desde IPs de USA → indexará la versión `intl`. Servir por región a
+  usuarios reales es legítimo; mostrarle a Google algo distinto que a los usuarios, no.
+
 ## Protocolo CDR — Guías Quirúrgicas (parámetros exactos)
 **Dentosoportada:** CBCT maxilar completo · separador de carrillo · sin contacto oclusal · cortes 0.5mm · resolución 150 micras · escáner intraoral ambos maxilares (.PLY o .STL)
 **Mucosoportada:** 2 CBCT · paciente sentado · con contacto oclusal sin morder estabilizador · marcadores mín. 4 vestibular + 4 palatino ≈3mm (gutapercha o resina fotocurada) · prótesis con rebase si no asienta

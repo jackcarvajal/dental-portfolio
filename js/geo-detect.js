@@ -92,6 +92,27 @@ window.ProdigyGeo = (function () {
     });
   }
 
+  /* ── GEO-GATE DE BLOQUES POR MERCADO ─────────────────────────────────
+     Separa ofertas/precios/condiciones LOCAL vs INTERNACIONAL para que un
+     mercado no vea el del otro. Convención en el HTML (ambos arrancan `hidden`,
+     así NO hay parpadeo y si el JS falla no se filtra ninguno):
+        <div data-geo="local" hidden> ... precios/ofertas Colombia+LATAM ... </div>
+        <div data-geo="intl"  hidden> ... precios/ofertas exterior (USD) ... </div>
+     "local" = Colombia + LATAM · "intl" = resto del mundo.
+     OJO: es segmentación de cara al usuario (un local con VPN de USA o viendo el
+     código fuente igual puede verlo). Para precios REALMENTE confidenciales van
+     en el cotizador / tras login, no en HTML público. */
+  function _applyGeoGates(geo) {
+    var esLocal = geo.esColombia || geo.esLatam;
+    document.querySelectorAll('[data-geo]').forEach(function(el) {
+      var scope = el.getAttribute('data-geo');
+      var show  = scope === 'local' ? esLocal : scope === 'intl' ? !esLocal : true;
+      if (show) { el.hidden = false; el.removeAttribute('hidden'); el.style.display = ''; }
+      else      { el.hidden = true;  el.style.display = 'none'; }
+    });
+    document.documentElement.setAttribute('data-geo-mercado', esLocal ? 'local' : 'intl');
+  }
+
   /* ── INIT ──────────────────────────────────────────────────────────── */
   _detect();
 
@@ -99,6 +120,7 @@ window.ProdigyGeo = (function () {
     onReady(function(geo) {
       _applyBanner(geo);
       _applyPricing(geo);
+      _applyGeoGates(geo);
       // Exponer en dataLayer para GA4
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: 'geo_detected', geo_country: geo.pais, geo_currency: geo.moneda });
