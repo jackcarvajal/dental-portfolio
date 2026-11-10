@@ -54,6 +54,7 @@ Leer solo cuando se vaya a crear una página pública nueva. Ver también CLAUDE
 ```
 
 ## Después de crear la página
+- ⚠️ **OBLIGATORIO: agregar el slug a `publicPages` en `js/header.js`** — hay un candado que redirige a `/mantenimiento` (pantalla "en construcción / pruebas internas") toda página NO listada. Googlebot renderiza el JS y también la vería como construcción → la página no indexa su contenido. Tras agregarla, **bump `header.js?v=` en la página nueva** (ej. `?v=20261110b`) para que cargue la lista nueva sin caché vieja.
 - Agregar URL a `sitemap.xml` con `<lastmod>` actual y `<priority>0.8-0.9`
 - Agregar clean URL a `_headers` con `Cache-Control: public, max-age=0, must-revalidate`
 - Crear imagen OG: 1200×630px en `/assets/og-[slug].jpg`
