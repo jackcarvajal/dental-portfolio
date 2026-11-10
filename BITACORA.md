@@ -51,6 +51,11 @@
   — Google extrae esas cadenas de JS del `<script>` inline de article.html (recientes/relacionados) y las
   rastrea como URLs basura (gasta crawl budget). Fix: el Function hace **301 a `/journal`** cuando no hay id
   o el id trae `${}()` (ningún slug real los tiene). Gemelo en Alejandro (→ `/blog`).
+- ✅ **Artículos retirados → 301 server-side (mata soft-404):** una versión vieja (ej.
+  `exocad-vs-3shape-2026-06-23-70ed`, reemplazada por `...-08-13-293c`) servía HTTP 200 **vacío** a Googlebot
+  (el redirect al vigente era solo client-side JS → Google lo veía como soft-404/«alternativo»). Ahora el
+  Function detecta id-retirado (tema sí existe, id no) y hace **301 a la versión vigente** del mismo tema →
+  consolida link equity y deja de gastar rastreo. Verificado en vivo. Gemelo en Alejandro.
 - ✅ **A11y — controles de solo-icono:** auditados img-sin-alt y `<a>/<button>` de solo icono sin nombre
   accesible. Único gap público: `flujo-impresion.html` (3 botones de cerrar modal `fa-xmark` sin aria-label)
   → añadido `aria-label="Cerrar"`. 🟡 Pendiente (menor, interno): 13 controles solo-icono + 1 img sin alt en

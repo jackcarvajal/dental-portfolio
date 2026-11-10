@@ -105,11 +105,22 @@ export async function onRequest(context) {
   const selfUrl = DOMINIO + '/article?id=' + encodeURIComponent(id);
 
   // Metadatos reales (best-effort; cacheado en el edge)
-  let meta = null;
+  let meta = null, dataText = null;
   try {
     const aRes = await fetch(url.origin + '/articles.js', { cf: { cacheTtl: 1800, cacheEverything: true } });
-    if (aRes.ok) meta = extraerMeta(await aRes.text(), id);
+    if (aRes.ok) { dataText = await aRes.text(); meta = extraerMeta(dataText, id); }
   } catch (_) { /* el canonical se corrige igual */ }
+
+  // Artículo retirado: el id no está en los datos pero su tema sí → 301 server-side a la versión vigente.
+  // (Antes servía un 200 vacío que Google marcaba como soft-404/«alternativo» y desperdiciaba rastreo.)
+  if (!meta && dataText) {
+    const tema = id.replace(/-\d{4}-\d{2}-\d{2}-[0-9a-f]{4,}$/i, '');
+    if (tema !== id) {
+      const esc = tema.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const m = dataText.match(new RegExp('"id"\\s*:\\s*"(' + esc + '-\\d{4}-\\d{2}-\\d{2}-[0-9a-f]{4,})"', 'i'));
+      if (m && m[1] !== id) return Response.redirect(DOMINIO + '/article?id=' + encodeURIComponent(m[1]), 301);
+    }
+  }
 
   // El canonical SIEMPRE se corrige (no depende de los datos) → arregla el "alternativo"
   let rw = new HTMLRewriter()
