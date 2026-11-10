@@ -164,7 +164,9 @@
 
 # ─── Tarjetas de servicios del home sin landing propia todavía → página real más cercana (evita 404) ───
 /puentes-dentales          /diseno-remoto    301
-/implante-dental-unitario  /diseno-remoto    301
+/implante-dental-unitario  /coronas-sobre-implantes  301
+/coronas-implantes         /coronas-sobre-implantes  301
+/corona-sobre-implante     /coronas-sobre-implantes  301
 /full-arch-digital         /diseno-remoto    301
 /carillas-porcelana        /carillas         301
 /encerado-diagnostico      /diseno-remoto    301
