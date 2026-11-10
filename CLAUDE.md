@@ -9,6 +9,7 @@ Total: bash, leer, escribir, crear, eliminar. Confirma solo si: eliminas sin bac
 
 ## 1. OPERACIÓN
 - Directo. Sin introducciones. Sin sugerencias no pedidas.
+- Termina CADA mensaje al usuario con 💎 (firma obligatoria).
 - Archivos >300 líneas: grep primero, leer solo ±30 líneas del match.
 - Ediciones QUIRÚRGICAS. Diagnóstico: máx 3 líneas. Verificación: un grep con número de línea.
 
@@ -29,6 +30,7 @@ mismo proyecto Supabase (`zgihrwqfyvgyapbwzkvw`), separados por la columna `nego
 
 ## 3. PÁGINAS NUEVAS
 Checklist completo (meta-tags `<head>`, body, colores alternantes, login, multiidioma, og:image, precios duales, protocolo CDR): **`docs/GUIA-PAGINAS-NUEVAS.md`** — leer antes de crear una página pública.
+- ⚠️ "Mantenimiento" NO es sitio caído: es una **lista blanca** en `js/header.js` (`publicPages`). Toda página nueva DEBE agregarse ahí + bump `?v=` o cae en `/mantenimiento` (y Googlebot la ve "en construcción"). NUNCA se quita el candado para publicar algo: se agrega la página a la lista.
 
 ## 3b. LEY 50/50
 Cotizaciones: "50% abono inicio · 50% saldo contra entrega". Precios en COP. WA incluye: Total, Abono, Saldo.
@@ -45,6 +47,7 @@ Patrones detallados con código (XSS, CORS, GRANT Supabase oct-2026, preconnect,
 ## 5. DISEÑO
 Colores: `#D946A6` magenta · `#D4AF37` gold · `#00d2ff` cyan · `#050505` bg · `#1a2332` card · `#00FF41` neon
 Animaciones: solo en idle (requestIdleCallback). Sin loops en eco-cards. Solo fade+scroll con GSAP.
+Todo cambio de UI: mostrar SIEMPRE un preview (captura headless; claro+oscuro+móvil si aplica) — skill `prodigy-preview-visual`.
 
 Toda página con `animation: X infinite` DEBE incluir al final del `<style>`:
 ```css
@@ -60,11 +63,14 @@ CAMBIOS: [archivo] → [qué] (línea X)
 VERIFICADO: [grep] → [resultado]
 PENDIENTE: [acción] → solo si hay algo
 ```
+Cerrar cada tarea validando en la web real y con un bloque **"Mejoras e ideas"** (3–6, priorizadas).
 Al final de sesión: `/clear` (todo commiteado) o `/compact` (trabajo en vuelo).
 
 ## 7. PRIVACIDAD
 - Formularios: checkbox Habeas Data Colombia obligatorio.
 - Separar: Transaccionales (siempre) vs. Promocionales (`acepta_marketing = true`).
+- Datos de pacientes / nombres reales / comprobantes → SIEMPRE en `temporal/` (gitignored). NUNCA en el repo ni pegados en el chat.
+- SQL para Alejandro: dar enlace al editor Supabase + enlace al archivo local; NUNCA pegar el SQL en el chat (él lo corre). `service_role` solo en `functions/api/`.
 
 ## 8. REFERENCIAS RÁPIDAS
 - `ARCHITECTURE.md` — decisión de arquitectura (monolito modular + núcleo compartido), módulos y "¿dónde va esto?". Leer antes de crear página/tabla/endpoint. Skills propias: `.claude/skills/prodigy-*` (arquitectura, cambio-bd, publicar, preview-visual).
