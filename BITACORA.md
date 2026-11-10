@@ -21,6 +21,14 @@
 - 💡 **Candado = lista blanca, NO sitio caído.** Verificado: sitemap↔publicPages coinciden (0 fugas), ninguna nav/footer
   enlaza a páginas gateadas. Lo que sigue tapado a propósito: tools internas, `/lista-precios`, `/pagar`, previews,
   landings aparcadas (`/servicios`, `/dr`). **No quitar el candado**; publicar = agregar a `publicPages`.
+- ✅ **Nueva página `/ferulas-oclusales`** — adaptada de Alejandro `splint-oclusal-cad` al rol de laboratorio que fabrica:
+  Michigan, NTI, reposicionamiento anterior y sobre implantes; PMMA fresado o resina 3D; ajuste en articulador virtual.
+  Schema completo (Service+FAQPage+HowTo+Breadcrumb). En vivo, desktop+móvil OK. publicPages (header.js?v=20261110d),
+  sitemap, _headers, footer, `_redirects` (`/ferulas` `/ferula-oclusal` `/ferula-bruxismo` `/placa-relajacion`
+  `/placa-miorrelajante` `/splint-oclusal` `/ferula-michigan` → 301). **112 páginas.**
+- ✅ **Paridad schema (Ley de Oro, PRODIGY←Alejandro):** las páginas de implantes de Alejandro ya traían HowTo+BreadcrumbList;
+  se portó a las nuevas de PRODIGY (`coronas-sobre-implantes` + Service/HowTo/Breadcrumb; `rehabilitacion-sobre-implantes`
+  ya con FAQPage). Todos los JSON-LD validados.
 - ✅ **`docs/GUIA-PAGINAS-NUEVAS.md`**: documentado el paso OBLIGATORIO publicPages (origen del bug del candado).
 - ✅ **`CLAUDE.md`**: subidos mandamientos de oro que solo vivían en memoria → firma 💎 (§1), mantenimiento=lista blanca (§3),
   preview visual obligatorio (§5), datos de pacientes→temporal/ y SQL nunca en chat (§7), cerrar con "Mejoras e ideas" (§6).
