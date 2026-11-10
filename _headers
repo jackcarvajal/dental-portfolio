@@ -86,6 +86,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /en/implant-crowns
   Cache-Control: public, max-age=0, must-revalidate
+/en/full-arch
+  Cache-Control: public, max-age=0, must-revalidate
 /calculadora
   Cache-Control: public, max-age=0, must-revalidate
 /journal
