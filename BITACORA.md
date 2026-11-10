@@ -29,6 +29,14 @@
 - ✅ **Paridad schema (Ley de Oro, PRODIGY←Alejandro):** las páginas de implantes de Alejandro ya traían HowTo+BreadcrumbList;
   se portó a las nuevas de PRODIGY (`coronas-sobre-implantes` + Service/HowTo/Breadcrumb; `rehabilitacion-sobre-implantes`
   ya con FAQPage). Todos los JSON-LD validados.
+- ✅ **Inglés internacional (venta de servicios de lab):** 2 páginas `/en/` nuevas — `/en/implant-crowns`
+  (gemela de coronas-sobre-implantes) y `/en/full-arch` (gemela de rehabilitacion). hreflang recíproco es↔en,
+  `_IDIOMA_CFG` conectado (toggle salta al gemelo), schema EN completo. **FIX** bug pre-existente: clave duplicada
+  en `_IDIOMA_CFG.esDe` mandaba `/en/veneers`→home; corregido a `/carillas`. **114 páginas.**
+- ✅ **Favicon de Google arreglado:** no existía `/favicon.ico` y el `rel=icon` era data-URI 💎 (Google lo ignora),
+  así que Google/GSC tomaba `icon-512.png` (gema con anillo fino → borrón a 16px). Nuevo diamante limpio y legible
+  (SVG→PNG 512/192/96/48 + `favicon.ico` 16/32/48) en raíz; home declara `/favicon.ico` + `favicon-96.png`. Se mantiene
+  el 💎 SVG para la pestaña. **Google lo refresca al recrawl de la home (días/semanas), no es instantáneo.**
 - ✅ **`docs/GUIA-PAGINAS-NUEVAS.md`**: documentado el paso OBLIGATORIO publicPages (origen del bug del candado).
 - ✅ **`CLAUDE.md`**: subidos mandamientos de oro que solo vivían en memoria → firma 💎 (§1), mantenimiento=lista blanca (§3),
   preview visual obligatorio (§5), datos de pacientes→temporal/ y SQL nunca en chat (§7), cerrar con "Mejoras e ideas" (§6).
