@@ -1663,6 +1663,14 @@
 .svc-cta-primary:hover { transform:translateY(-2px); box-shadow:0 12px 34px rgba(217,70,166,.4); }
 .svc-cta-send { display:inline-flex; align-items:center; gap:9px; background:rgba(0,210,255,.08); border:1px solid rgba(0,210,255,.35); color:#8fdcff; text-decoration:none; border-radius:12px; padding:13px 24px; font-size:.92rem; font-weight:700; transition:background .2s; }
 .svc-cta-send:hover { background:rgba(0,210,255,.16); }
+#pg-sticky-cta{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:11px 86px;background:rgba(10,14,22,.93);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(217,70,166,.32);box-shadow:0 -8px 30px rgba(0,0,0,.45);transform:translateY(115%);transition:transform .35s ease;}
+#pg-sticky-cta.show{transform:translateY(0);}
+#pg-sticky-cta .sc-txt{color:#cbd5e1;font-size:.86rem;}
+#pg-sticky-cta .sc-txt strong{color:#fff;}
+#pg-sticky-cta .sc-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#D946A6,#b23c87);color:#fff;text-decoration:none;font-weight:800;font-size:.86rem;padding:10px 20px;border-radius:11px;box-shadow:0 6px 20px rgba(217,70,166,.3);}
+#pg-sticky-cta .sc-wa{display:inline-flex;align-items:center;gap:7px;background:rgba(37,211,102,.14);border:1px solid rgba(37,211,102,.4);color:#4ade80;text-decoration:none;font-weight:700;font-size:.84rem;padding:9px 15px;border-radius:11px;}
+#pg-sticky-cta .sc-x{background:none;border:none;color:#64748b;cursor:pointer;font-size:1.05rem;padding:2px 4px;line-height:1;}
+@media(max-width:620px){#pg-sticky-cta{padding:9px 58px;gap:9px;}#pg-sticky-cta .sc-txt,#pg-sticky-cta .sc-wa{display:none;}#pg-sticky-cta .sc-btn{font-size:.82rem;padding:10px 16px;}}
 @media(prefers-reduced-motion:reduce){ .svc-carousel { scroll-behavior:auto; } }
 </style>
 
@@ -2716,6 +2724,24 @@
   </div>
 </section>
 <script src="js/orbiting-ecosystem.js?v=20261006" defer></script>
+<!-- Barra sticky: envía tu caso (aparece al hacer scroll; recuerda si se cierra) -->
+<div id="pg-sticky-cta" role="region" aria-label="Enviar caso">
+  <span class="sc-txt">¿Listo? <strong>Envía tu caso</strong> y recíbelo en 24–48&nbsp;h.</span>
+  <a class="sc-btn" href="/envia-tu-scanner"><i class="fas fa-paper-plane" aria-hidden="true"></i> Envía tu caso</a>
+  <a class="sc-wa" href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20un%20caso" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i> Cotizar</a>
+  <button type="button" class="sc-x" aria-label="Cerrar">&times;</button>
+</div>
+<script>
+(function(){
+  var bar=document.getElementById('pg-sticky-cta'); if(!bar) return;
+  try{ if(localStorage.getItem('pg_sticky_cta')==='off'){ bar.remove(); return; } }catch(e){}
+  var x=bar.querySelector('.sc-x');
+  if(x) x.addEventListener('click',function(){ bar.classList.remove('show'); try{localStorage.setItem('pg_sticky_cta','off');}catch(e){} });
+  var shown=false;
+  function onScroll(){ var y=window.pageYOffset||document.documentElement.scrollTop; if(y>680){ if(!shown){bar.classList.add('show');shown=true;} } else if(shown){ bar.classList.remove('show');shown=false; } }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+})();
+</script>
 <script src="js/footer.js?v=20261114h"></script>
 
     <!-- ============================================
