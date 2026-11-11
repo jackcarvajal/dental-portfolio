@@ -2407,61 +2407,47 @@
 </section>
 
     <!-- ENVÍA TU ESCÁNER -->
-    <section id="envia-scanner" style="background: var(--bg-dark); padding: 60px 0;">
+    <!-- ENVÍA TU CASO — unificado: con o sin escáner, dos vías en la misma zona -->
+    <section id="envia-caso" style="background: var(--bg-dark); padding: 64px 0; border-top:1px solid rgba(217,70,166,.12); border-bottom:1px solid rgba(0,210,255,.12);">
         <div class="container">
-            <h2 class="section-header">¿Tienes escáner y necesitas un lab?</h2>
-            <p class="section-subtitle" style="max-width:680px;margin:0 auto 36px;">Tienes el escáner intraoral — nosotros recibimos tu archivo, diseñamos y fabricamos lo que necesitas. Sin intermediarios, con entrega en 24 h.</p>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-icon"><i class="fas fa-upload" style="color:#D946A6;font-size:1.8rem;"></i></div>
-                    <h3>Envías el STL</h3>
-                    <p>Sube el archivo desde tu escáner Medit, 3Shape, iTero o cualquier dispositivo compatible.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-icon"><i class="fas fa-pen-ruler" style="color:#D4AF37;font-size:1.8rem;"></i></div>
-                    <h3>Diseñamos en CAD</h3>
-                    <p>Nuestros diseñadores en Exocad y 3Shape crean la restauración con precisión micrométrica.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-icon"><i class="fas fa-box-open" style="color:#00d2ff;font-size:1.8rem;"></i></div>
-                    <h3>Fabricamos y entregamos</h3>
-                    <p>Fresado en zirconio, disilicato o impresión 3D. Recibes la pieza terminada en tu consultorio.</p>
-                </div>
-            </div>
-            <div style="text-align:center;margin-top:40px;">
-                <a href="envia-tu-scanner" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:linear-gradient(135deg,#D946A6,#B82F8B);color:#fff;font-weight:900;font-size:.9rem;letter-spacing:1px;border-radius:50px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(217,70,166,.4);transition:all .25s;">
-                    <i class="fas fa-paper-plane"></i> Enviar mi caso ahora
-                </a>
-            </div>
-        </div>
-    </section>
+            <h2 class="section-header">Envía tu caso</h2>
+            <p class="section-subtitle" style="max-width:720px;margin:0 auto 42px;">Con escáner o sin él, nosotros diseñamos y fabricamos. Elige tu vía y en 24 h tienes el archivo o la pieza lista — sin intermediarios.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;max-width:980px;margin:0 auto;">
 
-    <!-- ESCÁNER MÓVIL A DOMICILIO -->
-    <section id="escaner" style="background: var(--bg-gray); padding: 60px 0;">
-        <div class="container">
-            <h2 class="section-header">¿No tienes escáner? Vamos a tu consultorio</h2>
-            <p class="section-subtitle" style="max-width:680px;margin:0 auto 36px;">No necesitas invertir en equipos. Nuestro técnico llega con tecnología de escaneo de última generación, captura el caso in situ y en 24 h tienes el archivo listo para producción.</p>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-icon"><i class="fas fa-mobile-alt" style="color:#00d2ff;font-size:1.8rem;"></i></div>
-                    <h3>Agendas</h3>
-                    <p>Seleccionas el día y hora. Cobertura en Usaquén, Chapinero, Suba, Engativá y zonas aledañas.</p>
+                <!-- VÍA 1: CON ESCÁNER -->
+                <div style="background:rgba(13,21,37,.7);border:1px solid rgba(217,70,166,.25);border-radius:18px;padding:30px 26px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                        <span style="width:46px;height:46px;border-radius:12px;background:rgba(217,70,166,.12);display:inline-flex;align-items:center;justify-content:center;color:#D946A6;font-size:1.3rem;flex:0 0 auto;"><i class="fas fa-upload" aria-hidden="true"></i></span>
+                        <h3 style="font-size:1.15rem;font-weight:800;color:#fff;margin:0;">¿Tienes escáner?</h3>
+                    </div>
+                    <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin:0 0 16px;">Recibimos tu archivo, diseñamos en CAD y fabricamos. Tú escaneas, nosotros hacemos el resto.</p>
+                    <ul style="list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:11px;">
+                        <li style="display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1;line-height:1.4;"><i class="fas fa-upload" style="color:#D946A6;margin-top:3px;" aria-hidden="true"></i> Envías el STL (Medit, 3Shape, iTero…)</li>
+                        <li style="display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1;line-height:1.4;"><i class="fas fa-pen-ruler" style="color:#D4AF37;margin-top:3px;" aria-hidden="true"></i> Diseñamos en Exocad / 3Shape</li>
+                        <li style="display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1;line-height:1.4;"><i class="fas fa-box-open" style="color:#00d2ff;margin-top:3px;" aria-hidden="true"></i> Fresado o impresión 3D, pieza entregada</li>
+                    </ul>
+                    <a href="envia-tu-scanner" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#D946A6,#B82F8B);color:#fff;font-weight:900;font-size:.85rem;letter-spacing:.8px;border-radius:50px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(217,70,166,.4);">
+                        <i class="fas fa-paper-plane" aria-hidden="true"></i> Enviar mi caso
+                    </a>
                 </div>
-                <div class="step-card">
-                    <div class="step-icon"><i class="fas fa-tooth" style="color:#D946A6;font-size:1.8rem;"></i></div>
-                    <h3>Escaneamos</h3>
-                    <p>El técnico llega al consultorio, escanea el paciente y verifica la calidad del archivo en el acto.</p>
+
+                <!-- VÍA 2: SIN ESCÁNER -->
+                <div style="background:rgba(13,21,37,.7);border:1px solid rgba(0,210,255,.25);border-radius:18px;padding:30px 26px;display:flex;flex-direction:column;">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+                        <span style="width:46px;height:46px;border-radius:12px;background:rgba(0,210,255,.1);display:inline-flex;align-items:center;justify-content:center;color:#00d2ff;font-size:1.3rem;flex:0 0 auto;"><i class="fas fa-mobile-alt" aria-hidden="true"></i></span>
+                        <h3 style="font-size:1.15rem;font-weight:800;color:#fff;margin:0;">¿No tienes escáner?</h3>
+                    </div>
+                    <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin:0 0 16px;">Vamos a tu consultorio con el equipo. No inviertes en tecnología: escaneamos nosotros.</p>
+                    <ul style="list-style:none;padding:0;margin:0 0 24px;display:flex;flex-direction:column;gap:11px;">
+                        <li style="display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1;line-height:1.4;"><i class="fas fa-calendar-check" style="color:#00d2ff;margin-top:3px;" aria-hidden="true"></i> Agendas día y hora (Bogotá y aledaños)</li>
+                        <li style="display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1;line-height:1.4;"><i class="fas fa-tooth" style="color:#D946A6;margin-top:3px;" aria-hidden="true"></i> El técnico escanea el paciente en el acto</li>
+                        <li style="display:flex;gap:10px;align-items:flex-start;font-size:.88rem;color:#cbd5e1;line-height:1.4;"><i class="fas fa-file-export" style="color:#D4AF37;margin-top:3px;" aria-hidden="true"></i> Recibes el STL listo en 24 h</li>
+                    </ul>
+                    <a href="escaner-domicilio" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;background:linear-gradient(135deg,#00d2ff,#0094b3);color:#000;font-weight:900;font-size:.85rem;letter-spacing:.8px;border-radius:50px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(0,210,255,.35);">
+                        <i class="fas fa-calendar-check" aria-hidden="true"></i> Agendar escaneo
+                    </a>
                 </div>
-                <div class="step-card">
-                    <div class="step-icon"><i class="fas fa-file-export" style="color:#D4AF37;font-size:1.8rem;"></i></div>
-                    <h3>Recibes el STL en 24h</h3>
-                    <p>Archivo optimizado y compatible con Exocad, 3Shape o el software de tu laboratorio.</p>
-                </div>
-            </div>
-            <div style="text-align:center;margin-top:40px;">
-                <a href="escaner-domicilio" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:linear-gradient(135deg,#00d2ff,#0094b3);color:#000;font-weight:900;font-size:.9rem;letter-spacing:1px;border-radius:50px;text-decoration:none;text-transform:uppercase;box-shadow:0 4px 20px rgba(0,210,255,.35);transition:all .25s;">
-                    <i class="fas fa-calendar-check"></i> Agendar Escaneo
-                </a>
+
             </div>
         </div>
     </section>
@@ -3521,8 +3507,7 @@
             '#portfolio',
             '#workflow-247',
             '#production',
-            '#envia-scanner',
-            '#escaner',
+            '#envia-caso',
             '#academy',
             '#blog'
         ];
