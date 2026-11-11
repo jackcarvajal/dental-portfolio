@@ -61,10 +61,9 @@
       if (!cta || !cards.length) return;
       var a = cards[Math.max(0, Math.min(cards.length - 1, active))];
       if (!a) return;
-      var s = a.querySelector('strong');
+      // solo actualiza el destino; el texto queda genérico ("Ver este servicio")
+      // para no repetir el nombre que ya muestra la card activa.
       if (a.getAttribute('href')) cta.setAttribute('href', a.getAttribute('href'));
-      var lbl = cta.querySelector('.lbl');
-      if (lbl) lbl.textContent = 'Ver ' + (s ? s.textContent.trim() : 'servicio');
     }
     function setActive(i) {
       active = Math.max(0, Math.min(cards.length - 1, i));
