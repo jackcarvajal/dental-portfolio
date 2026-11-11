@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-10  (SEO · cross-link entre páginas /en/ internacionales)
+
+- ✅ **Clúster interno /en/**: bloque "More from our digital lab" al cierre de las 5 páginas /en/
+  (veneers · implant-crowns · full-arch = fabricación con iconos FA + precio gradiente; zirconia-crowns ·
+  surgical-guides = diseño con `grid-2`/`price-tag` dorado). Antes **0 cross-links** entre ellas; ahora cada
+  una enlaza a las otras 3-4 → Google ve un clúster y hay cross-sell del catálogo. `audit.mjs` verde.
+  Commit `f4ace46`. Paridad portada a Alejandro (commit `58b5f7c`, "The full CAD menu" en 6 páginas /en/).
+
 ## 2026-11-10  (SEO · páginas de servicio sobre implantes + CLAUDE.md mandamientos)
 
 - ✅ **Nueva página `/coronas-sobre-implantes`** (adaptada de Alejandro `estetica-implantes`): atornillada/cementada,
