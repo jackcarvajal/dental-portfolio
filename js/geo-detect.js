@@ -122,7 +122,7 @@ window.ProdigyGeo = (function () {
   /* ── INIT ──────────────────────────────────────────────────────────── */
   _detect();
 
-  document.addEventListener('DOMContentLoaded', function () {
+  (function(_run){ if (document.readyState !== 'loading') _run(); else document.addEventListener('DOMContentLoaded', _run); })(function () {
     _applyBanner();                 // idioma del navegador — no depende del geo
     onReady(function(geo) {
       _applyPricing(geo);
