@@ -53,6 +53,18 @@
       }
       if (prev) prev.disabled = active <= 0;
       if (next) next.disabled = active >= cards.length - 1;
+      syncActiveCta();
+    }
+    // CTA sincronizado: "Ver [servicio activo] →" apunta a la card del centro
+    function syncActiveCta() {
+      var cta = document.getElementById('svc-active-cta');
+      if (!cta || !cards.length) return;
+      var a = cards[Math.max(0, Math.min(cards.length - 1, active))];
+      if (!a) return;
+      var s = a.querySelector('strong');
+      if (a.getAttribute('href')) cta.setAttribute('href', a.getAttribute('href'));
+      var lbl = cta.querySelector('.lbl');
+      if (lbl) lbl.textContent = 'Ver ' + (s ? s.textContent.trim() : 'servicio');
     }
     function setActive(i) {
       active = Math.max(0, Math.min(cards.length - 1, i));

@@ -1658,6 +1658,11 @@
 .svc-chip.active { background:linear-gradient(135deg,#B0267F,#9333ea); border-color:transparent; color:#fff; }
 .svc-flow-cta { display:inline-flex; align-items:center; gap:8px; margin-top:18px; background:rgba(217,70,166,.12); border:1px solid rgba(217,70,166,.4); color:#e07cc4; text-decoration:none; border-radius:100px; padding:10px 22px; font-size:.85rem; font-weight:800; transition:background .2s; }
 .svc-flow-cta:hover { background:rgba(217,70,166,.22); }
+.svc-cta-row { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:22px; }
+.svc-cta-primary { display:inline-flex; align-items:center; gap:9px; background:linear-gradient(135deg,#D946A6,#b23c87); color:#fff; text-decoration:none; border-radius:12px; padding:13px 26px; font-size:.95rem; font-weight:800; box-shadow:0 8px 28px rgba(217,70,166,.28); transition:transform .15s,box-shadow .2s; }
+.svc-cta-primary:hover { transform:translateY(-2px); box-shadow:0 12px 34px rgba(217,70,166,.4); }
+.svc-cta-send { display:inline-flex; align-items:center; gap:9px; background:rgba(0,210,255,.08); border:1px solid rgba(0,210,255,.35); color:#8fdcff; text-decoration:none; border-radius:12px; padding:13px 24px; font-size:.92rem; font-weight:700; transition:background .2s; }
+.svc-cta-send:hover { background:rgba(0,210,255,.16); }
 @media(prefers-reduced-motion:reduce){ .svc-carousel { scroll-behavior:auto; } }
 </style>
 
@@ -1824,13 +1829,17 @@
               <button class="svc-nav-btn" id="svc-prev" type="button" aria-label="Servicios anteriores"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
               <button class="svc-nav-btn" id="svc-next" type="button" aria-label="Servicios siguientes"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
             </div>
+            <div class="svc-cta-row">
+              <a id="svc-active-cta" class="svc-cta-primary" href="guias-quirurgicas"><span class="lbl">Ver servicio</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+              <a class="svc-cta-send" href="/envia-tu-scanner"><i class="fas fa-paper-plane" aria-hidden="true"></i> Enviar mi caso</a>
+            </div>
             <div style="text-align:center;">
               <a id="svc-flow-cta" class="svc-flow-cta" href="/flujo-diseno" style="display:none;"><i class="fas fa-bolt" aria-hidden="true"></i> <span>Pedir por flujo</span> <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
             </div>
         </div>
     </section>
-    <script src="js/coverflow-svc.js?v=20260811" defer></script>
+    <script src="js/coverflow-svc.js?v=20261114" defer></script>
 
     <section id="portfolio">
         <div class="container">
