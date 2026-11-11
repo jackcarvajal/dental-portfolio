@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#D946A6">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+<title>Visor 3D del diseño · PRODIGY Lab Dental</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap">
+<style>
+  :root{--bg:#060810;--panel:rgba(13,20,32,.82);--line:rgba(255,255,255,.1);--fg:#e8edf5;--muted:#94a3b8;--mg:#D946A6;--gold:#D4AF37;--cyan:#00d2ff;--neon:#00FF41}
+  *{box-sizing:border-box;margin:0}
+  html,body{height:100%;background:var(--bg);color:var(--fg);font-family:Inter,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+  #c{position:fixed;inset:0;z-index:0;background:radial-gradient(70% 60% at 60% 30%,rgba(0,210,255,.08),transparent 70%),radial-gradient(60% 60% at 25% 80%,rgba(217,70,166,.08),transparent 70%),#060810}
+  canvas{display:block}
+  .top{position:fixed;top:0;left:0;right:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;pointer-events:none}
+  .brand{font-weight:900;letter-spacing:.5px;font-size:1rem;pointer-events:auto}
+  .brand b{background:linear-gradient(120deg,var(--mg),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .case{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.14em}
+  .trust{font-size:.68rem;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:100px;padding:6px 13px;pointer-events:auto;backdrop-filter:blur(8px)}
+  .trust i{color:var(--neon)}
+  .dock{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;gap:12px;align-items:center;width:min(560px,92vw)}
+  .mats{display:flex;gap:7px;background:var(--panel);border:1px solid var(--line);border-radius:100px;padding:6px;backdrop-filter:blur(8px)}
+  .mats button{background:transparent;border:1px solid transparent;color:var(--muted);border-radius:100px;padding:7px 13px;font-size:.76rem;font-weight:700;cursor:pointer}
+  .mats button.on{color:#fff;border-color:var(--mg);background:rgba(217,70,166,.16)}
+  .cta{display:flex;gap:10px;width:100%}
+  .cta a{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 16px;border-radius:13px;font-weight:800;font-size:.92rem;text-decoration:none}
+  .ok{background:linear-gradient(135deg,#25D366,#128C7E);color:#fff}
+  .ch{background:var(--panel);border:1px solid var(--line);color:var(--fg);backdrop-filter:blur(8px)}
+  .drop{position:fixed;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px}
+  .drop h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:900}
+  .drop p{color:var(--muted);max-width:40ch}
+  .drop label{cursor:pointer;background:linear-gradient(135deg,var(--mg),#b23c87);color:#fff;font-weight:800;padding:13px 22px;border-radius:13px;font-size:.95rem}
+  .drop input{display:none}
+  .spin{position:fixed;inset:0;z-index:4;display:none;align-items:center;justify-content:center;color:var(--muted);font-size:.9rem;background:rgba(6,8,16,.6)}
+  .hint{position:fixed;right:18px;bottom:22px;z-index:2;font-size:.66rem;color:#475569}
+  @media(max-width:560px){.hint{display:none}.trust{display:none}}
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<div id="c"></div>
+
+<div class="top">
+  <div>
+    <div class="brand" translate="no">PRODIGY <b>Lab Dental</b></div>
+    <div class="case" id="caseLbl"></div>
+  </div>
+  <div class="trust"><i class="fas">●</i> Tu archivo no sale de tu navegador</div>
+</div>
+
+<div class="drop" id="drop">
+  <h1>Tu diseño en 3D</h1>
+  <p>Gíralo, acércalo y revísalo antes de producir. Abre o arrastra tu archivo <b>.STL</b> o <b>.GLB</b>.</p>
+  <label>Abrir diseño<input id="file" type="file" accept=".stl,.glb,.gltf"></label>
+</div>
+
+<div class="dock" id="dock" style="display:none">
+  <div class="mats" id="mats">
+    <button data-m="zirconia" class="on">Zirconio</button>
+    <button data-m="resin">Resina</button>
+    <button data-m="wax">Cera</button>
+    <button data-m="metal">Metal</button>
+    <button data-m="rotate">⟳ Girar</button>
+  </div>
+  <div class="cta" id="cta" style="display:none">
+    <a class="ok" id="approve" target="_blank" rel="noopener">✓ Aprobar diseño</a>
+    <a class="ch" id="changes" target="_blank" rel="noopener">Pedir cambios</a>
+  </div>
+</div>
+
+<div class="spin" id="spin">Cargando diseño…</div>
+<div class="hint">Arrastrar: girar · rueda: zoom · botón derecho: mover</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const q = new URLSearchParams(location.search);
+const WA = '573212816716';
+const caseCode = q.get('case') || '';
+if(caseCode){ document.getElementById('caseLbl').textContent = 'Caso ' + caseCode; }
+
+const host = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+host.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 5000);
+camera.position.set(0, 10, 120);
+
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x1a2436, .5));
+const key = new THREE.DirectionalLight(0xffffff, 1.4); key.position.set(50,90,70); scene.add(key);
+const rim = new THREE.DirectionalLight(0x88c0ff, .8); rim.position.set(-60,20,-50); scene.add(rim);
+
+const orbit = new OrbitControls(camera, renderer.domElement);
+orbit.enableDamping = true; orbit.autoRotateSpeed = 2.2;
+
+const MATS = {
+  zirconia: new THREE.MeshPhysicalMaterial({ color:0xf3f1ec, roughness:.35, metalness:0, clearcoat:.6, clearcoatRoughness:.3, sheen:.5, sheenColor:0xffe9f4 }),
+  resin:    new THREE.MeshPhysicalMaterial({ color:0xcfe8ff, roughness:.15, metalness:0, transmission:.55, thickness:3, ior:1.5, transparent:true }),
+  wax:      new THREE.MeshStandardMaterial({ color:0xe0a94a, roughness:.5, metalness:.05 }),
+  metal:    new THREE.MeshStandardMaterial({ color:0xd9dde3, roughness:.25, metalness:1 })
+};
+let current = null, autoRotate = false;
+
+function fit(obj){
+  const box = new THREE.Box3().setFromObject(obj);
+  const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3());
+  obj.position.sub(c);
+  const r = Math.max(s.x,s.y,s.z) || 40;
+  orbit.target.set(0,0,0);
+  camera.position.set(0, r*.25, r*2.3);
+  camera.near = r/100; camera.far = r*60; camera.updateProjectionMatrix();
+  orbit.update();
+}
+
+function show(obj){
+  if(current) scene.remove(current);
+  current = obj; scene.add(obj);
+  setMat('zirconia');
+  fit(obj);
+  document.getElementById('drop').style.display='none';
+  document.getElementById('dock').style.display='flex';
+  document.getElementById('spin').style.display='none';
+  if(caseCode){
+    const cta = document.getElementById('cta'); cta.style.display='flex';
+    document.getElementById('approve').href = `https://wa.me/${WA}?text=${encodeURIComponent('Hola PRODIGY, apruebo el diseño del caso '+caseCode+'. Procedan.')}`;
+    document.getElementById('changes').href = `https://wa.me/${WA}?text=${encodeURIComponent('Hola PRODIGY, sobre el caso '+caseCode+' quiero pedir unos cambios:')}`;
+  }
+}
+function setMat(name){
+  if(!current) return;
+  current.traverse(o=>{ if(o.isMesh) o.material = MATS[name]; });
+  document.querySelectorAll('#mats button[data-m]').forEach(b=>b.classList.toggle('on', b.dataset.m===name));
+}
+
+document.getElementById('mats').addEventListener('click', e=>{
+  const m = e.target.dataset.m; if(!m) return;
+  if(m==='rotate'){ autoRotate=!autoRotate; orbit.autoRotate=autoRotate; e.target.classList.toggle('on',autoRotate); return; }
+  setMat(m);
+});
+
+const stl = new STLLoader(), gltf = new GLTFLoader();
+function fromBuffer(buf, name){
+  document.getElementById('spin').style.display='flex';
+  try{
+    if(/\.(glb|gltf)$/i.test(name)){
+      gltf.parse(buf, '', g=>show(g.scene), err=>fail(err));
+    } else {
+      const geo = stl.parse(buf); geo.computeVertexNormals();
+      show(new THREE.Mesh(geo, MATS.zirconia));
+    }
+  }catch(err){ fail(err); }
+}
+function fail(err){ document.getElementById('spin').style.display='none'; alert('No pude abrir el archivo: '+(err?.message||err)); }
+
+document.getElementById('file').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const r = new FileReader(); r.onload = ()=>fromBuffer(r.result, f.name); r.readAsArrayBuffer(f);
+});
+// drag & drop
+addEventListener('dragover', e=>e.preventDefault());
+addEventListener('drop', e=>{ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f){ const r=new FileReader(); r.onload=()=>fromBuffer(r.result,f.name); r.readAsArrayBuffer(f);} });
+
+// modelo remoto (?model=url) — para enviar un caso ya hospedado
+const modelUrl = q.get('model');
+if(modelUrl){
+  document.getElementById('spin').style.display='flex';
+  fetch(modelUrl).then(r=>r.arrayBuffer()).then(b=>fromBuffer(b, modelUrl)).catch(fail);
+}
+// demo opcional (?demo) para previsualizar el visor
+if(q.has('demo')){
+  const g = new THREE.CylinderGeometry(16,13,16,10,1);
+  const pos = g.attributes.position;
+  for(let i=0;i<pos.count;i++){ const y=pos.getY(i); if(y>6){ pos.setX(i,pos.getX(i)*(1+.12*Math.sin(i))); pos.setZ(i,pos.getZ(i)*(1+.12*Math.cos(i))); } }
+  g.computeVertexNormals();
+  show(new THREE.Mesh(g, MATS.zirconia));
+}
+
+function resize(){ const w=innerWidth,h=innerHeight; renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix(); }
+addEventListener('resize', resize); resize();
+renderer.setAnimationLoop(()=>{ orbit.update(); renderer.render(scene,camera); });
+</script>
+</body>
+</html>
