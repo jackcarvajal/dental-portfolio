@@ -20,6 +20,12 @@
 - ✅ **Paridad hub**: creado también el hub `/en/` de Alejandro (sus 7 servicios de DISEÑO, acento dorado,
   sin gate). **Decisión:** catálogos NO se fusionan (Alejandro = diseño/STL; PRODIGY = lab con fabricación);
   solo se porta el tech.
+- ✅ **Logo→/en/ en páginas inglesas** (header.js, ambos repos): antes el logo iba a `/` (home ES, en
+  mantenimiento) también en /en/ → el usuario inglés caía al mantenimiento. Ahora en /en/ el logo va al hub.
+  Des-huérfana los hubs. PRODIGY `1d81e78`, Alejandro `ea51d40`.
+- ✅ **SonarGrid en /en/ de diseño con hero plano**: `/en/zirconia-crowns` (oro) y `/en/surgical-guides`
+  (cian) — antes sin efecto. Las ES de servicio ya usan liquid-hero (no se tocaron). Pendiente paridad:
+  sonar en las /en/ de diseño de Alejandro (6 páginas).
 
 ## 2026-11-10  (SEO · hub internacional /en/ + limpieza de ?lang=en muertos)
 
