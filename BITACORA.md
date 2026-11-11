@@ -9,6 +9,18 @@
 
 ---
 
+## 2026-11-10  (FX · SonarGrid vanilla + estreno en hubs /en/ — ambos repos)
+
+- ✅ **`js/sonar-grid.js`** (ambos repos): componente React (shadcn) **portado a vanilla** — mismo patrón que
+  `liquid-hero.js`. Campo de puntos con anillos (ping) en canvas, theme-aware (`color:'var(--mg|gold|cyan)'`),
+  se apaga en idle, se pausa fuera de pantalla/pestaña oculta, respeta `prefers-reduced-motion`. API:
+  `SonarGrid.mount({container,color,...})`. **El repo NO es React/shadcn/TS → se porta a vanilla, no se instala el framework.**
+- ✅ **Estrenado** en el hero del hub `/en/` de PRODIGY (cian) y de Alejandro (oro) → da variedad: no todas
+  las páginas usan el mismo hero (liquid-hero). PRODIGY `35c2ab4`, Alejandro `1e75e02`.
+- ✅ **Paridad hub**: creado también el hub `/en/` de Alejandro (sus 7 servicios de DISEÑO, acento dorado,
+  sin gate). **Decisión:** catálogos NO se fusionan (Alejandro = diseño/STL; PRODIGY = lab con fabricación);
+  solo se porta el tech.
+
 ## 2026-11-10  (SEO · hub internacional /en/ + limpieza de ?lang=en muertos)
 
 - ✅ **Hub `/en/`** (`en/index.html`): índice de servicios internacionales — hero "Your lab, without
