@@ -62,25 +62,31 @@ window.ProdigyGeo = (function () {
 
   /* ── EFECTOS AUTOMÁTICOS ──────────────────────────────────────────── */
 
-  function _applyBanner(geo) {
-    // Solo en páginas de diseño/landing: ofrecer versión inglés si es exterior
-    var isLanding = window.location.pathname.includes('diseno-remoto') ||
-                    window.location.pathname === '/' ||
-                    window.location.pathname.includes('global-design');
-    if (!isLanding || geo.esColombia || geo.esMexico) return;
+  function _applyBanner() {
+    // Ofrecer inglés por IDIOMA del navegador (no por país): si NO está en español ni
+    // portugués y no estamos ya en /en/, sugerir la versión en inglés de ESA página.
+    var path = window.location.pathname;
+    if (path.indexOf('/en/') === 0 || path === '/en') return;          // ya en inglés
+    if (document.getElementById('pg-lang-banner')) return;             // sin duplicar
+    var lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (/^(es|pt)/.test(lang)) return;                                 // español/portugués: no molestar
+    try { if (localStorage.getItem('pg_lang_banner') === 'off') return; } catch (e) {}
 
-    // Crear banner suave "View in English"
+    var cfg = window._IDIOMA_CFG || {};
+    var key = path.replace(/\/+$/, '') || '/';
+    var dest = (cfg.mapaEn && cfg.mapaEn[key]) || cfg.hubEn || '/en/'; // gemela EN o hub
+
     var banner = document.createElement('div');
-    banner.id = 'geo-lang-banner';
-    banner.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:999;background:rgba(13,21,37,.97);border:1px solid rgba(0,210,255,.3);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:12px;font-family:-apple-system,sans-serif;font-size:.82rem;color:#e2e8f0;box-shadow:0 8px 32px rgba(0,0,0,.5);white-space:nowrap;';
-    banner.innerHTML = '<span style="font-size:1.1rem;">🌍</span>' +
-      '<span>We detected you\'re outside Colombia.</span>' +
-      '<a href="/en/global-design" style="background:linear-gradient(135deg,#B0267F,#9333ea);color:#fff;text-decoration:none;padding:6px 14px;border-radius:8px;font-weight:700;font-size:.78rem;">View in English →</a>' +
-      '<button type="button" onclick="document.getElementById(\'geo-lang-banner\').remove();sessionStorage.setItem(\'geo_dismissed\',\'1\')" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;padding:0 4px;">✕</button>';
-
-    if (sessionStorage.getItem('geo_dismissed')) return;
+    banner.id = 'pg-lang-banner';
+    banner.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:9999;max-width:calc(100vw - 24px);background:rgba(13,21,37,.97);border:1px solid rgba(0,210,255,.32);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:11px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.82rem;color:#e2e8f0;box-shadow:0 8px 32px rgba(0,0,0,.5);';
+    banner.innerHTML =
+      '<span style="font-size:1.1rem;">🌍</span>' +
+      '<span>This site is also available in <b>English</b>.</span>' +
+      '<a href="' + dest + '" style="background:linear-gradient(135deg,#00a7cc,#9333ea);color:#fff;text-decoration:none;padding:6px 13px;border-radius:8px;font-weight:700;font-size:.78rem;white-space:nowrap;">View in English &rarr;</a>' +
+      '<button type="button" aria-label="Close" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;padding:0 2px;line-height:1;">&times;</button>';
+    banner.querySelector('button').onclick = function () { banner.remove(); try { localStorage.setItem('pg_lang_banner', 'off'); } catch (e) {} };
+    banner.querySelector('a').addEventListener('click', function () { try { localStorage.setItem('pg_lang_banner', 'off'); } catch (e) {} });
     document.body.appendChild(banner);
-    setTimeout(function(){ if (banner.parentNode) banner.remove(); }, 8000);
   }
 
   function _applyPricing(geo) {
@@ -117,8 +123,8 @@ window.ProdigyGeo = (function () {
   _detect();
 
   document.addEventListener('DOMContentLoaded', function () {
+    _applyBanner();                 // idioma del navegador — no depende del geo
     onReady(function(geo) {
-      _applyBanner(geo);
       _applyPricing(geo);
       _applyGeoGates(geo);
       // Exponer en dataLayer para GA4
