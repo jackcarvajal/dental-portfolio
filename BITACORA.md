@@ -23,9 +23,15 @@
 - ✅ **Logo→/en/ en páginas inglesas** (header.js, ambos repos): antes el logo iba a `/` (home ES, en
   mantenimiento) también en /en/ → el usuario inglés caía al mantenimiento. Ahora en /en/ el logo va al hub.
   Des-huérfana los hubs. PRODIGY `1d81e78`, Alejandro `ea51d40`.
-- ✅ **SonarGrid en /en/ de diseño con hero plano**: `/en/zirconia-crowns` (oro) y `/en/surgical-guides`
-  (cian) — antes sin efecto. Las ES de servicio ya usan liquid-hero (no se tocaron). Pendiente paridad:
-  sonar en las /en/ de diseño de Alejandro (6 páginas).
+- ✅ **SonarGrid en /en/ de diseño con hero plano**: PRODIGY `/en/zirconia-crowns` (oro) y `/en/surgical-guides`
+  (cian); **Alejandro las 6** (remote/smile oro, implant-esthetics/all-on-x magenta, aligners/surgical cian,
+  commit `040f071`). Las ES de servicio ya usan liquid-hero (no se tocaron).
+- ✅ **Fix caché js immutable**: cambiar header.js/footer.js NO propaga sin subir `?v=` (ver
+  `feedback_cache_js_immutable` en memoria). Se subió `header.js?v=20261110h` y `footer.js?v=20261110h` en
+  todas las /en/ de ambos repos. Verificar SIEMPRE con clave `?v=` nueva (la URL sin `?v=` engaña).
+- ✅ **Tira "International · English" en el footer** (ambos repos): full-width antes del copyright, con el hub
+  `/en/` + servicios `/en/` → links del clúster inglés desde el footer. PRODIGY `7b2d489`, Alejandro `10fb1e9`.
+  (En ES aparece al re-bumpear su footer.js; en /en/ ya está.)
 
 ## 2026-11-10  (SEO · hub internacional /en/ + limpieza de ?lang=en muertos)
 
