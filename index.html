@@ -1751,6 +1751,25 @@
 
     <main id="main-content">
     <!-- PORTAFOLIO (Fondo Negro) -->
+    <section id="portfolio">
+        <div class="container">
+            <h2 class="section-header" data-i18n="index.port.title">PORTAFOLIO DE DISEÑOS</h2>
+            <p class="section-subtitle" data-i18n="index.port.sub">Casos reales diseñados en Exocad y 3Shape — zirconio, disilicato, PMMA y resina 3D</p>
+            <style>#idx-port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 20px;}@media(max-width:760px){#idx-port-grid{grid-template-columns:1fr;}}</style>
+            <div id="idx-port-grid">
+              <!-- JS carga desde Supabase -->
+              <div style="grid-column:1/-1;text-align:center;padding:40px;color:#475569;font-size:.9rem;">
+                <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:#D4AF37;display:block;margin-bottom:12px;"></i>Cargando casos…
+              </div>
+            </div>
+            <div style="text-align:center;margin-top:40px;">
+                <a href="portafolio" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem;letter-spacing:0.5px;" class="hover-fade">
+                    <span data-i18n="index.port.cta">Ver Portafolio Completo</span> <span style="font-size:1.1rem;">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section id="servicios" style="background: var(--bg-gray); padding: 60px 0;">
         <div class="container">
             <h2 class="section-header" data-i18n="index.srv.title">Servicios de Laboratorio Digital</h2>
@@ -1841,24 +1860,7 @@
     </section>
     <script src="js/coverflow-svc.js?v=20261114" defer></script>
 
-    <section id="portfolio">
-        <div class="container">
-            <h2 class="section-header" data-i18n="index.port.title">PORTAFOLIO DE DISEÑOS</h2>
-            <p class="section-subtitle" data-i18n="index.port.sub">Casos reales diseñados en Exocad y 3Shape — zirconio, disilicato, PMMA y resina 3D</p>
-            <style>#idx-port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px;max-width:1060px;margin-left:auto;margin-right:auto;padding:0 20px;}@media(max-width:760px){#idx-port-grid{grid-template-columns:1fr;}}</style>
-            <div id="idx-port-grid">
-              <!-- JS carga desde Supabase -->
-              <div style="grid-column:1/-1;text-align:center;padding:40px;color:#475569;font-size:.9rem;">
-                <i class="fas fa-circle-notch fa-spin" style="font-size:1.5rem;color:#D4AF37;display:block;margin-bottom:12px;"></i>Cargando casos…
-              </div>
-            </div>
-            <div style="text-align:center;margin-top:40px;">
-                <a href="portafolio" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:linear-gradient(135deg,#D4AF37,#D946A6);color:#000;text-decoration:none;border-radius:50px;font-weight:800;font-size:1rem;letter-spacing:0.5px;" class="hover-fade">
-                    <span data-i18n="index.port.cta">Ver Portafolio Completo</span> <span style="font-size:1.1rem;">→</span>
-                </a>
-            </div>
-        </div>
-    </section>
+    
     <script>
     (function loadPortIndex() {
       var SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
