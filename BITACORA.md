@@ -9,6 +9,19 @@
 
 ---
 
+## 2026-11-11  (Home · carrusel ya no abre en Guías Quirúrgicas + auditoría)
+
+- ✅ **Carrusel abre centrado en Carillas, no en Guías Quirúrgicas** (`coverflow-svc.js` `center()` +
+  `data-cf-start="carillas-porcelana"` en el stage). Con 12 cards el centro matemático (índice 5) caía por
+  azar en Guías (servicio de nicho) y el CTA apuntaba al mismo → se veía "doble" en la misma zona. Ahora
+  Guías queda como una card más. Fallback `href` del CTA también a carillas. Commit `c91be82`.
+  ✅ Verificado en vivo: `cf-active` abre en `carillas-porcelana` (headless corriendo el JS).
+- 💡 **Paridad**: `data-cf-start` portado a Alejandro (`7f38042`) — **inerte** ahí (16 cards → centra en
+  "Corona sobre Implante", flagship válido; su stage no lleva el atributo). Sin bump de `?v` (cambio no-op).
+- ✅ **Auditoría**: `audit.mjs` + `audit-schema-live.mjs` verdes. Sin IDs duplicados, sin links rotos, sin
+  console.log ni keyframes duplicados en index.html. Nota: primera card "Coronas & Puentes" → `flujo-fresado`
+  (no hay página de coronas genérica; es deliberado, no roto).
+
 ## 2026-11-11  (Home · conversión + "informa pero vende" + banner por idioma)
 
 - ✅ **Carrusel de servicios con CTA** (`coverflow-svc.js` + index.html): botón **"Ver este servicio →"**
