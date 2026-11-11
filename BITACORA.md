@@ -9,6 +9,17 @@
 
 ---
 
+## 2026-11-10  (SEO · hub internacional /en/ + limpieza de ?lang=en muertos)
+
+- ✅ **Hub `/en/`** (`en/index.html`): índice de servicios internacionales — hero "Your lab, without
+  borders" + grid de 7 servicios con precio USD + banda "why" + CTA. Plantilla /en/ (dark, Instrument Serif).
+  Candado: `'/en'` en `publicPages` (cubre `/en` y `/en/`) + `header.js?v=20261110g`. `_IDIOMA_CFG`: `hubEn`
+  y el twin de la home ES ahora → `/en/`; `esDe["/en/"]="/"`. Schema WebSite+ItemList, sitemap (0.9), `_headers`.
+  **Verificado en vivo: HTTP 200, no cae en /mantenimiento, header.js live trae `/en`.** Commit `94d4ff9`.
+- ✅ **#5 `?lang=en` muerto**: quitado el param inerte (no lo lee ningún JS; ya servía la página ES) de las
+  4 /en/ de diseño (zirconia-crowns, global-design, dental-aligners, surgical-guides) → URLs limpias.
+- ⏳ **Paridad pendiente**: Alejandro no tiene hub `/en/` — evaluar portarlo.
+
 ## 2026-11-10  (SEO · cross-link entre páginas /en/ internacionales)
 
 - ✅ **Clúster interno /en/**: bloque "More from our digital lab" al cierre de las 5 páginas /en/
