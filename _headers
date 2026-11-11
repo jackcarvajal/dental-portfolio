@@ -82,6 +82,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /dr
   Cache-Control: public, max-age=0, must-revalidate
+/en/
+  Cache-Control: public, max-age=0, must-revalidate
 /en/veneers
   Cache-Control: public, max-age=0, must-revalidate
 /en/implant-crowns
