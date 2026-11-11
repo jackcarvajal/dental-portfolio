@@ -9,6 +9,21 @@
 
 ---
 
+## 2026-11-11  (Home · conversión + "informa pero vende" + banner por idioma)
+
+- ✅ **Carrusel de servicios con CTA** (`coverflow-svc.js` + index.html): botón **"Ver este servicio →"**
+  sincronizado a la card activa + **"Enviar mi caso"**. Antes la card central no tenía llamado → no convertía.
+  (Genérico para no repetir el nombre que ya muestra la card.) Commits `bf53c7d`/`f22ea91`.
+- ✅ **Reorden**: Portafolio (casos reales) **subido antes de Servicios** — prueba antes que discurso. `093ca76`.
+- ✅ **Barra sticky "Envía tu caso"** (aparece al scroll, +WhatsApp +cerrar/recuerda, z-index 40 bajo los FAB). `a634f33`.
+- ✅ **Banda "Por qué PRODIGY"** tras Servicios — 4 diferenciadores (apruebas antes de fresar · 24-48h ·
+  materiales premium · directo del lab), acentos variados (no cards neón idénticas). `937a0b2`.
+- ✅ **Banner "View in English" por IDIOMA del navegador** (no país) + fix: `geo-detect` corre aunque el DOM
+  ya esté listo (footer lo inyecta async → DOMContentLoaded ya disparó → banner/precios/gates no corrían).
+  Verificado en vivo en ambos sitios. Ver [[feedback_cache_js_immutable]] (trampa de envenenar `?v` al sondear pronto).
+- ⏳ **Pendiente home**: cómo-funciona 3 pasos · unificar las 3 secciones de "enviar caso" · **fotos reales**
+  (lo que más baja el "look IA", esperando que el usuario las mande).
+
 ## 2026-11-10  (FX · SonarGrid vanilla + estreno en hubs /en/ — ambos repos)
 
 - ✅ **`js/sonar-grid.js`** (ambos repos): componente React (shadcn) **portado a vanilla** — mismo patrón que
