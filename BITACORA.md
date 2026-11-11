@@ -9,7 +9,13 @@
 
 ---
 
-## 2026-11-11  (Home · carrusel ya no abre en Guías Quirúrgicas + auditoría)
+## 2026-11-11  (Home · carrusel + unificar "enviar caso" + auditoría)
+
+- ✅ **"¿Tienes escáner?" + "¿No tienes escáner?" unificadas** en una sola sección `#envia-caso`
+  (dos vías lado a lado: con escáner → `envia-tu-scanner` · sin escáner → `escaner-domicilio`). Antes eran
+  dos secciones full-width casi idénticas (menos repetición, misma zona). Observer de scroll-reveal actualizado
+  (`#envia-scanner`+`#escaner` → `#envia-caso`). `unete-prodigy` se mantiene (pitch de plataforma, otro propósito).
+  Commit `6060bca5`. ✅ Preview verificado (desktop 2 columnas · móvil apilado, botones full-width).
 
 - ✅ **Carrusel abre centrado en Carillas, no en Guías Quirúrgicas** (`coverflow-svc.js` `center()` +
   `data-cf-start="carillas-porcelana"` en el stage). Con 12 cards el centro matemático (índice 5) caía por
