@@ -709,8 +709,8 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
           '<a href="/journal"' + ac('/journal') + '>BLOG</a>' +
         '</div>' +
 
-        /* Logo centrado */
-        '<a href="/" class="pnav2-logo" translate="no">' +
+        /* Logo centrado — en páginas /en/ apunta al hub inglés, no a la home ES */
+        '<a href="' + (location.pathname.indexOf('/en/') === 0 ? '/en/' : '/') + '" class="pnav2-logo" translate="no">' +
           '<strong>PRODIGY</strong>' +
           '<em>Digital Dentistry</em>' +
         '</a>' +
