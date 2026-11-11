@@ -69,7 +69,18 @@
       active = Math.max(0, Math.min(cards.length - 1, i));
       layout();
     }
-    function center() { active = cards.length ? Math.floor((cards.length - 1) / 2) : 0; }
+    function center() {
+      if (!cards.length) { active = 0; return; }
+      // Card inicial deliberada (data-cf-start="substr-del-href" en el stage):
+      // evita que el centro caiga en un servicio de nicho solo por el largo de la lista.
+      var start = stage.getAttribute('data-cf-start');
+      if (start) {
+        for (var i = 0; i < cards.length; i++) {
+          if ((cards[i].getAttribute('href') || '').indexOf(start) > -1) { active = i; return; }
+        }
+      }
+      active = Math.floor((cards.length - 1) / 2);
+    }
 
     // Filtro por categoría (data-cat multi-valor). cat vacío o 'todos' → todas.
     function setFilter(cat) {
