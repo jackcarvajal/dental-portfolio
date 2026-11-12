@@ -319,16 +319,9 @@
 <noscript><div style="padding:16px;text-align:center;background:#111826">Para cotizar coronas de zirconio escríbenos por WhatsApp: <a href="https://wa.me/573212816716">+57 321 281 6716</a>.</div></noscript>
 
 <script src="js/footer.js?v=20261114h"></script>
-<script src="js/liquid-hero.js?v=20261014b"></script>
+<script src="js/sonar-grid.js?v=20261110"></script>
 <script>
-  LiquidHero.mount({
-    container: "#hero-fx",
-    src: "images/liquid-sculpture-prodigy.webp?v=2",
-    imageAlt: "Escultura líquida en colores PRODIGY",
-    background: "#050505",
-    scale: 0.88, y: -22,
-    mobile: "static"
-  });
+  if(window.SonarGrid) SonarGrid.mount({ container: "#hero-fx", color: "var(--gold)", baseOpacity: 0.18, pingEvery: 3.6, ringWidth: 100, interactive: true });
   if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 </script>
 </body>
