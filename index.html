@@ -1233,7 +1233,6 @@
             /* CARDS — reducir padding e íconos */
             .cajon-persuasive, .cajon-persuasive * { min-height: unset !important; }
             .cajon-persuasive { padding: 20px 16px !important; }
-            .whatsapp-btn-card { padding: 16px 14px !important; }
 
             /* Círculos de íconos en cajones */
             .cajon-persuasive > div:first-child { width: 52px !important; height: 52px !important; margin-bottom: 12px !important; }
@@ -2123,65 +2122,12 @@
     <!-- WORKFLOW 24/7 (Fondo Negro) -->
     
 
-            <!-- ============================================
-                 FRANJA MORADA
-                 ============================================ -->
-            <div class="purple-divider" style="height: 45px; background: linear-gradient(90deg, #8B4789 0%, #9C27B0 50%, #8B4789 100%); position: relative;">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: radial-gradient(circle, rgba(139, 71, 137, 0.4) 0%, transparent 70%);"></div>
-            </div>
-
-            <!-- ============================================
-                 BOTONES WHATSAPP (ICONOS ORIGINALES)
-                 ============================================ -->
-            <section style="background: #000; padding: 45px 0;">
-                <div class="container">
-                    <h2 style="text-align: center; font-size: 36px; font-weight: 900; color: #fff; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px;">
-                        CONTACTO DIRECTO WHATSAPP
-                    </h2>
-
-                    <div class="whatsapp-buttons-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto;">
-
-                        <!-- Informes Casos Nuevos -->
-                        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20deseo%20información%20para%20enviar%20un%20nuevo%20caso%20de%20diseño." class="whatsapp-btn-card" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                            <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
-                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Informes Casos Nuevos</span>
-                        </a>
-
-                        <!-- Seguimiento de Casos -->
-                        <a href="seguimiento-caso" style="background: linear-gradient(135deg, #1a2035 0%, #0d1525 100%); border: 2px solid #D4AF37; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(212,175,55,0.25); display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                            <i class="fas fa-search" style="font-size: 38px; color: #D4AF37;"></i>
-                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: #D4AF37;">Seguimiento de Casos</span>
-                            <span style="font-size: 14px; color: #94a3b8; font-weight: 400;">Consulta el estado de tu orden</span>
-                        </a>
-
-                        <!-- Dudas / Soporte -->
-                        <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20tengo%20una%20duda%20técnica%20sobre%20un%20diseño." class="whatsapp-btn-card" target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); border: none; border-radius: 16px; padding: 22px 20px; text-align: center; text-decoration: none; color: #fff; transition: all 0.3s ease; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                            <i class="fab fa-whatsapp" style="font-size: 38px; color: #fff;"></i>
-                            <span style="font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;">Dudas / Soporte</span>
-                        </a>
-
-                    </div>
-                </div>
-            </section>
 
             <style>
             /* Hover effects para cajones persuasivos */
             .cajon-persuasive:hover {
                 transform: translateY(-10px) scale(1.02);
                 box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
-            }
-
-            /* Hover effects para botones WhatsApp */
-            .whatsapp-btn-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 10px 30px rgba(37, 211, 102, 0.6);
-            }
-
-            /* Responsive */
-            @media (max-width: 1024px) {
-                .whatsapp-buttons-grid {
-                    grid-template-columns: repeat(2, 1fr) !important;
-                }
             }
             </style>
         </div>
@@ -2448,6 +2394,16 @@
                     </a>
                 </div>
 
+            </div>
+
+            <!-- Contacto directo (seguimiento + soporte) — unificado aqui; reemplaza la seccion WhatsApp aparte -->
+            <div style="margin:38px auto 0;max-width:640px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+                <a href="seguimiento-caso" style="flex:1 1 240px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:12px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.35);color:#D4AF37;font-weight:800;font-size:.88rem;text-decoration:none;">
+                    <i class="fas fa-magnifying-glass" aria-hidden="true"></i> Seguimiento de tu orden
+                </a>
+                <a href="https://wa.me/573212816716?text=Hola%20PRODIGY,%20tengo%20una%20duda%20sobre%20un%20dise%C3%B1o." target="_blank" rel="noopener noreferrer" style="flex:1 1 240px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:12px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.4);color:#4ade80;font-weight:800;font-size:.88rem;text-decoration:none;">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i> Dudas / soporte
+                </a>
             </div>
         </div>
     </section>
@@ -3227,34 +3183,6 @@
             scroll-snap-align: start !important;
         }
 
-        /* ── WHATSAPP: sandwich vertical — WA pequeño / Seguimiento grande / WA pequeño ── */
-        .whatsapp-buttons-grid {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 8px !important;
-            max-width: 320px !important;
-            margin: 0 auto !important;
-        }
-        /* Los 2 botones WA (1ro y 3ro): compactos horizontales */
-        .whatsapp-buttons-grid > a:nth-child(1),
-        .whatsapp-buttons-grid > a:nth-child(3) {
-            flex-direction: row !important;
-            padding: 10px 14px !important;
-            gap: 10px !important;
-            border-radius: 10px !important;
-        }
-        .whatsapp-buttons-grid > a:nth-child(1) i,
-        .whatsapp-buttons-grid > a:nth-child(3) i { font-size: 18px !important; }
-        .whatsapp-buttons-grid > a:nth-child(1) span,
-        .whatsapp-buttons-grid > a:nth-child(3) span { font-size: 14px !important; }
-        /* Seguimiento en medio: más destacado */
-        .whatsapp-buttons-grid > a:nth-child(2) {
-            padding: 16px 14px !important;
-            border-radius: 12px !important;
-        }
-        .whatsapp-buttons-grid > a:nth-child(2) i { font-size: 26px !important; }
-        .whatsapp-buttons-grid > a:nth-child(2) span { font-size: 14px !important; }
-        .whatsapp-buttons-grid > a:nth-child(2) > span:last-of-type { font-size: 14px !important; }
 
         /* ── FLOTANTES ── */
         .social-floating { display: none !important; }
@@ -3305,8 +3233,7 @@
         .step-card:active,
         .production-card:active,
         .cajon-persuasive:active,
-        .course-card:active,
-        .whatsapp-btn-card:active {
+        .course-card:active {
             transform: scale(0.96) !important;
             transition: transform 0.1s ease !important;
         }
@@ -3352,24 +3279,6 @@
         }
         .btn-portfolio-cta:hover { animation: none; opacity: 0.85; }
 
-        /* Cards WhatsApp (Informes / Dudas) — ripple verde expansivo */
-        @keyframes rippleWA {
-            0%   { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.45); }
-            65%  { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 14px rgba(37,211,102,0); }
-            100% { box-shadow: 0 6px 20px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0); }
-        }
-        .whatsapp-btn-card {
-            animation: rippleWA 2.4s ease-out infinite;
-        }
-
-        /* 4. Card "Seguimiento de Casos" — border gold que respira */
-        @keyframes goldBreath {
-            0%, 100% { box-shadow: 0 6px 20px rgba(212,175,55,0.25), 0 0 0 0 rgba(212,175,55,0.5); }
-            50%       { box-shadow: 0 10px 32px rgba(212,175,55,0.5), 0 0 0 8px rgba(212,175,55,0); }
-        }
-        .whatsapp-buttons-grid > a:nth-child(2) {
-            animation: goldBreath 2.8s ease-in-out infinite;
-        }
 
         /* 5. Botón CONTACTAR nav — live dot "en línea" */
         @keyframes liveDot {
