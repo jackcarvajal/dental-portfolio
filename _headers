@@ -78,6 +78,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /coronas-zirconio
   Cache-Control: public, max-age=0, must-revalidate
+/academia
+  Cache-Control: public, max-age=0, must-revalidate
 /rehabilitacion-sobre-implantes
   Cache-Control: public, max-age=0, must-revalidate
 /ferulas-oclusales
