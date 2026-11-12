@@ -42,12 +42,43 @@
       "@context": "https://schema.org",
       "@type": "Service",
       "name": "Escaneo intraoral a domicilio",
-      "provider": { "@type": "LocalBusiness", "name": "PRODIGY Lab Dental", "url": "https://prodigylabdental.com" },
-      "description": "Servicio de escaneo intraoral a domicilio en clínicas y consultorios del norte de Bogotá. Usamos el mejor escáner del mercado. Archivo STL entregado en 2 horas hábiles. Descuentos para laboratorio.",
-      "areaServed": { "@type": "City", "name": "Bogotá" },
-      "serviceType": "Escaneo dental a domicilio"
+      "serviceType": "Escaneo dental a domicilio",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "PRODIGY Lab Dental",
+        "url": "https://prodigylabdental.com",
+        "telephone": "+573212816716",
+        "email": "contacto@prodigylabdental.com",
+        "image": "https://prodigylabdental.com/assets/og-escaner-domicilio.jpg",
+        "priceRange": "$$",
+        "address": { "@type": "PostalAddress", "addressLocality": "Bogotá", "addressRegion": "Cundinamarca", "addressCountry": "CO" },
+        "geo": { "@type": "GeoCoordinates", "latitude": "4.7110", "longitude": "-74.0721" }
+      },
+      "description": "Servicio de escaneo intraoral a domicilio en clínicas y consultorios de Bogotá y municipios aledaños. Llevamos el escáner Aidite Rapid 5 a tu consultorio y entregamos el archivo STL en 2 horas hábiles. Descuentos para trabajar con el laboratorio.",
+      "areaServed": [
+        { "@type": "City", "name": "Bogotá" },
+        { "@type": "City", "name": "Chía" },
+        { "@type": "City", "name": "Cajicá" },
+        { "@type": "City", "name": "Zipaquirá" },
+        { "@type": "City", "name": "Sopó" },
+        { "@type": "City", "name": "La Calera" }
+      ],
+      "availableChannel": {
+        "@type": "ServiceChannel",
+        "serviceUrl": "https://prodigylabdental.com/escaner-domicilio",
+        "availableLanguage": { "@type": "Language", "name": "Spanish", "alternateName": "es" }
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "60000",
+        "priceCurrency": "COP",
+        "description": "Visita de escaneo intraoral a domicilio (no incluye diseño CAD ni fabricación).",
+        "availability": "https://schema.org/InStock",
+        "areaServed": "Bogotá"
+      }
     }
     </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Escaneo intraoral a domicilio","item":"https://prodigylabdental.com/escaner-domicilio"}]}</script>
 
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
@@ -813,7 +844,7 @@
       </details>
       <details style="background:var(--bg-card,#0d1520);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
         <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.92rem;display:flex;justify-content:space-between;align-items:center;list-style:none;">¿Qué zonas de Bogotá cubren? <span style="color:#00d2ff;">+</span></summary>
-        <p style="padding:0 20px 16px;color:#94a3b8;line-height:1.7;font-size:.88rem;">Cubrimos toda Bogotá (norte, centro y sur) y municipios aledaños: Chía, Cajicá, Zipaquirá, Sopó, La Calera. Para zonas al sur y municipios, consulta disponibilidad horaria. Usaquén, Chapinero, Suba, Engativá y Fontibón son cobertura estándar L–S.</p>
+        <p style="padding:0 20px 16px;color:#94a3b8;line-height:1.7;font-size:.88rem;">Cubrimos toda Bogotá (norte, centro y sur) y municipios aledaños: Chía, Cajicá, Zipaquirá, Sopó, La Calera. Para zonas al sur y municipios, consulta disponibilidad horaria. Usaquén, Chapinero, Suba, Engativá y Fontibón son cobertura estándar L–S. <a href="/article?id=escaner-intraoral-domicilio-bogota" style="color:#00d2ff;">Lee nuestra guía del escáner intraoral a domicilio en Bogotá</a>.</p>
       </details>
       <details style="background:var(--bg-card,#0d1520);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden;">
         <summary style="padding:16px 20px;cursor:pointer;font-weight:700;font-size:.92rem;display:flex;justify-content:space-between;align-items:center;list-style:none;">¿Puedo enviar el STL sin que vayan a mi clínica? <span style="color:#00d2ff;">+</span></summary>
@@ -833,13 +864,6 @@
 
 </main>
 
-<!-- REFERIDOS STRIP -->
-<section style="background:rgba(0,255,65,.05);border-top:1px solid rgba(0,255,65,.15);padding:14px 24px;">
-  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-    <div style="font-size:.82rem;color:#94a3b8;"><i class="fas fa-user-plus" style="color:#00FF41;margin-right:6px;" aria-hidden="true"></i> <strong style="color:#00FF41;">Referidos:</strong> Recomienda PRODIGY — 5% descuento para tu colega, <strong style="color:#D4AF37;">$30.000 COP</strong> para ti.</div>
-    <a href="/app/client-panel.html" style="background:rgba(0,255,65,.12);border:1px solid rgba(0,255,65,.3);color:#00FF41;border-radius:8px;padding:7px 16px;font-size:.75rem;font-weight:700;text-decoration:none;white-space:nowrap;">Obtener código →</a>
-  </div>
-</section>
 <script src="js/footer.js?v=20261114h"></script>
 
 <!-- Supabase -->

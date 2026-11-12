@@ -9,6 +9,24 @@
 
 ---
 
+## 2026-11-12  (Fuerza SEO escaneo a domicilio + H1 home + schema cursos)
+
+- ✅ **Escáner a domicilio — schema enriquecido** (`escaner-domicilio.html`): `Service` ahora con `provider` LocalBusiness real
+  (teléfono, email, geo, address, priceRange), `areaServed` multi-ciudad (Bogotá + Chía/Cajicá/Zipaquirá/Sopó/La Calera, sacadas del
+  propio FAQ), `offers` con precio ($60.000 COP) y `availableChannel`. + **BreadcrumbList** nuevo. + **interlink de cluster** al
+  artículo `/article?id=escaner-intraoral-domicilio-bogota` desde el FAQ de zonas. **Limpieza:** quitado un **strip de referidos
+  duplicado** al fondo (basura). Ya en sitemap + publicPages. 6 bloques JSON-LD validados.
+- ✅ **Home SEO — H1 con keyword**: el H1 era solo "PRODIGY" (marca sola, desperdiciaba la señal on-page más fuerte). Ahora lleva un
+  descriptor `sr-only` (invisible, sin cambiar el hero) "Laboratorio dental digital CAD/CAM en Bogotá: zirconio, carillas, guías
+  quirúrgicas e impresión 3D". El `hero-desc` NO se tocó: lo pisa `i18n.js` (`es` reescribe textContent) y cambiarlo obligaría a
+  bumpear i18n.js en todo el sitio por una línea → no vale el ripple.
+- ✅ **Cursos (Alejandro `academia.html`) — schema `Course` enriquecido**: +`about`, +`teaches` (coronas/carillas/full-arch/flujo),
+  +`educationalLevel`, +`coursePrerequisites`, +`educationalCredentialAwarded` (certificado, ya estaba en el FAQ), +`audience`,
+  +`instructor` en la courseInstance. Sin `offers`/precio (regla: cursos sin precio público, modelo lista de espera).
+- 💡 **Aclaración de arquitectura**: los envíos de **alineadores** (y "Envía tu escáner") caen en `solicitudes_scanner` (bandeja/intake),
+  **NO** en `pedidos`. `pedidos` (lo que alimenta Pulso/taller/métricas) solo se crea desde los `flujo-*` (cotizador) + `app/clientes.html`.
+  Por eso `pedidos` sigue en 0 aunque haya casos de alineadores — son carril aparte (corte mensual).
+
 ## 2026-11-12  (Heros diversificados + higiene SEO Search Console)
 
 - ✅ **Heros variados** (feedback: el liquid saturaba 10 páginas iguales). Asignado por tema, manteniendo `#hero-fx`:
