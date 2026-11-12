@@ -27,6 +27,21 @@
   en la página), `sitemap.xml`, `_headers`. La **1ª card del carrusel** ya no va a `flujo-fresado`:
   "Coronas & Puentes" → **"Coronas de Zirconio"** → `/coronas-zirconio`. Commit `cfb0ef71`.
   ✅ Verificado en vivo: pasa el candado (header completo, no redirige a /mantenimiento), liquid-hero OK, preview desktop + móvil.
+- ✅ **Academy de cursos → vive en ALEJANDRO, no en PRODIGY** (decisión de marca, confirmada por el usuario +
+  memoria: *"CURSOS DE EXOCAD = competencia directa de Alejandro"* y Alejandro tiene `educacion@`). Modelo: **Alejandro
+  enseña · PRODIGY produce**, embudo cruzado (no canibaliza). Tras estudiar marjoriedentalcad.com "Zero to Hero"
+  (membresía exocad, waitlist+cohorte, 3 niveles, KOL, solo inglés):
+  - **Alejandro** `alejandro-carvajal-site/academia.html`: ruta por niveles (Fundamentos→Intermedio→Máster), para-quién,
+    qué incluye, instructor (Alejandro, 1ª persona), FAQ+schema, **sin precios** (lista de espera por WhatsApp
+    `573219581949`). **Hero sonar-grid gold** (NO liquid, para variar). Schema Course/Breadcrumb/FAQPage, OG propia, sitemap.
+    Commit `bb81868`. ✅ En vivo (sin candado en Alejandro).
+  - **PRODIGY**: se **borró** `academia.html`+OG, se revirtió publicPages/sitemap/_headers, y la sección "PRODIGY Academy"
+    del home (3 cursos con $299/$599/$999 + modalidades) se convirtió en **cross-promo sin precios** → Academia de Alejandro
+    + CTA "enviar caso a producir". Commits `ccc35e72` (creación, revertida) → `1a7599b9` (limpieza). Ventaja vs. competencia:
+    español/LATAM, certificado, portafolio real, y el combo enseñar+producir.
+  - ⏳ **Pendiente (feedback usuario)**: el `liquid-hero` está en **10 páginas** de PRODIGY = satura. Diversificar heros
+    usando los efectos que ya tenemos (`sonar-grid`, `constellation-grid`, `particle-bg`, `particle-hero`, liquid con otra
+    imagen). Empezado en Alejandro/academia (sonar-grid). Falta la pasada en las páginas PRODIGY ya creadas.
 
 - ✅ **Carrusel abre centrado en Carillas, no en Guías Quirúrgicas** (`coverflow-svc.js` `center()` +
   `data-cf-start="carillas-porcelana"` en el stage). Con 12 cards el centro matemático (índice 5) caía por
