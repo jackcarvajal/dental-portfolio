@@ -9,13 +9,24 @@
 
 ---
 
-## 2026-11-11  (Home · carrusel + unificar "enviar caso" + auditoría)
+## 2026-11-11  (Home · carrusel + unificar "enviar caso" + limpieza WhatsApp + pág. coronas-zirconio)
 
 - ✅ **"¿Tienes escáner?" + "¿No tienes escáner?" unificadas** en una sola sección `#envia-caso`
   (dos vías lado a lado: con escáner → `envia-tu-scanner` · sin escáner → `escaner-domicilio`). Antes eran
   dos secciones full-width casi idénticas (menos repetición, misma zona). Observer de scroll-reveal actualizado
   (`#envia-scanner`+`#escaner` → `#envia-caso`). `unete-prodigy` se mantiene (pitch de plataforma, otro propósito).
   Commit `6060bca5`. ✅ Preview verificado (desktop 2 columnas · móvil apilado, botones full-width).
+- ✅ **Sección grande "CONTACTO DIRECTO WHATSAPP" eliminada** (redundante: FAB + sticky + nav "SIGUE TU CASO"
+  ya cubren casos nuevos / seguimiento / soporte) + franja morada. Fusionada como **strip compacto
+  Seguimiento + Soporte** dentro de `#envia-caso`. Limpié ~3KB de CSS muerto disperso (whatsapp-btn-card,
+  whatsapp-buttons-grid y 2 animaciones **infinitas** rippleWA/goldBreath). Commit `c6bfd3cb`. ✅ Preview OK.
+- ✅ **Página nueva `coronas-zirconio.html`** (coronas de zirconio / disilicato e.max / metal-cerámica): servicio
+  completo estilo casa (hero liquid, por qué, problema→solución, materiales, proceso, internacional, CTA), sin
+  precios en ES, Schema Service/HowTo/Breadcrumb, OG propia (`assets/og-coronas-zirconio.png`). **hreflang
+  recíproco con `/en/zirconia-crowns`** (antes ese EN no tenía par ES). Añadida a `publicPages` (header.js?v=20261111a
+  en la página), `sitemap.xml`, `_headers`. La **1ª card del carrusel** ya no va a `flujo-fresado`:
+  "Coronas & Puentes" → **"Coronas de Zirconio"** → `/coronas-zirconio`. Commit `cfb0ef71`.
+  ✅ Verificado en vivo: pasa el candado (header completo, no redirige a /mantenimiento), liquid-hero OK, preview desktop + móvil.
 
 - ✅ **Carrusel abre centrado en Carillas, no en Guías Quirúrgicas** (`coverflow-svc.js` `center()` +
   `data-cf-start="carillas-porcelana"` en el stage). Con 12 cards el centro matemático (índice 5) caía por
