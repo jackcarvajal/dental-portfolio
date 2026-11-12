@@ -9,6 +9,17 @@
 
 ---
 
+## 2026-11-12  (Heros diversificados + higiene SEO Search Console)
+
+- ✅ **Heros variados** (feedback: el liquid saturaba 10 páginas iguales). Asignado por tema, manteniendo `#hero-fx`:
+  coronas-zirconio=**sonar-grid oro**, carillas=**sonar magenta**, coronas-sobre-implantes + en/implant-crowns=**particle-hero**
+  (red de partículas, canvas `#phero`), ferulas + en/full-arch=**liquid imagen dark**, en/veneers=**sonar magenta**;
+  rehabilitacion + liquid-hero-demo se quedan en liquid prodigy. Commit `5651fd2b`. ✅ Verificado en vivo. Ver [[feedback_variar_heros]].
+- ✅ **Search Console — "Página alternativa con etiqueta canónica adecuada"**: es **benigno** (Google elige el canonical, no es error;
+  la "validación" siempre saldrá error porque no hay nada que arreglar — no re-validar). Las `?lang=en` de Alejandro son fantasmas
+  previos a limpiar el hreflang (se caen solas). Fixes de raíz: **robots bloquea `/i18n/`** (ambos repos; los JSON de traducción no se
+  indexan) + **quitado el `?lang=en` muerto del sitemap de PRODIGY** (evaluador). Commits PRODIGY `82a86684` · Alejandro `62cc8b5`.
+
 ## 2026-11-11  (Home · carrusel + unificar "enviar caso" + limpieza WhatsApp + pág. coronas-zirconio)
 
 - ✅ **"¿Tienes escáner?" + "¿No tienes escáner?" unificadas** en una sola sección `#envia-caso`
