@@ -2,10 +2,204 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-11-10
+   Última actualización automática: 2026-11-12
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "resinas-3d-biocompatibles-2026-11-12-381b",
+  "titulo": "Comparativa de Resinas 3D Dentales: Propiedades, Biocompatibilidad y Usos Clínicos",
+  "subtitulo": "Este artículo técnico analiza las propiedades mecánicas, precisión dimensional y biocompatibilidad de resinas fotopolimerizables para impresión 3D en aplicaciones dentales, basándose en la evidencia científica más reciente.",
+  "categoria": "fabricacion",
+  "chip": "Impresión 3D",
+  "fecha": "2026-11-12",
+  "lectura": "6 min",
+  "vistas": "0",
+  "emoji": "🖨️",
+  "grad": "grad-1",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La impresión 3D, particularmente la fotopolimerización por cuba (Vat Photopolymerization), ha transformado la odontología, ofreciendo alternativas a los materiales y métodos convencionales para la fabricación de componentes dentales (Andjela et al., 2022). La creciente adopción de estas tecnologías exige una comprensión profunda de las propiedades de las resinas fotopolimerizables utilizadas, especialmente aquellas destinadas a restauraciones definitivas, guías quirúrgicas, modelos, provisionales y férulas. La evaluación de sus características mecánicas, precisión dimensional y biocompatibilidad es fundamental para garantizar el éxito clínico y la seguridad del paciente (Flottes et al., 2026; Cabrol et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Propiedades Mecánicas de las Resinas para Impresión 3D Dental"
+    },
+    {
+      "t": "p",
+      "c": "Las propiedades mecánicas son críticas para la durabilidad y funcionalidad de los dispositivos dentales impresos en 3D. La resistencia flexural, el módulo elástico y la dureza Vickers son parámetros clave que se evalúan en estas resinas (Flottes et al., 2026). Para restauraciones definitivas, el rendimiento mecánico, especialmente la resistencia flexural, es un factor determinante (Flottes et al., 2026). En el contexto de las bases de prótesis dentales, se ha comparado el módulo elástico de los materiales impresos en 3D con el PMMA polimerizado por calor convencional (Altalla et al., 2025). De manera similar, para la fabricación de aparatos orales como las férulas oclusales, las propiedades mecánicas de los materiales poliméricos producidos con técnicas aditivas son objeto de análisis riguroso (Valenti et al., 2024). Aunque se han evaluado diversas resinas, como Crowntec, que ha mostrado altas propiedades mecánicas en estudios (Flottes et al., 2026), la investigación continua es necesaria para optimizar estos materiales (Andjela et al., 2022)."
+    },
+    {
+      "t": "h2",
+      "c": "Precisión Dimensional y Ajuste Clínico"
+    },
+    {
+      "t": "p",
+      "c": "La precisión dimensional es un factor crítico para el éxito clínico de las restauraciones y dispositivos dentales impresos en 3D. Un ajuste preciso es esencial para guías quirúrgicas, modelos de estudio y trabajo, y restauraciones provisionales o definitivas. La exactitud de las piezas dentales basadas en resina impresas en 3D es un área que requiere más investigación para avanzar en el campo (Andjela et al., 2022). La capacidad de las tecnologías de fotopolimerización por cuba para producir componentes con la fidelidad geométrica necesaria es un objetivo constante de desarrollo y evaluación."
+    },
+    {
+      "t": "h2",
+      "c": "Biocompatibilidad y Normativa ISO 10993"
+    },
+    {
+      "t": "p",
+      "c": "La biocompatibilidad es un requisito indispensable para cualquier material dental que entre en contacto con la mucosa oral o los tejidos del paciente. Los componentes de resina impresos en 3D deben cumplir con los requisitos de biocompatibilidad establecidos por las normas actuales para dispositivos médicos, como la ISO 10993 (Cabrol et al., 2025). A pesar de que los fabricantes obtienen las aprobaciones necesarias, el odontólogo sigue siendo responsable de seguir las recomendaciones del fabricante para garantizar la seguridad. La evidencia sobre el efecto del postprocesamiento de los componentes de resina impresos en 3D en su biocompatibilidad es un área donde aún se necesita más investigación (Cabrol et al., 2025)."
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clínicas de las Resinas 3D en Odontología"
+    },
+    {
+      "t": "p",
+      "c": "La fabricación aditiva se emplea en prostodoncia para la producción de modelos, guías quirúrgicas, y prótesis provisionales y definitivas (Cabrol et al., 2025; Flottes et al., 2026). Las resinas impresas en 3D también ofrecen una alternativa para la fabricación de bases de prótesis dentales, donde sus propiedades mecánicas y superficiales son objeto de evaluación para determinar su idoneidad clínica (Altalla et al., 2025). Además, los materiales poliméricos impresos en 3D se utilizan para la fabricación de aparatos orales, incluyendo férulas oclusales, comparándose sus propiedades mecánicas y biológicas con las de los métodos convencionales (Valenti et al., 2024). La versatilidad de estas resinas permite su aplicación en diversas áreas, desde la ortodoncia con polímeros específicos como el PA-12 (Campobasso et al., 2023) hasta restauraciones complejas."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Propiedad Evaluada",
+        "Relevancia Clínica",
+        "Fuentes Clave"
+      ],
+      "rows": [
+        [
+          "Resistencia Flexural",
+          "Durabilidad de restauraciones definitivas y provisionales",
+          "(Flottes et al., 2026)"
+        ],
+        [
+          "Módulo Elástico",
+          "Rigidez y comportamiento bajo carga en bases de prótesis y férulas",
+          "(Altalla et al., 2025; Valenti et al., 2024)"
+        ],
+        [
+          "Biocompatibilidad",
+          "Seguridad para contacto con mucosa oral (ISO 10993)",
+          "(Cabrol et al., 2025)"
+        ],
+        [
+          "Precisión Dimensional",
+          "Ajuste de guías quirúrgicas, modelos y restauraciones",
+          "(Andjela et al., 2022)"
+        ],
+        [
+          "Dureza Vickers",
+          "Resistencia al desgaste superficial",
+          "(Flottes et al., 2026)"
+        ],
+        [
+          "Sorción de Agua",
+          "Estabilidad dimensional y propiedades a largo plazo",
+          "(Altalla et al., 2025)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Consideraciones Finales y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La impresión 3D con resinas fotopolimerizables representa un avance significativo en la odontología. Sin embargo, la evaluación continua de las propiedades mecánicas, la precisión, la biocompatibilidad y las propiedades superficiales de estos materiales es esencial para su plena integración clínica (Andjela et al., 2022; Altalla et al., 2025). Aunque se han logrado avances considerables, la necesidad de más investigación para elevar este campo al siguiente nivel es evidente, especialmente para evaluar la eficiencia clínica de los materiales más recientes (Andjela et al., 2022; Campobasso et al., 2023). La comprensión detallada de cómo el postprocesamiento afecta la biocompatibilidad también es un área clave para futuras investigaciones (Cabrol et al., 2025)."
+    },
+    {
+      "t": "quote",
+      "c": "Existe una necesidad de más investigación para elevar este campo al siguiente nivel, particularmente en las propiedades mecánicas, biocompatibilidad, precisión y propiedades superficiales de las piezas dentales basadas en resina impresas en 3D.",
+      "author": "Andjela et al., Dent Mater, 2022"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qu�� propiedades son más críticas al seleccionar una resina 3D para restauraciones definitivas?",
+      "a": "Para restauraciones definitivas, la resistencia flexural, la dureza Vickers y la biocompatibilidad son propiedades mecánicas y biológicas críticas que deben evaluarse para asegurar la durabilidad y la seguridad del material (Flottes et al., 2026; Cabrol et al., 2025)."
+    },
+    {
+      "q": "¿Es el postprocesamiento importante para la biocompatibilidad de las resinas 3D?",
+      "a": "Sí, el postprocesamiento es crucial para la biocompatibilidad de las resinas 3D, ya que los componentes impresos que estarán en contacto con la mucosa oral deben cumplir con los requisitos de la norma ISO 10993. Sin embargo, la evidencia sobre el efecto específico del postprocesamiento en la biocompatibilidad aún requiere más investigación (Cabrol et al., 2025)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Flottes Y, Smail Y, Palomino-Durand C, Attal JP, Ceinos R, François P, et al.",
+      "titulo": "Properties of 3D printed resins for definitive dental restorations: A systematic review",
+      "revista": "J Prosthet Dent",
+      "año": "2026",
+      "vol": "135",
+      "num": "4",
+      "pags": "e6-e27",
+      "doi": "10.1016/j.prosdent.2025.11.040",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/41419355/",
+      "verificada": true
+    },
+    {
+      "autores": "Andjela L, Abdurahmanovich VM, Vladimirovna SN, Mikhailovna GI, Yurievich DD, Alekseevna MY.",
+      "titulo": "A review on Vat Photopolymerization 3D-printing processes for dental application",
+      "revista": "Dent Mater",
+      "año": "2022",
+      "vol": "38",
+      "num": "11",
+      "pags": "e284-e296",
+      "doi": "10.1016/j.dental.2022.09.005",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/36184337/",
+      "verificada": true
+    },
+    {
+      "autores": "Campobasso A, Battista G, Lo Muzio E, Colombo S, Paglia M, Federici Canova F, et al.",
+      "titulo": "New 3D printed polymers in orthodontics: a scoping review",
+      "revista": "Eur J Paediatr Dent",
+      "año": "2023",
+      "vol": "24",
+      "num": "3",
+      "pags": "224-228",
+      "doi": "10.23804/ejpd.2023.1921",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37668459/",
+      "verificada": true
+    },
+    {
+      "autores": "Altalla H, Alawawda O, Bayindir F.",
+      "titulo": "Three-dimensionally printed versus conventional heat-polymerized PMMA denture base properties: A systematic review and meta-analysis",
+      "revista": "J Prosthet Dent",
+      "año": "2025",
+      "vol": "134",
+      "num": "6",
+      "pags": "2191.e1-2191.e12",
+      "doi": "10.1016/j.prosdent.2025.08.014",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/40883111/",
+      "verificada": true
+    },
+    {
+      "autores": "Valenti C, Federici MI, Coniglio M, Betti P, Pancrazi GP, Tulli O, et al.",
+      "titulo": "Mechanical and biological properties of polymer materials for oral appliances produced with additive 3D printing and subtractive CAD-CAM techniques compared to conventional methods: a systematic review and meta-analysis",
+      "revista": "Clin Oral Investig",
+      "año": "2024",
+      "vol": "28",
+      "num": "7",
+      "pags": "396",
+      "doi": "10.1007/s00784-024-05772-6",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38916682/",
+      "verificada": true
+    },
+    {
+      "autores": "Cabrol A, Chuy V, Fron-Chabouis H, Naveau A.",
+      "titulo": "Effectiveness of postprocessing on 3D printed resin biocompatibility in prosthodontics: A systematic review",
+      "revista": "J Prosthet Dent",
+      "año": "2025",
+      "vol": "134",
+      "num": "5",
+      "pags": "1688-1700",
+      "doi": "10.1016/j.prosdent.2024.08.014",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39304492/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
