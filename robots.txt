@@ -10,6 +10,7 @@ Disallow: /app/
 Disallow: /api/
 Disallow: /sql/
 Disallow: /supabase/
+Disallow: /i18n/
 Disallow: /.git/
 Disallow: /MEMORY/
 Disallow: /scripts/
