@@ -32,7 +32,7 @@
     '/instalar-app','/terminos-y-legal','/seguimiento-caso','/mapa-sitio',
     '/para-laboratorios','/referidos','/flujo-diseno','/flujo-fresado',
     '/flujo-impresion','/flujo-lab','/caso','/patient',
-    '/academia','/preguntas','/impresion-3d','/alineadores-cad','/evaluador-implantes','/carillas','/coronas-zirconio','/coronas-sobre-implantes','/rehabilitacion-sobre-implantes','/ferulas-oclusales',
+    '/preguntas','/impresion-3d','/alineadores-cad','/evaluador-implantes','/carillas','/coronas-zirconio','/coronas-sobre-implantes','/rehabilitacion-sobre-implantes','/ferulas-oclusales',
     '/en',   // hub inglés (/en/ e /en) — índice de servicios internacionales
     '/en/dental-aligners','/en/surgical-guides','/en/zirconia-crowns','/en/veneers','/en/implant-crowns','/en/full-arch',   // inglés: diseño + servicios de lab
   ];
