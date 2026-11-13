@@ -9,6 +9,19 @@
 
 ---
 
+## 2026-11-13  (Veneers /en en inglés nativo + "solo cotizar" para mercado US)
+
+- ✅ **`en/veneers.html` reescrita en inglés nativo/técnico** (no traducción del español), para captar dentistas de EE.UU.:
+  hero + "por qué" con diseño digital + **mock-up motivacional**; **tipos de carilla** (Natural / Hollywood / no-prep); **materiales**
+  = disilicato de **todas las marcas líderes** (e.max y equivalentes), feldespático, zirconio translúcido; **flujo 5 pasos** con el
+  mock-up impreso en clínica (llave de transferencia) + validación tras tallar; **color 100% por guía VITA/Ivoclar** (se quitó el
+  try-in); **tiempos récord: la mayoría de casos en menos de una semana** (hero + meta + paso de entrega); CTA "Send my case" a
+  WhatsApp EN (antes fugaba al intake español).
+- 💡 **Precios "solo cotizar"**: se quitaron los USD viejos ($95/$120/$25 + cross-sell $175/$1.200/$60/$14) → "Request a quote"
+  (Alejandro actualizará la lista). Se mantiene el ancla de valor "US labs charge $155–325". 50/50 + fotos antes de enviar + DHL
+  con fecha exacta intactos.
+- ⏳ PENDIENTE: lista de precios USD nueva · quién paga DHL · rodar esta voz inglés-nativo a las otras 8 páginas `/en/`.
+
 ## 2026-11-12  (Fuerza SEO escaneo a domicilio + H1 home + schema cursos)
 
 - ✅ **Escáner a domicilio — schema enriquecido** (`escaner-domicilio.html`): `Service` ahora con `provider` LocalBusiness real
