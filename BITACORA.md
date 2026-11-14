@@ -9,6 +9,19 @@
 
 ---
 
+## 2026-11-14  (Rollout voz /en: quote-only en gemelas + fugas al español cerradas)
+
+- ✅ **`implant-crowns` y `full-arch`** (gemelas de veneers): precios USD → **"Request a quote"** (se mantiene el ancla "US labs
+  charge $X–$Y"), `guarantee` → **DHL Express · exact ETA** (antes "Worldwide shipping"), nota de pago → **50/50 con fotos antes de
+  enviar** (antes "50% on delivery"). Cross-links también a "Request a quote".
+- ✅ **Hub `en/index`**: las 5 tarjetas de servicio pasan de "from $X" a **"Request a quote"**.
+- ✅ **Fugas al español cerradas**: las 4 páginas CAD (`zirconia-crowns`, `surgical-guides`, `global-design`, `dental-aligners`) ya
+  **no linkean al formulario español** `/envia-tu-scanner` → ahora "Send files via WhatsApp, WeTransfer, Dropbox or Google Drive".
+- ⏳ DECISIÓN PENDIENTE: las 4 páginas CAD siguen con pitch de **outsourcing de diseño barato** ($10–16/diseño, "15 min", "Not AI")
+  → audiencia = otros labs, NO dentistas US de trabajo terminado. Falta decidir si se **reposicionan** al modelo veneers o se dejan.
+  Su CTA "Submit my case" (bloque EXISTING CLIENT) apunta a `/flujo-diseno` (flujo español autenticado). Precios USD nuevos + quién
+  paga DHL siguen pendientes.
+
 ## 2026-11-13  (Veneers /en en inglés nativo + "solo cotizar" para mercado US)
 
 - ✅ **`en/veneers.html` reescrita en inglés nativo/técnico** (no traducción del español), para captar dentistas de EE.UU.:
