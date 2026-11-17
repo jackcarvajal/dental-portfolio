@@ -89,7 +89,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/", "paginasEn": ["/envia-tu-scanner", "/preg
   function ruta() { return location.pathname.replace(/\.html$/, '').replace(/\/index$/, '').replace(/\/+$/, '') || '/'; }
   function guardado() { try { return localStorage.getItem('prd_lang') || 'es'; } catch (e) { return 'es'; } }
   function guardar(l) { try { localStorage.setItem('prd_lang', l); } catch (e) {} }
-  var enIngles = ruta().indexOf('/en/') === 0;
+  var enIngles = ruta() === '/en' || ruta().indexOf('/en/') === 0;
   var enCompleta = C.paginasEn.indexOf(ruta()) >= 0;
   // idioma del texto de ESTA página (lo usan el menú, el pie e i18n.js)
   window._phdrIdiomaPagina = function () { return enIngles || (guardado() === 'en' && enCompleta) ? 'en' : 'es'; };
