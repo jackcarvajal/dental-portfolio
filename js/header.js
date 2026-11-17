@@ -1348,6 +1348,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     'Servicios': ['Services', 'Serviços'], 'Diseño CAD — Exocad · 3Shape': ['CAD Design — Exocad · 3Shape', 'Design CAD — Exocad · 3Shape'],
     '🌍 Diseño CAD Remoto': ['🌍 Remote CAD Design', '🌍 Design CAD Remoto'], 'Fresado & Manufactura CAM': ['Milling & CAM Manufacturing', 'Fresagem & Manufatura CAM'],
     'Catálogo de Materiales': ['Materials Catalog', 'Catálogo de Materiais'], 'Cotizador de Precios': ['Price Quote', 'Orçamento de Preços'],
+    'Carillas Dentales Digitales': ['Digital Dental Veneers', 'Facetas Dentárias Digitais'], 'Coronas sobre Implantes': ['Implant Crowns', 'Coroas sobre Implantes'], 'Rehabilitación Full Arch': ['Full-Arch Rehabilitation', 'Reabilitação Full Arch'], 'Férulas Oclusales': ['Occlusal Splints', 'Férulas Oclusais'], 'Calidad y Certificaciones': ['Quality & Certifications', 'Qualidade e Certificações'],
     'Portafolio y Recursos': ['Portfolio & Resources', 'Portfólio e Recursos'], 'Portafolio de Casos': ['Case Portfolio', 'Portfólio de Casos'],
     'Guía Técnica de Materiales': ['Materials Technical Guide', 'Guia Técnico de Materiais'], 'Envía tu Escaneo': ['Send your Scan', 'Envie seu Escaneamento'],
     'Seguimiento en Vivo': ['Live Case Tracking', 'Acompanhamento ao Vivo'], 'Escaneo a domicilio & Fotogrametría': ['On-site Scanning & Photogrammetry', 'Escaneamento a domicílio & Fotogrametria'],
