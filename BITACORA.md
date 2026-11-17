@@ -18,7 +18,8 @@
 - 🔴→✅ **og:description y twitter:description DUPLICADAS** (idénticas) en las 4 páginas CAD → reescritas **únicas por página** (el precio del producto diseño queda en name=description y on-page).
 - ✅ veneers twitter:description: "Worldwide shipping" → "Most cases ready in under a week".
 - Verificado: **27/27 JSON-LD válidos** · `audit.mjs` 0 críticos · sitemap incluye todas las /en · hreflang recíproco (carillas↔en/veneers).
-- ⏳ Mejoras SEO no bloqueantes: títulos implant/zirconia >60c (truncan); H1 de veneers/hub poco keyword-rich; veneers sin FAQ (oportunidad FAQPage); hub sin separar visualmente los 2 productos.
+- ✅ **FAQ + FAQPage en veneers** (7 preguntas de dentistas US: cómo enviar, tiempos <1 semana, pago 50/50, color por guía VITA/Ivoclar, mock-up motivacional, materiales/tipos, revisión). Sección visible (`<details>` con estilo de la página) + schema FAQPage. *(El rich result de FAQ hoy se limita a sitios gov/health, pero suma comprensión + conversión + contenido para keywords US.)*
+- ⏳ Mejoras SEO no bloqueantes: títulos implant/zirconia >60c (truncan); H1 de veneers/hub poco keyword-rich; hub sin separar visualmente los 2 productos; replicar FAQ en implant-crowns/full-arch.
 
 ## 2026-11-17  (DHL fuera del marketing → "confirmed shipping")
 
