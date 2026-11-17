@@ -9,6 +9,17 @@
 
 ---
 
+## 2026-11-17 · tarde  (Auditoría SEO /en: breadcrumbs corregidos + og/twitter únicos)
+
+- 🔴→✅ **BreadcrumbList con bugs de copy-paste** en las /en:
+  - **Home mal apuntado** en 6 páginas → ahora todas a `/en/` (antes: 4 a `/` español; implant-crowns y full-arch a `/en/global-design`).
+  - **Nombre pos-2 "Global Design Services"** pegado por error en zirconia/dental-aligners/surgical-guides → ahora el nombre real de cada página.
+- ✅ **veneers** no tenía **BreadcrumbList** (solo Service) → agregado (Home → Dental Veneers).
+- 🔴→✅ **og:description y twitter:description DUPLICADAS** (idénticas) en las 4 páginas CAD → reescritas **únicas por página** (el precio del producto diseño queda en name=description y on-page).
+- ✅ veneers twitter:description: "Worldwide shipping" → "Most cases ready in under a week".
+- Verificado: **27/27 JSON-LD válidos** · `audit.mjs` 0 críticos · sitemap incluye todas las /en · hreflang recíproco (carillas↔en/veneers).
+- ⏳ Mejoras SEO no bloqueantes: títulos implant/zirconia >60c (truncan); H1 de veneers/hub poco keyword-rich; veneers sin FAQ (oportunidad FAQPage); hub sin separar visualmente los 2 productos.
+
 ## 2026-11-17  (DHL fuera del marketing → "confirmed shipping")
 
 - ✅ Quitado "DHL Express" del marketing en `veneers`, `implant-crowns`, `full-arch` (badge del hero, guarantee, paso de entrega) →
