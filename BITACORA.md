@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-11-17  (DHL fuera del marketing → "confirmed shipping")
+
+- ✅ Quitado "DHL Express" del marketing en `veneers`, `implant-crowns`, `full-arch` (badge del hero, guarantee, paso de entrega) →
+  **"Confirmed shipping · tracked"** / "confirmed, tracked shipping with a delivery date". El courier específico y quién paga quedan
+  fuera (decisión de Alejandro: "DHL es lo de menos, solo di envíos confirmados"). La página legal `veneer-terms` mantiene
+  DAP/DDU con couriers genéricos (DHL/FedEx/UPS) porque es lenguaje legal, no promesa de marketing.
+- 💡 Confirmados **dos productos** en /en: **Diseño (STL) para labs/drs** (páginas CAD, con sus precios por diseño) · **Casos
+  terminados para drs** (veneers/implant/full-arch, quote-only). Pendiente: lista de precios USD de los terminados (cuando Alejandro
+  la defina) para añadir Offers.
+
 ## 2026-11-14  (Rollout voz /en: quote-only en gemelas + fugas al español cerradas)
 
 - ✅ **`implant-crowns` y `full-arch`** (gemelas de veneers): precios USD → **"Request a quote"** (se mantiene el ancla "US labs
