@@ -2,10 +2,394 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-11-12
+   Última actualización automática: 2026-11-17
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "implantes-osstem-megagen-2026-11-17-ed96",
+  "titulo": "Análisis de Sistemas de Implantes Coreanos: Diseño, Osteointegración y Supervivencia",
+  "subtitulo": "Exploración de las características de diseño y superficie de implantes dentales y su impacto en la estabilidad y éxito clínico, con foco en principios aplicables a Osstem TSIII SA y MegaGen AnyRidge.",
+  "categoria": "implantologia",
+  "chip": "Implantología",
+  "fecha": "2026-11-17",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-3",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Dental implant",
+  "img_link": "https://en.wikipedia.org/wiki/Dental%20implant",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La implantología dental contemporánea se beneficia de la continua innovación en el diseño de implantes y el tratamiento de superficies, factores críticos para la osteointegración y la longevidad clínica. Sistemas como Osstem TSIII SA, con su tratamiento de superficie nanotopográfica, y MegaGen AnyRidge, caracterizado por su rosca expansiva y autorroscante, representan avances significativos en la tecnología de implantes. Si bien la literatura proporcionada no ofrece una comparativa directa entre estos sistemas específicos, este artículo analiza los principios científicos subyacentes a sus características distintivas, basándose en evidencia publicada sobre el diseño general del implante, las modificaciones de superficie, el torque de inserción, la osteointegración y las tasas de supervivencia en diversas condiciones óseas."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Dental-implant-illustration.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Implantes Osstem TS III vs MegaGen AnyRidge — evidencia comparativa",
+      "caption": "Wikipedia — Dental implant · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Diseño Macro y Microestructural en Implantes Dentales"
+    },
+    {
+      "t": "p",
+      "c": "El diseño del implante, tanto a nivel macro como microestructural, es un determinante clave del éxito clínico. La macroestructura, que incluye la forma del cuerpo del implante y el diseño de la rosca, influye directamente en la estabilidad primaria y la distribución de las cargas oclusales (Jung et al., 2018; Al-Sabbagh et al., 2019). Por ejemplo, un diseño de rosca expansiva, como el que se encuentra en el sistema MegaGen AnyRidge, puede contribuir a una mayor estabilidad mecánica inicial. La microestructura se refiere a las características de la superficie del implante. Las modificaciones de la superficie, como los tratamientos nanotopográficos presentes en el sistema Osstem TSIII SA, se han desarrollado para promover una curación ósea más fuerte y rápida, lo que a su vez conduce a mayores tasas de supervivencia del implante (De Bruyn et al., 2017). La rugosidad de la superficie del implante es un factor reconocido que afecta la supervivencia del implante (Griggs, 2017)."
+    },
+    {
+      "t": "h2",
+      "c": "Torque de Inserción y Estabilidad Primaria en Hueso Tipo III-IV"
+    },
+    {
+      "t": "p",
+      "c": "La estabilidad primaria es un requisito fundamental para la osteointegración exitosa y la supervivencia a largo plazo de los implantes dentales (Al-Sabbagh et al., 2019). Esta estabilidad depende de la fricción mecánica entre la superficie del implante y el hueso circundante, asegurando la ausencia de movilidad inmediata tras la colocación (Al-Sabbagh et al., 2019). El torque de inserción es una de las principales métricas utilizadas para evaluar la estabilidad primaria (Al-Sabbagh et al., 2019). En condiciones de hueso comprometido, como el hueso tipo IV (clasificación de Lekholm & Zarb), la fijación clínica de los implantes se ve disminuida, lo que representa un desafío para el resultado clínico (Alghamdi, 2018). Factores como la densidad ósea, el diseño del implante y la técnica quirúrgica influyen significativamente en la estabilidad primaria (Al-Sabbagh et al., 2019). Los diseños de implantes con roscas autorroscantes y expansivas pueden ser ventajosos en huesos de baja densidad para optimizar el torque de inserción y la estabilidad inicial."
+    },
+    {
+      "t": "list",
+      "items": [
+        "La estabilidad primaria es crucial para la osteointegración y supervivencia del implante (Al-Sabbagh et al., 2019).",
+        "El torque de inserción es un método para evaluar la estabilidad primaria (Al-Sabbagh et al., 2019).",
+        "La densidad ósea, el diseño del implante y la técnica quirúrgica afectan la estabilidad primaria (Al-Sabbagh et al., 2019).",
+        "El hueso tipo IV presenta desafíos para la fijación clínica de los implantes (Alghamdi, 2018)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Osteointegración y Modificaciones de Superficie"
+    },
+    {
+      "t": "p",
+      "c": "La osteointegración, definida como la conexión directa estructural y funcional entre el hueso vivo organizado y la superficie de un implante sometido a carga, es el pilar del éxito de los implantes dentales (Alghamdi, 2018). Las modificaciones de la superficie del implante han sido un área de intensa investigación, con un enfoque en lograr una curación ósea más robusta y acelerada (De Bruyn et al., 2017). Estas mejoras en la topografía de la superficie, como las superficies nanotopográficas, no solo han resultado en tasas de supervivencia más altas, sino que también han permitido la implementación de protocolos de tratamiento quirúrgico y protésico más avanzados, como la colocación y carga inmediata (De Bruyn et al., 2017). La búsqueda de una osteointegración mejorada es continua, especialmente para superar los desafíos en condiciones óseas comprometidas (Alghamdi, 2018)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica del Implante",
+        "Impacto Clínico General",
+        "Referencia"
+      ],
+      "rows": [
+        [
+          "Diseño de rosca (e.g., expansiva/autorroscante)",
+          "Mejora la estabilidad primaria y la fijación mecánica, especialmente en hueso de baja densidad (Al-Sabbagh et al., 2019; Jung et al., 2018).",
+          "Al-Sabbagh et al., 2019; Jung et al., 2018"
+        ],
+        [
+          "Tratamiento de superficie (e.g., nanotopográfico)",
+          "Promueve una osteointegración más rápida y fuerte, aumentando las tasas de supervivencia y permitiendo protocolos de carga avanzados (De Bruyn et al., 2017; Griggs, 2017).",
+          "De Bruyn et al., 2017; Griggs, 2017"
+        ],
+        [
+          "Torque de inserción",
+          "Indicador clave de la estabilidad primaria, fundamental para el éxito de la osteointegración (Al-Sabbagh et al., 2019).",
+          "Al-Sabbagh et al., 2019"
+        ],
+        [
+          "Hueso tipo III-IV",
+          "Presenta desafíos para la estabilidad y fijación del implante; requiere diseños y técnicas optimizadas para mejorar la osteointegración (Alghamdi, 2018).",
+          "Alghamdi, 2018"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Tasas de Supervivencia y Factores de Éxito a Largo Plazo"
+    },
+    {
+      "t": "p",
+      "c": "Las tasas de supervivencia de los implantes dentales han sido consistentemente altas en las últimas décadas, superando el 90% en mandíbulas totalmente edéntulas en observaciones a 10 años (Alghamdi, 2018). Una revisión sistemática reportó una tasa de supervivencia global del 97% para 4115 implantes en 1732 pacientes (Waechter et al., 2017). Este éxito se atribuye en gran medida a las continuas modificaciones en el diseño del implante y la topografía de la superficie (De Bruyn et al., 2017). Factores como la longitud, el diámetro y el diseño del implante, así como la rugosidad de la superficie, son determinantes en los resultados clínicos y radiográficos (Jung et al., 2018; Griggs, 2017). Mantener niveles estables de hueso crestal periimplantario es crucial para la supervivencia a largo plazo, la estética y la salud periimplantaria (De Bruyn et al., 2017)."
+    },
+    {
+      "t": "h2",
+      "c": "Complicaciones y Consideraciones Clínicas"
+    },
+    {
+      "t": "p",
+      "c": "A pesar de las altas tasas de éxito, las complicaciones periimplantarias y la pérdida ósea son aspectos importantes a considerar. La salud periimplantaria y los niveles estables de hueso crestal son factores clave para el éxito a largo plazo (De Bruyn et al., 2017). Diversos factores pueden influir en la supervivencia y el fracaso de los implantes, incluyendo el diseño del cuello, el tipo de conexión implante-pilar, la longitud y el ancho del implante, el aumento óseo, el cambio de plataforma y la rugosidad de la superficie (Griggs, 2017). Las condiciones óseas comprometidas, como el hueso tipo IV, presentan un desafío particular, ya que la biomecánica de este tipo de hueso no ofrece una estabilidad adecuada a los implantes, lo que puede llevar a una menor fijación clínica (Alghamdi, 2018). La selección cuidadosa del implante y la técnica quirúrgica son esenciales para mitigar estos riesgos."
+    },
+    {
+      "t": "quote",
+      "c": "Las modificaciones de la superficie del implante se han centrado en una curación ósea más fuerte y rápida, lo que ha permitido mayores tasas de supervivencia del implante y ha posibilitado modificaciones en los protocolos de tratamiento quirúrgico y protésico.",
+      "author": "De Bruyn et al., Periodontol 2000, 2017"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué importancia tiene la estabilidad primaria en el éxito del implante?",
+      "a": "La estabilidad primaria es fundamental para la osteointegración y la supervivencia del implante, ya que asegura la ausencia de movilidad inmediata. Depende de la densidad ósea, el diseño del implante y la técnica quirúrgica (Al-Sabbagh et al., 2019)."
+    },
+    {
+      "q": "¿Cómo influyen las características de la superficie del implante en la osteointegración?",
+      "a": "Las modificaciones de la superficie, como los tratamientos nanotopográficos, promueven una curación ósea más rápida y fuerte. Esto mejora las tasas de supervivencia del implante y permite la aplicación de protocolos de carga más tempranos (De Bruyn et al., 2017)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Griggs JA.",
+      "titulo": "Dental Implants",
+      "revista": "Dent Clin North Am",
+      "año": "2017",
+      "vol": "61",
+      "num": "4",
+      "pags": "857-871",
+      "doi": "10.1016/j.cden.2017.06.007",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28886772/",
+      "verificada": true
+    },
+    {
+      "autores": "Jung RE, Al-Nawas B, Araujo M, Avila-Ortiz G, Barter S, Brodala N, et al.",
+      "titulo": "Group 1 ITI Consensus Report: The influence of implant length and design and medications on clinical and patient-reported outcomes",
+      "revista": "Clin Oral Implants Res",
+      "año": "2018",
+      "vol": "29 Suppl 16",
+      "num": "",
+      "pags": "69-77",
+      "doi": "10.1111/clr.13342",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/30328189/",
+      "verificada": true
+    },
+    {
+      "autores": "Waechter J, Leite FR, Nascimento GG, Carmo Filho LC, Faot F.",
+      "titulo": "The split crest technique and dental implants: a systematic review and meta-analysis",
+      "revista": "Int J Oral Maxillofac Surg",
+      "año": "2017",
+      "vol": "46",
+      "num": "1",
+      "pags": "116-128",
+      "doi": "10.1016/j.ijom.2016.08.017",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/27639295/",
+      "verificada": true
+    },
+    {
+      "autores": "De Bruyn H, Christiaens V, Doornewaard R, Jacobsson M, Cosyn J, Jacquet W, et al.",
+      "titulo": "Implant surface roughness and patient factors on long-term peri-implant bone loss",
+      "revista": "Periodontol 2000",
+      "año": "2017",
+      "vol": "73",
+      "num": "1",
+      "pags": "218-227",
+      "doi": "10.1111/prd.12177",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28000269/",
+      "verificada": true
+    },
+    {
+      "autores": "Alghamdi HS.",
+      "titulo": "Methods to Improve Osseointegration of Dental Implants in Low Quality (Type-IV) Bone: An Overview",
+      "revista": "J Funct Biomater",
+      "año": "2018",
+      "vol": "9",
+      "num": "1",
+      "pags": "",
+      "doi": "10.3390/jfb9010007",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29342830/",
+      "verificada": true
+    },
+    {
+      "autores": "Al-Sabbagh M, Eldomiaty W, Khabbaz Y.",
+      "titulo": "Can Osseointegration Be Achieved Without Primary Stability?",
+      "revista": "Dent Clin North Am",
+      "año": "2019",
+      "vol": "63",
+      "num": "3",
+      "pags": "461-473",
+      "doi": "10.1016/j.cden.2019.02.001",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31097138/",
+      "verificada": true
+    }
+  ]
+},
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "scanner-intraoral-2025-2026-11-17-9828",
+  "titulo": "Evaluación Clínica de Escáneres Intraorales: Avances y Métricas Clave en Odontología Digital",
+  "subtitulo": "Este artículo técnico explora los criterios esenciales para la evaluación de escáneres intraorales, destacando su impacto en la precisión, eficiencia y flujo de trabajo digital en la práctica odontológica moderna.",
+  "categoria": "tecnologia",
+  "chip": "Escáneres",
+  "fecha": "2026-11-17",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "📡",
+  "grad": "grad-3",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+  "img_credit": "Wikipedia — Intraoral scanner",
+  "img_link": "https://en.wikipedia.org/wiki/Intraoral%20scanner",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha experimentado una transformación significativa con la integración de los escáneres intraorales (IOS), que se han consolidado como una tecnología fundamental en la práctica clínica (Eggmann & Blatz, 2024). Estos dispositivos permiten la captura directa de impresiones ópticas, ofreciendo ventajas sobre los métodos convencionales, como una mayor comodidad para el paciente y una mayor eficiencia en el proceso de escaneado (Mangano et al., 2017; Eggmann & Blatz, 2024). El mercado de los IOS ha visto un aumento competitivo, impulsando la innovación en la captura continua de imágenes y el desarrollo de software avanzado para un ensamblaje de imágenes sin fisuras (Eggmann & Blatz, 2024)."
+    },
+    {
+      "t": "img",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/d/da/Cerec_55.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "alt": "Escáneres intraorales 2025 — Medit i900, iTero Lumina, Trios 5",
+      "caption": "Wikipedia — Intraoral scanner · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Métricas Clave en la Evaluación de Escáneres Intraorales: Trueness y Precision"
+    },
+    {
+      "t": "p",
+      "c": "La evaluación de la calidad de los escaneos intraorales se basa en métricas fundamentales como la trueness (exactitud) y la precision (precisión o repetibilidad). La trueness se refiere a la cercanía de una medición al valor verdadero, mientras que la precision describe la repetibilidad de las mediciones bajo las mismas condiciones. Diversos factores pueden influir en estas métricas, especialmente en el contexto de los escaneos de implantes dentales (Revilla-León et al., 2023). Se ha reportado que la iluminancia y la temperatura del color del ambiente pueden afectar la trueness y la precision de los escáneres intraorales (Kihara et al., 2020)."
+    },
+    {
+      "t": "list",
+      "items": [
+        "Las condiciones de iluminación ambiental pueden impactar la precisión de los escaneos de implantes (Revilla-León et al., 2023).",
+        "El patrón de escaneado utilizado por el operador influye en la precisión de los escaneos de implantes (Revilla-León et al., 2023).",
+        "El diseño del cuerpo de escaneado de implantes (ISB), incluyendo su material, geometría y diseño de retención, puede afectar la precisión (Revilla-León et al., 2023).",
+        "La ubicación del arco, la posición del implante y la distancia inter-implante son factores relacionados con el paciente que pueden influir en la precisión de los escaneos de implantes (Revilla-León et al., 2023).",
+        "La repetibilidad de los escáneres intraorales permite la fabricación de prótesis fijas en casos de edentulismo parcial (Kihara et al., 2020)."
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Velocidad de Escaneado y Experiencia del Paciente"
+    },
+    {
+      "t": "p",
+      "c": "Los avances en los escáneres intraorales modernos, que incluyen la captura continua de imágenes y un software avanzado para el ensamblaje, han hecho que el proceso de escaneado sea más eficiente (Eggmann & Blatz, 2024). Esta eficiencia contribuye a una experiencia más favorable para el paciente, mitigando la incomodidad asociada con la toma de impresiones convencionales (Eggmann & Blatz, 2024). La mejora en la velocidad y la facilidad de uso son aspectos clave en la adopción de esta tecnología en la práctica diaria."
+    },
+    {
+      "t": "h2",
+      "c": "Compatibilidad de Software y Conectividad con el Laboratorio"
+    },
+    {
+      "t": "p",
+      "c": "Una tendencia importante en el desarrollo de los escáneres intraorales es el cambio hacia interfaces de datos abiertas, lo que mejora notablemente la interoperabilidad entre diferentes sistemas y facilita la conectividad con los laboratorios dentales (Eggmann & Blatz, 2024). Esta apertura permite un flujo de trabajo digital más fluido, desde la adquisición de la impresión hasta el diseño y la fabricación de restauraciones. Sin embargo, la integración de los IOS en grandes instituciones dentales aún enfrenta desafíos, como la compatibilidad con los sistemas de registros de salud existentes y la gestión del almacenamiento de grandes volúmenes de datos (Eggmann & Blatz, 2024)."
+    },
+    {
+      "t": "h2",
+      "c": "Aplicaciones Clínicas y Limitaciones Actuales"
+    },
+    {
+      "t": "p",
+      "c": "Los escáneres intraorales han ampliado sus aplicaciones más allá del diseño y fabricación asistidos por computadora (CAD/CAM) (Eggmann & Blatz, 2024). Son adecuados para la fabricación de prótesis fijas en casos de edentulismo parcial, demostrando una repetibilidad aceptable (Kihara et al., 2020). No obstante, su uso presenta desafíos en situaciones más complejas. Se considera difícil utilizar escáneres intraorales para la fabricación de prótesis fijas de arco completo (Kihara et al., 2020). Además, la precisión de los escáneres intraorales al registrar arcos completamente edéntulos para la fabricación de prótesis removibles completas sigue siendo cuestionable, con valores de precisión que varían entre diferentes escáneres y regiones del arco edéntulo (Srivastava et al., 2023)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Factor",
+        "Impacto en la Precisión del Escaneado",
+        "Referencia Clave"
+      ],
+      "rows": [
+        [
+          "Condiciones de iluminación ambiental",
+          "Puede impactar la precisión de los escaneos de implantes y la trueness/precision general.",
+          "Revilla-León et al., 2023; Kihara et al., 2020"
+        ],
+        [
+          "Patrón de escaneado",
+          "Puede impactar la precisión de los escaneos de implantes.",
+          "Revilla-León et al., 2023"
+        ],
+        [
+          "Diseño del cuerpo de escaneado de implantes (ISB)",
+          "El material, geometría y diseño de retención pueden impactar la precisión.",
+          "Revilla-León et al., 2023"
+        ],
+        [
+          "Ubicación del arco, posición del implante y distancia inter-implante",
+          "Pueden influir en la precisión de los escaneos de implantes.",
+          "Revilla-León et al., 2023"
+        ],
+        [
+          "Arcos completamente edéntulos",
+          "La precisión varía entre escáneres y regiones, siendo un desafío clínico.",
+          "Srivastava et al., 2023"
+        ]
+      ]
+    },
+    {
+      "t": "quote",
+      "c": "Los escáneres intraorales han surgido como una tecnología fundamental en la odontología digital, con avances continuos que mejoran la eficiencia y la comodidad del paciente, aunque persisten desafíos en la integración y en ciertos escenarios clínicos complejos.",
+      "author": "Eggmann & Blatz, J Dent Res, 2024"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Son los escáneres intraorales tan precisos como las impresiones convencionales?",
+      "a": "La literatura ha investigado si las impresiones ópticas son tan precisas como las convencionales, con estudios que evalúan esta comparación para determinar su equivalencia clínica (Mangano et al., 2017)."
+    },
+    {
+      "q": "¿Qué factores pueden comprometer la precisión de un escaneo intraoral de implantes?",
+      "a": "Factores como las condiciones de iluminación ambiental, el patrón de escaneado, el diseño del cuerpo de escaneado de implantes (ISB), la ubicación del arco, la posición del implante y la distancia inter-implante pueden impactar la precisión de los escaneos (Revilla-León et al., 2023)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Revilla-León M, Lanis A, Yilmaz B, Kois JC, Gallucci GO.",
+      "titulo": "Intraoral digital implant scans: Parameters to improve accuracy",
+      "revista": "J Prosthodont",
+      "año": "2023",
+      "vol": "32",
+      "num": "S2",
+      "pags": "150-164",
+      "doi": "10.1111/jopr.13749",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37586762/",
+      "verificada": true
+    },
+    {
+      "autores": "Mangano F, Gandolfi A, Luongo G, Logozzo S.",
+      "titulo": "Intraoral scanners in dentistry: a review of the current literature",
+      "revista": "BMC Oral Health",
+      "año": "2017",
+      "vol": "17",
+      "num": "1",
+      "pags": "149",
+      "doi": "10.1186/s12903-017-0442-x",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29233132/",
+      "verificada": true
+    },
+    {
+      "autores": "Eggmann F, Blatz MB.",
+      "titulo": "Recent Advances in Intraoral Scanners",
+      "revista": "J Dent Res",
+      "año": "2024",
+      "vol": "103",
+      "num": "13",
+      "pags": "1349-1357",
+      "doi": "10.1177/00220345241271937",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/39382136/",
+      "verificada": true
+    },
+    {
+      "autores": "Kihara H, Hatakeyama W, Komine F, Takafuji K, Takahashi T, Yokota J, et al.",
+      "titulo": "Accuracy and practicality of intraoral scanner in dentistry: A literature review",
+      "revista": "J Prosthodont Res",
+      "año": "2020",
+      "vol": "64",
+      "num": "2",
+      "pags": "109-113",
+      "doi": "10.1016/j.jpor.2019.07.010",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/31474576/",
+      "verificada": true
+    },
+    {
+      "autores": "Srivastava G, Padhiary SK, Mohanty N, Molinero-Mourelle P, Chebib N.",
+      "titulo": "Accuracy of Intraoral Scanner for Recording Completely Edentulous Arches-A Systematic Review",
+      "revista": "Dent J (Basel)",
+      "año": "2023",
+      "vol": "11",
+      "num": "10",
+      "pags": "",
+      "doi": "10.3390/dj11100241",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/37886926/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
