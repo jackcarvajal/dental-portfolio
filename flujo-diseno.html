@@ -950,7 +950,22 @@ window.submitOrden     = window.submitOrden      || function(){};
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M13.479 9.883c-2.529-.706-3.349-1.119-3.349-1.958 0-.705.643-1.155 1.737-1.155 1.962 0 3.762.77 5.027 1.604l.758-4.63C16.133 2.884 14.364 2 12.148 2 8.337 2 5.5 4.176 5.5 7.666c0 3.107 2.132 4.614 5.607 5.578 2.375.647 3.036 1.15 3.036 1.983 0 .823-.741 1.244-1.96 1.244-1.843 0-4.022-.784-5.607-1.84L5.82 19.07C7.47 20.211 9.67 21 12.175 21c4.012 0 6.825-2.06 6.825-5.715 0-3.2-2.145-4.716-5.521-5.402z"/></svg>
                   💳 Pagar con tarjeta · Stripe
                 </button>
-                <p style="font-size:.72rem;color:#94a3b8;text-align:center;margin-top:6px;">Visa, Mastercard, American Express · Pago seguro SSL</p>
+                <p style="font-size:.72rem;color:#94a3b8;text-align:center;margin-top:6px;">Visa, Mastercard, American Express · Te enviamos el enlace de pago por WhatsApp</p>
+                <script>
+                /* Pago internacional con tarjeta. initStripe() se borró por error en abr-2026 (commit 376e464e) y el botón
+                   quedó sin función (no hacía nada para visitantes fuera de Colombia). Stripe aún no tiene llaves en
+                   Cloudflare, así que por ahora el botón abre WhatsApp con el resumen y el equipo envía el enlace de pago. */
+                function initStripe() {
+                    var val = function (id) { var el = document.getElementById(id); return el ? String(el.value || '').trim() : ''; };
+                    var st = (typeof STATE !== 'undefined' && STATE) ? STATE : {};
+                    var servicio = st.subtipoNombre || st.categoriaNombre || 'diseño CAD';
+                    var txt = 'Hola PRODIGY, quiero pagar mi pedido de diseño con tarjeta internacional.\n' +
+                        'Servicio: ' + servicio + ' · Cantidad: ' + (val('cantidad') || '1') +
+                        (val('nombreCliente') ? '\nNombre: ' + val('nombreCliente') : '') +
+                        '\n¿Me envían el enlace de pago?';
+                    window.open('https://wa.me/573212816716?text=' + encodeURIComponent(txt), '_blank', 'noopener');
+                }
+                </script>
             </div>
 
             <!-- CONFIRMACIÓN DE PAGO -->
