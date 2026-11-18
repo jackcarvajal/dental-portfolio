@@ -9,6 +9,15 @@
 
 ---
 
+## 2026-11-18 (c) — Auditoría del panel interno (app/panel-interno-operaciones.html)
+
+- 🔴→✅ **Radar de ventas roto entero:** consultaba `analytics_events` con columnas que no existen (`event`/`props`/`ts`; las reales son `evento`/`metadata`/`created_at`) → 400 silencioso, KPIs siempre en 0. Corregido (4 consultas + lectura de `metadata`); "Eventos locales" ahora lee `evento`/`pagina`.
+- 🔴→✅ **Carritos abandonados nunca se guardaban:** `js/prodigy-analytics.js` mandaba el beacon con `{event, props, ts}` → `/api/track-event` respondía 400 ("Falta campo evento"). Ahora usa `{evento, pagina, negocio, metadata}`. `?v=20261118` en las 9 páginas · SW `prodigy-v45`. Commit `28a00d8b`.
+- ✅ Redirección de no-admin: el panel tenía su propia copia del mapa de roles (sin alineadores/guias/exocad/blender/secretaria → los mandaba al panel de cliente). Ahora `ProdigyAuth.require('admin')` (mapa único de `auth-guard.js`).
+- ✅ Botón "Reset" del equipo: email dentro de `onclick` sin `escJ` → escapado.
+- 💡 Sin tocar (decide Alejandro): pestañas huérfanas `tab-equipo` (escribe en `perfiles`, 0 filas, y NO controla el acceso real: rol/activo viven en `app_metadata`, que maneja `gestionar-usuarios.html`) y `tab-staff`; `pedidos` = 0 filas (Pedidos/Torre/Fabricación/Despachos/Finanzas vacíos); `select('*')` de `pedidos` sin límite; eventos duplicados `page_view` vs `pageview`.
+- Paridad: el panel de Alejandro no tiene estos fallos (`lead_sources` sí tiene `ts`).
+
 ## 2026-11-18 (b) — QR → página de enlaces
 
 - /qr → /links?utm_source=qr&utm_medium=impreso (302). QR impresos y de artefactos apuntan a /qr. Nuevo qr-prodigy.svg/png + tarjeta-prodigy.png.
