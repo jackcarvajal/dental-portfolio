@@ -65,7 +65,7 @@
       "pasos": [
         "**Torre de control**: si tiene un número rojo hay urgencias o incidencias abiertas. Atiéndelas primero.",
         "**Bandeja de solicitudes**: solicitudes nuevas que llegaron por la web (escáner, domicilio, alineadores). Cotiza y responde.",
-        "**Pedidos**: revisa pagos pendientes y casos en producción.",
+        "**Pedidos**: revisa pagos pendientes y casos en producción. Mientras no entre ningún pedido web, Pedidos, Fabricación, Despachos y Finanzas están juntos en el grupo plegado **Pedidos web · aún sin pedidos** del menú; con el primer pedido vuelven solos a su sitio.",
         "**Despachos**: asigna a un mensajero los casos que ya pasaron control de calidad.",
         "**Alineadores (cuentas)**: revisa si el cliente reportó pagos para verificar."
       ],

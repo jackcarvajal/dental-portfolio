@@ -176,7 +176,7 @@
 | `abrirModalFabConfirm()` — modal genérico confirm callback | ~2644 |
 | `marcarPagoRecibido()` — usa modal-fab-confirm | ~2583 |
 | `enrutarAFabricacion()` / `_doEnrutar()` — usa modal-fab-confirm | ~2596 |
-| `abrirModalNuevoStaff()` — modal-nuevo-staff sin prompt | ~2660 |
+| `agruparModulosVacios()` — agrupa módulos de pedidos mientras estén en 0 | ~1370 |
 | `eliminarCasoConfirm()` / `confirmarDelCaso()` — modal-del-caso | ~2685 |
 
 ### app/login.html

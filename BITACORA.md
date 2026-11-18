@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-18 (d) — Panel interno: fuera Equipo/Staff, módulos vacíos agrupados
+
+- ✅ Quitadas las pestañas ocultas `tab-equipo` y `tab-staff` con sus modales (`modal-agente`, `modal-nuevo-staff`) y 16 funciones (−374 líneas). Eran código muerto (sin entrada en el menú) y `crearAgente()` usaba `sb.auth.signUp` con el rol en `user_metadata` (no da acceso real). El equipo se gestiona en `app/gestionar-usuarios.html` (menú "Equipo y roles", `/api/gestion-usuarios`: crear, roles en `app_metadata`, borrar).
+- ✅ `agruparModulosVacios()`: si `pedidos` (negocio prodigy) y `pedidos_doctor` están en 0, Pedidos, Fabricación, Despachos, Rutador, Pedidos del portal, Métricas del portal y Finanzas pasan a un grupo plegado "Pedidos web · aún sin pedidos" y el panel abre en Torre de control (`logs_incidencias` = 181). Con el primer pedido todo vuelve solo a su sitio. Nada borrado.
+- Paridad: Alejandro no tiene este panel.
+
 ## 2026-11-18 (c) — Visitas sin doble conteo + tope de pedidos
 
 - js/prodigy-analytics.js mandaba la visita como 'pageview' además del 'page_view' en línea de cada página → 7 páginas contaban doble (344 eventos 'pageview' desde ago-2026). Ahora usa solo 'page_view' y no lo repite si la página ya lo registra. Histórico sin tocar (metricas.html ya contaba solo page_view).

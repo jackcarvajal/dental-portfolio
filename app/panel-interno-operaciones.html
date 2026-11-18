@@ -557,77 +557,6 @@
 
     <!-- ═══════════ TAB EQUIPO ═══════════ -->
         </div>
-<div id="tab-equipo" class="tab-panel">
-        <div class="page-header">
-            <div>
-                <h1>Equipo <span style="color:var(--gold);">PRODIGY</span></h1>
-                <p>Crea agentes, asigna roles y gestiona accesos del equipo interno</p>
-            </div>
-            <button type="button" class="btn-primary" onclick="abrirModalAgente()">
-                <i class="fas fa-user-plus"></i> Nuevo Agente
-            </button>
-        </div>
-
-        <!-- KPIs equipo -->
-        <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
-            <div class="kpi-card k1"><div class="kpi-label">Operadores</div><div class="kpi-value" id="kpi-operators">—</div></div>
-            <div class="kpi-card k2"><div class="kpi-label">Mensajeros</div><div class="kpi-value" id="kpi-mensajeros">—</div></div>
-            <div class="kpi-card k3"><div class="kpi-label">Taller</div><div class="kpi-value" id="kpi-taller">—</div></div>
-            <div class="kpi-card k4"><div class="kpi-label">Activos total</div><div class="kpi-value" id="kpi-activos">—</div></div>
-        </div>
-
-        <div class="section-card">
-            <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;">
-                <h2><i class="fas fa-users-gear" style="color:var(--gold);margin-right:8px;"></i>Agentes registrados</h2>
-                <div style="display:flex;gap:8px;">
-                    <select id="filtro-rol-equipo" onchange="filtrarEquipo()" style="background:#1a1a2e;border:1px solid var(--border);color:#fff;padding:6px 10px;border-radius:8px;font-size:16px;">
-                        <option value="">Todos los roles</option>
-                        <option value="operator">Operador</option>
-                        <option value="mensajero">Mensajero</option>
-                        <option value="taller">Taller</option>
-                        <option value="inventario">Inventario</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                    <button type="button" class="btn-primary" style="padding:6px 12px;font-size:0.78rem;" onclick="cargarEquipo()">
-                        <i class="fas fa-rotate-right"></i>
-                    </button>
-                </div>
-            </div>
-            <div style="overflow-x:auto;">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th><th>Email</th><th>Rol</th>
-                        <th>Estado</th><th>Alta</th><th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-equipo">
-                    <tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- ═══════════ TAB STAFF / ROLES ═══════════ -->
-        </div>
-<div id="tab-staff" class="tab-panel">
-        <div class="page-header">
-            <div>
-                <h1>Operarios <span style="color:var(--gold);">/ Roles</span></h1>
-                <p>Asigna departamentos a cada operario. Los cambios aplican en su próximo inicio de sesión.</p>
-            </div>
-            <button type="button" class="btn-primary" onclick="cargarStaff()"><i class="fas fa-rotate-right"></i> Actualizar</button>
-        </div>
-        <div class="section-card">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
-                <h2 style="font-size:.95rem;font-weight:800;color:var(--gold);"><i class="fas fa-users-cog" style="margin-right:8px;color:var(--magenta);"></i>Staff registrado</h2>
-                <button type="button" class="btn-xs btn-gold" onclick="abrirModalNuevoStaff()"><i class="fas fa-plus"></i> Agregar operario</button>
-            </div>
-            <div id="staff-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;">
-                <p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Cargando…</p>
-            </div>
-        </div>
-    </div>
 
     <!-- ═══════════ TAB LEADS ═══════════ -->
     <div id="tab-leads" class="tab-panel">
@@ -745,50 +674,6 @@
     </div>
 
 <!-- ═══ MODAL CREAR AGENTE ═══ -->
-<div id="modal-agente" role="dialog" aria-modal="true" aria-labelledby="modal-agente-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:5000;align-items:center;justify-content:center;">
-    <div style="background:#0d1525;border:1px solid rgba(217,70,166,0.4);border-radius:18px;padding:32px;width:100%;max-width:480px;position:relative;box-shadow:0 0 0 1px rgba(212,175,55,0.15),0 24px 60px rgba(0,0,0,0.7);">
-        <button type="button" onclick="cerrarModalAgente()" aria-label="Cerrar diálogo" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#94a3b8;font-size:1.1rem;cursor:pointer;"><i class="fas fa-xmark"></i></button>
-        <h2 id="modal-agente-title" style="font-size:1.1rem;font-weight:900;margin-bottom:4px;color:#fff;">Nuevo Agente</h2>
-        <p style="font-size:0.76rem;color:#94a3b8;margin-bottom:22px;">El agente recibirá un correo para establecer su contraseña.</p>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-            <div>
-                <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Nombre completo</label>
-                <input autocomplete="off" id="ag-nombre" type="text" placeholder="Carlos López" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
-            </div>
-            <div>
-                <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Rol</label>
-                <select id="ag-rol" style="width:100%;padding:10px 12px;background:#0d1525;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;-webkit-appearance:none;">
-                    <option value="operator">Operador CAD/CAM</option>
-                    <option value="mensajero">Mensajero</option>
-                    <option value="taller">Taller</option>
-                    <option value="inventario">Inventario</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
-        </div>
-
-        <div style="margin-bottom:12px;">
-            <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Correo corporativo</label>
-            <input autocomplete="off" id="ag-email" type="email" placeholder="operador@prodigy.com" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
-        </div>
-
-        <div style="margin-bottom:20px;">
-            <label style="display:block;font-size:0.71rem;font-weight:700;color:#94a3b8;text-transform:uppercase;margin-bottom:4px;">Teléfono (opcional)</label>
-            <input autocomplete="off" id="ag-tel" type="tel" inputmode="tel" placeholder="+57 300 000 0000" style="width:100%;padding:10px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:16px;outline:none;">
-        </div>
-
-        <div id="modal-msg" style="display:none;padding:10px 12px;border-radius:8px;font-size:0.8rem;margin-bottom:14px;"></div>
-
-        <button type="button" id="btn-crear-agente" onclick="crearAgente()" style="width:100%;padding:13px;background:linear-gradient(90deg,#D946A6,#D4AF37,#D946A6);background-size:200% auto;color:#fff;border:none;border-radius:10px;font-weight:900;font-size:0.92rem;cursor:pointer;animation:btnShimmer 2.5s linear infinite;">
-            <i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación
-        </button>
-        <p style="font-size:0.68rem;color:#94a3b8;text-align:center;margin-top:10px;">
-            <i class="fas fa-envelope" style="color:#D4AF37;"></i>
-            El agente recibirá el link de activación en su correo. Válido por 1 hora.
-        </p>
-    </div>
-</div>
 
 <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
@@ -806,21 +691,6 @@
 </div>
 
 <!-- Modal: agregar nuevo operario -->
-<div id="modal-nuevo-staff" role="dialog" aria-modal="true" aria-labelledby="modal-staff-title" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#0a1525;border:1px solid rgba(0,210,255,.25);border-radius:14px;padding:24px;max-width:400px;width:100%;">
-    <div id="modal-staff-title" style="font-size:.95rem;font-weight:800;color:var(--cyan,#00d2ff);margin-bottom:16px;"><i class="fas fa-user-plus" style="margin-right:6px;" aria-hidden="true"></i>Nuevo operario</div>
-    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Email (debe estar en Supabase Auth)</label>
-    <input autocomplete="off" id="staff-email" type="email" placeholder="correo@ejemplo.com"
-      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:12px;">
-    <label style="font-size:.75rem;color:#94a3b8;display:block;margin-bottom:4px;">Nombre</label>
-    <input autocomplete="off" id="staff-nombre" type="text" placeholder="Nombre del operario"
-      style="width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:10px 14px;color:#fff;font-size:16px;outline:none;margin-bottom:18px;">
-    <div style="display:flex;gap:10px;justify-content:flex-end;">
-      <button type="button" onclick="cerrarModalNuevoStaff()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#94a3b8;padding:8px 18px;border-radius:8px;cursor:pointer;font-size:.82rem;">Cancelar</button>
-      <button type="button" onclick="confirmarNuevoStaff()" style="background:var(--cyan,#00d2ff);color:#000;border:none;padding:8px 20px;border-radius:8px;font-weight:800;cursor:pointer;font-size:.82rem;">Agregar</button>
-    </div>
-  </div>
-</div>
 
 <!-- Modal: confirmar eliminar caso portafolio -->
 <div id="modal-del-caso" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9500;align-items:center;justify-content:center;padding:20px;">
@@ -1489,6 +1359,7 @@ async function verificarAdmin() {
         // Cargar datos iniciales
         await cargarPedidos();
         cargarBadgeIncidencias();
+        agruparModulosVacios();
 
     } catch (e) {
         // Sin fallback de sessionStorage — si Supabase no responde, denegar acceso
@@ -1496,72 +1367,31 @@ async function verificarAdmin() {
     }
 }
 
-/* ══════════════════════════════════════════
-   TAB STAFF — Gestión de operarios y roles
-══════════════════════════════════════════ */
-const DEPT_CONFIG = {
-  diseno:    { label:'Diseño CAD',        color:'#00d2ff', icon:'fa-drafting-compass' },
-  fresado:   { label:'Fresado / Lab',     color:'#D4AF37', icon:'fa-cog'              },
-  impresion: { label:'Impresión 3D',      color:'#fb923c', icon:'fa-print'            },
-  taller:    { label:'Taller',            color:'#a78bfa', icon:'fa-tools'            },
-  mensajeria:{ label:'Mensajería',        color:'#25D366', icon:'fa-motorcycle'       }
-};
-
-async function cargarStaff() {
-  const grid = document.getElementById('staff-grid');
-  if (!grid) return;
-  grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Cargando…</p>';
-  const { data, error } = await sb.from('staff_departamentos').select('*').order('created_at');
-  if (error) { grid.innerHTML = `<p style="color:#f87171;">Error: ${esc(error.message)}</p>`; return; }
-  if (!data || !data.length) {
-    grid.innerHTML = '<p style="color:var(--muted);font-size:.85rem;grid-column:1/-1;">Sin operarios registrados. Agrega uno con el botón de arriba.</p>';
-    return;
-  }
-  grid.innerHTML = data.map(s => `
-    <div style="background:var(--card-bg);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <div>
-          <div style="font-size:.9rem;font-weight:800;">${esc(s.nombre||'Sin nombre')}</div>
-          <div style="font-size:.72rem;color:var(--muted);">${esc(s.email)}</div>
-        </div>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.75rem;color:${s.activo?'#00FF41':'#f87171'};">
-          <input type="checkbox" ${s.activo?'checked':''} onchange="toggleStaffActivo('${s.id}',this.checked)" style="accent-color:#00FF41;">
-          ${s.activo?'Activo':'Inactivo'}
-        </label>
-      </div>
-      <div style="font-size:.72rem;color:var(--muted);margin-bottom:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Departamentos:</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        ${Object.entries(DEPT_CONFIG).map(([key,cfg]) => {
-          const tiene = (s.departamentos||[]).includes(key);
-          return `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;padding:4px 10px;border-radius:20px;border:1px solid ${tiene?cfg.color:'rgba(255,255,255,.1)'};background:${tiene?cfg.color+'18':'transparent'};font-size:.72rem;font-weight:700;color:${tiene?cfg.color:'#64748b'};">
-            <input type="checkbox" ${tiene?'checked':''} style="display:none;" onchange="toggleDept('${s.id}','${key}',this.checked,'${escJ(s.email)}')">
-            <i class="fas ${cfg.icon}" style="font-size:.65rem;"></i> ${cfg.label}
-          </label>`;
-        }).join('')}
-      </div>
-    </div>`).join('');
+/* Módulos que solo viven de pedidos de la web (tablas pedidos y pedidos_doctor). Mientras no exista
+   ninguno se agrupan en un menú plegado y el panel abre en la Torre de control, para no recibir al
+   admin con pantallas vacías. Con el primer pedido vuelven solos a su sitio: no se borró nada. */
+const TABS_DE_PEDIDOS = ['pedidos', 'fabricacion', 'despachos', 'rutador', 'pedidos-doc', 'metricas', 'metricas-fin'];
+async function agruparModulosVacios() {
+    try {
+        if (todosLosPedidos.length) return;
+        const { count, error } = await sb.from('pedidos_doctor').select('id', { count: 'exact', head: true });
+        if (error || count) return;
+        const navDe = t => document.querySelector(`#sidebar .nav-item[onclick="switchTab('${t}',this)"]`);
+        const items = TABS_DE_PEDIDOS.map(navDe).filter(Boolean);
+        const primerGrupo = document.querySelector('#sidebar details.nav-group');
+        if (!items.length || !primerGrupo) return;
+        const grupo = document.createElement('details');
+        grupo.className = 'nav-group';
+        grupo.dataset.g = 'sin-pedidos';
+        const titulo = document.createElement('summary');
+        titulo.textContent = 'Pedidos web · aún sin pedidos';
+        titulo.title = 'Se activan solos cuando entre el primer pedido de la web o del portal del doctor';
+        grupo.appendChild(titulo);
+        items.forEach(a => grupo.appendChild(a));
+        primerGrupo.parentNode.insertBefore(grupo, primerGrupo);
+        if (document.getElementById('tab-pedidos').classList.contains('active')) switchTab('torre', navDe('torre'));
+    } catch (e) { console.warn('[agruparModulosVacios]', e); }
 }
-
-async function toggleStaffActivo(id, activo) {
-  const { error } = await sb.from('staff_departamentos').update({activo, updated_at: new Date().toISOString()}).eq('id', id);
-  if (error) { toast('Error: '+error.message,'error'); return; }
-  await _auditLog('TOGGLE_STAFF_ACTIVO', { staff_id: id, activo });
-  toast(activo ? 'Operario activado ✅' : 'Operario desactivado','success');
-}
-
-async function toggleDept(id, dept, agregar, email) {
-  const { data: row } = await sb.from('staff_departamentos').select('departamentos').eq('id',id).single();
-  let depts = row?.departamentos || [];
-  if (agregar) { if (!depts.includes(dept)) depts.push(dept); }
-  else         { depts = depts.filter(d => d !== dept); }
-  const { error } = await sb.from('staff_departamentos')
-    .update({departamentos: depts, updated_at: new Date().toISOString()}).eq('id', id);
-  if (error) { toast('Error: '+error.message,'error'); return; }
-  await _auditLog('TOGGLE_DEPARTAMENTO_STAFF', { staff_id: id, departamento: dept, agregar, email });
-  toast(`${email} — ${agregar?'agregado a':'removido de'} ${DEPT_CONFIG[dept]?.label||dept}`,'success');
-}
-
-// abrirModalNuevoStaff — definida abajo junto a los modales sin prompt()
 
 async function cerrarSesion() {
     await sb.auth.signOut();
@@ -1588,12 +1418,10 @@ function switchTab(tab, el) {
     panel.classList.add('active');
     panel.style.display = 'block';
 
-
     // Cargar datos al abrir tab por primera vez (un fallo de carga NO debe romper la navegación)
     try {
     if (tab === 'portafolio') cargarPortafolio();
     if (tab === 'clientes')   cargarClientes();
-    if (tab === 'equipo')     cargarEquipo();
     if (tab === 'leads')        cargarLeads();
     if (tab === 'pedidos-doc')  cargarPedidosDoc();
     if (tab === 'rutador')      cargarRutador();
@@ -2445,176 +2273,16 @@ function toast(msg, tipo = '') {
     toastTimer = setTimeout(() => { el.className = ''; }, 3500);
 }
 
-/* ══════════════════════════════════════════
-   EQUIPO — GESTIÓN DE AGENTES
-══════════════════════════════════════════ */
-const ROL_LABELS = {
-    admin: '👑 Admin', operator: '🎨 Operador', mensajero: '🚚 Mensajero',
-    taller: '🔧 Taller', inventario: '📦 Inventario', client: '👤 Cliente'
-};
-const ROL_COLORS = {
-    admin:'#D4AF37', operator:'#00d2ff', mensajero:'#25D366',
-    taller:'#D946A6', inventario:'#F59E0B', client:'#94a3b8'
-};
 
-let _equipoData = [];
 
-function abrirModalAgente() {
-    document.getElementById('modal-agente').style.display = 'flex';
-    document.getElementById('modal-msg').style.display = 'none';
-    ['ag-nombre','ag-email','ag-tel'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('ag-rol').value = 'operator';
-}
-function cerrarModalAgente() {
-    document.getElementById('modal-agente').style.display = 'none';
-}
 
-async function crearAgente() {
-    const nombre = document.getElementById('ag-nombre').value.trim();
-    const email  = document.getElementById('ag-email').value.trim().toLowerCase();
-    const rol    = document.getElementById('ag-rol').value;
-    const tel    = document.getElementById('ag-tel').value.trim();
-    const btn    = document.getElementById('btn-crear-agente');
-    const msg    = document.getElementById('modal-msg');
 
-    if (!nombre || !email) { showModalMsg('Nombre y correo son obligatorios.', 'err'); return; }
 
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> &nbsp;Creando cuenta...';
 
-    // 1. Crear usuario en Supabase Auth con contraseña temporal aleatoria
-    const tempPass = 'Prodigy@' + Math.random().toString(36).slice(2, 8).toUpperCase();
-    const { data: signData, error: signError } = await sb.auth.signUp({
-        email,
-        password: tempPass,
-        options: { data: { nombre, role: rol, telefono: tel } }
-    });
 
-    if (signError) {
-        showModalMsg(signError.message.includes('already')
-            ? 'Este correo ya está registrado.'
-            : signError.message, 'err');
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación';
-        return;
-    }
 
-    // 2. Insertar en tabla perfiles
-    if (signData?.user?.id) {
-        await sb.from('perfiles').upsert({
-            id: signData.user.id, nombre, email, rol, telefono: tel || null, activo: true
-        });
-    }
 
-    // 3. Enviar email de restablecimiento → el agente establece su propia contraseña
-    await sb.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/app/reset-password.html'
-    });
 
-    showModalMsg(`✓ Agente creado. Se envió el link de activación a ${email}`, 'ok');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-user-plus"></i> &nbsp;Crear Agente y Enviar Invitación';
-    cargarEquipo();
-}
-
-function showModalMsg(text, type) {
-    const el = document.getElementById('modal-msg');
-    el.style.display = 'block';
-    el.style.background = type === 'ok' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
-    el.style.border = type === 'ok' ? '1px solid rgba(34,197,94,0.35)' : '1px solid rgba(239,68,68,0.35)';
-    el.style.color  = type === 'ok' ? '#86efac' : '#f87171';
-    el.textContent  = text;
-}
-
-async function cargarEquipo() {
-    document.getElementById('tbody-equipo').innerHTML =
-        '<tr class="loading-row"><td colspan="6"><div class="spinner" style="margin:0 auto;"></div></td></tr>';
-
-    const { data, error } = await sb.from('perfiles')
-        .select('*')
-        .neq('rol', 'client')
-        .order('created_at', { ascending: false });
-
-    if (error) {
-        document.getElementById('tbody-equipo').innerHTML =
-            `<tr><td colspan="6" style="text-align:center;color:#f87171;padding:20px;">${esc(error.message)}</td></tr>`;
-        return;
-    }
-
-    _equipoData = data || [];
-    renderEquipo(_equipoData);
-
-    // KPIs
-    const count = (r) => _equipoData.filter(a => a.rol === r && a.activo).length;
-    document.getElementById('kpi-operators').textContent = count('operator');
-    document.getElementById('kpi-mensajeros').textContent = count('mensajero');
-    document.getElementById('kpi-taller').textContent = count('taller');
-    document.getElementById('kpi-activos').textContent = _equipoData.filter(a => a.activo).length;
-}
-
-function filtrarEquipo() {
-    const rol = document.getElementById('filtro-rol-equipo').value;
-    renderEquipo(rol ? _equipoData.filter(a => a.rol === rol) : _equipoData);
-}
-
-function renderEquipo(lista) {
-    const tbody = document.getElementById('tbody-equipo');
-    if (!lista.length) {
-        tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><i class="fas fa-users"></i><br><b>Aún no hay personal registrado</b><span style="font-size:.8rem;color:#64748b;margin-top:6px;display:block;font-weight:400;">Usa <b>Nuevo agente</b> para dar acceso a alguien del equipo y asignarle su rol (diseño, taller, mensajero…).</span></td></tr>';
-        return;
-    }
-    tbody.innerHTML = lista.map(a => `
-        <tr style="opacity:${a.activo ? 1 : 0.45};">
-            <td><strong>${esc(a.nombre)}</strong></td>
-            <td style="color:#94a3b8;font-size:0.82rem;">${esc(a.email)}</td>
-            <td><span style="background:${ROL_COLORS[a.rol]}22;color:${ROL_COLORS[a.rol]};border:1px solid ${ROL_COLORS[a.rol]}55;border-radius:20px;padding:3px 10px;font-size:0.72rem;font-weight:700;">${ROL_LABELS[a.rol] || esc(a.rol)}</span></td>
-            <td><span style="color:${a.activo ? '#00FF41' : '#f87171'};font-size:0.8rem;font-weight:700;">${a.activo ? '● Activo' : '○ Inactivo'}</span></td>
-            <td style="color:#94a3b8;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
-            <td>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button type="button" onclick="resetearContrasena('${escJ(a.email)}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
-                        <i class="fas fa-key"></i> Reset
-                    </button>
-                    <button type="button" onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
-                        <i class="fas fa-${a.activo ? 'ban' : 'check'}"></i> ${a.activo ? 'Desactivar' : 'Activar'}
-                    </button>
-                    <select aria-label="Cambiar rol" onchange="cambiarRol('${a.id}', this.value)" style="background:#0d1525;border:1px solid rgba(255,255,255,0.1);color:#94a3b8;border-radius:6px;padding:4px 6px;font-size:16px;cursor:pointer;">
-                        <option value="">Cambiar rol...</option>
-                        <option value="operator">Operador</option>
-                        <option value="mensajero">Mensajero</option>
-                        <option value="taller">Taller</option>
-                        <option value="inventario">Inventario</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-            </td>
-        </tr>
-    `).join('');
-}
-
-async function resetearContrasena(email) {
-    const { error } = await sb.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/app/reset-password.html'
-    });
-    toast(error ? 'Error al enviar: ' + error.message : `Link de reset enviado a ${email}`, error ? 'error' : 'ok');
-}
-
-async function toggleActivo(id, actual) {
-    const { error } = await sb.from('perfiles').update({ activo: !actual }).eq('id', id);
-    if (error) { toast('Error: ' + error.message, 'error'); return; }
-    await _auditLog('TOGGLE_PERFIL_ACTIVO', { perfil_id: id, activo: !actual });
-    toast(actual ? 'Agente desactivado' : 'Agente activado', 'ok');
-    cargarEquipo();
-}
-
-async function cambiarRol(id, nuevoRol) {
-    if (!nuevoRol) return;
-    const { error } = await sb.from('perfiles').update({ rol: nuevoRol }).eq('id', id);
-    if (error) { toast('Error: ' + error.message, false); return; }
-    await _auditLog('CAMBIAR_ROL_STAFF', { perfil_id: id, nuevo_rol: nuevoRol });
-    toast('Rol actualizado a ' + ROL_LABELS[nuevoRol], true);
-    cargarEquipo();
-}
 
 /* ══════════════════════════════════════════
    TAB LEADS JOURNAL
@@ -4472,26 +4140,6 @@ function ejecutarFabConfirm() {
   if (cb) cb();
 }
 
-function abrirModalNuevoStaff() {
-  document.getElementById('staff-email').value  = '';
-  document.getElementById('staff-nombre').value = '';
-  document.getElementById('modal-nuevo-staff').style.display = 'flex';
-  document.getElementById('staff-email').focus();
-}
-function cerrarModalNuevoStaff() {
-  document.getElementById('modal-nuevo-staff').style.display = 'none';
-}
-function confirmarNuevoStaff() {
-  const email  = document.getElementById('staff-email').value.trim().toLowerCase();
-  const nombre = document.getElementById('staff-nombre').value.trim() || email;
-  if (!email || !email.includes('@')) { toast('Email inválido', 'error'); return; }
-  cerrarModalNuevoStaff();
-  sb.from('staff_departamentos').insert({ email, nombre, departamentos: [], activo: true })
-    .then(({ error }) => {
-      if (error) toast('Error: ' + error.message, 'error');
-      else { toast('Operario agregado ✅', 'success'); cargarStaff(); }
-    });
-}
 
 let _delCasoId = null;
 function eliminarCasoConfirm(id) {
@@ -4574,7 +4222,7 @@ async function _auditLog(accion, datos) {
 
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
-  [cerrarModalFabConfirm, cerrarModalNuevoStaff, cerrarModalDelCaso, cerrarModalAgente, cerrarModalCotizar, cerrarEvidencia, cerrarModalResolver].forEach(fn => { try { fn(); } catch(_) {} });
+  [cerrarModalFabConfirm, cerrarModalDelCaso, cerrarModalCotizar, cerrarEvidencia, cerrarModalResolver].forEach(fn => { try { fn(); } catch(_) {} });
 });
 </script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{});</script>
