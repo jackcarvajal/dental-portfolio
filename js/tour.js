@@ -20,11 +20,12 @@
       nombre: 'el panel interno',
       pasos: [
         { sel: null, titulo: 'Bienvenido al centro de operaciones',
-          texto: 'Desde aquí controlas todo el laboratorio: pedidos, producción, despachos, equipo y portafolio. Te muestro lo esencial en 6 pasos.' },
+          texto: 'Desde aquí controlas todo el laboratorio: pedidos, producción, despachos, equipo y portafolio. Te muestro lo esencial en unos pocos pasos.' },
         { sel: '#midia', titulo: 'Tu resumen de hoy',
           texto: 'Lo primero que ves: cuántos pedidos hay, cuántos están en producción y cuántos listos para despachar. Si todo está en cero es porque aún no hay datos, no es un error.' },
-        { sel: '.nav-item[onclick*="pedidos"]', titulo: 'Pedidos — tu vista del día a día',
-          texto: 'Todos los casos con su estado, cliente y avance. Desde el menú de la izquierda te mueves entre secciones; cada una tiene su ayuda al pasar el mouse.' },
+        // Mientras no haya pedidos web, Pedidos queda en un grupo plegado y se resalta la Torre de control.
+        { sel: '.nav-item[onclick*="pedidos"], .nav-item[onclick*="torre"]', titulo: 'Tu vista del día a día',
+          texto: 'Pedidos y Torre de control: los casos con su estado y las alertas que necesitan atención. Desde el menú de la izquierda te mueves entre secciones; cada una tiene su ayuda al pasar el mouse.' },
         { sel: '#bg-side-btn', titulo: 'Buscar un caso (Ctrl+K)',
           texto: 'Busca cualquier caso por código, doctor o cliente desde cualquier pantalla, sin navegar. El atajo Ctrl+K funciona siempre.' },
         { sel: '#hist-side-btn', titulo: 'Actividad reciente',

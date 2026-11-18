@@ -25,8 +25,6 @@
     'torre':        'Alertas y casos que necesitan atención: retrasos, incidencias y vencimientos.',
     'fabricacion':  'Seguimiento de producción: fresado, impresión 3D y taller.',
     'clientes':     'Directorio de doctores y clínicas, con su historial de pedidos.',
-    'equipo':       'Miembros del equipo PRODIGY y su información de contacto.',
-    'staff':        'Crea usuarios internos y define qué puede ver cada rol (diseño, calidad, mensajero…).',
     'pedidos-doc':  'Pedidos que los doctores envían desde el portal de cliente.',
     'leads':        'Contactos y solicitudes de cotización que llegan desde la página web.',
     'portafolio':   'Sube casos terminados con fotos. Se publican de inmediato en el portafolio público de la web.',
@@ -46,7 +44,6 @@
     'cargarClientes':         'Vuelve a cargar el directorio de clientes.',
     'cargarDespachos':        'Actualiza los despachos pendientes y en ruta.',
     'cargarTorre':            'Refresca las alertas y casos que requieren atención.',
-    'cargarStaff':            'Vuelve a cargar la lista del equipo interno.',
     'exportarCSV':            'Descarga la información en un archivo CSV para abrir en Excel.',
     'subirCaso':              'Publica el caso en el portafolio público de la web.',
     'subirCasoSimple':        'Publica el caso en el portafolio público de la web.',
@@ -92,7 +89,7 @@
   /* Agrupación para la guía rápida */
   var GUIA = [
     ['Operación diaria', ['pedidos', 'rutador', 'despachos', 'torre', 'fabricacion']],
-    ['Clientes y equipo', ['clientes', 'equipo', 'staff', 'pedidos-doc', 'leads']],
+    ['Clientes', ['clientes', 'pedidos-doc', 'leads']],
     ['Portafolio', ['portafolio']],
     ['Analítica', ['metricas', 'metricas-fin', 'analytics', 'reportes']],
     ['Crecimiento', ['referidos', 'waitlist', 'newsletter']]
