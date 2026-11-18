@@ -22,6 +22,9 @@
 - ✅ `flujo-diseno`: botón «Pagar con tarjeta» internacional sin función (initStripe borrado en abr-2026) → abre WhatsApp. Sitemap de Alejandro con `reseñas` sin codificar → 404.
 - 🔴→✅ **Admins sin cuenta:** registro abierto con `mailer_autoconfirm: true` y `gerencia@`/`casos@prodigylabdental.com` en las listas de admin (código + 33 políticas RLS + 12 funciones) sin cuenta creada → cualquiera podía registrarse con ese correo y quedar admin. Con el OK de Alejandro se crearon las 2 cuentas (clave aleatoria desconocida, `app_metadata.role=admin`); el registro con esos correos ya responde «User already registered». Para entrar: «¿Olvidaste tu contraseña?». 🟡 Falta que Alejandro active «Confirm email» en Supabase.
 - ✅ SEO/accesibilidad: 47 títulos (≤60) y 32 descripciones (≤155) reescritos en las páginas en español de ambos sitios (og/twitter actualizados donde repetían el texto), 20 campos con aria-label (incluye el evaluador de implantes). Redactado por un agente Sonnet, revisado aquí.
+- ✅ gemini.js (ambos): lista blanca del cuerpo (texto, instrucción, temperatura/tokens); fuera tools/cachedContent/thinkingConfig. Probado con fetch simulado.
+- ✅ article.js (ambos): si la portada es miniatura de Wikimedia (400/429 a rastreadores), og:image y schema usan la imagen propia por defecto.
+- 🟡 www → dominio raíz: reglas listas (Cloudflare Single Redirect 301) pero el permiso automático bloqueó crearlas; falta aprobación de Alejandro.
 - Pendiente menor: gemini.js acepta el cuerpo completo del cliente (tools/config) → armarlo en el servidor; tope global para notify-staff/waitlist-notify; send-email de Alejandro detrás del de PRODIGY; www no redirige al dominio raíz (regla en Cloudflare); og:image de Wikimedia rotas en 5 artículos.
 
 ## 2026-11-18 (f) — Aviso de cookies reparado, íconos propios y livianos, 11 íconos en blanco
