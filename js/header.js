@@ -43,6 +43,7 @@
              path.startsWith('/revision-express') ||
              path.startsWith('/recibo-caso') ||
              path.startsWith('/offline') ||
+             path.startsWith('/blog/') ||
              publicPages.some(function(p){ return path === p || path === p+'/' || path.startsWith(p+'.') || path.startsWith(p+'?'); });
   if (skip) return;
   var hasCookie = document.cookie.split(';').some(function(c){
