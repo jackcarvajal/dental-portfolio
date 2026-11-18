@@ -2,6 +2,8 @@
 // porque Cloudflare Pages prioriza el archivo estático existente sobre las reglas de _redirects.
 // Las Pages Functions se evalúan ANTES de los assets estáticos, así que esto sí intercepta.
 const BLOCKED = [
+  /\.ps1$/i,                // scripts internos de auditoría (_auditoria.ps1)
+  /^\/\.eslintrc/i,
   /\.md$/i,
   /^\/sql\//i,
   /^\/supabase\//i,

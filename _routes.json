@@ -34,7 +34,9 @@
     "/SECURITY.md",
     "/SESIONES.md",
     "/TEST-FLUJOS.md",
-    "/VERIFICAR.md"
+    "/VERIFICAR.md",
+    "/_auditoria.ps1",
+    "/.eslintrc.json"
   ],
   "exclude": []
 }

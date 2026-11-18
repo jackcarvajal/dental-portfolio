@@ -1669,3 +1669,25 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   })();
 
 })();
+
+/* WhatsApp: todo enlace a 573212816716 sale con mensaje y con la página de origen, para saber qué
+   página trae a cada cliente. Si el botón no traía texto, se arma uno con el título de la página. */
+(function () {
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href*="wa.me/573212816716"]') : null;
+    if (!a) return;
+    try {
+      var u = new URL(a.href), t = u.searchParams.get('text') || '';
+      var en = window._phdrIdiomaPagina && window._phdrIdiomaPagina() === 'en';
+      if (!t) {
+        var titulo = (document.title || '').split('|')[0].split(' — ')[0].trim();
+        t = en ? "Hi PRODIGY, I'm writing from your page «" + titulo + '».' : 'Hola PRODIGY, les escribo desde su página «' + titulo + '».';
+      }
+      if (t.indexOf('prodigylabdental.com') === -1) {
+        var ruta = location.pathname.replace(/\.html$/, '');
+        t += '\n\n— ' + (en ? 'from ' : 'desde ') + 'prodigylabdental.com' + (ruta === '/' ? '' : ruta);
+      }
+      a.href = 'https://wa.me/573212816716?text=' + encodeURIComponent(t);
+    } catch (err) {}
+  }, true);
+})();

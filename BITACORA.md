@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-18 — Seguridad RPC + QR + WhatsApp con origen
+
+- ⏳ SQL PENDIENTE de correr: sql/seguridad-rpc-publicas-2026.sql — cierra 25 funciones SECURITY DEFINER que anon podía ejecutar (la grave: generar_url_firmada firmaba cualquier archivo del bucket «casos») + search_path en 34 funciones. Base compartida: sirve para PRODIGY y Alejandro.
+- /wa y /wa-en → WhatsApp 573212816716 con mensaje (para QR impresos y bio de redes).
+- QR oficiales en assets/qr/ (WhatsApp /wa, /links, web, tarjetas 1080×1350) verificados con jsQR. El generador de los artefactos tenía mal el Reed-Solomon (no escaneaban): reparado.
+- header.js: todo enlace a WhatsApp sale con «— desde prodigylabdental.com/<página>»; si no tenía texto, se arma con el título de la página. Bump ?v=20261118a en 56 páginas.
+- _auditoria.ps1 y .eslintrc.json bloqueados (middleware + _routes).
+
 ## 2026-11-17 · noche  (Portafolio con enlace directo por tipo + protocolo alineadores)
 
 - 🟡 **`/portafolio?tipo=alineadores`** abre el portafolio ya filtrado (cualquier `data-type` del filtro sirve: estetica, implantes…). Para mandar por WhatsApp. SW `prodigy-v44`.
