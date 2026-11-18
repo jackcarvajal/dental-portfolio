@@ -13,7 +13,8 @@
 
 - 🟡 **`/portafolio?tipo=alineadores`** abre el portafolio ya filtrado (cualquier `data-type` del filtro sirve: estetica, implantes…). Para mandar por WhatsApp. SW `prodigy-v44`.
 - ✅ **Protocolo WhatsApp:** alineadores USD 150 por caso de ambas arcadas, pagado **30 viabilidad + 120 al aprobar la planeación** (excepción al 100% anticipado); pago SPEI en México; regla nueva 5.11b: **nunca mandar clientes a la página de CallMeBot** (número + texto directo). Igual en el Claude Doc.
-- 🔴 Portafolio público muestra un caso con nombre de paciente: **"Pte. David Olivo Superior Inferior"** (`casos_portafolio` id `caso-1784826632765`) → renombrar (Habeas Data).
+- 🔴→✅ Caso del portafolio con nombre de paciente en el título (`casos_portafolio` id `caso-1784826632765`) → renombrado a **"Plan de tratamiento 11 Alineadores Superiores e Inferiores"** (UPDATE por id, pedido por Alejandro). Revisados los 21 casos públicos (título + descripción): ningún otro nombre de persona.
+- 💡 `caso-1784823513121` (13 sup + 12 inf) es de alineadores pero tiene `type` vacío → no sale en `?tipo=alineadores` (muestra 6, serían 7).
 
 ## 2026-11-17 · tarde  (Auditoría SEO /en: breadcrumbs corregidos + og/twitter únicos)
 
