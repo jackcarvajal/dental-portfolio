@@ -101,6 +101,17 @@
     auto(msg, '', r && r.stack);
   });
 
+  // Bloqueos de la política de seguridad (CSP, _headers): si un cambio deja por fuera un script legítimo,
+  // llega a «Reportes de la web» en vez de romper algo en silencio. Solo scripts y workers se envían solos.
+  document.addEventListener('securitypolicyviolation', function (e) {
+    var dir = e.effectiveDirective || e.violatedDirective || '';
+    var u = String(e.blockedURI || '');
+    if (/^(chrome|moz|safari-web|ms-browser)-extension:/.test(u) || /-extension:/.test(e.sourceFile || '')) return;
+    var host = /^https?:/.test(u) ? u.replace(/^(https?:\/\/[^/?#]+).*/, '$1') : (u || 'inline');
+    miga('csp', dir + ' bloqueó ' + host);
+    if (/^(script-src|worker-src)/.test(dir)) auto('La política de seguridad bloqueó ' + host + ' (' + dir + ')', clean(e.sourceFile || ''), '');
+  });
+
   // Peticiones que fallan (subidas a Storage, consultas…): solo se anotan, no se envían solas.
   if (_fetch) {
     window.fetch = function (input, init) {
