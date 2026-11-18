@@ -9,9 +9,13 @@
 
 ---
 
+## 2026-11-18 (b) — QR → página de enlaces
+
+- /qr → /links?utm_source=qr&utm_medium=impreso (302). QR impresos y de artefactos apuntan a /qr. Nuevo qr-prodigy.svg/png + tarjeta-prodigy.png.
+
 ## 2026-11-18 — Seguridad RPC + QR + WhatsApp con origen
 
-- ⏳ SQL PENDIENTE de correr: sql/seguridad-rpc-publicas-2026.sql — cierra 25 funciones SECURITY DEFINER que anon podía ejecutar (la grave: generar_url_firmada firmaba cualquier archivo del bucket «casos») + search_path en 34 funciones. Base compartida: sirve para PRODIGY y Alejandro.
+- ✅ SQL CORRIDO (18-nov, verificación 0/0): sql/seguridad-rpc-publicas-2026.sql — cierra 25 funciones SECURITY DEFINER que anon podía ejecutar (la grave: generar_url_firmada firmaba cualquier archivo del bucket «casos») + search_path en 34 funciones. Base compartida: sirve para PRODIGY y Alejandro.
 - /wa y /wa-en → WhatsApp 573212816716 con mensaje (para QR impresos y bio de redes).
 - QR oficiales en assets/qr/ (WhatsApp /wa, /links, web, tarjetas 1080×1350) verificados con jsQR. El generador de los artefactos tenía mal el Reed-Solomon (no escaneaban): reparado.
 - header.js: todo enlace a WhatsApp sale con «— desde prodigylabdental.com/<página>»; si no tenía texto, se arma con el título de la página. Bump ?v=20261118a en 56 páginas.

@@ -8,6 +8,7 @@
 # WhatsApp corto para QR impresos y bio de redes (si cambia el número, se corrige aquí y no se reimprime)
 /wa      https://wa.me/573212816716?text=Hola%20PRODIGY%20%F0%9F%91%8B%20quiero%20cotizar%20un%20trabajo%20de%20laboratorio%20dental.   302
 /wa-en   https://wa.me/573212816716?text=Hi%20PRODIGY%20%F0%9F%91%8B%20I%27d%20like%20a%20quote%20for%20a%20dental%20lab%20case.   302
+/qr      /links?utm_source=qr&utm_medium=impreso   302
 /MAPA_PROYECTO.json             /404.html  302
 # /servicios en pausa — no pública por ahora
 /servicios                      /mantenimiento  302
