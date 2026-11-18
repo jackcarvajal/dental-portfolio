@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-11-18 (f) — Aviso de cookies reparado, íconos propios y livianos, 11 íconos en blanco
+
+- 🔴→✅ **Aviso de cookies (footer.js) roto desde mayo:** `_pgAccept/_pgReject` vivían dentro del bloque en modo estricto y los botones las llaman con `onclick` en línea → «Can't find variable: _pgReject» (reporte R-20), el aviso no se cerraba y nadie podía aceptar Analytics. Ahora en `window`. Probado en vivo (antes) y local (después). Commit `12a23bc2`.
+- ✅ 11 íconos que salían en blanco (nombres que no existen en FA Free o estilo equivocado): WhatsApp con `fas`→`fab` (escáner a domicilio, flujo lab), alarm-clock→stopwatch (términos, ambos), file-certificate→file-circle-check (recibo), radar→satellite-dish, shield-check→shield-halved, sparkles→wand-magic-sparkles, user-stethoscope→user-doctor, party-horn→champagne-glasses, box-check→box-open (Alejandro mis-casos).
+- ✅ Font Awesome propio: `assets/font-awesome/fa.css` + `webfonts/` con solo los íconos usados (PRODIGY 339, Alejandro 248). CSS 102→29 KB, sólidos 153→29 KB, marcas 115→2 KB. Páginas públicas enlazan el local (ruta relativa); `header.js` inyecta el local fuera de /app; /app sigue con el CDN completo. Revisadas todas las públicas: 0 íconos sin glifo. **Si se usa un ícono nuevo en la web pública hay que regenerar el subconjunto** (scripts en el scratchpad de la sesión: `fa-meta/inventario.cjs` + `construir.cjs`).
+- `mapa-sitio.html` no cargaba Font Awesome (ícono en blanco) → enlazado.
+- CSP: Meta Pixel (`www.facebook.com` en img/connect) y `fonts.gstatic.com` estaban bloqueados → permitidos. La línea CSP de PRODIGY quedó en 1.950 de 2.000 caracteres: lo próximo que se agregue va en la 2ª política.
+- 💡 `unsafe-eval` se queda: el visor 3D de Spline (portada de PRODIGY y robot de Alejandro) lo usa. Probado quitándolo en 172 páginas: solo la portada de PRODIGY lo necesitó.
+- Reportes de la web revisados: R-1..13 y R-16 eran pruebas; R-14/15 ya no ocurren; R-17..19 (Alejandro, 4-nov) fueron una caída momentánea del CDN de Supabase (hoy carga y la firma SRI coincide).
+
 ## 2026-11-18 (e) — Respaldo por correo de los leads + CSP de scripts (PRODIGY y Alejandro)
 
 - `functions/api/notify-staff.js` (ambos repos): si algún aviso de CallMeBot no queda en cola, el mismo aviso sale por correo con Resend (PRODIGY: alertas@ → gerencia@; Alejandro: FROM_EMAIL → contacto@; `LEADS_EMAIL` lo cambia). Probado en local con fetch simulado.

@@ -149,7 +149,7 @@ body.ready { visibility: visible; }
     <div class="sidebar-logo">📦 Calidad</div>
     <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-chart-line"></i> Admin</a>
     <a href="operator-panel.html"         class="nav-item"><i class="fas fa-gears"></i> Producción</a>
-    <a href="calidad.html"                class="nav-item active" aria-current="page"><i class="fas fa-shield-check"></i> Calidad &amp; Despacho</a>
+    <a href="calidad.html"                class="nav-item active" aria-current="page"><i class="fas fa-shield-halved"></i> Calidad &amp; Despacho</a>
     <a href="contabilidad.html"           class="nav-item"><i class="fas fa-coins"></i> Contabilidad</a>
     <a href="mensajero.html"              class="nav-item"><i class="fas fa-motorcycle"></i> Mensajero</a>
     <a href="panel-interno-operaciones.html" class="nav-item"><i class="fas fa-briefcase"></i> Gestión Casos</a>
@@ -443,7 +443,7 @@ function renderCard(p, done) {
 
     const accion = done
         ? `<div class="btn-done"><i class="fas fa-check" style="margin-right:6px;"></i>Confirmado${p.nota_calidad ? ' — ' + escH(p.nota_calidad.slice(0,40)) : ''}</div>`
-        : `<button type="button" class="btn-primary" onclick="abrirModalCalidad('${escJ(p.id)}')"><i class="fas fa-shield-check" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
+        : `<button type="button" class="btn-primary" onclick="abrirModalCalidad('${escJ(p.id)}')"><i class="fas fa-shield-halved" style="margin-right:6px;"></i>Confirmar empaque &amp; despacho</button>`;
 
     return `
     <div class="case-card">
