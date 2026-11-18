@@ -16,6 +16,7 @@
 - Paridad: Alejandro no tiene este panel.
 - ✅ Tour del panel: ya no dice «6 pasos» (eran 7) y el paso del día a día resalta Pedidos o, si está plegado, la Torre de control. `panel-tips.js` sin los textos de Equipo/Staff. `?v=20261118a` de tour.js (13 páginas) y panel-tips.js (22).
 - ✅ SQL corrido por Alejandro: `sql/portafolio-ocultar-sin-anonimizar-2026.sql` ocultó (visible=false, sin borrar) los 3 casos con la cara del paciente sin gafas (Boca Completa, Carillas, Rehabilitación Estética; negocio 'ambos'). Verificado por la API pública: 18 visibles en cada web, ninguno de los 3.
+- 💡 Mismo día, Alejandro decidió publicarlos así («así se vea la foto no pasa nada») → visible=true otra vez (21 visibles en cada web). No volver a ocultarlos.
 - 💡 Rendimiento revisado: Font Awesome ya carga sin bloquear (preload) en todas las páginas públicas de los dos sitios y gtag ya baja después del load. Lo que queda es el peso de las fuentes de íconos (~250 KB la primera visita); reducirlo exige instalar fonttools para hacer un subconjunto propio.
 
 ## 2026-11-18 (c) — Visitas sin doble conteo + tope de pedidos
