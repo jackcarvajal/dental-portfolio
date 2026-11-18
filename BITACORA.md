@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-18 (e) — Respaldo por correo de los leads + CSP de scripts (PRODIGY y Alejandro)
+
+- `functions/api/notify-staff.js` (ambos repos): si algún aviso de CallMeBot no queda en cola, el mismo aviso sale por correo con Resend (PRODIGY: alertas@ → gerencia@; Alejandro: FROM_EMAIL → contacto@; `LEADS_EMAIL` lo cambia). Probado en local con fetch simulado.
+- `_headers` (ambos): segunda `Content-Security-Policy` que limita scripts a una lista de dominios (antes `https:` = cualquiera) + `form-action` y `frame-ancestors`. Dos políticas se cumplen a la vez, así no se pasa el límite de 2.000 caracteres por línea. Probada inyectándola en 14 páginas reales: 0 violaciones de scripts.
+- Arreglos a la CSP actual encontrados en la prueba: PRODIGY bloqueaba el CSS de banderas (jsdelivr), un ícono de Spline y `google.com.co`; Alejandro bloqueaba GA4 (`analytics.google.com`, `www.google.com/g/collect`) y audiencias de Ads; ninguno dejaba enviar a Cloudflare Web Analytics.
+- Artefactos humanizados (catálogo, folletos, papelería, brochures, kit digital): fondos planos, un acento, sin rótulos en mayúsculas espaciadas, sin píldoras/rombos, sin rayas largas y titulares concretos. Kit digital: descargas por la capacidad `downloads`.
+
 ## 2026-11-18 (d) — Panel interno: fuera Equipo/Staff, módulos vacíos agrupados
 
 - ✅ Quitadas las pestañas ocultas `tab-equipo` y `tab-staff` con sus modales (`modal-agente`, `modal-nuevo-staff`) y 16 funciones (−374 líneas). Eran código muerto (sin entrada en el menú) y `crearAgente()` usaba `sb.auth.signUp` con el rol en `user_metadata` (no da acceso real). El equipo se gestiona en `app/gestionar-usuarios.html` (menú "Equipo y roles", `/api/gestion-usuarios`: crear, roles en `app_metadata`, borrar).

@@ -10,6 +10,11 @@
  *   STAFF_1_PHONE / STAFF_1_APIKEY   → PRODIGY (573212816716)
  *   STAFF_2_PHONE / STAFF_2_APIKEY   → Alejandro (573219581949)
  *   STAFF_3_PHONE / STAFF_3_APIKEY   → (opcional)
+ *   RESEND_API_KEY                   → respaldo por correo si algún WhatsApp no sale
+ *   LEADS_EMAIL                      → (opcional) destino del respaldo; por defecto gerencia@
+ *
+ * CallMeBot es gratis pero frágil (cambia de número y a veces se llena). Si un aviso no queda en cola,
+ * el mismo aviso sale por correo para no perder el lead.
  */
 
 const CORS_OK = ['https://prodigylabdental.com'];
@@ -32,7 +37,7 @@ export async function onRequestPost({ request, env }) {
     const key   = env['STAFF_' + i + '_APIKEY'];
     if (phone && key) staff.push({ phone: String(phone).replace(/\D/g, ''), key });
   }
-  if (!staff.length) return new Response(JSON.stringify({ error: 'Sin staff configurado' }), { status: 503, headers: h });
+  if (!staff.length && !env.RESEND_API_KEY) return new Response(JSON.stringify({ error: 'Sin staff configurado' }), { status: 503, headers: h });
 
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rlKey = new Request('https://rl.internal/notify-staff-pg_' + ip);
@@ -74,5 +79,43 @@ export async function onRequestPost({ request, env }) {
     }
   }));
 
-  return new Response(JSON.stringify({ ok: true, enviados: resultados }), { status: 200, headers: h });
+  let correo = false;
+  if ((!resultados.length || resultados.some(r => !r.ok)) && env.RESEND_API_KEY) {
+    correo = await respaldoCorreo(env, { tipo, codigo, servicio, doctor, waLead, pais, contexto });
+  }
+
+  return new Response(JSON.stringify({ ok: true, enviados: resultados, correo }), { status: 200, headers: h });
+}
+
+const escH = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+async function respaldoCorreo(env, d) {
+  const wa = d.waLead.replace(/\D/g, '');
+  const fuente = 'font-family:Arial,Helvetica,sans-serif;';
+  const filas = [['Servicio', d.servicio], ['Dr(a)', d.doctor], ['WhatsApp', d.waLead], ['País', d.pais], ['Nº caso', d.codigo]]
+    .filter(f => f[1] && f[1] !== 's/n')
+    .map(([k, v]) => `<tr><td style="${fuente}padding:4px 14px 4px 0;color:#666;font-size:14px">${k}</td><td style="${fuente}padding:4px 0;font-size:14px"><b>${escH(v)}</b></td></tr>`)
+    .join('');
+  const html =
+    `<p style="${fuente}font-size:15px;margin:0 0 10px"><b>${escH(d.tipo)}</b></p>` +
+    `<table style="border-collapse:collapse">${filas}</table>` +
+    (d.contexto ? `<p style="${fuente}font-size:14px">${escH(d.contexto)}</p>` : '') +
+    (wa ? `<p style="${fuente}font-size:14px"><a href="https://wa.me/${wa}">Responder por WhatsApp</a></p>` : '') +
+    `<p style="${fuente}font-size:13px;color:#666">El aviso por WhatsApp no salió, por eso llega por correo. ` +
+    `<a href="https://prodigylabdental.com/app/bandeja-solicitudes.html">Abrir la bandeja de solicitudes</a></p>`;
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'PRODIGY Alertas <alertas@prodigylabdental.com>',
+        to: [env.LEADS_EMAIL || 'gerencia@prodigylabdental.com'],
+        subject: `${d.tipo}: ${d.servicio} · ${d.doctor}`.replace(/[\r\n]+/g, ' ').slice(0, 140),
+        html
+      })
+    });
+    return r.ok;
+  } catch (e) {
+    return false;
+  }
 }
