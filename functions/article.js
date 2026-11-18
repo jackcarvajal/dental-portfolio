@@ -21,6 +21,14 @@
 
 const DOMINIO = 'https://prodigylabdental.com';
 
+// Imagen para redes y datos estructurados. Las miniaturas de Wikimedia que guarda el journal (anchos no estándar,
+// p. ej. 1200px) responden 400/429 a los rastreadores: en esos casos se deja la imagen propia por defecto de la página.
+function imgSocial(meta) {
+  if (!meta || !meta.og_img) return null;
+  if (/^https?:\/\/upload\.wikimedia\.org\//i.test(meta.og_img)) return null;
+  return meta.og_img.startsWith('http') ? meta.og_img : DOMINIO + meta.og_img;
+}
+
 class PonerAttr {
   constructor(attr, valor) { this.attr = attr; this.valor = valor; }
   element(el) { el.setAttribute(this.attr, this.valor); }
@@ -53,7 +61,7 @@ function extraerMeta(txt, id) {
 // El JS del cliente igual lo sobre-escribe al renderizar (y añade FAQPage); esto es
 // para que Googlebot vea los datos estructurados en su PRIMERA pasada (sin JS).
 function construirSchema(meta, selfUrl) {
-  const img = meta.og_img ? (meta.og_img.startsWith('http') ? meta.og_img : DOMINIO + meta.og_img) : null;
+  const img = imgSocial(meta);
   const articulo = {
     '@type': ['Article', 'MedicalWebPage'],
     'headline': meta.titulo,
@@ -152,8 +160,8 @@ export async function onRequest(context) {
       .on('meta#tw-desc', new PonerAttr('content', meta.subtitulo))
       .on('p#article-sub', new PonerTexto(meta.subtitulo)); // subtítulo visible server-side (anti-CLS)
   }
-  if (meta && meta.og_img) {
-    const img = meta.og_img.startsWith('http') ? meta.og_img : DOMINIO + meta.og_img;
+  if (meta && imgSocial(meta)) {
+    const img = imgSocial(meta);
     rw = rw
       .on('meta#og-image', new PonerAttr('content', img))
       .on('meta#tw-image', new PonerAttr('content', img));

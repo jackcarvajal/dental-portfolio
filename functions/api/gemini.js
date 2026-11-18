@@ -111,11 +111,12 @@ export async function onRequestPost(context) {
   if (_bodyStr.length > 24000) {
     return new Response(JSON.stringify({ error: 'Mensaje demasiado largo.' }), { status: 413, headers: corsHeaders(origin) });
   }
+  // Solo pasa a Gemini lo que usa el chat: conversación en texto, instrucción de sistema y parámetros básicos.
+  // Antes el cliente podía mandar tools (búsqueda de Google, se cobra aparte), cachedContent o thinkingConfig
+  // y usar la clave del laboratorio como un modelo propio.
+  body = limpiarCuerpoGemini(body);
   // Cap de tokens de SALIDA — el cliente no puede pedir respuestas enormes (costo).
-  body.generationConfig = {
-    ...(body.generationConfig || {}),
-    maxOutputTokens: Math.min(Number(body.generationConfig?.maxOutputTokens) || 1024, 2048),
-  };
+  body.generationConfig.maxOutputTokens = Math.min(Number(body.generationConfig.maxOutputTokens) || 1024, 2048);
 
   // ── Conocimiento aprobado + privacidad ──
   const _c = request.headers.get('X-Canal') || body.canal;
@@ -194,4 +195,25 @@ function corsHeaders(origin) {
 export async function onRequestOptions(context) {
   const origin = context.request.headers.get('Origin') || '';
   return new Response(null, { status: 204, headers: corsHeaders(origin) });
+}
+
+// Lista blanca del cuerpo que se reenvía a Gemini (ver comentario en onRequestPost).
+function limpiarCuerpoGemini(b) {
+  const soloTexto = (parts, max) => (Array.isArray(parts) ? parts : [])
+    .filter(p => p && typeof p.text === 'string')
+    .map(p => ({ text: p.text.slice(0, max) }));
+  const contents = (Array.isArray(b && b.contents) ? b.contents : []).slice(-30)
+    .map(m => ({ role: m && m.role === 'model' ? 'model' : 'user', parts: soloTexto(m && m.parts, 8000) }))
+    .filter(m => m.parts.length);
+  const si = (b && (b.system_instruction || b.systemInstruction)) || null;
+  const siParts = si ? soloTexto(si.parts, 16000) : [];
+  const gc = (b && b.generationConfig) || {};
+  const generationConfig = {};
+  for (const k of ['temperature', 'topP', 'topK', 'maxOutputTokens', 'responseMimeType']) {
+    if (gc[k] !== undefined && gc[k] !== null) generationConfig[k] = gc[k];
+  }
+  const limpio = { contents, generationConfig, system_instruction: { parts: siParts.length ? siParts : [{ text: '' }] } };
+  if (b && b.canal !== undefined) limpio.canal = b.canal;              // lo lee y lo borra el propio handler
+  if (b && Array.isArray(b.safetySettings)) limpio.safetySettings = b.safetySettings.slice(0, 8);
+  return limpio;
 }
