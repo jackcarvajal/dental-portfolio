@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-18 (c) — Visitas sin doble conteo + tope de pedidos
+
+- js/prodigy-analytics.js mandaba la visita como 'pageview' además del 'page_view' en línea de cada página → 7 páginas contaban doble (344 eventos 'pageview' desde ago-2026). Ahora usa solo 'page_view' y no lo repite si la página ya lo registra. Histórico sin tocar (metricas.html ya contaba solo page_view).
+- Panel interno: la lista de pedidos carga los 500 más recientes (antes todos).
+- ?v=20261118b de prodigy-analytics.js en 9 páginas.
+
 ## 2026-11-18 (c) — Auditoría del panel interno (app/panel-interno-operaciones.html)
 
 - 🔴→✅ **Radar de ventas roto entero:** consultaba `analytics_events` con columnas que no existen (`event`/`props`/`ts`; las reales son `evento`/`metadata`/`created_at`) → 400 silencioso, KPIs siempre en 0. Corregido (4 consultas + lectura de `metadata`); "Eventos locales" ahora lee `evento`/`pagina`.

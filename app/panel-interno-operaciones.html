@@ -1631,7 +1631,8 @@ async function cargarPedidos() {
         const { data, error } = await sb
             .from('pedidos')
             .select('*').eq('negocio', 'prodigy')
-            .order('created_at', { ascending: false });
+            .order('created_at', { ascending: false })
+            .limit(500); // los 500 más recientes: sin tope, el panel se vuelve lento cuando haya miles de pedidos
 
         if (error) throw error;
 

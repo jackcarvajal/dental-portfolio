@@ -201,8 +201,12 @@ window.ProdigyAnalytics = (function() {
   }
 
   /* ── AUTO-INIT ──────────────────────────────────────────── */
-  // Track pageview
-  track('pageview', { referrer: document.referrer || '' });
+  // Visita: un solo nombre de evento ('page_view', el que lee app/metricas.html). Si la página ya
+  // registra su propia visita en un script en línea, aquí no se repite (antes se contaba doble).
+  var _yaMideVisita = [].some.call(document.querySelectorAll('script:not([src])'), function (s) {
+    return s.textContent.indexOf("'page_view'") > -1;
+  });
+  if (!_yaMideVisita) track('page_view', { referrer: document.referrer || '' });
 
   // Calculadora auto-init (si la página tiene selServicio)
   document.addEventListener('DOMContentLoaded', function() {
