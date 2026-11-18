@@ -15,7 +15,7 @@
 - ✅ `agruparModulosVacios()`: si `pedidos` (negocio prodigy) y `pedidos_doctor` están en 0, Pedidos, Fabricación, Despachos, Rutador, Pedidos del portal, Métricas del portal y Finanzas pasan a un grupo plegado "Pedidos web · aún sin pedidos" y el panel abre en Torre de control (`logs_incidencias` = 181). Con el primer pedido todo vuelve solo a su sitio. Nada borrado.
 - Paridad: Alejandro no tiene este panel.
 - ✅ Tour del panel: ya no dice «6 pasos» (eran 7) y el paso del día a día resalta Pedidos o, si está plegado, la Torre de control. `panel-tips.js` sin los textos de Equipo/Staff. `?v=20261118a` de tour.js (13 páginas) y panel-tips.js (22).
-- 🟡 SQL pendiente de correr: `sql/portafolio-ocultar-sin-anonimizar-2026.sql` oculta (visible=false, sin borrar) los 3 casos con la cara del paciente sin gafas (Boca Completa, Carillas, Rehabilitación Estética; negocio 'ambos').
+- ✅ SQL corrido por Alejandro: `sql/portafolio-ocultar-sin-anonimizar-2026.sql` ocultó (visible=false, sin borrar) los 3 casos con la cara del paciente sin gafas (Boca Completa, Carillas, Rehabilitación Estética; negocio 'ambos'). Verificado por la API pública: 18 visibles en cada web, ninguno de los 3.
 - 💡 Rendimiento revisado: Font Awesome ya carga sin bloquear (preload) en todas las páginas públicas de los dos sitios y gtag ya baja después del load. Lo que queda es el peso de las fuentes de íconos (~250 KB la primera visita); reducirlo exige instalar fonttools para hacer un subconjunto propio.
 
 ## 2026-11-18 (c) — Visitas sin doble conteo + tope de pedidos
