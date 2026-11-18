@@ -95,7 +95,9 @@ window.ProdigyAnalytics = (function() {
     window.addEventListener('beforeunload', function() {
       var d = JSON.parse(localStorage.getItem(_intentKey) || '{}');
       if (d && !d.completed) {
-        var payload = { event:'checkout_abandoned', session_id:_sid, page:window.location.pathname, ts:new Date().toISOString(), props:{ pasarela:d.pasarela, monto:d.monto, referencia:d.referencia } };
+        // Mismo contrato que track(): { evento, pagina, negocio, metadata } (antes iba {event, props, ts}
+        // y /api/track-event lo rechazaba con 400 → ningún carrito abandonado llegaba al panel).
+        var payload = { evento:'checkout_abandoned', pagina:window.location.pathname, negocio:'prodigy', metadata:{ session_id:_sid, pasarela:d.pasarela, monto:d.monto, referencia:d.referencia } };
         _sendToSupabaseBeacon(payload); // Beacon: garantiza envío en cierre de tab
         // Guardar en localStorage también
         var list = JSON.parse(localStorage.getItem('pg_abandonments') || '[]');

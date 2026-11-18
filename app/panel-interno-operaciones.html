@@ -1471,21 +1471,10 @@ async function verificarAdmin() {
         const esAdmin = ADMIN_EMAILS.includes(email.toLowerCase());
 
         if (!esAdmin) {
-            // Mantener sincronizado con DEST_MAP de js/auth-guard.js
-            const DEST_MAP = {
-                operator:             '/app/operator-panel.html',
-                mensajero:            '/app/mensajero.html',
-                encargado_inventario: '/app/inventario.html',
-                calidad:              '/app/calidad.html',
-                contabilidad:         '/app/contabilidad.html',
-                diseno:               '/app/operario-diseno.html',
-                taller:               '/app/taller.html',
-                fresado:              '/app/operario.html',
-                impresion:            '/app/operario.html',
-                client:               '/app/client-panel.html',
-            };
-            const staffRole = (user.app_metadata || {}).role || '';
-            window.location.href = DEST_MAP[staffRole] || '/app/client-panel.html';
+            // No-admin → a SU panel, con el mapa único de js/auth-guard.js (la copia que había aquí
+            // no tenía alineadores/guias/exocad/blender/secretaria y los mandaba al panel de cliente).
+            if (window.ProdigyAuth) { await window.ProdigyAuth.require('admin'); return; }
+            window.location.href = '/app/client-panel.html';
             return;
         }
 
@@ -2582,7 +2571,7 @@ function renderEquipo(lista) {
             <td style="color:#94a3b8;font-size:0.78rem;">${new Date(a.created_at).toLocaleDateString('es-CO')}</td>
             <td>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button type="button" onclick="resetearContrasena('${a.email}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
+                    <button type="button" onclick="resetearContrasena('${escJ(a.email)}')" title="Enviar link reset" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.35);color:#D4AF37;border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
                         <i class="fas fa-key"></i> Reset
                     </button>
                     <button type="button" onclick="toggleActivo('${a.id}', ${a.activo})" title="${a.activo ? 'Desactivar' : 'Activar'}" style="background:${a.activo ? 'rgba(239,68,68,0.1)' : 'rgba(34,197,94,0.1)'};border:1px solid ${a.activo ? 'rgba(239,68,68,0.35)' : 'rgba(34,197,94,0.35)'};color:${a.activo ? '#f87171' : '#86efac'};border-radius:6px;padding:4px 9px;font-size:0.72rem;cursor:pointer;">
@@ -3903,17 +3892,17 @@ async function cargarAnalytics() {
     try {
         const { data: abandonados } = await sb
             .from('analytics_events')
-            .select('session_id,props,ts')
-            .eq('event', 'checkout_abandoned')
-            .gte('ts', new Date(Date.now() - 7 * 86400000).toISOString())
-            .order('ts', { ascending: false })
+            .select('metadata,created_at')
+            .eq('evento', 'checkout_abandoned')
+            .gte('created_at', new Date(Date.now() - 7 * 86400000).toISOString())
+            .order('created_at', { ascending: false })
             .limit(20);
 
         const listEl = document.getElementById('lista-abandonados');
         document.getElementById('kpi-abandonados').textContent = abandonados ? abandonados.length : '—';
 
         if (abandonados && abandonados.length > 0) {
-            var altosValores = abandonados.filter(function(a){ return (a.props && a.props.monto > 500000); });
+            var altosValores = abandonados.filter(function(a){ return (a.metadata && a.metadata.monto > 500000); });
             if (altosValores.length > 0) {
                 listEl.innerHTML = '<div style="background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.35);border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">' +
                     '<span style="font-size:1.4rem;">🚨</span>' +
@@ -3923,12 +3912,12 @@ async function cargarAnalytics() {
             } else { listEl.innerHTML = ''; }
 
             listEl.innerHTML += abandonados.map(function(a) {
-                var p = a.props || {};
+                var p = a.metadata || {};
                 var montoNum = parseFloat(p.monto) || 0;
                 var monto = montoNum ? ('$' + Math.round(montoNum).toLocaleString('es-CO') + ' COP') : '—';
                 var ref = esc(p.referencia || '—');
                 var pasarela = esc((p.pasarela || 'desconocida').toUpperCase());
-                var fecha = new Date(a.ts).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
+                var fecha = new Date(a.created_at).toLocaleString('es-CO', { dateStyle:'short', timeStyle:'short' });
                 var esAltoValor = montoNum > 500000;
                 var descuento5 = montoNum ? Math.round(montoNum * 0.05) : 0;
                 var montoConDesc = montoNum ? ('$' + Math.round(montoNum * 0.95).toLocaleString('es-CO') + ' COP') : '—';
@@ -3942,7 +3931,7 @@ async function cargarAnalytics() {
                         : '') +
                     '¿Tuvo algún inconveniente técnico? Con gusto le ayudo a finalizar. 🚀'
                 );
-                var waCopyId = 'copy-wa-' + (a.session_id || ref).replace(/[^a-z0-9]/gi, '');
+                var waCopyId = 'copy-wa-' + ((a.metadata || {}).session_id || ref).replace(/[^a-z0-9]/gi, '');
                 return '<div style="display:flex;justify-content:space-between;align-items:flex-start;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05);flex-wrap:wrap;gap:10px;' + (esAltoValor ? 'background:rgba(244,67,54,.04);border-radius:8px;padding:14px;' : '') + '">' +
                     '<div style="flex:1;min-width:200px;">' +
                     '<div style="font-size:.88rem;font-weight:700;color:' + (esAltoValor ? '#F44336' : '#e2e8f0') + ';">' + (esAltoValor ? '🚨 ' : '') + monto + ' <span style="color:#94a3b8;font-weight:400;">vía</span> ' + pasarela + '</div>' +
@@ -3965,16 +3954,16 @@ async function cargarAnalytics() {
     try {
         const { data: trends } = await sb
             .from('analytics_events')
-            .select('props')
-            .eq('event', 'calculator_engagement')
-            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+            .select('metadata')
+            .eq('evento', 'calculator_engagement')
+            .gte('created_at', new Date(Date.now() - 30 * 86400000).toISOString());
 
         document.getElementById('kpi-cotizaciones').textContent = trends ? trends.length : '0';
 
         if (trends && trends.length > 0) {
             var counts = {};
             trends.forEach(function(t) {
-                var v = (t.props && t.props.valor) ? t.props.valor : 'unknown';
+                var v = (t.metadata && t.metadata.valor) ? t.metadata.valor : 'unknown';
                 counts[v] = (counts[v] || 0) + 1;
             });
             var sorted = Object.entries(counts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 8);
@@ -3991,15 +3980,15 @@ async function cargarAnalytics() {
     try {
         const { data: arts } = await sb
             .from('analytics_events')
-            .select('props')
-            .eq('event', 'article_read_complete')
-            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+            .select('metadata')
+            .eq('evento', 'article_read_complete')
+            .gte('created_at', new Date(Date.now() - 30 * 86400000).toISOString());
 
         document.getElementById('kpi-articulos').textContent = arts ? arts.length : '0';
 
         if (arts && arts.length > 0) {
             var artCounts = {};
-            arts.forEach(function(a) { var id = a.props && a.props.article_id || '?'; artCounts[id] = (artCounts[id] || 0) + 1; });
+            arts.forEach(function(a) { var id = a.metadata && a.metadata.article_id || '?'; artCounts[id] = (artCounts[id] || 0) + 1; });
             var artSorted = Object.entries(artCounts).sort(function(a,b){ return b[1]-a[1]; }).slice(0, 6);
             document.getElementById('tabla-articulos').innerHTML =
                 artSorted.map(function(e) {
@@ -4015,8 +4004,8 @@ async function cargarAnalytics() {
         const { data: stls } = await sb
             .from('analytics_events')
             .select('id')
-            .eq('event', 'file_validation_success')
-            .gte('ts', new Date(Date.now() - 30 * 86400000).toISOString());
+            .eq('evento', 'file_validation_success')
+            .gte('created_at', new Date(Date.now() - 30 * 86400000).toISOString());
         document.getElementById('kpi-stl-validos').textContent = stls ? stls.length : '0';
     } catch(e) {}
 
@@ -4025,8 +4014,8 @@ async function cargarAnalytics() {
     document.getElementById('eventos-locales').innerHTML = localEvts.length > 0
         ? localEvts.map(function(e) {
             return '<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.03);font-size:.8rem;">' +
-                '<span style="color:#e2e8f0;font-weight:600;">' + esc(e.event) + '</span>' +
-                '<span style="color:#64748b;">' + new Date(e.ts).toLocaleTimeString('es-CO') + ' · ' + esc(e.page) + '</span>' +
+                '<span style="color:#e2e8f0;font-weight:600;">' + esc(e.evento || e.event) + '</span>' +
+                '<span style="color:#64748b;">' + (e.ts ? new Date(e.ts).toLocaleTimeString('es-CO') + ' · ' : '') + esc(e.pagina || e.page) + '</span>' +
                 '</div>';
           }).join('')
         : '<div style="color:#94a3b8;text-align:center;padding:24px;font-size:.88rem;">Sin eventos locales aún — navega la web con la sesión activa</div>';
