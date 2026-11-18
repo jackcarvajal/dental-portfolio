@@ -380,7 +380,7 @@ async function render(c) {
           <button type="button" class="reaction-btn" onclick="selReaction(this,'Anatomía Top')"><span class="emoji">🦷</span><span>Anatomía Top</span></button>
           <button type="button" class="reaction-btn" onclick="selReaction(this,'Perfección')"><span class="emoji">💎</span><span>Perfección</span></button>
         </div>
-        <textarea class="nota-area" id="nota-text" placeholder="Escribe tu opinión técnica: proporción, anatomía, estética, material… Comentarios respetuosos y en español."></textarea>
+        <textarea class="nota-area" id="nota-text" placeholder="Escribe tu opinión técnica: proporción, anatomía, estética, material… Comentarios respetuosos y en español." aria-label="Tu opinión técnica sobre el caso"></textarea>
         <button type="button" class="btn-publicar" onclick="publicarNota('${escJ(String(c.id||''))}')"><i class="fas fa-paper-plane"></i> Publicar comentario</button>
         <div class="notas-list" id="notas-list" aria-live="polite" aria-label="Comentarios técnicos"></div>
       </div>

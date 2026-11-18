@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#050505">
 <title>Evaluador de implantes · PRODIGY Lab Dental</title>
-<meta name="description" content="Asistente paso a paso para evaluar tu planificación de implante: hueso, angulación, distancias al nervio y seno, mucosa y diseño protésico, con visualizador 3D y crítica clínica por IA basada en consensos ITI. PRODIGY Lab Dental.">
+<meta name="description" content="Evalúe su planificación de implante paso a paso: hueso, angulación, distancia al nervio y seno, con visor 3D y crítica por IA según consensos ITI.">
 <link rel="canonical" href="https://prodigylabdental.com/evaluador-implantes/">
 <meta property="og:title" content="Evaluador de implantes 3D · PRODIGY">
 <meta property="og:description" content="Pon los parámetros de tu caso, míralo en 3D y recibe una crítica clínica de respaldo con IA.">
@@ -185,7 +185,7 @@
     <div class="field" id="imgField">
       <label>Radiografía / DICOM <span class="help">opcional — súbela primero: la IA la analiza junto con tus parámetros</span></label>
       <button type="button" id="imgDrop" class="imgdrop">📎 Sube o arrastra: imagen (JPG / PNG / WEBP) o DICOM (.dcm de un corte)</button>
-      <input type="file" id="imgInput" accept="image/*,.dcm,application/dicom" hidden>
+      <input type="file" id="imgInput" accept="image/*,.dcm,application/dicom" hidden aria-label="Subir radiografía o imagen DICOM">
       <div id="imgPrev" class="imgprev" hidden><img id="imgThumb" alt="imagen adjunta"><button type="button" id="imgRemove">Quitar</button></div>
       <p class="disc">⚠️ <b>Apoyo, no diagnóstico.</b> Una imagen 2D sin calibración no permite mediciones exactas; del DICOM se usa <b>un corte</b>, no el volumen 3D. <b>No subas datos del paciente</b> (nombre, documento, cédula). La imagen <b>no se almacena</b>: solo se usa para esta evaluación.</p>
     </div>
@@ -222,12 +222,12 @@
     </div>
     <div class="field">
       <label>Angulación buco-lingual <span class="help">(ideal: −5° a +5°)</span></label>
-      <div class="rng"><input type="range" id="angulationBL" min="-20" max="20" step="1" value="0"><span class="val"><span id="angulationBL-v">0</span>°</span></div>
+      <div class="rng"><input type="range" id="angulationBL" min="-20" max="20" step="1" value="0" aria-label="Angulación buco-lingual en grados"><span class="val"><span id="angulationBL-v">0</span>°</span></div>
       <div class="rngmeta"><span>Lingual (−)</span><span>Recto</span><span>Vestibular (+)</span></div>
     </div>
     <div class="field">
       <label>Profundidad de plataforma <span class="help">(ideal: 2–4 mm subcrestal)</span></label>
-      <div class="rng"><input type="range" id="platformDepth" min="0" max="6" step="0.5" value="3"><span class="val"><span id="platformDepth-v">3</span> mm</span></div>
+      <div class="rng"><input type="range" id="platformDepth" min="0" max="6" step="0.5" value="3" aria-label="Profundidad de plataforma en milímetros"><span class="val"><span id="platformDepth-v">3</span> mm</span></div>
       <div class="rngmeta"><span>Epicrestal (0)</span><span>Sumergido (6)</span></div>
     </div>
     <div class="nav-row"><button class="btn ghost" data-prev>← Atrás</button><button class="btn prim" data-next>Siguiente: seguridad →</button></div>
@@ -239,20 +239,20 @@
     <div class="two">
       <div class="field">
         <label>Ancho óseo (vestíbulo-palatino) <span class="help">mm</span></label>
-        <div class="rng"><input type="range" id="boneWidth" min="3" max="12" step="0.5" value="7"><span class="val"><span id="boneWidth-v">7</span> mm</span></div>
+        <div class="rng"><input type="range" id="boneWidth" min="3" max="12" step="0.5" value="7" aria-label="Ancho óseo vestíbulo-palatino en milímetros"><span class="val"><span id="boneWidth-v">7</span> mm</span></div>
       </div>
       <div class="field">
         <label>Altura ósea disponible <span class="help">mm</span></label>
-        <div class="rng"><input type="range" id="boneHeight" min="5" max="20" step="0.5" value="13"><span class="val"><span id="boneHeight-v">13</span> mm</span></div>
+        <div class="rng"><input type="range" id="boneHeight" min="5" max="20" step="0.5" value="13" aria-label="Altura ósea disponible en milímetros"><span class="val"><span id="boneHeight-v">13</span> mm</span></div>
       </div>
     </div>
     <div class="field" id="f-nerve" hidden>
       <label>Distancia al nervio dentario <span class="help">(seguro ≥2 mm)</span></label>
-      <div class="rng"><input type="range" id="distanceNerve" min="0" max="15" step="0.5" value="4"><span class="val"><span id="distanceNerve-v">4</span> mm</span></div>
+      <div class="rng"><input type="range" id="distanceNerve" min="0" max="15" step="0.5" value="4" aria-label="Distancia al nervio dentario en milímetros"><span class="val"><span id="distanceNerve-v">4</span> mm</span></div>
     </div>
     <div class="field" id="f-sinus">
       <label>Distancia al seno maxilar <span class="help">(seguro ≥1.5 mm)</span></label>
-      <div class="rng"><input type="range" id="distanceSinus" min="0" max="15" step="0.5" value="6"><span class="val"><span id="distanceSinus-v">6</span> mm</span></div>
+      <div class="rng"><input type="range" id="distanceSinus" min="0" max="15" step="0.5" value="6" aria-label="Distancia al seno maxilar en milímetros"><span class="val"><span id="distanceSinus-v">6</span> mm</span></div>
     </div>
     <div class="two">
       <div class="field">
