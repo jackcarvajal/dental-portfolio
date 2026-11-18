@@ -315,6 +315,10 @@
       var b = document.getElementById('pfoot-cookie-banner');
       if(b){ b.style.transform='translateY(100%)'; setTimeout(function(){ b.remove(); }, 300); }
     }
+    // Los botones del aviso llaman a estas funciones con onclick en línea, que solo ve el ámbito global.
+    // Dentro de este bloque (modo estricto) no eran visibles: «Can't find variable: _pgReject» y el aviso no se cerraba.
+    window._pgAccept = _pgAccept;
+    window._pgReject = _pgReject;
 
     /* Mostrar después de 3 seg — el usuario ya vio valor antes de que aparezca */
     setTimeout(function() {
