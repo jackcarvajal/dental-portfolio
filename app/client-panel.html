@@ -339,6 +339,17 @@
       .svc-solo-co{cursor:pointer;}
       .badge-co{font-size:.66rem;font-weight:800;color:#fbbf24;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);border-radius:100px;padding:2px 9px;margin-top:2px;}
     </style>
+    <!-- Onboarding por especialidad (ortodoncia -> alineadores) -->
+    <div id="onboard-espec" style="display:none;background:linear-gradient(135deg,rgba(0,210,255,.14),rgba(217,70,166,.06));border:1px solid rgba(0,210,255,.35);border-radius:14px;padding:18px 22px;margin-bottom:18px;">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between;">
+        <div>
+          <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#00d2ff;margin-bottom:4px;"><i class="fas fa-tooth"></i> Tu especialidad: Ortodoncia</div>
+          <div style="font-size:.95rem;color:#e2e8f0;font-weight:600;">Planificación de alineadores — envía tu caso y te damos viabilidad y plan de tratamiento.</div>
+        </div>
+        <a href="/envia-alineadores" style="background:linear-gradient(135deg,#00d2ff,#0ea5e9);color:#001;border-radius:10px;padding:11px 20px;font-size:.84rem;font-weight:800;text-decoration:none;white-space:nowrap;"><i class="fas fa-arrow-right"></i> Enviar alineadores</a>
+      </div>
+      <div style="font-size:.72rem;color:#94a3b8;margin-top:8px;">También puedes pedir cualquier otro flujo aquí abajo.</div>
+    </div>
     <!-- CTA NUEVO CASO -->
     <div class="cta-nuevo" id="cta-nuevo">
         <h3>¿Listo para tu próximo caso?</h3>
@@ -1297,6 +1308,7 @@ async function loadByAuth(session) {
 
         _pedidos = pedidos || [];
         _nombreDoctor = user.user_metadata?.nombre || email.split('@')[0];
+        try { var _espec = (user.user_metadata?.especialidad || '').toLowerCase(); if (_espec.indexOf('ortodonci') >= 0 || _espec.indexOf('alineador') >= 0) { var _ob = document.getElementById('onboard-espec'); if (_ob) _ob.style.display = ''; } } catch(e){}
         document.getElementById('user-display').textContent = `, ${_nombreDoctor}`;
         document.getElementById('sidebar-role').textContent = 'Cliente'; // (antes user_metadata.rol: lo edita el propio usuario)
         window.PRD_UID = user.id;
