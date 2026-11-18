@@ -961,6 +961,11 @@ function filtrarMat(mat, btn) {
     const selMat = document.getElementById('filtro-material');
     if (selMat) { mats.forEach(m => { const o = document.createElement('option'); o.value = m; o.textContent = m; selMat.appendChild(o); }); if (!mats.length) selMat.style.display = 'none'; }
     renderCases(allCases);
+
+    // Enlace directo a un tipo para mandar por WhatsApp: /portafolio?tipo=alineadores
+    const tipoUrl = new URLSearchParams(location.search).get('tipo');
+    const btnTipo = tipoUrl && document.querySelector('#filterBtns .filter-btn[data-type="' + CSS.escape(tipoUrl) + '"]');
+    if (btnTipo) { filtrar(tipoUrl, btnTipo); btnTipo.scrollIntoView({ block: 'nearest', inline: 'center' }); }
 })();
 
 // ---- Protección básica de contenido ----

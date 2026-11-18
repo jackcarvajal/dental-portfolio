@@ -83,7 +83,7 @@ Destinatario: **PRODIGY Lab** — **Calle 147A # 54-52, barrio Victoria Norte, B
 | **Cliente nuevo** (primer caso) | **100% anticipado** al confirmar |
 | **Cliente existente** | **50% de abono** para iniciar · **50% contra entrega**, antes del despacho |
 
-Medios: Wompi / PSE / transferencia (Colombia) · Stripe / PayPal (internacional) · efectivo en laboratorio.
+Medios: Wompi / PSE / transferencia (Colombia) · Stripe / PayPal (internacional) · transferencia bancaria SPEI (solo México, en pesos al tipo de cambio del día; los datos de la cuenta los pasa Alejandro) · efectivo en laboratorio.
 
 **Cuentas de transferencia (las dos vigentes, sin comisión):**
 - Nequi / Daviplata / Bre-B **322 877 4481** — a nombre de Jessica Mendez
@@ -139,9 +139,16 @@ Decir siempre **"precio de referencia, la cotización exacta depende del caso"**
 | Guía quirúrgica | USD 60 | 48 h |
 | Guía compleja 4+ | USD 90 | 48 h |
 | Barra sobre implantes | USD 150 | 48–72 h |
-| Setup alineadores | USD 100 | 48–72 h |
+| Alineadores · planificación ambas arcadas + STL por etapa | USD 150 (30 + 120, ver abajo) | 48–72 h |
 | DSD / Smile Design | USD 80 | 48 h |
 | Full Arch Rehab | Cotización | 48–72 h |
+
+> **Alineadores — pago en 2 partes (aplica también a cliente nuevo, excepción a la regla del 100%):**
+> 1. **USD 30 — viabilidad y valoración**, es lo primero que se paga. Si el caso no se ejecuta, es lo único que se cobra.
+> 2. **USD 120 restantes** al aprobar la planeación; con ese pago se envían los modelos (STL de cada etapa, reporte IPR y plantilla de attachments).
+>
+> Incluye 1 ronda de ajustes a la planeación. Extracciones o tratamientos muy largos: se confirma al ver el caso.
+> Precio por volumen: lo decide Alejandro (piso USD 90). Se pide: STL ambas arcadas + mordida, panorámica, lateral y fotos.
 
 ### Prototipo de prueba (antes del trabajo final)
 Antes de pasar al trabajo definitivo ofrecemos un **prototipo de prueba** para validar estética,
@@ -264,6 +271,14 @@ oclusión y ajuste con el paciente.
 > Puedes ver el estado de tu caso en tiempo real en tu portal 👉 prodigylabdental.com/app/client-panel.html
 > Desde ahí apruebas diseños, descargas los STL y ves tu historial. Si aún no tienes cuenta, la creamos
 > en un minuto.
+
+### 5.11b Avisos por WhatsApp al cliente (CallMeBot)
+**Nunca mandar al cliente a la página de CallMeBot** (llena de publicidad, abruma y no ayuda). Se le da directo el número a guardar y el texto
+exacto a enviar; el código que le responde el bot nos lo reenvía y lo cargamos en el tablero. El número de CallMeBot
+cambia seguido: **verificarlo antes de enviarlo**. Si el bot está lleno, no se ofrece; los avisos le llegan al correo.
+> ✅ Avisos por WhatsApp: guarda este número **+34 ___ ___ ___** y envíale por WhatsApp:
+> *I allow callmebot to send me messages*
+> Te responde con un código; reenvíamelo por aquí y listo.
 
 ### 5.12 Escribe un paciente (no odontólogo)
 > Con gusto te orientamos. PRODIGY es un **laboratorio dental**: trabajamos únicamente con odontólogos y

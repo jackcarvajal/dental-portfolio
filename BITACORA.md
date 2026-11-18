@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-17 · noche  (Portafolio con enlace directo por tipo + protocolo alineadores)
+
+- 🟡 **`/portafolio?tipo=alineadores`** abre el portafolio ya filtrado (cualquier `data-type` del filtro sirve: estetica, implantes…). Para mandar por WhatsApp. SW `prodigy-v44`.
+- ✅ **Protocolo WhatsApp:** alineadores USD 150 por caso de ambas arcadas, pagado **30 viabilidad + 120 al aprobar la planeación** (excepción al 100% anticipado); pago SPEI en México; regla nueva 5.11b: **nunca mandar clientes a la página de CallMeBot** (número + texto directo). Igual en el Claude Doc.
+- 🔴 Portafolio público muestra un caso con nombre de paciente: **"Pte. David Olivo Superior Inferior"** (`casos_portafolio` id `caso-1784826632765`) → renombrar (Habeas Data).
+
 ## 2026-11-17 · tarde  (Auditoría SEO /en: breadcrumbs corregidos + og/twitter únicos)
 
 - 🔴→✅ **BreadcrumbList con bugs de copy-paste** en las /en:
