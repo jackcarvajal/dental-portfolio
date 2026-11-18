@@ -9,6 +9,20 @@
 
 ---
 
+## 2026-11-18 (g) — Auditoría con agentes: pagos, funciones y robots
+
+- Auditoría de seguridad de functions/ (agente Opus), páginas públicas (Sonnet) y chequeos mecánicos (Haiku), revisada y aplicada aquí.
+- ✅ PayPal (ambos): `paypal-capture` y `paypal-webhook` ahora exigen `currency_code === 'USD'` (antes solo comparaban el número: una orden en JPY con el mismo valor pagaba el pedido).
+- ✅ Stripe (ambos, aún sin llaves en Cloudflare): sin variables de Supabase ya no se salta la sesión; pedido obligatorio y verificación del precio en BD que falla cerrada; cobra 100 % (antes `es_nuevo_cliente` venía del navegador y el webhook marcaba Pagado con el 50 %). Alejandro: URLs de retorno validaban `pages.dev` en vez del dominio.
+- ✅ `referido-reward` (PRODIGY): exige `X-Cron-Key` y ya no devuelve el cupón (cualquiera con su pedido podía reclamar el cupón del referidor).
+- ✅ `expire-cotizaciones` mandaba a `wa-cotizacion` sin `X-Cron-Key` → 401 siempre; los recordatorios nunca salían. Arreglado.
+- ✅ `_middleware.js` (PRODIGY): `/docs/*` respondía 200 en público → bloqueado.
+- ✅ Alejandro `track-event`: limpia y recorta evento/página/negocio/metadata como PRODIGY.
+- ✅ robots.txt (ambos): los grupos propios de GPTBot, PerplexityBot, Google-Extended, ClaudeBot, OAI-SearchBot y YandexBot reemplazan al de `*` → no heredaban los Disallow de /app/, /api/, /sql/… Repetidos en cada grupo.
+- ✅ `flujo-diseno`: botón «Pagar con tarjeta» internacional sin función (initStripe borrado en abr-2026) → abre WhatsApp. Sitemap de Alejandro con `reseñas` sin codificar → 404.
+- 🔴 **Abierto (decisión de Alejandro):** registro abierto con `mailer_autoconfirm: true` y `gerencia@`/`casos@prodigylabdental.com` en las listas de admin (código + 33 políticas RLS + 12 funciones) **sin cuenta creada**: cualquiera puede registrarse con ese correo y quedar como admin. Arreglo: activar «Confirm email» en Supabase y/o crear esas 2 cuentas.
+- Pendiente menor: gemini.js acepta el cuerpo completo del cliente (tools/config) → armarlo en el servidor; tope global para notify-staff/waitlist-notify; send-email de Alejandro detrás del de PRODIGY; www no redirige al dominio raíz (regla en Cloudflare); og:image de Wikimedia rotas en 5 artículos.
+
 ## 2026-11-18 (f) — Aviso de cookies reparado, íconos propios y livianos, 11 íconos en blanco
 
 - 🔴→✅ **Aviso de cookies (footer.js) roto desde mayo:** `_pgAccept/_pgReject` vivían dentro del bloque en modo estricto y los botones las llaman con `onclick` en línea → «Can't find variable: _pgReject» (reporte R-20), el aviso no se cerraba y nadie podía aceptar Analytics. Ahora en `window`. Probado en vivo (antes) y local (después). Commit `12a23bc2`.

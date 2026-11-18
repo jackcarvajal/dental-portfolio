@@ -25,23 +25,83 @@ Disallow: /cdn-cgi/
 # Aparecer en ChatGPT Search
 User-agent: GPTBot
 Allow: /
+Disallow: /app/
+Disallow: /api/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /i18n/
+Disallow: /scripts/
+Disallow: /patients/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /cdn-cgi/
 
 # Aparecer en ChatGPT browsing y Bing Copilot
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /app/
+Disallow: /api/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /i18n/
+Disallow: /scripts/
+Disallow: /patients/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /cdn-cgi/
 
 # Aparecer en Perplexity AI
 User-agent: PerplexityBot
 Allow: /
+Disallow: /app/
+Disallow: /api/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /i18n/
+Disallow: /scripts/
+Disallow: /patients/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /cdn-cgi/
 
 # Aparecer en Google AI Overviews (Gemini en Google)
 User-agent: Google-Extended
 Allow: /
+Disallow: /app/
+Disallow: /api/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /i18n/
+Disallow: /scripts/
+Disallow: /patients/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /cdn-cgi/
 
 # ── Bots solo de entrenamiento — BLOQUEAR ────────────────────────
 # Aparecer en las respuestas y citaciones de Claude (Anthropic)
 User-agent: ClaudeBot
 Allow: /
+Disallow: /app/
+Disallow: /api/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /i18n/
+Disallow: /scripts/
+Disallow: /patients/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /cdn-cgi/
 
 User-agent: CCBot
 Disallow: /
@@ -80,6 +140,17 @@ Disallow: /
 
 User-agent: YandexBot
 Disallow: /app/
+Disallow: /api/
+Disallow: /sql/
+Disallow: /supabase/
+Disallow: /i18n/
+Disallow: /scripts/
+Disallow: /patients/
+Disallow: /caso.html
+Disallow: /recibo-caso.html
+Disallow: /revision-diseno.html
+Disallow: /patient.html
+Disallow: /cdn-cgi/
 
 User-agent: PetalBot
 Disallow: /

@@ -41,7 +41,7 @@ export async function onRequestGet({ request, env }) {
         if (!c.whatsapp) return;
         await fetch(waBase, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '127.0.0.1' },
+          headers: { 'Content-Type': 'application/json', 'CF-Connecting-IP': '127.0.0.1', 'X-Cron-Key': env.CRON_SECRET },
           body: JSON.stringify({ whatsapp: c.whatsapp, nombre: c.doctor, total: `$${Number(c.total||0).toLocaleString('es-CO')} COP`, codigo: c.codigo, dias: c.dias_restantes }),
         });
         waEnviados++;

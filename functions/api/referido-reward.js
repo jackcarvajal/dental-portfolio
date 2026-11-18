@@ -29,6 +29,12 @@ export async function onRequestPost({ request, env }) {
   const origin = request.headers.get('Origin') || '';
   const h = cors(origin);
 
+  // Solo uso interno (cron o trigger con el secreto): sin esto cualquiera que conozca su pedido y el código
+  // que usó podía reclamar el cupón CRED- destinado a quien lo refirió.
+  if (!env.CRON_SECRET || request.headers.get('X-Cron-Key') !== env.CRON_SECRET) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: h });
+  }
+
   // Rate limit: 10 rewards/hora por IP
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
   const rlKey = new Request('https://rl.internal/referido-reward_' + ip);
@@ -86,7 +92,7 @@ export async function onRequestPost({ request, env }) {
 
     // 2. Verificar que no se ha procesado ya
     if (ref.cupon_credito) {
-      return new Response(JSON.stringify({ ok: false, reason: 'ya_procesado', cupon: ref.cupon_credito }), { status: 200, headers: h });
+      return new Response(JSON.stringify({ ok: false, reason: 'ya_procesado' }), { status: 200, headers: h });
     }
 
     // 3. Generar cupón CRED-XXXXXXXX
@@ -138,7 +144,7 @@ export async function onRequestPost({ request, env }) {
       } catch (_) {}
     }
 
-    return new Response(JSON.stringify({ ok: true, cupon, codigo_referido }), { status: 200, headers: h });
+    return new Response(JSON.stringify({ ok: true, codigo_referido }), { status: 200, headers: h });
 
   } catch (err) {
     console.error('[referido-reward]', err);

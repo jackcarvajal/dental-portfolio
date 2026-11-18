@@ -6,6 +6,7 @@ const BLOCKED = [
   /^\/\.eslintrc/i,
   /\.md$/i,
   /^\/sql\//i,
+  /^\/docs\//i,             // documentación interna
   /^\/supabase\//i,
   /^\/scripts\//i,
   /^\/MAPA_PROYECTO\.json$/i,

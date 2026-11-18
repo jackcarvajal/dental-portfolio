@@ -133,9 +133,15 @@ export async function onRequestPost(context) {
   const ref = pu.reference_id || pu.custom_id;
   const capt = (pu.payments?.captures || [])[0] || {};
   const pagadoUSD = Number(capt.amount?.value || 0);
+  const monedaPagada = String(capt.amount?.currency_code || '');
   if (ref !== referencia) {
     console.error('[paypal-capture] referencia no coincide:', ref, '!=', referencia);
     return new Response(JSON.stringify({ error: 'La referencia del pago no coincide' }), { status: 400, headers: h });
+  }
+  // El número solo vale en dólares: una orden creada en otra moneda (p. ej. JPY) con el mismo valor no paga el pedido.
+  if (monedaPagada !== 'USD') {
+    console.error('[paypal-capture] moneda inesperada:', monedaPagada, 'ref', referencia);
+    return new Response(JSON.stringify({ error: 'La moneda del pago no coincide' }), { status: 400, headers: h });
   }
   if (!(pagadoUSD > 0) || Math.abs(pagadoUSD - esperadoUSD) > 0.5) {
     console.error('[paypal-capture] monto no coincide: pagado', pagadoUSD, 'esperado', esperadoUSD);

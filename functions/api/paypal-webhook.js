@@ -80,6 +80,7 @@ export async function onRequestPost(context) {
   const referencia = String(res.custom_id || res.invoice_id || '').trim();
   const captureId  = String(res.id || '');
   const pagadoUSD  = Number(res.amount?.value || 0);
+  const monedaPagada = String(res.amount?.currency_code || '');
   if (!referencia) return new Response('sin referencia', { status: 200 });
 
   // Pedido autoritativo
@@ -96,6 +97,10 @@ export async function onRequestPost(context) {
   const precioCOP  = Math.round(Number(pedido.precio_total) || 0);
   const montoTotal = Math.round(precioCOP * (1 + RECARGO_PAYPAL));
   const esperadoUSD = montoTotal / TASA_COP_USD;
+  if (monedaPagada !== 'USD') {
+    console.error('[paypal-webhook] moneda inesperada:', monedaPagada, 'ref', referencia);
+    return new Response('moneda no coincide', { status: 200 }); // 200 para que PayPal no reintente infinito
+  }
   if (!(pagadoUSD > 0) || Math.abs(pagadoUSD - esperadoUSD) > 0.5) {
     console.error('[paypal-webhook] monto no coincide: pagado', pagadoUSD, 'esperado', esperadoUSD, 'ref', referencia);
     return new Response('monto no coincide', { status: 200 }); // 200 para que PayPal no reintente infinito

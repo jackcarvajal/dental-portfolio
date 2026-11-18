@@ -39,8 +39,12 @@ export async function onRequestPost(context) {
     'Content-Type': 'application/json'
   };
 
-  // Verificar sesión Supabase — solo usuarios autenticados
-  if (env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+  // Verificar sesión Supabase — solo usuarios autenticados. Sin las variables de Supabase no se cobra (antes se
+  // saltaba la verificación y cualquiera creaba sesiones de pago).
+  if (!env.SUPABASE_URL || !env.SUPABASE_SERVICE_KEY) {
+    return new Response(JSON.stringify({ error: 'Pagos no disponibles' }), { status: 503, headers: corsH });
+  }
+  {
     const authHeader = request.headers.get('Authorization') || '';
     const token = authHeader.replace('Bearer ', '').trim();
     if (!token) {
@@ -71,7 +75,11 @@ export async function onRequestPost(context) {
 
   // Validar el monto contra el precio real del pedido en BD — evita que el
   // cliente manipule amount_cop desde el navegador antes de crear la sesión.
-  if (pedido_id && env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
+  // Obligatorio: sin pedido o sin poder comprobar el precio, no se crea la sesión (antes fallaba en abierto).
+  if (!pedido_id) {
+    return new Response(JSON.stringify({ error: 'Falta el pedido' }), { status: 400, headers: corsH });
+  }
+  {
     try {
       const pedRes = await fetch(
         `${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${encodeURIComponent(pedido_id)}&select=precio_total`,
@@ -79,12 +87,11 @@ export async function onRequestPost(context) {
       );
       const pedData = await pedRes.json();
       const precioReal = Number(pedData?.[0]?.precio_total);
-      if (pedRes.ok && pedData?.length && Number.isFinite(precioReal) && Math.abs(precioReal - amount_cop) > 1) {
+      if (!pedRes.ok || !pedData?.length || !Number.isFinite(precioReal) || Math.abs(precioReal - amount_cop) > 1) {
         return new Response(JSON.stringify({ error: 'El monto no coincide con el pedido' }), { status: 400, headers: corsH });
       }
     } catch (_) {
-      // Si la validación falla por error de red, se continúa — no bloquear
-      // el pago por un problema transitorio de la validación misma.
+      return new Response(JSON.stringify({ error: 'No se pudo verificar el pedido, intenta de nuevo' }), { status: 503, headers: corsH });
     }
   }
 
@@ -95,8 +102,11 @@ export async function onRequestPost(context) {
   const success_url = raw_surl && _ownDomain.test(raw_surl) ? raw_surl : 'https://prodigylabdental.com/app/success.html?session_id={CHECKOUT_SESSION_ID}';
   const cancel_url  = raw_curl && _ownDomain.test(raw_curl)  ? raw_curl  : 'https://prodigylabdental.com/flujo-diseno';
 
-  // Regla de cobro: cliente nuevo → 100%, cliente existente → 50%
-  const cobrar_pct  = es_nuevo_cliente ? 1.0 : 0.5;
+  // Regla de cobro: cliente nuevo → 100%, cliente existente → 50%. «es_nuevo_cliente» llegaba del navegador
+  // y el webhook marca el pedido como Pagado, así que alguien podía pagar la mitad y entrar a producción.
+  // Hasta que el servidor decida si el cliente es recurrente (con su historial en la BD), Stripe cobra el 100 %.
+  void es_nuevo_cliente;
+  const cobrar_pct  = 1.0;
   const cobrar_cop  = Math.round(amount_cop * cobrar_pct);
   const cobrar_cents = cobrar_cop * 100; // Stripe usa centavos (COP no tiene decimales)
 
