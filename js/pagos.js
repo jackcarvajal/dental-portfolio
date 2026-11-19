@@ -13,7 +13,7 @@
  * ─────────────────────────────────────────────────────────────
  * Recargos:
  *   Wompi:         +3%  (PSE / tarjeta / Nequi online — Colombia)
- *   PayPal:        +5.4% (checkout internacional)
+ *   PayPal:        +7% (checkout internacional)
  *   Paddle:        +7%  (Merchant of Record — internacional)
  *   Transferencia: +0%  (prioridad si total > $400.000 COP)
  */
@@ -46,7 +46,7 @@ const PAGOS_CONFIG = {
     },
     paypal: {
         clientId:  'AfJ71Yzfk4hmHF_hj6F9sdUqTLCK9tilmCegiXOTpScB81NhLLDuiKX2u37aY_E4swf8UO8QuC7jvaG',
-        recargo:   0.054,
+        recargo:   0.07,   // 7 % internacional (19-nov-2026)
         label:     'PayPal / Tarjeta Internacional',
         icono:     '🌎',
         currency:  'USD',
@@ -325,7 +325,7 @@ function cargarSDKPayPal() {
  * @param {object} opts - { referencia, containerId, onSuccess }
  *
  * El monto NO viene del cliente: el servidor lo calcula desde `precio_total`
- * del pedido en la BD (+5.4% que absorbe el cliente) al crear la orden, y la
+ * del pedido en la BD (+7% que absorbe el cliente) al crear la orden, y la
  * captura se verifica contra la API de PayPal (monto + referencia + COMPLETED)
  * antes de marcar Pagado. Ver functions/api/paypal-create-order.js y paypal-capture.js.
  */

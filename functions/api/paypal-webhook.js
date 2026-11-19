@@ -18,7 +18,7 @@
  *   Evento: PAYMENT.CAPTURE.COMPLETED
  */
 
-const RECARGO_PAYPAL = 0.054;
+const RECARGO_PAYPAL = 0.07;   // 7 % pago internacional (PayPal + cambio de moneda) — decisión de Alejandro 19-nov-2026
 const TASA_COP_USD   = 4200;
 const MAX_BODY       = 64 * 1024;
 const PP_BASE = (env) => (env.PAYPAL_ENV === 'sandbox') ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com';

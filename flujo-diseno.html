@@ -116,11 +116,11 @@
         .stl-btn {
             padding:7px 14px; background:rgba(0,210,255,.08);
             border:1px solid rgba(0,210,255,.25); border-radius:6px;
-            color:var(--accent-cad); font-size:.78rem; font-weight:700;
+            color:var(--accent-cad); font-size:.85rem; font-weight:700;
             cursor:pointer; transition:all .2s;
         }
         .stl-btn:hover { background:rgba(0,210,255,.16); border-color:var(--accent-cad); }
-        #stl-filename { font-size:.78rem; color:var(--text-secondary); margin-left:auto; }
+        #stl-filename { font-size:.85rem; color:var(--text-secondary); margin-left:auto; }
 
         /* ── ACCORDIONS ── */
         .accordion {
@@ -208,7 +208,7 @@
             display:flex; align-items:center; justify-content:center;
         }
         .guia-step-btn:hover { background:rgba(0,210,255,.2); }
-        .guia-toggle { display:flex; align-items:center; gap:7px; font-size:.76rem; color:#94a3b8; cursor:pointer; }
+        .guia-toggle { display:flex; align-items:center; gap:7px; font-size:.85rem; color:#94a3b8; cursor:pointer; }
 
         /* ── CHECKLIST ── */
         .checklist-matrix { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
@@ -233,7 +233,7 @@
         }
         .sop-banner i { color:#ef4444; font-size:1.3rem; flex-shrink:0; margin-top:2px; }
         .sop-banner p { font-size:.82rem; color:#e2e8f0; line-height:1.6; margin:0; }
-        .sop-banner code { background:rgba(212,175,55,.15); color:#fbbf24; padding:1px 5px; border-radius:3px; font-size:.78rem; }
+        .sop-banner code { background:rgba(212,175,55,.15); color:#fbbf24; padding:1px 5px; border-radius:3px; font-size:.85rem; }
 
         /* ── TIMELINE ── */
         .timeline-section { margin-bottom:20px; }
@@ -348,7 +348,7 @@
         body.light-theme .calc-total { background:linear-gradient(135deg,#f0ece0,#e8e2d0); }
     /* ── LEMON SQUEEZY + PAYPAL ── */
     .intl-fee-note {
-        font-size:.7rem;color:#94a3b8;text-align:center;
+        font-size:.8rem;color:#94a3b8;text-align:center;
         margin-top:6px;line-height:1.5;
     }
     body{ overflow-x: hidden;}.hamburger-menu,.theme-toggle{display:none!important}
@@ -436,7 +436,7 @@ window.submitOrden     = window.submitOrden      || function(){};
     <link rel="preload" href="js/header.js?v=20261118h" as="script">
 <script src="js/header.js?v=20261118h"></script>
 <main id="main-content">
-<div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.78rem;">
+<div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.85rem;">
   <i class="fas fa-circle-question" style="color:#00d2ff;" aria-hidden="true"></i>
   <span style="color:#94a3b8;">¿Tienes dudas sobre precios, tiempos o formatos?</span>
   <a href="/preguntas" style="color:#00d2ff;font-weight:700;white-space:nowrap;">Ver FAQ →</a>
@@ -444,11 +444,11 @@ window.submitOrden     = window.submitOrden      || function(){};
 
     <!-- BANNER CICLO DE PRODUCCIÓN -->
     <div id="banner-ciclo" style="background:linear-gradient(90deg,rgba(239,68,68,0.12),rgba(251,191,36,0.08),rgba(239,68,68,0.12));border-bottom:1px solid rgba(239,68,68,0.25);padding:10px 20px;text-align:center;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
-        <span style="display:inline-flex;align-items:center;gap:6px;font-size:0.78rem;font-weight:800;color:#fbbf24;">
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:800;color:#fbbf24;">
             <span style="width:8px;height:8px;border-radius:50%;background:#ef4444;display:inline-block;animation:pulseBanner 1.2s infinite;"></span>
             CICLO EN PRODUCCIÓN
         </span>
-        <span style="font-size:0.78rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
+        <span style="font-size:.85rem;color:#e2e8f0;" id="banner-msg">Cerramos recepción de casos hoy a las <strong style="color:#fbbf24;">5:00 PM</strong>. Envía tu orden antes para garantizar tu turno.</span>
         <button type="button" onclick="document.getElementById('banner-ciclo').style.display='none'" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:0.9rem;padding:0 4px;" aria-label="Cerrar">✕</button>
     </div>
     <style>@keyframes pulseBanner{0%,100%{opacity:1}50%{opacity:0.3}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
@@ -551,7 +551,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         </div>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label>Nombre Paciente * <span style="font-size:.7rem;color:#ef4444;">(ID del caso)</span></label>
+                                <label>Nombre Paciente * <span style="font-size:.8rem;color:#ef4444;">(ID del caso)</span></label>
                                 <input autocomplete="off" type="text" id="nombrePaciente" placeholder="María González" maxlength="50" aria-label="María González">
                                 <span class="tooltip-error" id="error-nombrePaciente" style="display:none"></span>
                             </div>
@@ -601,7 +601,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <iframe id="odo-frame" title="Odontograma — orden por diente" style="width:100%;border:0;display:block;min-height:720px" loading="lazy"></iframe>
                         </div>
                         <p id="odo-resumen" style="font-size:.88rem;color:var(--text-secondary);margin-top:10px">Aún no has asignado indicaciones a los dientes.</p>
-                        <p style="font-size:.72rem;color:var(--text-secondary);opacity:.8;margin-top:6px;line-height:1.45">exocad® y DentalDB® son marcas registradas de exocad GmbH. Los íconos de indicaciones y materiales se usan solo para que tu orden coincida con el software de diseño (interoperabilidad). PRODIGY Lab Dental no está afiliado, patrocinado ni respaldado por exocad.</p>
+                        <p style="font-size:.85rem;color:var(--text-secondary);opacity:.8;margin-top:6px;line-height:1.45">exocad® y DentalDB® son marcas registradas de exocad GmbH. Los íconos de indicaciones y materiales se usan solo para que tu orden coincida con el software de diseño (interoperabilidad). PRODIGY Lab Dental no está afiliado, patrocinado ni respaldado por exocad.</p>
 
                         <details class="otros-servicios" id="otros-servicios">
                             <summary>¿Tu caso no es por diente? Alineadores, cubeta, férulas… <span>Ver otros servicios</span></summary>
@@ -654,7 +654,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <input type="checkbox" id="express-cad" onchange="calcularTotal()" style="width:18px;height:18px;accent-color:#ef4444;cursor:pointer;flex-shrink:0;">
                                 <div>
                                     <strong style="color:#f87171;">⚡ Entrega Express 24h</strong>
-                                    <p style="font-size:.76rem;color:var(--text-secondary);margin-top:2px;font-weight:400 !important;">Recargo fijo de +$20.000 COP. Aplica para diseños unitarios y fija simple.</p>
+                                    <p style="font-size:.85rem;color:var(--text-secondary);margin-top:2px;font-weight:400 !important;">Recargo fijo de +$20.000 COP. Aplica para diseños unitarios y fija simple.</p>
                                 </div>
                                 <span style="margin-left:auto;color:#f87171;font-weight:900;font-size:.88rem;white-space:nowrap;">+$20.000</span>
                             </label>
@@ -675,12 +675,12 @@ window.submitOrden     = window.submitOrden      || function(){};
                           <!-- Disclaimer manufactura -->
                           <div style="padding:14px 16px;background:rgba(0,210,255,.05);border-bottom:1px solid rgba(0,210,255,.12);">
                             <div style="font-size:.72rem;font-weight:800;color:#00d2ff;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">⚠ Solo diseño digital + STL</div>
-                            <p style="font-size:.78rem;color:#94a3b8;line-height:1.6;margin:0;">El ajuste y resultado final de la guía depende del proceso de manufactura de tu laboratorio. PRODIGY entrega el archivo STL validado — no garantizamos resultados en equipos de impresión externos.</p>
+                            <p style="font-size:.85rem;color:#94a3b8;line-height:1.6;margin:0;">El ajuste y resultado final de la guía depende del proceso de manufactura de tu laboratorio. PRODIGY entrega el archivo STL validado — no garantizamos resultados en equipos de impresión externos.</p>
                           </div>
                           <!-- Upsell impresión -->
                           <div style="padding:14px 16px;background:rgba(212,175,55,.05);border-bottom:1px solid rgba(212,175,55,.1);">
                             <div style="font-size:.72rem;font-weight:800;color:#D4AF37;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">💡 ¿Quieres que imprimamos la guía?</div>
-                            <p style="font-size:.78rem;color:#e2e8f0;line-height:1.6;margin:0 0 10px;">Imprimimos con resina biocompatible Clase IIa de alta precisión. El precio de impresión se cotiza según el tipo de guía.</p>
+                            <p style="font-size:.85rem;color:#e2e8f0;line-height:1.6;margin:0 0 10px;">Imprimimos con resina biocompatible Clase IIa de alta precisión. El precio de impresión se cotiza según el tipo de guía.</p>
                             <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20quiero%20cotizar%20impresión%20de%20guía%20quirúrgica" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:7px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.35);color:#D4AF37;font-size:.76rem;font-weight:700;padding:7px 14px;border-radius:8px;text-decoration:none;">
                               <i class="fab fa-whatsapp"></i> Cotizar impresión
                             </a>
@@ -689,10 +689,10 @@ window.submitOrden     = window.submitOrden      || function(){};
                           <div style="padding:14px 16px;background:rgba(0,0,0,.2);">
                             <div style="font-size:.72rem;font-weight:800;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">💍 Anillas de precisión</div>
                             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                              <div style="background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);border-radius:8px;padding:10px;font-size:.74rem;color:#e2e8f0;line-height:1.6;">
+                              <div style="background:rgba(0,255,65,.05);border:1px solid rgba(0,255,65,.15);border-radius:8px;padding:10px;font-size:.85rem;color:#e2e8f0;line-height:1.6;">
                                 <strong style="color:#00FF41;">Tú envías las anillas</strong><br>Agilizamos el proceso de fabricación al recibirlas junto al STL.
                               </div>
-                              <div style="background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.15);border-radius:8px;padding:10px;font-size:.74rem;color:#e2e8f0;line-height:1.6;">
+                              <div style="background:rgba(251,146,60,.05);border:1px solid rgba(251,146,60,.15);border-radius:8px;padding:10px;font-size:.85rem;color:#e2e8f0;line-height:1.6;">
                                 <strong style="color:#fb923c;">PRODIGY las gestiona</strong><br>Sujeto a disponibilidad de la casa comercial. Costo pagado por el cliente. Sin garantía de tiempos.
                               </div>
                             </div>
@@ -801,7 +801,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                                    placeholder="https://drive.google.com/... o https://we.tl/..."
                                    oninput="validarLink(this)" aria-label="https://drive.google.com/... o https://we.tl/...">
                             <div class="link-feedback" id="link-feedback"></div>
-                            <div style="margin-top:8px;padding:9px 12px;background:rgba(255,149,0,.06);border:1px solid rgba(255,149,0,.2);border-radius:8px;font-size:.72rem;color:#ff9500;display:flex;align-items:flex-start;gap:7px;line-height:1.5">
+                            <div style="margin-top:8px;padding:9px 12px;background:rgba(255,149,0,.06);border:1px solid rgba(255,149,0,.2);border-radius:8px;font-size:.85rem;color:#ff9500;display:flex;align-items:flex-start;gap:7px;line-height:1.5">
                                 <i class="fas fa-shield-halved" style="flex-shrink:0;margin-top:1px"></i>
                                 <span><strong>Aviso de privacidad:</strong> Los archivos enviados mediante Drive o WeTransfer son procesados en servidores de terceros fuera del control de PRODIGY. Para mayor privacidad y trazabilidad, usa la <strong>carga directa</strong> en el visor de arriba — los archivos quedan en nuestra base de datos.</span>
                             </div>
@@ -817,7 +817,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <option value="blender">Blender for Dental</option>
                                 <option value="otro">Otro (indicar en notas)</option>
                             </select>
-                            <p style="font-size:.72rem;color:#94a3b8;margin-top:4px">Si tienes bibliotecas para este software, puedes subirlas en <strong>Mis Bibliotecas</strong> de tu portal de cliente.</p>
+                            <p style="font-size:.85rem;color:#94a3b8;margin-top:4px">Si tienes bibliotecas para este software, puedes subirlas en <strong>Mis Bibliotecas</strong> de tu portal de cliente.</p>
                         </div>
 
                         <!-- OBSERVACIONES -->
@@ -905,7 +905,7 @@ window.submitOrden     = window.submitOrden      || function(){};
               <div>
                 <div style="font-size:.72rem;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:.5px;">Entrega estimada</div>
                 <div id="delivery-time" style="font-size:.92rem;font-weight:900;color:#00FF41;">24–48 horas hábiles</div>
-                <div id="delivery-fecha" style="font-size:.68rem;color:#94a3b8;margin-top:2px;">Desde la confirmación del pago</div>
+                <div id="delivery-fecha" style="font-size:.8rem;color:#94a3b8;margin-top:2px;">Desde la confirmación del pago</div>
               </div>
             </div>
 
@@ -917,7 +917,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.82rem;color:#e2e8f0;line-height:1.5;">
                     <input type="checkbox" id="chk-transferencia" onchange="calcularTotal()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;">
                     <span>Pago por <strong style="color:#D4AF37;">transferencia directa</strong> (Nequi / Daviplata / Nu)<br>
-                    <span style="font-size:.75rem;color:#94a3b8;">Sin comisión. Si pagas con PSE / tarjeta se añade +3% Wompi.</span></span>
+                    <span style="font-size:.85rem;color:#94a3b8;">Sin comisión. Si pagas con PSE / tarjeta se añade +3% Wompi.</span></span>
                 </label>
                 <div id="line-wompi" class="calc-line hidden" style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(212,175,55,.15);">
                     <span class="label" style="color:#f87171;">Comisión Wompi (3%):</span>
@@ -950,7 +950,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M13.479 9.883c-2.529-.706-3.349-1.119-3.349-1.958 0-.705.643-1.155 1.737-1.155 1.962 0 3.762.77 5.027 1.604l.758-4.63C16.133 2.884 14.364 2 12.148 2 8.337 2 5.5 4.176 5.5 7.666c0 3.107 2.132 4.614 5.607 5.578 2.375.647 3.036 1.15 3.036 1.983 0 .823-.741 1.244-1.96 1.244-1.843 0-4.022-.784-5.607-1.84L5.82 19.07C7.47 20.211 9.67 21 12.175 21c4.012 0 6.825-2.06 6.825-5.715 0-3.2-2.145-4.716-5.521-5.402z"/></svg>
                   💳 Pagar con tarjeta · Stripe
                 </button>
-                <p style="font-size:.72rem;color:#94a3b8;text-align:center;margin-top:6px;">Visa, Mastercard, American Express · Te enviamos el enlace de pago por WhatsApp</p>
+                <p style="font-size:.85rem;color:#94a3b8;text-align:center;margin-top:6px;">Visa, Mastercard, American Express · Te enviamos el enlace de pago por WhatsApp</p>
                 <script>
                 /* Pago internacional con tarjeta. initStripe() se borró por error en abr-2026 (commit 376e464e) y el botón
                    quedó sin función (no hacía nada para visitantes fuera de Colombia). Stripe aún no tiene llaves en
@@ -976,7 +976,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 </button>
                 <div class="accordion-content">
                     <div class="accordion-inner" style="padding:12px;">
-                        <label for="pago_metodo" style="font-size:.7rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
+                        <label for="pago_metodo" style="font-size:.85rem;color:var(--text-secondary);display:block;margin-bottom:4px;">Método de pago</label>
                         <select id="pago_metodo" style="width:100%;background:var(--bg-dark);color:#fff;border:1px solid var(--border-subtle);padding:9px;border-radius:6px;margin-bottom:8px;font-size:16px;">
                             <option value="">¿Por dónde pagaste?</option>
                             <option value="Nequi">Nequi</option><option value="Daviplata">Daviplata</option>
@@ -995,7 +995,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             <!-- Nota invoice para clientes internacionales (oculta por defecto) -->
             <div id="nota-invoice-intl" style="display:none;margin-top:12px;padding:14px 16px;background:rgba(0,210,255,.06);border:1.5px solid rgba(0,210,255,.2);border-radius:10px;">
                 <div style="font-size:.8rem;font-weight:800;color:#00d2ff;margin-bottom:6px;">🌍 International Invoice</div>
-                <p style="font-size:.78rem;color:#94a3b8;line-height:1.6;margin:0;">
+                <p style="font-size:.85rem;color:#94a3b8;line-height:1.6;margin:0;">
                     A <strong style="color:#fff;">Technical Invoice</strong> in English and USD will be automatically generated for your case and sent via the tracking link. No DIAN registration required for international clients.
                 </p>
             </div>
@@ -1013,7 +1013,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <span>Requiero <strong style="color:#00d2ff;">Factura Electrónica</strong> (DIAN)</span>
                         </label>
                         <div id="billing-fields-d" style="display:none;">
-                            <label for="billing_tipo_d" style="font-size:.72rem;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;">Tipo de documento</label>
+                            <label for="billing_tipo_d" style="font-size:.8rem;color:rgba(255,255,255,.5);display:block;margin-bottom:4px;">Tipo de documento</label>
                             <select id="billing_tipo_d" style="width:100%;background:var(--bg-dark);color:white;border:2px solid var(--border-subtle);padding:10px;border-radius:var(--radius-sm);margin-bottom:8px;font-size:16px;">
                                 <option value="">Tipo de documento</option>
                                 <option value="CC">Cédula de Ciudadanía</option>
@@ -1036,7 +1036,7 @@ window.submitOrden     = window.submitOrden      || function(){};
             <button type="button" id="btn-borrador" onclick="guardarBorrador()" style="width:100%;margin-top:10px;padding:12px;background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.2);color:#94a3b8;border-radius:12px;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;">
                 <i class="fa-regular fa-bookmark" aria-hidden="true"></i> Guardar borrador
             </button>
-            <div id="borrador-msg" style="font-size:.72rem;color:#00FF41;text-align:center;margin-top:6px;display:none;">✓ Borrador guardado — disponible 7 días en este dispositivo</div>
+            <div id="borrador-msg" style="font-size:.85rem;color:#00FF41;text-align:center;margin-top:6px;display:none;">✓ Borrador guardado — disponible 7 días en este dispositivo</div>
         </aside>
     </div>
 
@@ -1073,7 +1073,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                         oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')" aria-label="¿Tienes un cupón de crédito? Ej: CRED-XXXXXXXX">
                     <button type="button" onclick="validarCuponCredito()" style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);color:#D4AF37;border-radius:8px;padding:9px 16px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;">Validar</button>
                 </div>
-                <div id="cupon-msg" style="font-size:.72rem;margin-top:5px;min-height:16px;" aria-live="polite"></div>
+                <div id="cupon-msg" style="font-size:.85rem;margin-top:5px;min-height:16px;" aria-live="polite"></div>
             </div>
 
             <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.83rem;color:var(--text-secondary);line-height:1.5;padding:11px;background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;margin-bottom:14px;">
@@ -1107,11 +1107,11 @@ window.submitOrden     = window.submitOrden      || function(){};
                      onclick="navigator.clipboard.writeText(document.getElementById('exito-id').textContent);this.textContent='✓ Copiado';setTimeout(()=>this.textContent='📋 Copiar',2000);"
                      style="background:rgba(0,210,255,.12);border:1px solid #00d2ff;color:#00d2ff;padding:3px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;margin-left:6px;">📋 Copiar</button>
                 </p>
-                <p style="font-size:.74rem;color:#94a3b8;margin-top:-4px;">Guarda este número: con él consultas tu caso en cualquier momento.</p>
+                <p style="font-size:.85rem;color:#94a3b8;margin-top:-4px;">Guarda este número: con él consultas tu caso en cualquier momento.</p>
                 <p><strong style="color:var(--gold-primary);">Profesional:</strong> <span id="exito-cliente">—</span></p>
                 <p><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
             </div>
-            <p style="font-size:.78rem;color:#aaa;margin-bottom:10px;">Selecciona tu método de pago:</p>
+            <p style="font-size:.85rem;color:#aaa;margin-bottom:10px;">Selecciona tu método de pago:</p>
             <div id="pago-co-modal" style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;">
                 <button type="button" class="payment-btn btn-nequi" onclick="showPayModal('nequi');cerrarModal('modal-exito')">💙 NEQUI</button>
                 <button type="button" class="payment-btn btn-davi" onclick="showPayModal('davi'); cerrarModal('modal-exito')">💗 DAVI</button>
@@ -1427,8 +1427,8 @@ window.submitOrden     = window.submitOrden      || function(){};
             setup_orto:'alineadores'
         };
         const PG_PROTOCOLO_HTML = {
-            guia_quirurgica:`<div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#00d2ff;text-transform:uppercase;margin-bottom:14px">📋 Protocolo — Guía Quirúrgica</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.15);border-radius:9px;padding:14px;font-size:.76rem;color:#e2e8f0;line-height:1.9"><strong style="color:#00FF41">🦷 Dentosoportada</strong><br><strong style="color:#00d2ff">DICOM:</strong> TAC maxilar · Sin contacto oclusal · Sep. cortes 0.5mm · Res. 150μ<br><strong style="color:#00d2ff">STL:</strong> Escaneo intraoral 2 maxilares (PLY o STL)</div><div style="background:rgba(217,70,166,.04);border:1px solid rgba(217,70,166,.15);border-radius:9px;padding:14px;font-size:.76rem;color:#e2e8f0;line-height:1.9"><strong style="color:#D946A6">🦴 Mucosoportada — 2 TAC:</strong><br><strong>TAC 1</strong> con prótesis + marcadores (min. 4 vest + 4 pal) · 0.5mm · 150μ<br><strong>TAC 2</strong> solo la prótesis marcada<br><span style="color:#fbbf24;font-size:.7rem">⚠️ Marcadores: resina fotocurada Ø3mm o gutapercha</span></div></div></div>`,
-            alineadores:`<div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px">📋 Protocolo — Setup Alineadores</div><div style="font-size:.78rem;color:#e2e8f0;line-height:1.9;margin-bottom:12px">✅ STL 2 maxilares &nbsp;✅ Fotos: frontal · oclusal · lateral &nbsp;✅ Rx panorámica y perfil &nbsp;✅ Indicaciones ortodoncista &nbsp;✅ Decisión IPR y attachments</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.72rem"><div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.15);border-radius:8px;padding:10px"><strong style="color:#00d2ff">Valoración</strong><br>Vigencia 3–4 meses</div><div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.15);border-radius:8px;padding:10px"><strong style="color:#D946A6">Replaneación</strong><br>+$80.000–$160.000 COP</div><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;padding:10px"><strong style="color:#00FF41">Refinamiento</strong><br>Gratis &lt;6 meses · +$160K después</div></div></div>`
+            guia_quirurgica:`<div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#00d2ff;text-transform:uppercase;margin-bottom:14px">📋 Protocolo — Guía Quirúrgica</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.15);border-radius:9px;padding:14px;font-size:.85rem;color:#e2e8f0;line-height:1.9"><strong style="color:#00FF41">🦷 Dentosoportada</strong><br><strong style="color:#00d2ff">DICOM:</strong> TAC maxilar · Sin contacto oclusal · Sep. cortes 0.5mm · Res. 150μ<br><strong style="color:#00d2ff">STL:</strong> Escaneo intraoral 2 maxilares (PLY o STL)</div><div style="background:rgba(217,70,166,.04);border:1px solid rgba(217,70,166,.15);border-radius:9px;padding:14px;font-size:.85rem;color:#e2e8f0;line-height:1.9"><strong style="color:#D946A6">🦴 Mucosoportada — 2 TAC:</strong><br><strong>TAC 1</strong> con prótesis + marcadores (min. 4 vest + 4 pal) · 0.5mm · 150μ<br><strong>TAC 2</strong> solo la prótesis marcada<br><span style="color:#fbbf24;font-size:.7rem">⚠️ Marcadores: resina fotocurada Ø3mm o gutapercha</span></div></div></div>`,
+            alineadores:`<div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px">📋 Protocolo — Setup Alineadores</div><div style="font-size:.85rem;color:#e2e8f0;line-height:1.9;margin-bottom:12px">✅ STL 2 maxilares &nbsp;✅ Fotos: frontal · oclusal · lateral &nbsp;✅ Rx panorámica y perfil &nbsp;✅ Indicaciones ortodoncista &nbsp;✅ Decisión IPR y attachments</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.72rem"><div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.15);border-radius:8px;padding:10px"><strong style="color:#00d2ff">Valoración</strong><br>Vigencia 3–4 meses</div><div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.15);border-radius:8px;padding:10px"><strong style="color:#D946A6">Replaneación</strong><br>+$80.000–$160.000 COP</div><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;padding:10px"><strong style="color:#00FF41">Refinamiento</strong><br>Gratis &lt;6 meses · +$160K después</div></div></div>`
         };
         /* ── FLUJO DE 2 ETAPAS: Viabilidad → Diseño ──
            Guías quirúrgicas y Setup alineadores.
@@ -1451,11 +1451,11 @@ window.submitOrden     = window.submitOrden      || function(){};
                   <div style="background:rgba(212,175,55,.2);color:#D4AF37;font-weight:900;font-size:.8rem;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
                   <div>
                     <div style="font-size:.85rem;font-weight:800;color:#D4AF37;margin-bottom:4px">Viabilidad — $${VIABILIDAD_COSTO_COP.toLocaleString('es-CO')} COP</div>
-                    <div style="font-size:.75rem;color:#e2e8f0;line-height:1.7">
+                    <div style="font-size:.85rem;color:#e2e8f0;line-height:1.7">
                       Luego de cargar los archivos completos, en <strong>24 horas</strong> recibirás la evaluación del caso.
                       Determinamos si el caso es ${esGuia ? 'ejecutable con la planificación requerida' : 'viable para el plan de alineadores propuesto'}.
                     </div>
-                    <div style="font-size:.72rem;color:#fbbf24;margin-top:6px;background:rgba(245,158,11,.08);border-radius:6px;padding:6px 10px">
+                    <div style="font-size:.85rem;color:#fbbf24;margin-top:6px;background:rgba(245,158,11,.08);border-radius:6px;padding:6px 10px">
                       <i class="fas fa-exclamation-triangle" style="margin-right:4px"></i>
                       Este cobro aplica aunque el caso NO sea viable o NO se ejecute finalmente. Cubre el análisis técnico.
                     </div>
@@ -1466,7 +1466,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                   <div style="background:rgba(0,255,65,.15);color:#00FF41;font-weight:900;font-size:.8rem;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
                   <div>
                     <div style="font-size:.85rem;font-weight:800;color:#00FF41;margin-bottom:4px">Planificación y Diseño — $${restante > 0 ? restante.toLocaleString('es-CO') : '?'} COP <span style="font-size:.7rem;color:#94a3b8">(valor restante)</span></div>
-                    <div style="font-size:.75rem;color:#e2e8f0;line-height:1.7">
+                    <div style="font-size:.85rem;color:#e2e8f0;line-height:1.7">
                       Solo después de tu <strong>aprobación de viabilidad</strong>. En máximo <strong>24 horas</strong> desde la aprobación recibirás
                       ${esGuia ? 'la guía quirúrgica lista para imprimir.' : 'el setup completo y los modelos para cortar las placas de alineadores.'}
                     </div>
@@ -1474,7 +1474,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 </div>
               </div>
               <!-- Política viabilidad -->
-              <div style="background:rgba(100,116,139,.06);border:1px solid rgba(100,116,139,.15);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:.72rem;color:#94a3b8;line-height:1.7">
+              <div style="background:rgba(100,116,139,.06);border:1px solid rgba(100,116,139,.15);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:.85rem;color:#94a3b8;line-height:1.7">
                 <i class="fas fa-shield-alt" style="color:#60a5fa;margin-right:5px"></i>
                 <strong style="color:#e2e8f0">Política de viabilidad:</strong>
                 Si el trabajo final se realiza, el valor de la viabilidad queda incluido — solo pagas el valor restante.
@@ -1496,7 +1496,7 @@ window.submitOrden     = window.submitOrden      || function(){};
 
         /* ── DISCLAIMERS DE ARCHIVOS ── */
         const DISCLAIMER_BASE = `
-          <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.74rem;color:#fbbf24;line-height:1.7">
+          <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.85rem;color:#fbbf24;line-height:1.7">
             <i class="fas fa-exclamation-triangle" style="margin-right:5px"></i>
             <strong>Aviso importante:</strong> Los archivos marcados como OBLIGATORIO son necesarios para completar el diseño.
             Casos con información incompleta generan <strong>retrasos en los tiempos de entrega</strong> y pueden afectar la calidad del resultado final.
@@ -1505,7 +1505,7 @@ window.submitOrden     = window.submitOrden      || function(){};
           </div>`;
 
         const DISCLAIMER_IMPLANTE_COLOCADO = `
-          <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.74rem;color:#00d2ff;line-height:1.7">
+          <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.85rem;color:#00d2ff;line-height:1.7">
             <i class="fas fa-info-circle" style="margin-right:5px"></i>
             <strong>Biblioteca del implante:</strong> No es necesario subir la biblioteca — pero debes especificar
             fabricante, referencia, diámetro y plataforma exactos en las notas del caso.
@@ -1513,7 +1513,7 @@ window.submitOrden     = window.submitOrden      || function(){};
           </div>`;
 
         const DISCLAIMER_IMPLANTE_GUIA = `
-          <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.74rem;color:#00d2ff;line-height:1.7">
+          <div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.2);border-radius:8px;padding:12px 14px;margin-top:12px;font-size:.85rem;color:#00d2ff;line-height:1.7">
             <i class="fas fa-info-circle" style="margin-right:5px"></i>
             <strong>Sistema de implante:</strong> Indica el implante que planeas usar (fabricante, Ø, longitud, conexión).
             Si aún no tienes definido el sistema, podemos <strong>recomendarte el implante más adecuado</strong> según
@@ -1640,24 +1640,24 @@ window.submitOrden     = window.submitOrden      || function(){};
                       <div style="font-size:.82rem;font-weight:700;color:#e2e8f0">
                         ${a.req ? '<span style="color:#f87171;margin-right:4px">*</span>' : '<span style="color:#94a3b8;margin-right:4px;font-size:.7rem">○</span>'}${a.label}
                       </div>
-                      <div style="font-size:.68rem;color:#94a3b8;margin-top:2px">${a.ext} · ${a.req ? '<strong style="color:#f87171">OBLIGATORIO</strong>' : 'Recomendado'}</div>
-                      ${a.tip ? `<div style="font-size:.68rem;color:#60a5fa;margin-top:3px"><i class="fas fa-info-circle" style="margin-right:3px"></i>${a.tip}</div>` : ''}
+                      <div style="font-size:.8rem;color:#94a3b8;margin-top:2px">${a.ext} · ${a.req ? '<strong style="color:#f87171">OBLIGATORIO</strong>' : 'Recomendado'}</div>
+                      ${a.tip ? `<div style="font-size:.8rem;color:#60a5fa;margin-top:3px"><i class="fas fa-info-circle" style="margin-right:3px"></i>${a.tip}</div>` : ''}
                     </div>
                     <div style="display:flex;align-items:center;gap:8px">
                       ${a.ext === 'Texto en Notas'
-                        ? `<span style="font-size:.72rem;color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:5px 10px">✍️ Indicar en Notas del caso</span>`
+                        ? `<span style="font-size:.85rem;color:#fbbf24;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:5px 10px">✍️ Indicar en Notas del caso</span>`
                         : `<label id="lbl-${a.id}" style="display:inline-flex;align-items:center;gap:6px;background:rgba(217,70,166,.12);border:1px solid rgba(217,70,166,.3);color:#D946A6;padding:6px 12px;border-radius:7px;cursor:pointer;font-size:.75rem;font-weight:700;white-space:nowrap">
                         <i class="fas fa-upload"></i> Subir
                         <input type="file" id="file-${a.id}" aria-label="Subir archivo de diseño" style="display:none" accept=".stl,.stlb,.stla,.ply,.obj,.dcm,.dicom,.zip,.rar,.7z,.3oxz,.3ox,.constructioninfo,.constructionfile,.dxd,.jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" onchange="marcarArchivoSubido('${a.id}','${a.req}',this)">
                       </label>
-                      <span id="estado-${a.id}" style="font-size:.72rem;color:#94a3b8">Sin subir</span>`}
+                      <span id="estado-${a.id}" style="font-size:.85rem;color:#94a3b8">Sin subir</span>`}
                     </div>
                   </div>`).join('')}
               </div>
               ${DISCLAIMER_BASE}
               ${esGuiaImplante  ? DISCLAIMER_IMPLANTE_GUIA     : ''}
               ${esAbutmentBarra ? DISCLAIMER_IMPLANTE_COLOCADO : ''}
-              <div style="margin-top:10px;padding:10px 14px;background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.15);border-radius:8px;font-size:.75rem;color:#25D366;display:flex;align-items:flex-start;gap:8px">
+              <div style="margin-top:10px;padding:10px 14px;background:rgba(37,211,102,.05);border:1px solid rgba(37,211,102,.15);border-radius:8px;font-size:.85rem;color:#25D366;display:flex;align-items:flex-start;gap:8px">
                 <i class="fab fa-whatsapp" style="flex-shrink:0;margin-top:1px"></i>
                 <span>¿Tienes dudas sobre qué archivos enviar?
                   <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20tengo%20dudas%20sobre%20los%20archivos%20para%20un%20caso%20de%20${encodeURIComponent(STATE.subtipoNombre||'diseño CAD')}." target="_blank" rel="noopener noreferrer" style="color:#25D366;font-weight:700;text-decoration:none"> Consulta por WhatsApp antes de enviar →</a>
@@ -2323,7 +2323,7 @@ const lineWompi = document.getElementById('line-wompi');
                 c = `${pill}<div class="pay-box"><h3 style="color:#E91E8C;margin-bottom:8px;">Jessica Mendez</h3><div class="pay-num">${NUM}</div><button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('${NUM}');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar número',1500)">📋 Copiar número</button><p class="pay-info">Usa el número directamente en tu app Daviplata</p></div>`;
             } else if (tipo === 'banco') {
                 titulo.textContent = '🏦 BRE-B / NU';
-                c = `${pill}<div class="pay-box"><h3 style="margin-bottom:8px;">Jessica Mendez Carmelo</h3><div class="pay-num" style="font-size:1.3rem;letter-spacing:1px;">@LXY423</div><button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave Nu',1500)">📋 Copiar llave Nu</button><p class="pay-info">Cuenta Nu: 22253814 · CE: 7582423</p></div>`;
+                c = `${pill}<div class="pay-box"><h3 style="margin-bottom:8px;">Jessica Mendez Carmelo</h3><div class="pay-num" style="font-size:1.3rem;letter-spacing:1px;">@LXY423</div><button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='📋 Copiar llave Nu',1500)">📋 Copiar llave Nu</button><p class="pay-info">Cuenta Nu: 22253814</p></div>`;
             }
             body.innerHTML = c;
             document.getElementById('modal-pago').classList.add('active');
@@ -2526,7 +2526,7 @@ const lineWompi = document.getElementById('line-wompi');
                 });
                 if (cargados > 0) {
                     const banner = document.createElement('div');
-                    banner.style.cssText = 'background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:.78rem;color:#00FF41;display:flex;align-items:center;gap:10px;';
+                    banner.style.cssText = 'background:rgba(0,255,65,.07);border:1px solid rgba(0,255,65,.2);border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:.85rem;color:#00FF41;display:flex;align-items:center;gap:10px;';
                     banner.innerHTML = '<i class="fas fa-bookmark" aria-hidden="true"></i> Borrador restaurado. <button type="button" onclick="localStorage.removeItem(\''+BORRADOR_KEY+'\');this.parentElement.remove();" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:.72rem;margin-left:auto;">Descartar</button>';
                     const aside = document.querySelector('aside') || document.getElementById('btn-borrador')?.parentElement;
                     if (aside) aside.prepend(banner);
@@ -2569,7 +2569,7 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/footer.js?v=20261118d"></script>
 <script src="js/biomecanica-rules.js?v=20260528"></script>
     <script src="js/fechas-habiles.js?v=20260719"></script>
-    <script src="js/pagos.js?v=20261011a"></script>
+    <script src="js/pagos.js?v=20261119a"></script>
 <script src="js/formatos.js?v=20261001"></script>
 <script src="js/promo.js?v=20260910"></script>
 <script src="js/pedido-guard.js?v=20260719"></script>

@@ -1936,7 +1936,7 @@
                         <h3>Jessica Mendez Carmelo</h3>
                         <div class="pay-num">@LXY423</div>
                         <button type="button" class="pay-copy" onclick="navigator.clipboard.writeText('LXY423');this.textContent='✅ Copiado';setTimeout(()=>this.textContent='📋 Copiar llave',1500);">📋 Copiar llave</button>
-                        <p class="pay-info"><strong>Cuenta:</strong> 22253814 &nbsp;·&nbsp; <strong>C.E.:</strong> 7582423</p>
+                        <p class="pay-info"><strong>Cuenta:</strong> 22253814</p>
                     </div>
                     <div class="pay-divider">o también</div>
                     <div class="pay-box" style="--pay-accent:var(--gold-primary);">

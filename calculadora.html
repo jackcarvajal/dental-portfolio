@@ -504,9 +504,9 @@
       <div class="toggle-row" id="row-internacional" style="display:none;">
         <div class="toggle-info">
           Pago Internacional (Stripe / PayPal)
-          <small>Platform service fee 3.5% · USD via Stripe</small>
+          <small>Platform service fee 7% · USD</small>
         </div>
-        <span class="toggle-price" id="precio-intl-fee" style="color:var(--cyan)">+6.5%</span>
+        <span class="toggle-price" id="precio-intl-fee" style="color:var(--cyan)">+7%</span>
         <button type="button" class="toggle" id="tog-internacional" onclick="toggleOpcion('internacional')" role="switch" aria-checked="false" aria-label="Activar precio internacional"></button>
       </div>
 
@@ -528,7 +528,7 @@
         <div class="breakdown-row" id="bd-urgente-row" style="display:none;"><span>Urgente 24h</span><span>+$40.000</span></div>
         <div class="breakdown-row" id="bd-dsd-row"     style="display:none;"><span>DSD</span><span>+$80.000</span></div>
         <div class="breakdown-row" id="bd-envio-row"   style="display:none;"><span>Envío</span><span>+$20.000</span></div>
-        <div class="breakdown-row" id="bd-intl-row" style="display:none;color:#00d2ff;"><span>Platform fee (6.5%)</span><span id="bd-intl-fee">+$0</span></div>
+        <div class="breakdown-row" id="bd-intl-row" style="display:none;color:#00d2ff;"><span>Platform fee (7%)</span><span id="bd-intl-fee">+$0</span></div>
         <div class="breakdown-row total-row"><span>Total estimado</span><span id="bd-total">$180.000</span></div>
         <div class="breakdown-row" id="bd-usd-row" style="display:none;font-size:0.75rem;color:#94a3b8;"><span>Aprox. USD</span><span id="bd-usd">~$0</span></div>
       </div>
@@ -720,7 +720,7 @@ function renderResult() {
 
   // PayPal internacional
   if (state.internacional) {
-    const fee = Math.round(total * 0.065);
+    const fee = Math.round(total * 0.07);   // 7 % internacional (19-nov-2026)
     const totalConFee = total + fee;
     const usdAmt = (totalConFee / USD_RATE).toFixed(2);
     document.getElementById('bd-intl-row').style.display = '';

@@ -4,7 +4,7 @@
  *
  * SEGURIDAD: el monto NUNCA viene del cliente. Se lee `precio_total` (COP) del
  * pedido en la BD por su `codigo` (=referencia), se le suma el recargo PayPal
- * (5.4%, que absorbe el cliente) y se convierte a USD. PayPal crea la orden con
+ * (7 %, que absorbe el cliente) y se convierte a USD. PayPal crea la orden con
  * ESE monto. La captura se verifica en /api/paypal-capture.
  *
  * Env vars (Cloudflare Pages → Settings → Environment Variables):
@@ -13,7 +13,7 @@
  *   SUPABASE_URL, SUPABASE_SERVICE_KEY
  */
 
-const RECARGO_PAYPAL = 0.054;   // 5.4% — lo absorbe el cliente (igual que PAGOS_CONFIG.paypal)
+const RECARGO_PAYPAL = 0.07;    // 7 % (19-nov-2026; antes 5.4%) — lo absorbe el cliente (igual que PAGOS_CONFIG.paypal)
 const TASA_COP_USD   = 4200;    // misma tasa referencial que js/pagos.js
 
 const PP_BASE = (env) => (env.PAYPAL_ENV === 'sandbox')

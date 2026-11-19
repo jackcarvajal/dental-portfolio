@@ -9,6 +9,15 @@
 
 ---
 
+## 2026-11-19 (g) — Decisiones de Alejandro aplicadas (ronda de preguntas)
+
+- Pago internacional = 7 % (PayPal + cambio): paypal-create-order/capture/webhook, js/pagos.js (v=20261119a en 4 páginas) y calculadora.html (decía 3,5 % y cobraba 6,5 %). Alineadores siguen con su 12 % acordado.
+- No se trabaja sábado: fuera el horario de sábado del schema (index, nosotros, soporte) y envia-tu-scanner «L–V 8am–6pm».
+- Lab en Bogotá: config_precios.envio_nacional → «Envío Nacional (fuera de Bogotá)».
+- Datos de cobro: se quitó el número de C.E. (flujo-diseno ambos, flujo-fresado, js/flujo-impresion.js v=20261119b).
+- Guía quirúrgica impresa: «Cotizar por caso» en calculadora-impresion. Número personal fuera de app/ayuda y de js/callmebot.js (Alejandro).
+- Agente: fecha_entrega de fresado ahora se guarda (ISO del turno) y sale en WhatsApp/confirmación; legibilidad (≈37 tamaños de letra subidos a .8–.9rem en flujo-diseno y flujo-fresado).
+
 ## 2026-11-19 (f) — Express de diseño = 20.000 COP
 
 - ✅ config_precios.express_diseno 50.000 → 20.000 (Alejandro lo aprobó): ahora el cliente paga lo que ve en flujo-diseno.
