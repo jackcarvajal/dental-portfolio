@@ -5,6 +5,23 @@
 - 🟡 **Agente de research propio** (idea 13-oct, aplazada): montar un agente que vigile X/Reddit/YouTube/Instagram buscando tendencias de odontología digital, quejas de labs y movidas de la competencia, y lo resuma solo. Herramientas candidatas (vetar antes de instalar — cadena de suministro): Scrapling, Patchright Enhanced, Agent-Reach. NO prioritario (primero PRODIGY + Ads/marketing).
 ---
 
+## ⏳ CONFIGURAR PAYPAL EN CLOUDFLARE — pagos en línea de las dos webs (anotado 19-nov-2026)
+
+Hoy NO existe ninguna variable PAYPAL_* en Cloudflare: PayPal no cobra en ninguna web (ni pedidos ni planes de créditos).
+El SQL de créditos con PayPal ya está corrido ✅ (19-nov: funcion_existe 1 · solo service_role · recargo 7 %).
+
+1. **developer.paypal.com** → entrar con la cuenta PayPal Business → **Apps & Credentials** → arriba elegir **Live**.
+2. Abrir la app que ya usa la web (su Client ID está en js/pagos.js) o crear una → copiar **Client ID** y **Secret**.
+3. En esa app → **Webhooks** → **Add webhook**:
+   - Alejandro: `https://alejandrocadcam.com/api/paypal-webhook` · evento **PAYMENT.CAPTURE.COMPLETED** → guardar → copiar el **Webhook ID**.
+   - PRODIGY: otro webhook igual con `https://prodigylabdental.com/api/paypal-webhook` → su propio Webhook ID.
+4. **dash.cloudflare.com** → **Workers & Pages** → proyecto **alejandrocadcam** → **Settings** → **Variables and Secrets** → **Production** → agregar:
+   - `PAYPAL_CLIENT_ID` (texto) · `PAYPAL_CLIENT_SECRET` (tipo **Secret**) · `PAYPAL_WEBHOOK_ID` (texto) · opcional `PAYPAL_ENV` = `live`.
+5. Repetir el paso 4 en el proyecto de PRODIGY (**dental-portfolio**) con SU Webhook ID.
+6. **Deployments** → en el último despliegue «Retry deployment» (o pedirle a Claude un push) para que tome las variables.
+7. Prueba con US$1: bloque 4 de `sql/creditos-pago-paypal-2026.sql` (plan oculto «prueba» de 1 crédito) → pagar desde app/client-panel con una cuenta de cliente.
+8. Avisar a Claude: falta corregir el PayPal de PEDIDOS de Alejandro (trata precios USD como COP y la descripción dice «PRODIGY») y el COOP same-origin-allow-popups en flujo-diseno/pagar de las dos webs.
+
 ## 🎯 EN TU CANCHA AHORA (2026-10-06)
 0. ✅ **SQL corrido 6-oct** (`funciones-definer-permisos-2026.sql` + `fabricacion-pago-verificado-2026.sql`): verificado
    desde fuera — las 7 vistas devuelven «permission denied» al anónimo. Pendiente: «Revisar todo» en app/pruebas-carga.
