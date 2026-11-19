@@ -66,6 +66,10 @@ export async function onRequestPost({ request, env }) {
   const pais     = esc(body.pais) || '';
   const codigo   = esc(body.codigo) || '';
   const tipo     = esc(body.tipo) || 'Nuevo caso';
+  // Sin nombre, WhatsApp ni código no hay nada que avisar: un POST vacío mandaba «Sin nombre / s/n» al equipo (19-nov-2026).
+  if (!esc(body.doctor) && !esc(body.whatsapp) && !esc(body.codigo)) {
+    return new Response(JSON.stringify({ ok: false, error: 'Faltan datos del caso' }), { status: 400, headers: h });
+  }
   const contexto = escL(body.contexto) || '';
 
   const mensaje =
