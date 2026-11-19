@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-11-19 (f) — Express de diseño = 20.000 COP
+
+- ✅ config_precios.express_diseno 50.000 → 20.000 (Alejandro lo aprobó): ahora el cliente paga lo que ve en flujo-diseno.
+
 ## 2026-11-19 (e) — Cobro por flujo (decisión de Alejandro)
 
 - 💡 Diseño 100 % anticipado · Impresión y Laboratorio: primer pedido 100 %, recurrentes 50 % abono / 50 % contra entrega · Fresado en «Cotizar».
