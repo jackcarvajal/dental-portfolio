@@ -177,6 +177,21 @@
             } catch (_) {}
         }
 
+        // «Seguro de repetición» marcado/desmarcado en el modal de confirmación: recalcula (calcularTotal ya lo
+        // suma) y repinta las líneas de total del resumen. El total que se GUARDA se relee en sendToWhatsApp().
+        let _lineasTotalImp = null;   // { total, recargo, conWompi } → <p> del resumen del modal
+        function seguroCambioImp() {
+            let t;
+            try { t = calcularTotal(); } catch (_) { return; }
+            const L = _lineasTotalImp;
+            if (!L || !Number.isFinite(t)) return;
+            const pon = (p, v) => { if (p && p.lastChild) p.lastChild.nodeValue = v; };
+            const rw = _recargoWompiImp(t);
+            pon(L.total, '$' + Number(t).toLocaleString('es-CO'));
+            pon(L.recargo, '+$' + rw.toLocaleString('es-CO'));
+            pon(L.conWompi, '$' + (Number(t) + rw).toLocaleString('es-CO'));
+        }
+
         // Botón «Pagar con Wompi» (calculadora y modal de éxito)
         async function pagarPedidoConWompiImp() {
             const p = _pedidoImpGuardado;
@@ -2232,6 +2247,7 @@
                 p.appendChild(strong);
                 p.appendChild(document.createTextNode(value));
                 confirmBody.appendChild(p);
+                return p;
             };
 
             addLine('ID Orden', orderId);
@@ -2243,12 +2259,13 @@
             addLine('Color', STATE.colorVita || 'N/A');
             addLine('Cantidad', `${cantidad} unidades`);
             addLine('Entrega', timeSlotNames[STATE.timeSlot] || '');
-            addLine('Total', total);
+            // Líneas de total guardadas: el «Seguro de repetición» se marca DENTRO de este modal → seguroCambioImp() las repinta
+            _lineasTotalImp = { total: addLine('Total', total), recargo: null, conWompi: null };
             {   // PSE / tarjeta: el 3 % de Wompi va en el total del pedido (lo mismo que mostró la calculadora)
                 const _rw = _recargoWompiImp(totalVerificado);
                 if (_rw > 0) {
-                    addLine('Comisión Wompi (3 %)', '+$' + _rw.toLocaleString('es-CO'));
-                    addLine('Total con Wompi', '$' + ((Number(totalVerificado) || 0) + _rw).toLocaleString('es-CO'));
+                    _lineasTotalImp.recargo  = addLine('Comisión Wompi (3 %)', '+$' + _rw.toLocaleString('es-CO'));
+                    _lineasTotalImp.conWompi = addLine('Total con Wompi', '$' + ((Number(totalVerificado) || 0) + _rw).toLocaleString('es-CO'));
                 }
             }
             // Fecha estimada de entrega
@@ -2358,6 +2375,13 @@
             
             // Totales del pedido — UNA sola fuente para WhatsApp, BD (precio_base / precio_total) y Wompi.
             // precio_base = total antes del cupón (incluye el 3 % si eligió PSE / tarjeta) · precio_total = con cupón.
+            // «Seguro de repetición» (+$5.000): se marca en el modal DESPUÉS de que submitOrder() fijó STATE.total →
+            // se relee de calcularTotal() (que ya lo suma si está marcado) para que entre en BD, WhatsApp y Wompi.
+            try {
+                const _tvImp = calcularTotal();
+                if (Number.isFinite(_tvImp) && _tvImp > 0) STATE.total = `$${Number(_tvImp).toLocaleString('es-CO')}`;
+            } catch (_) { /* si falla, sigue con el total del resumen */ }
+            if (document.getElementById('seguro-garantia')?.checked) texto += `🛡️ *Seguro de repetición:* +$5.000\n`;
             const _cupImp = (window._cuponCreditoActivo && window._cuponCreditoActivo.cupon) ? window._cuponCreditoActivo : null;
             let _recargoImp = 0, _precioBaseImp = 0, _descCuponImp = 0, _precioTotalImp = 0;
             try {

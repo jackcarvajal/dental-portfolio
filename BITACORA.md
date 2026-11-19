@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-19 (j) — Diseño al día con Wompi/cupones, seguro de repetición y comprobante en celular
+
+- flujo-diseno (PRODIGY): Wompi solo con el pedido guardado (sin PRD-DIS inventado); casilla de transferencia sigue desmarcada por defecto → es Wompi si además es +57 y «¿Por dónde pagaste?» vacío o PSE/Tarjeta. Cupón: validar sin gastar, se gasta tras el INSERT, precio_total con descuento.
+- Alejandro flujo-diseno: cupón diferido igual (ya no se gasta al validar); el WhatsApp ya no resta COP del total en USD («TOTAL: $0»): se informa y se descuenta al cobrar. Wompi no aplica (pagarConWompi() huérfana, sin botón; precios en USD).
+- Seguro de repetición (+$5.000) en impresión y fresado: se marca en el modal después de fijar el total → ahora se relee de calcularTotal() al enviar (BD, WhatsApp y Wompi) y el resumen del modal se repinta. Diseño no tiene seguro.
+- Celular (≤900/≤768 px) impresión y fresado: js/simetria.js convertía .container en 4 columnas (el RESUMEN sticky quedaba a la altura del encabezado) → formulario de 150 px y comprobante de 47 px. CSS: flex en columna + RESUMEN después del formulario en ≤768. 🟡 verificar en vivo.
+
 ## 2026-11-19 (i) — Wompi con el pedido real + cupones sin pérdida (impresión y fresado)
 
 - Wompi: se paga DESPUÉS de guardar el pedido y con su código real (la firma v2.0 lo exige); 3 % dentro de precio_total solo si elige PSE/tarjeta; sin comprobante en ese caso. Fresado en «cotizar» no ofrece Wompi.

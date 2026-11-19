@@ -14,8 +14,8 @@
 --   · Idempotente: repetir el consumo para el MISMO pedido responde ok y no duplica nada.
 --   · Si otro lo gastó entre «validar» y «guardar» (carrera), el pedido ya quedó con el
 --     descuento → queda una incidencia ALTA sin resolver para que el staff cobre la diferencia.
---   · prodigy_usar_cupon_credito() NO se toca: flujo-diseno.html la sigue usando y el front de
---     impresión/fresado cae a ella si este SQL aún no se ha corrido.
+--   · prodigy_usar_cupon_credito() NO se toca: el front de impresión/fresado/diseño (PRODIGY) y el
+--     diseño de Alejandro caen a ella si este SQL aún no se ha corrido (19-nov: diseño ya portado).
 --   · Los flujos funcionan sin sesión (anónimo) → EXECUTE para anon y authenticated.
 --     validar solo devuelve ok + monto (nada del referidor).
 --
