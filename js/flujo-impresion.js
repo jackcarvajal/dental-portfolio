@@ -2269,8 +2269,23 @@
                     const _fechaElem = document.getElementById('fecha-entrega');
                     const _fechaTxt  = _fechaElem ? (_fechaElem.innerText||_fechaElem.textContent).replace('Entrega estimada: ','').trim() : null;
                     const _pedId = (crypto.randomUUID ? crypto.randomUUID() : (()=>{const b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;const h=[...b].map(x=>x.toString(16).padStart(2,'0'));return `${h[0]}${h[1]}${h[2]}${h[3]}-${h[4]}${h[5]}-${h[6]}${h[7]}-${h[8]}${h[9]}-${h[10]}${h[11]}${h[12]}${h[13]}${h[14]}${h[15]}`;})());
+                    // Detalles que antes solo viajaban en el texto de WhatsApp → `notas` (defensivo: nada aquí debe lanzar)
+                    let _notasImp = '';
+                    try {
+                        const _pf = [];
+                        const _ciu = (document.getElementById('ciudad')?.value || '').trim();
+                        if (_ciu) _pf.push('Ciudad: ' + _ciu);
+                        if (STATE.timeSlotName) _pf.push('Turno: ' + STATE.timeSlotName);
+                        const _pg = [STATE.pagoMetodo, STATE.pagoTitular, STATE.pagoReferencia].filter(Boolean).join(' / ');
+                        if (_pg) _pf.push('Pago: ' + _pg);
+                        if (window._cuponCreditoActivo && window._cuponCreditoActivo.cupon) _pf.push('Cupón: ' + window._cuponCreditoActivo.cupon);
+                        _notasImp = _pf.join(' · ').slice(0, 1000);
+                    } catch (_) { _notasImp = ''; }
                     _sb.from('pedidos').insert([{ ...((window.ModoPrueba && ModoPrueba.camposPedido()) || {}),  /* modo prueba: es_prueba + pago ficticio (igual que diseño) */
                         id:               _pedId,
+                        nombre_paciente:  STATE.nombrePaciente || null,
+                        slot_express:     STATE.timeSlot === 'express',
+                        notas:            _notasImp || null,
                         codigo:           STATE.ordenId,
                         user_id:          _uid,
                         email:            _email,
