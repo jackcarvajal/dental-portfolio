@@ -229,7 +229,8 @@ window.__authP = ProdigyAuth.require(['admin','operator','contabilidad','calidad
   });
   window.addEventListener('hashchange', function(){ var id = location.hash.slice(1); if (id) abrir(id, false); });
 
-  $('waHelp').href = 'https://wa.me/573219581949?text=' + encodeURIComponent('Hola Alejandro, en el Centro de ayuda no encontré cómo hacer esto: ');
+  // El número personal no va en el código (esta página se puede descargar): ayuda por el WhatsApp del lab. 19-nov-2026.
+  $('waHelp').href = 'https://wa.me/573212816716?text=' + encodeURIComponent('Hola, en el Centro de ayuda no encontré cómo hacer esto: ');
 
   fetch('ayuda-articulos.json?v=20261118b', { cache:'no-cache' }).then(function(r){ return r.json(); }).then(function(d){
     DATA = d; render();
