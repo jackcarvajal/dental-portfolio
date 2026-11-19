@@ -2,10 +2,205 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-11-17
+   Última actualización automática: 2026-11-19
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "implantes-nobel-all-on-4-2026-11-19-8242",
+  "titulo": "Revisión del Concepto All-on-4: Fundamentos, Protocolos y Complicaciones Clínicas",
+  "subtitulo": "Una exploración basada en evidencia de la rehabilitación de arcadas edéntulas con el protocolo All-on-4, destacando su fiabilidad y ventajas clínicas.",
+  "categoria": "implantologia",
+  "chip": "Implantología",
+  "fecha": "2026-11-19",
+  "lectura": "8 min",
+  "vistas": "0",
+  "emoji": "🦷",
+  "grad": "grad-2",
+  "og_img": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/3D_All-on-4_technique.ogv/1280px--3D_All-on-4_technique.ogv.jpg",
+  "img_credit": "Wikipedia — All-on-4",
+  "img_link": "https://en.wikipedia.org/wiki/All-on-4",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La rehabilitación de pacientes edéntulos ha evolucionado significativamente, buscando soluciones predecibles y eficientes. El concepto All-on-4 se ha establecido como una modalidad fiable y predecible para rehabilitar maxilares edéntulos con prótesis de arcada completa de función inmediata (Chan & Nudell, 2021). Tradicionalmente, la restauración de maxilares y mandíbulas atróficas con prótesis retenidas por implantes implicaba el uso de implantes colocados axialmente en regiones con hueso adecuado, a menudo requiriendo enfoques quirúrgicos en etapas y procedimientos de injerto óseo debido a limitaciones anatómicas como el seno maxilar neumatizado o la proximidad del nervio alveolar inferior (Chan & Holmes, 2015)."
+    },
+    {
+      "t": "img",
+      "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/3D_All-on-4_technique.ogv/1280px--3D_All-on-4_technique.ogv.jpg",
+      "alt": "Nobel Biocare All-on-4 — protocolo y supervivencia clínica",
+      "caption": "Wikipedia — All-on-4 · Wikimedia Commons (CC BY-SA)"
+    },
+    {
+      "t": "h2",
+      "c": "Evolución y Fundamentos del Concepto All-on-4"
+    },
+    {
+      "t": "p",
+      "c": "El concepto All-on-4 ha superado estas restricciones anatómicas al permitir la colocación de dos implantes verticales y dos implantes angulados en la premaxila y la mandíbula anterior (Chan & Holmes, 2015). Esta técnica ha posibilitado la colocación inmediata de restauraciones fijas de arcada completa en el momento de la cirugía de implantes, siempre que se logre un torque de inserción suficiente (Chan & Holmes, 2015). A lo largo de casi dos décadas, este concepto ha demostrado ser una modalidad de tratamiento fiable y predecible (Chan & Nudell, 2021). Una revisión sistemática ha explorado sus indicaciones, procedimientos quirúrgicos, protocolos protésicos y complicaciones técnicas y biológicas después de al menos tres años en función (Soto-Penaloza et al., 2017)."
+    },
+    {
+      "t": "h2",
+      "c": "Protocolos Quirúrgicos y Protésicos"
+    },
+    {
+      "t": "p",
+      "c": "El protocolo All-on-4 se basa en la colocación estratégica de cuatro implantes dentales. Dos implantes se colocan verticalmente en la región anterior y dos se angulan en la región posterior, lo que permite maximizar el uso del hueso disponible y evitar estructuras anatómicas críticas (Chan & Holmes, 2015). La posibilidad de carga inmediata de una prótesis fija es una característica distintiva, siempre que se alcance un torque de inserción adecuado durante la cirugía (Chan & Holmes, 2015; Duello, 2012). La planificación y ejecución de estos protocolos son cruciales para optimizar los resultados clínicos, reducir el tiempo en el sillón y mejorar la durabilidad y estética de la restauración provisional (Sclar et al., 2015)."
+    },
+    {
+      "t": "h2",
+      "c": "Ventajas Clínicas y Biomecánicas"
+    },
+    {
+      "t": "p",
+      "c": "El concepto All-on-4 ofrece múltiples ventajas para los pacientes que buscan una función inmediata de arcada completa, incluyendo la reducción del tiempo y los costes del tratamiento, una mejora estética y una alta satisfacción del paciente (Sclar et al., 2015). Biomecánicamente, esta técnica proporciona beneficios como un aumento de la extensión anteroposterior (A-P spread) y una mejor distribución de la carga, lo que contribuye a la estabilidad y longevidad de la prótesis (Chan & Holmes, 2015). La base biomecánica y el éxito clínico del concepto All-on-4 han sido validados por numerosos estudios científicos y clínicos (Sclar et al., 2015)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Descripción",
+        "Fuente Principal"
+      ],
+      "rows": [
+        [
+          "Superación de Limitaciones Anatómicas",
+          "Permite la colocación de implantes en zonas con hueso disponible, evitando injertos en senos maxilares o nervio alveolar inferior.",
+          "(Chan & Holmes, 2015)"
+        ],
+        [
+          "Implantes Angulados",
+          "Uso de dos implantes verticales y dos angulados en la premaxila y mandíbula anterior para maximizar el contacto hueso-implante.",
+          "(Chan & Holmes, 2015)"
+        ],
+        [
+          "Carga Inmediata",
+          "Posibilidad de colocar una restauración fija de arcada completa en el momento de la cirugía si se logra un torque suficiente.",
+          "(Chan & Holmes, 2015; Duello, 2012)"
+        ],
+        [
+          "Ventajas para el Paciente",
+          "Reducción del tiempo y coste del tratamiento, mejora estética y alta satisfacción del paciente.",
+          "(Sclar et al., 2015)"
+        ],
+        [
+          "Ventajas Biomecánicas",
+          "Aumento de la extensión anteroposterior (A-P spread) y mejora de la distribución de la carga.",
+          "(Chan & Holmes, 2015)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Complicaciones y Factores de Riesgo"
+    },
+    {
+      "t": "p",
+      "c": "A pesar de su fiabilidad, el concepto All-on-4 no está exento de complicaciones. La literatura ha revisado las complicaciones técnicas y biológicas que pueden surgir después de al menos tres años de función (Soto-Penaloza et al., 2017). Es fundamental que los clínicos comprendan los factores de riesgo asociados a los fracasos de implantes y prótesis para minimizar las complicaciones y elegir este tratamiento con confianza (Chan & Nudell, 2021). La gestión de estas complicaciones y sus remedios es un aspecto clave para el éxito a largo plazo del tratamiento (Chan & Nudell, 2021)."
+    },
+    {
+      "t": "h2",
+      "c": "Planificación Digital y Optimización del Tratamiento"
+    },
+    {
+      "t": "p",
+      "c": "La implementación de tecnologías avanzadas ha mejorado significativamente la planificación y ejecución del protocolo All-on-4. La disponibilidad de escáneres Cone Beam CT (CBCT) en la consulta, el software de planificación de implantes dentales, el fresado CAD/CAM y las tecnologías de impresión rápida permiten una colocación precisa de los implantes dentales y una temporización protésica inmediata (Greenberg, 2017). Estas herramientas facilitan la colocación de implantes sin colgajo o la reducción ósea con colgajo abierto para las técnicas All-on-4, mejorando la planificación preoperatoria y el rendimiento intraoperatorio. El CBCT, en particular, proporciona capacidades diagnósticas potentes para evaluar la calidad y cantidad ósea, así como la patología dental y ósea, lo cual es esencial para un tratamiento de implantes dentales mejor informado (Greenberg, 2017). La planificación diagnósticamente dirigida y los protocolos de tratamiento específicos buscan reducir el tiempo quirúrgico y restaurador, mejorar la durabilidad y estética de la restauración provisional, y optimizar la comodidad del paciente (Sclar et al., 2015)."
+    },
+    {
+      "t": "quote",
+      "c": "La base biomecánica y el éxito clínico del concepto All-on-4 han sido validados por numerosos estudios científicos y clínicos.",
+      "author": "Sclar et al., Compend Contin Educ Dent, 2015"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ventajas ofrece el concepto All-on-4 frente a los tratamientos tradicionales para el edentulismo?",
+      "a": "El concepto All-on-4 permite la rehabilitación de arcadas edéntulas con una prótesis de arcada completa de función inmediata, superando limitaciones anatómicas sin necesidad de injertos óseos extensos. Ofrece reducción de tiempo y costes de tratamiento, mejoras estéticas y alta satisfacción del paciente (Sclar et al., 2015; Chan & Holmes, 2015)."
+    },
+    {
+      "q": "¿Es posible la carga inmediata con el protocolo All-on-4?",
+      "a": "Sí, la carga inmediata de una restauración fija de arcada completa es posible en el momento de la cirugía de implantes, siempre que se logre un torque de inserción suficiente en los implantes (Chan & Holmes, 2015; Duello, 2012)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Soto-Penaloza D, Zaragozí-Alonso R, Penarrocha-Diago M, Penarrocha-Diago M.",
+      "titulo": "The all-on-four treatment concept: Systematic review",
+      "revista": "J Clin Exp Dent",
+      "año": "2017",
+      "vol": "9",
+      "num": "3",
+      "pags": "e474-e488",
+      "doi": "10.4317/jced.53613",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/28298995/",
+      "verificada": true
+    },
+    {
+      "autores": "Chan MH, Nudell YA.",
+      "titulo": "All-on-4 Concept Update",
+      "revista": "Dent Clin North Am",
+      "año": "2021",
+      "vol": "65",
+      "num": "1",
+      "pags": "211-227",
+      "doi": "10.1016/j.cden.2020.09.014",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/33213711/",
+      "verificada": true
+    },
+    {
+      "autores": "Chan MH, Holmes C.",
+      "titulo": "Contemporary \"All-on-4\" concept",
+      "revista": "Dent Clin North Am",
+      "año": "2015",
+      "vol": "59",
+      "num": "2",
+      "pags": "421-70",
+      "doi": "10.1016/j.cden.2014.12.001",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/25835803/",
+      "verificada": true
+    },
+    {
+      "autores": "Greenberg AM.",
+      "titulo": "Advanced dental implant placement techniques",
+      "revista": "J Istanb Univ Fac Dent",
+      "año": "2017",
+      "vol": "51",
+      "num": "3 Suppl 1",
+      "pags": "S76-S89",
+      "doi": "10.17096/jiufd.17594",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29354312/",
+      "verificada": true
+    },
+    {
+      "autores": "Duello GV.",
+      "titulo": "An evidence-based protocol for immediate rehabilitation of the edentulous patient",
+      "revista": "J Evid Based Dent Pract",
+      "año": "2012",
+      "vol": "12",
+      "num": "3 Suppl",
+      "pags": "172-81",
+      "doi": "10.1016/S1532-3382(12)70031-3",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/23040347/",
+      "verificada": true
+    },
+    {
+      "autores": "Sclar AG, Cardenas JD, Von Haussen U.",
+      "titulo": "Diagnostically Driven Planning and Execution of an All-on-4 Treatment Concept",
+      "revista": "Compend Contin Educ Dent",
+      "año": "2015",
+      "vol": "36",
+      "num": "5",
+      "pags": "332-338;quiz340",
+      "doi": "",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/26053636/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
