@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-18 (h) — Medición verificada + bitácora puesta al día
+
+- ✅ Medición (agente Sonnet, en vivo): PRODIGY GA4 + whatsapp_click + Clarity ✓ tras aceptar; Alejandro GA4 con todo concedido ✓ y fbevents ✓. 🔴→✅ el Pixel de PRODIGY no cargaba en la visita en que se aceptan cookies (footer.js no disparaba `prodigy_consent_granted`) → arreglado, footer.js ?v=20261118b.
+- 💡 Decisiones abiertas: mismo Pixel de Meta (1254573606759925) en los dos sitios; PRODIGY concede analytics pero `ad_storage` denegado (coherente con «Sin anuncios» del aviso, pero sin remarketing); Alejandro sin ID de Google Ads (`AW-XXXXXXXXX`) y PRODIGY con `WA_CLICK_LABEL` de ejemplo (Ads mide por importación de GA4).
+- ✅ Bitácora al día (verificado en la BD 18-nov): ya están corridos casos-atrasados, rastreo-tiempos, envios-transportadora-acabado, avisos-whatsapp-fase2, storage-permisos, seguimiento-estado-operativo, alineadores-endurecer, ia-conocimiento y la tabla alineadores_entregas; todas las funciones SECURITY DEFINER tienen search_path. OG propias de coronas/rehabilitación sobre implantes ya existen. RESEND_API_KEY y FROM_EMAIL ya existen en Cloudflare (ambos). Las marcas 🟡/🔴 viejas de esos puntos quedan obsoletas.
+
 ## 2026-11-18 (g) — Auditoría con agentes: pagos, funciones y robots
 
 - Auditoría de seguridad de functions/ (agente Opus), páginas públicas (Sonnet) y chequeos mecánicos (Haiku), revisada y aplicada aquí.

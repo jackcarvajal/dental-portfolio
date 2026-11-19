@@ -306,6 +306,8 @@
       setTimeout(function(){ if (window._loadClarity) window._loadClarity(); }, 0);   // Clarity solo con permiso
       localStorage.setItem('prodigy_cookies_ok','1');
       if(window.gtag) window.gtag('consent','update',{analytics_storage:'granted',ad_storage:'denied'});
+      // conversions.js espera este evento para cargar el Pixel de Meta en la misma visita (antes solo en la página siguiente)
+      try { document.dispatchEvent(new Event('prodigy_consent_granted')); } catch (e) {}
       var b = document.getElementById('pfoot-cookie-banner');
       if(b){ b.style.transform='translateY(100%)'; setTimeout(function(){ b.remove(); }, 300); }
     }
