@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-19 (h) — Recepción 24/7, datos del pedido y cliente recurrente
+
+- js/recepcion-24h.js (ambos repos): aviso «Recibimos casos 24/7… arranca en horario hábil y los tiempos corren desde ahí» en diseño, fresado, impresión, laboratorio, escáner y alineadores; banner en cian sin parpadeo. Sábado: se recibe y trabaja a puerta cerrada.
+- Pedidos guardan paciente, proceso, express y notas (ciudad, turno, pago, cupón, obs.).
+- Impresión y laboratorio: con sesión detectan cliente recurrente (pedido pagado previo) → WhatsApp 50/50 o 100 %. Política de pago del lab actualizada.
+
 ## 2026-11-19 (g) — Decisiones de Alejandro aplicadas (ronda de preguntas)
 
 - Pago internacional = 7 % (PayPal + cambio): paypal-create-order/capture/webhook, js/pagos.js (v=20261119a en 4 páginas) y calculadora.html (decía 3,5 % y cobraba 6,5 %). Alineadores siguen con su 12 % acordado.
