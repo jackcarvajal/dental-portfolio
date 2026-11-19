@@ -13,7 +13,7 @@
 
 - Wompi: se paga DESPUÉS de guardar el pedido y con su código real (la firma v2.0 lo exige); 3 % dentro de precio_total solo si elige PSE/tarjeta; sin comprobante en ese caso. Fresado en «cotizar» no ofrece Wompi.
 - Cupones: «Validar» solo consulta; se gasta después del INSERT; precio_total guarda el descuento y notas el cupón. Arreglado de paso: aviso de cuenta nueva/referidos en fresado usaba emailCliente (el input) y mandaba «{}».
-- 🟡 SQL pendiente: sql/cupones-consumo-diferido-2026.sql (prodigy_validar_cupon_credito + prodigy_consumir_cupon_pedido). Sin correrlo, el front usa el camino anterior.
+- ✅ SQL corrido 19-nov (2 funciones, security definer, anon/auth OK, prueba_validar ok:false): sql/cupones-consumo-diferido-2026.sql (prodigy_validar_cupon_credito + prodigy_consumir_cupon_pedido). Sin correrlo, el front usa el camino anterior.
 
 ## 2026-11-19 (h) — Recepción 24/7, datos del pedido y cliente recurrente
 
