@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-18 (k) — Créditos de diseño prepagados (base) + políticas de Alejandro
+
+- 🟡 **SQL pendiente de correr:** `sql/creditos-diseno-2026.sql` — planes (Bronce/Plata/Oro/Platino de Alejandro), reglas editables, lotes, libro de movimientos y 13 funciones `creditos_*` (cotizar por complejidad, cobrar pedido FIFO con bloqueo, revisión extra 0,5, congelamiento a 90 días calculado al vuelo, activar/cargar plan, devolver, ajustar, resumen admin). RLS: cada cliente ve lo suyo; nadie escribe directo. El cobro fija `sla_horas_objetivo` y `fecha_ingreso` (lo usa alerta-sla) sin tocar `fecha_entrega` ni `calcularFechaEntrega()`.
+- Front (panel del cliente, panel admin, «pagar con créditos» en flujo-diseno, cuentas regresivas) va DESPUÉS de correr el SQL.
+- Alejandro terminos-y-legal: tiempos (simple máximo 24 h, urgente 4-6 h, medio 24-48 h, complejo por caso), inicio del plazo = caso completo y pagado, revisiones (2 incluidas, adicional 50 % = 0,5 crédito; se quitó el 20 % contradictorio y el «desde 15 minutos»), sección de planes de créditos, nada gratis.
+
 ## 2026-11-18 (j) — Portada PRODIGY estable y más rápida en celular
 
 - ✅ index.html: las reglas móviles del hero (título, subtítulo, descripción, flujo) también arriba (el bloque del final llegaba tarde y el hero se encogía 76 px); respaldo métrico de Inter; descripción del hero sin entrada animada en celular; foto del portafolio recortada al formato de la tarjeta (render 700x400, webp ~21 KB vs 38 KB); preconnect a Supabase; últimos casos en localStorage para visitas repetidas. Local móvil (CPU x4, red lenta): CLS 0,07-0,09 → 0,00-0,01 · LCP 4,1 s → 3,4 s.
