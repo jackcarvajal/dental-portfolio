@@ -2018,6 +2018,18 @@ if(window.ProdigyAuth){
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Necesito tener el diseno CAD listo para pedir el fresado?","acceptedAnswer":{"@type":"Answer","text":"Puedes pedir el servicio combinado: diseno CAD + fresado. PRODIGY diseña y fresca en el mismo flujo. Si ya tienes el STL de diseno, solo pide el fresado."}},{"@type":"Question","name":"El precio del fresado incluye sinterizado y coloracion?","acceptedAnswer":{"@type":"Answer","text":"El sinterizado esta siempre incluido. La coloracion extrinseca (glaze) es un extra opcional. Todos los materiales se entregan con acabado superficial pulido."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo solicitar fresado CAM dental en PRODIGY Lab","description":"Proceso para solicitar fresado de zirconio, PMMA o e.max en PRODIGY Lab Dental Bogotá.","totalTime":"PT10M","step":[{"@type":"HowToStep","name":"Selecciona el material","text":"Elige el material: zirconio monolítico, multicapa, PMMA o disilicato de litio."},{"@type":"HowToStep","name":"Sube el STL de diseño","text":"Adjunta el archivo STL del diseño CAD aprobado para proceder al fresado."},{"@type":"HowToStep","name":"Confirma y paga el 50% de abono","text":"El caso inicia producción tras confirmación del abono del 50%."},{"@type":"HowToStep","name":"Recibe tu restauración en 24-48h","text":"La pieza fresada y sinterizada llega a tu clínica o puedes pasar a recogerla en Bogotá."}]}</script>
 <script src="js/reportar-problema.js?v=20261118c" defer></script>
+<!-- Precios de fresado EN AJUSTE (19-nov-2026, decisión de Alejandro): el cliente arma el pedido igual y el precio
+     se le cotiza por WhatsApp. Para volver a mostrar precios y cobro: poner FRESADO_COTIZAR = false. -->
+<script>window.FRESADO_COTIZAR = true; if (window.FRESADO_COTIZAR) document.documentElement.classList.add('fresado-cotizar');</script>
+<style>
+.fresado-cotizar .submaterial-price,.fresado-cotizar .precio-oferta,.fresado-cotizar .precio-tachado,
+.fresado-cotizar .calc-line:has(#calc-subtotal),.fresado-cotizar #line-express,.fresado-cotizar #line-adicionales,
+.fresado-cotizar #line-envio,.fresado-cotizar #line-wompi,.fresado-cotizar .payment-banner,.fresado-cotizar #pago-co,
+.fresado-cotizar .payment-buttons,.fresado-cotizar .pay-total-pill,.fresado-cotizar .accordion:has(#pago_metodo),
+.fresado-cotizar #bloque-comprobante,.fresado-cotizar #modal-exito .payment-btn{display:none!important}
+.fresado-cotizar #calc-total{font-size:0!important}
+.fresado-cotizar #calc-total::after{content:"A cotizar";font-size:1.05rem}
+</style>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
@@ -2347,7 +2359,7 @@ if(window.ProdigyAuth){
                         </div><!-- /bloque archivos STL -->
 
                         <!-- ── BLOQUE 2: COMPROBANTE DE PAGO ─────────── -->
-                        <div style="background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.2); border-radius:12px; padding:20px 18px; margin-bottom:18px;">
+                        <div id="bloque-comprobante" style="background:rgba(212,175,55,0.04); border:1px solid rgba(212,175,55,0.2); border-radius:12px; padding:20px 18px; margin-bottom:18px;">
                         <p style="margin:0 0 14px; font-size:0.78rem; font-weight:800; color:var(--gold-primary); text-transform:uppercase; letter-spacing:1.5px; display:flex; align-items:center; gap:7px;"><i class="fas fa-receipt"></i> Comprobante de Pago</p>
 
                         <div class="form-group">
@@ -3868,7 +3880,7 @@ if(window.ProdigyAuth){
             const comprobante = document.getElementById('comprobante').files.length > 0;
 
             const btnSubmit = document.getElementById('btn-submit');
-            if (check1 && check2 && check3 && comprobante) {
+            if (check1 && check2 && check3 && (comprobante || window.FRESADO_COTIZAR)) {
                 btnSubmit.disabled = false;
             } else {
                 btnSubmit.disabled = true;
@@ -3968,7 +3980,7 @@ if(window.ProdigyAuth){
             const pTitular = document.getElementById('pago_titular').value.trim();
             const pRef = document.getElementById('pago_referencia').value.trim();
 
-            if (!pMetodo || !pTitular) {
+            if (!window.FRESADO_COTIZAR && (!pMetodo || !pTitular)) {   // en modo «cotizar» no se paga antes
                 showProdigyAlert('📋 Datos Incompletos', 'Para procesar tu orden, completa el <strong>método de pago</strong> y el nombre del <strong>titular</strong>. Estos datos nos permiten verificar tu transacción. ¡Ya casi terminamos!', 'Completar Datos');
                 document.getElementById('pago_metodo').focus();
                 return;
@@ -4191,6 +4203,7 @@ if(window.ProdigyAuth){
                 texto += `📅 *Fecha:* ${fechaTxt}\n\n`;
             }
             
+            if (!window.FRESADO_COTIZAR) {
             texto += `💰 *CONFIRMACIÓN DE PAGO*\n`;
             texto += `• Medio: ${STATE.pagoMetodo}\n`;
             texto += `• Titular: ${STATE.pagoTitular}\n`;
@@ -4204,6 +4217,9 @@ if(window.ProdigyAuth){
                 texto += `🎁 *CUPÓN:* ${window._cuponCreditoActivo.cupon} (-$${d.toLocaleString('es-CO')} COP)\n`;
             }
             texto += `💵 *TOTAL: ${_totalFrs}* (pago 100% al confirmar)\n\n`;
+            } else {
+            texto += `💵 *PRECIO:* a cotizar por PRODIGY (precios de fresado en ajuste)\n\n`;
+            }
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
 
             const _nonce = btoa(STATE.ordenId + ':' + Date.now().toString(36)).replace(/[+/=]/g, c => c==='+' ? '-' : c==='/' ? '_' : '');
@@ -4328,7 +4344,7 @@ if(window.ProdigyAuth){
                 if (exito) {
                     document.getElementById('exito-orden-id').textContent = STATE.ordenId || '—';
                     document.getElementById('exito-cliente').textContent = STATE.nombreCliente || '—';
-                    document.getElementById('exito-total').textContent = STATE.total || '—';
+                    document.getElementById('exito-total').textContent = window.FRESADO_COTIZAR ? 'A cotizar por WhatsApp' : (STATE.total || '—');
                     exito.classList.add('active');
                 }
             } catch(e) {

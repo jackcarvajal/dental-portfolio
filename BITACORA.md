@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-11-19 (d) — Fresado en modo «Cotizar» (precios suspendidos)
+
+- 💡 Alejandro: los precios de fresado quedan suspendidos hasta terminar de comprar material. flujo-fresado.html con FRESADO_COTIZAR = true: no muestra precios ni pide pago/comprobante; el WhatsApp dice «PRECIO: a cotizar». Para volver: FRESADO_COTIZAR = false.
+
 ## 2026-11-19 (c) — Auditoría de flujos (3 agentes) + arreglos sin decisión de negocio
 
 - 🔴→🟡 flujo-diseno (PRODIGY y Alejandro): enviarWhatsApp() usaba esLocal/waFull/indSel de submitOrden() → ReferenceError: el pedido de diseño nunca se enviaba ni guardaba (desde abr-2026).
