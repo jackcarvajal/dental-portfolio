@@ -68,7 +68,10 @@
         else destino = host + (u.pathname === '/' ? '' : u.pathname);
       } catch (e) { destino = href.slice(0, 80); }
     }
-    var txt = (a.getAttribute('aria-label') || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+    // Nombre del botón: aria-label o su primera línea visible (sin pegar el título con el subtítulo).
+    var lineas = String(a.getAttribute('aria-label') || a.innerText || a.textContent || '').split(/\n+/)
+      .map(function (x) { return x.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
+    var txt = (lineas[0] || '').slice(0, 60);
     enviar('links_click', { boton: txt || destino, destino: String(destino).slice(0, 120), fuente: F });
   }, { capture: true, passive: true });
 })();
