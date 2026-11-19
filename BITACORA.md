@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-11-18 (j) — Portada PRODIGY estable y más rápida en celular
+
+- ✅ index.html: las reglas móviles del hero (título, subtítulo, descripción, flujo) también arriba (el bloque del final llegaba tarde y el hero se encogía 76 px); respaldo métrico de Inter; descripción del hero sin entrada animada en celular; foto del portafolio recortada al formato de la tarjeta (render 700x400, webp ~21 KB vs 38 KB); preconnect a Supabase; últimos casos en localStorage para visitas repetidas. Local móvil (CPU x4, red lenta): CLS 0,07-0,09 → 0,00-0,01 · LCP 4,1 s → 3,4 s.
+
 ## 2026-11-18 (i) — Cookies con anuncios, analítica diferida, CLS y letra mínima
 
 - ✅ Cookies (PRODIGY): aceptar concede analytics + ad_storage + ad_user_data + ad_personalization (Consent Mode v2 completo); el aviso ya no dice «Sin anuncios»; política de cookies de ambos sitios nombra Google Ads y Meta. Verificado en vivo: G100 antes → G111 después + fbevents.

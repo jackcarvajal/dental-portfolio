@@ -127,6 +127,8 @@
     </script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo hacer un pedido en PRODIGY Lab Dental","description":"Proceso para enviar un caso de diseño CAD, fresado o impresión 3D dental a PRODIGY Lab Dental en Bogotá.","step":[{"@type":"HowToStep","position":1,"name":"Elige tu servicio","text":"Selecciona entre diseño CAD, fresado CAM o impresión 3D dental. Usa la calculadora para ver el precio al instante."},{"@type":"HowToStep","position":2,"name":"Envía el escáner","text":"Comparte el archivo STL o PLY desde tu escáner intraoral. Aceptamos todos los formatos: Exocad, 3Shape, iTero, Medit."},{"@type":"HowToStep","position":3,"name":"Confirma y abona el 50%","text":"Recibes la cotización en minutos. Confirmas con el 50% de anticipo y el equipo empieza inmediatamente."},{"@type":"HowToStep","position":4,"name":"Recibe tu pieza o archivo STL","text":"En 24 horas hábiles tienes el diseño CAD o la pieza fresada lista. Pagas el 50% restante contra entrega."}]}</script>
     <!-- Performance: preconnect a recursos externos críticos -->
+    <!-- Supabase: de ahí salen los casos del portafolio y su foto (la imagen más grande de la portada en celular) -->
+    <link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co" crossorigin>
       <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -276,8 +278,11 @@
             box-sizing: border-box;
         }
 
+        /* Respaldo con las medidas de Inter: mientras Inter descarga, Arial ajustado ocupa lo mismo y el texto
+           no salta cuando llega la fuente (era ~0,07 de CLS en celular). */
+        @font-face { font-family: "Inter Fallback"; src: local("Arial"); size-adjust: 107.4%; ascent-override: 90.2%; descent-override: 22.5%; line-gap-override: 0%; }
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Inter Fallback', sans-serif;
             background-color: var(--bg-dark);
             background-image: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%);
             background-attachment: fixed;
@@ -1223,7 +1228,9 @@
             .hero-title-main { font-size: 3rem; letter-spacing: -2px; }
             .diamond-in-y { font-size: 2.4rem; right: 2%; top: -12%; }
             .hero-subtitle { font-size: 0.85rem; letter-spacing: 3px; }
-            .hero-desc { font-size: 0.88rem; padding: 0 4px; }
+            /* En celular la descripción del hero es el contenido principal (LCP): se muestra sin la entrada animada
+               con retardo (.45 s + .8 s), que atrasaba el primer pintado útil. */
+            .hero-desc { font-size: 0.88rem; padding: 0 4px; animation: none; }
 
             /* GRIDS → columna única (steps; cajones y portfolio van a scroll horizontal via bloque al final) */
             .steps-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
@@ -1273,7 +1280,16 @@
 /* CLS: reserva desde el primer pintado el alto del menú fijo que header.js inyecta después (evita el salto del hero) */
 body{padding-top:114px;}
 /* CLS: el hero móvil se declara aquí (arriba) y no solo al final del body, para que el primer pintado ya tenga su alto final */
-@media (max-width: 768px){.hero{min-height:55vh!important;padding:68px 16px 28px!important;gap:10px!important;overflow-x:hidden!important;}}
+@media (max-width: 768px){.hero{min-height:55vh!important;padding:68px 16px 28px!important;gap:10px!important;overflow-x:hidden!important;}
+  /* mismos tamaños que el bloque móvil del final: si llegan tarde, el hero se encoge ~75 px y empuja la página */
+  .hero-title-main{font-size:clamp(1.8rem,9vw,2.8rem)!important;letter-spacing:-1px!important;}
+  .hero-subtitle{font-size:0.65rem!important;letter-spacing:2px!important;}
+  .hero-desc{font-size:0.82rem!important;padding:0 2px!important;}
+  .hero-workflow{flex-wrap:wrap!important;justify-content:center!important;gap:4px 6px!important;margin-bottom:10px!important;width:100%!important;overflow:visible!important;}
+  .wf-text{font-size:0.68rem!important;white-space:nowrap!important;letter-spacing:0.5px!important;}
+  .wf-arrow{width:18px!important;height:10px!important;}
+  .wf-perfection{font-size:0.68rem!important;}}
+@media (max-width: 420px){.hero-title-main{font-size:1.75rem!important;}}
 /* ── TOPBAR ── */
 /* ── TOPBAR ── barra superior con mini-login inline ── */
 #nav-topbar {
@@ -1884,7 +1900,9 @@ body{padding-top:114px;}
       ];
       function _iEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
       // Miniatura optimizada: redimensiona imagenes de Supabase (render/image); deja URLs externas intactas
-      function _thumb(u){return (u&&u.indexOf('/storage/v1/object/public/')>-1)?u.replace('/object/public/','/render/image/public/')+(u.indexOf('?')>-1?'&':'?')+'width=600&quality=72':u;}
+      // Recorte al formato de la tarjeta (alto 200 px, ~1,75:1): pesa ~4 veces menos que la foto completa a 600 px de ancho.
+      // Es la imagen más grande de la portada en celular (LCP), por eso importa.
+      function _thumb(u){return (u&&u.indexOf('/storage/v1/object/public/')>-1)?u.replace('/object/public/','/render/image/public/')+(u.indexOf('?')>-1?'&':'?')+'width=700&height=400&resize=cover&quality=70':u;}
       function renderCards(cases) {
         var grid = document.getElementById('idx-port-grid');
         if (!grid) return;
@@ -1904,13 +1922,20 @@ body{padding-top:114px;}
             '</div></a>';
         }).join('');
       }
+      // Visitas repetidas: pinta al instante los últimos casos guardados y luego refresca con la base.
+      var _CK = 'idx_port_cache_v1';
+      try { var _prev = JSON.parse(localStorage.getItem(_CK) || 'null'); if (_prev && _prev.length) renderCards(_prev); } catch (e) {}
       fetch(SURL + '/rest/v1/casos_portafolio?select=id,name,type,description,cover_image&visible=eq.true&negocio=in.(prodigy,ambos)&order=sort_order.asc.nullslast,created_at.desc&limit=3', {
         headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
       }).then(function(r) { return r.json(); }).then(function(data) {
         if (data && data.length > 0) {
-          renderCards(data.map(function(c) {
+          var casos = data.map(function(c) {
             return { id:c.id, name:c.name, type:c.type, description:c.description, coverImage:c.cover_image || null };
-          }));
+          });
+          var nuevo = JSON.stringify(casos);
+          var viejo = null; try { viejo = localStorage.getItem(_CK); } catch (e) {}
+          if (nuevo !== viejo) renderCards(casos);   // si no cambió, no se vuelve a pintar (evita parpadeo)
+          try { localStorage.setItem(_CK, nuevo); } catch (e) {}
         } else {
           renderCards(FALLBACK);
         }
