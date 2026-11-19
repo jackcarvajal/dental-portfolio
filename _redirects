@@ -6,6 +6,8 @@
 # BLOQUEAR archivos sensibles → 404
 # ─────────────────────────────────────────────────────────────
 # WhatsApp corto para QR impresos y bio de redes (si cambia el número, se corrige aquí y no se reimprime)
+# Desde 18-nov-2026 /wa y /wa-en los atiende functions/wa/ (rastreo de clics por origen: /wa/google,
+# /wa/instagram…). Estas líneas quedan solo de respaldo: si la función no está, siguen funcionando igual.
 /wa      https://wa.me/573212816716?text=Hola%20PRODIGY%20%F0%9F%91%8B%20quiero%20cotizar%20un%20trabajo%20de%20laboratorio%20dental.   302
 /wa-en   https://wa.me/573212816716?text=Hi%20PRODIGY%20%F0%9F%91%8B%20I%27d%20like%20a%20quote%20for%20a%20dental%20lab%20case.   302
 /qr      /links?utm_source=qr&utm_medium=impreso   302

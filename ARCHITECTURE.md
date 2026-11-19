@@ -54,6 +54,7 @@ respeta sus fronteras. El núcleo se corrige una vez y se propaga a los demás r
 | `js/` | Lógica de UI y núcleo compartido | Cambiar archivo ⇒ subir `?v=` (caché inmutable) |
 | `css/` | Estilos compartidos (`aln.css`, `styles.css`) | Paleta y tipografía: `ESTANDARES-UX-TIPOGRAFIA.md` |
 | `functions/api/` | Backend en el borde (Cloudflare) | Única puerta a APIs externas y a la service_role |
+| `functions/wa/`, `functions/wa-en.js` | Enlaces de WhatsApp rastreados (`/wa/<origen>`) | Número y texto fijos (sin open redirect); ruta en `_routes.json` |
 | `functions/_middleware.js` | Bloquea archivos internos servidos como estáticos | Añadir aquí toda carpeta interna nueva |
 | `supabase/functions/` | Edge Functions Deno (`send-push`, `verify-price`, `wompi-signature`…) | Segundo runtime: no crear más ahí (ver §6) |
 | `sql/` | Parches SQL que se corren a mano en el SQL Editor | `sql/_baseline/README.md`: una definición canónica por RPC |
@@ -74,7 +75,7 @@ medio de una RPC o vista del dueño, no tocando sus tablas directamente.
 | **Alineadores** | `envia-alineadores`, `app/alineadores`, `nueva-orden-alineadores`, `facturacion-alineadores` | `alineadores_*` | `docs/PROTOCOLO-ALINEADORES.md` |
 | **Gestión del lab** | `app/rastreo`, `mover`, `caso-qr`, `etiqueta`, `inventario`, `calidad`, `taller`, `mensajero` | `inventario_*`, `despachos`, `lotes_material`, `pedido_movimientos`, `pedido_incidencias` | `docs/ROADMAP-GESTION-LAB.md` |
 | **Cobros** | `pagar`, `calculadora*`, `app/cotizaciones`, `contabilidad`, `admin-precios` | `cotizaciones`, `pagos`, `config_precios`, `catalogo`, `creditos_planes`/`creditos_reglas`/`creditos_lotes`/`creditos_movimientos` (créditos de diseño prepagados, solo vía RPC `creditos_*`; la vieja `creditos_cliente` es deuda sin uso) | `docs/ACTIVAR-PAGOS.md` · Ley 50/50 |
-| **Clientes y crecimiento** | `app/client-panel`, `referidos-portal`, `metricas*`, `clientes` | `doctores_perfil`, `referidos`, `leads_doctores`, `analytics_events` | — |
+| **Clientes y crecimiento** | `app/client-panel`, `referidos-portal`, `metricas*`, `clientes`, `app/editar-links` (rastreo de enlaces: `/wa/<origen>` + `js/rastreo-enlaces.js`) | `doctores_perfil`, `referidos`, `leads_doctores`, `analytics_events` | — |
 | **Identidad y acceso** | `app/login`, `gestionar-usuarios`, `crear-operario`, `cambiar-contrasena` | `perfiles`, `staff_departamentos` (+ `app_metadata.roles`) | `docs/GUIA-SEGURIDAD.md` |
 | **Notificaciones y soporte** | `app/reportes-web`, `bandeja-whatsapp`, `ayuda`, `soporte` | `notificaciones_internas`, `avisos_whatsapp`, `push_subscriptions`, `reportes_web`, `logs_incidencias` | `docs/PROTOCOLO-WHATSAPP.md`, `docs/WHATSAPP-OFICIAL.md` |
 | **Contenido y SEO** | páginas públicas, `journal`, `portafolio`, `links` | `casos_portafolio`, `comentarios_portafolio`, `links_config` | `docs/GUIA-BOT-Y-ARTICULOS.md`, `docs/GUIA-AUDITORIA.md` |

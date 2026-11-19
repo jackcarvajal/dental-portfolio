@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-10d",
+  "version": "2026-11-18a",
   "categorias": [
     {
       "id": "inicio",
@@ -783,6 +783,23 @@
         "Revisamos el CBCT (viabilidad) y planificamos la posición, la profundidad y el implante según la prótesis. Te enviamos la planificación para que la **apruebes o pidas cambios**. No se fabrica nada sin tu aprobación.",
         "Con tu aprobación diseñamos la guía, con el apoyo, las anillas y la fijación adecuados a tu caso, y la fabricamos."
       ]
+    },
+    {
+      "id": "rastreo-enlaces",
+      "cat": "clientes",
+      "titulo": "Saber de dónde llegan los clientes (enlaces rastreados)",
+      "resumen": "Un enlace de WhatsApp distinto por lugar (Google, Instagram, tarjeta, un cliente) y las cifras de clics por origen y país.",
+      "para": "Administración",
+      "kw": "rastreo enlaces beacons whatsapp origen fuente google instagram tarjeta qr clics links estadisticas pais",
+      "pasos": [
+        "Abre **Página de enlaces** en el panel (app/editar-links) y elige el negocio arriba.",
+        "En **Rastreo de enlaces**, toca dónde lo vas a compartir (Google, Instagram, Tarjeta…) o escribe uno propio, por ejemplo el nombre de un cliente o de una feria.",
+        "Copia el enlace: **WhatsApp** (/wa/<origen>), **WhatsApp inglés** (/wa/en/<origen>) o **Página de enlaces** (/links?src=<origen>). Pégalo en ese lugar: bio, ficha de Google, QR de la tarjeta, correo.",
+        "El cliente que lo toca abre el WhatsApp Business con un mensaje que ya dice de dónde viene («…los encontré en Google…»).",
+        "Abajo ves, por 7, 30 o 90 días: WhatsApp por origen, visitas a /links por origen, botones más tocados y países. «Directo o QR impreso» = /wa sin origen (QR viejos o escrito a mano).",
+        "Lo que escriben a un número personal no se puede contar: ese número no debe estar en la ficha de Google, la web ni las redes."
+      ],
+      "rel": []
     }
   ]
 }

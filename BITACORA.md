@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-18 (l) — Rastreo de enlaces estilo Beacons (PRODIGY y Alejandro)
+
+- 🟡 `functions/wa/[[fuente]].js` (+ `wa/index.js`, `wa-en.js`, rutas en `_routes.json`): `/wa`, `/wa/<origen>` y `/wa/en/<origen>` anotan el clic en `analytics_events` (`wa_click`, `metadata.fuente`, país, hash diario anónimo) y redirigen a wa.me con un mensaje que dice el origen («los encontré en Google…»). Destino fijo (sin open redirect), sin robots ni vistas previas, tope 10/min por IP, nunca bloquea al cliente. Las líneas `/wa` de `_redirects` quedan de respaldo.
+- 🟡 `js/rastreo-enlaces.js` en /links: visita (`page_view` con fuente de `?src=` o del sitio de origen, una por pestaña) y `links_click` por botón.
+- 🟡 app/editar-links.html → sección «Rastreo de enlaces»: generador de enlaces por lugar (Google, Instagram, tarjeta… o uno por cliente) y cifras 7/30/90 días (WhatsApp por origen, visitas a /links por origen, botones más tocados, países).
+- 💡 Motivo: el primer lead de EE. UU. escribió al WhatsApp personal de Alejandro (sale en su ficha de Google). Lo que llega a un número personal no se puede contar; el arreglo es el teléfono de la ficha + `/wa/google`.
+
 ## 2026-11-18 (k) — Créditos de diseño prepagados (base) + políticas de Alejandro
 
 - 🟡 **SQL pendiente de correr:** `sql/creditos-diseno-2026.sql` — planes (Bronce/Plata/Oro/Platino de Alejandro), reglas editables, lotes, libro de movimientos y 13 funciones `creditos_*` (cotizar por complejidad, cobrar pedido FIFO con bloqueo, revisión extra 0,5, congelamiento a 90 días calculado al vuelo, activar/cargar plan, devolver, ajustar, resumen admin). RLS: cada cliente ve lo suyo; nadie escribe directo. El cobro fija `sla_horas_objetivo` y `fecha_ingreso` (lo usa alerta-sla) sin tocar `fecha_entrega` ni `calcularFechaEntrega()`.

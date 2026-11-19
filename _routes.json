@@ -4,6 +4,9 @@
   "include": [
     "/api/*",
     "/article",
+    "/wa",
+    "/wa/*",
+    "/wa-en",
     "/sql/*",
     "/supabase/*",
     "/scripts/*",

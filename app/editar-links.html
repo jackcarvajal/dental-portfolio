@@ -77,6 +77,34 @@
   .lprev .pv-ic{flex:none;font-weight:800}
   .lprev.ok{color:#34d399}.lprev.ok b{color:#6ee7b7}
   .lprev.bad{color:#f87171}
+  /* Rastreo de enlaces */
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{background:var(--card2);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:.8rem;font-weight:700;
+    padding:6px 12px;border-radius:999px;cursor:pointer;min-height:34px}
+  .chip:hover{border-color:var(--cyan)}
+  .chip.on{border-color:var(--cyan);color:var(--cyan);background:rgba(0,210,255,.08)}
+  .r-url{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+  .r-url span{flex:none;width:118px;font-size:.76rem;font-weight:700;color:var(--muted)}
+  .r-url code{flex:1;min-width:0;overflow-x:auto;white-space:nowrap;font-size:.82rem;background:#070b12;
+    border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--cyan)}
+  @media(max-width:560px){.r-url{flex-wrap:wrap}.r-url span{width:100%}.r-url code{white-space:normal;word-break:break-all}}
+  .r-tot{font-size:.84rem;color:var(--muted);margin:14px 0 4px}
+  .r-tot b{color:var(--ink);font-variant-numeric:tabular-nums}
+  .r-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media(max-width:620px){.r-grid{grid-template-columns:1fr}}
+  .r-box{border:1px solid var(--line);border-radius:11px;padding:13px;background:var(--card2)}
+  .r-box h3{font-size:.82rem;font-weight:800;margin-bottom:10px}
+  .r-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(40px,1fr) 92px;gap:8px;align-items:center;
+    font-size:.82rem;margin-bottom:7px}
+  .r-lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .r-bar{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+  .r-bar i{display:block;height:100%;border-radius:999px;background:var(--cyan)}
+  .r-wa .r-bar i{background:var(--neon)} .r-wa h3{color:var(--neon)}
+  .r-vis h3{color:var(--cyan)}
+  .r-btn .r-bar i{background:var(--magenta)} .r-btn h3{color:var(--magenta)}
+  .r-pais .r-bar i{background:var(--gold)} .r-pais h3{color:var(--gold)}
+  .r-num{font-variant-numeric:tabular-nums;font-weight:800;text-align:right;white-space:nowrap}
+  .r-num small{color:var(--muted);font-weight:500}
 </style>
 <script src="../js/reportar-problema.js?v=20261118c"></script>
 </head>
@@ -93,6 +121,21 @@
   </header>
 
   <p class="hint" style="margin-top:14px">Cambia lo que quieras y pulsa <b>Guardar</b>. La página <b>/links</b> se actualiza sola — sin tocar código. Deja un campo vacío para usar el texto por defecto.</p>
+
+  <!-- RASTREO DE ENLACES (estilo Beacons): /wa/<origen> + /links?src=<origen>. Datos: analytics_events -->
+  <section id="rastreo">
+    <div class="sh"><span class="ic">📈</span><h2>Rastreo de enlaces</h2>
+      <select id="r-dias" style="margin-left:auto;max-width:120px" onchange="cargarRastreo()" aria-label="Periodo">
+        <option value="7">7 días</option><option value="30" selected>30 días</option><option value="90">90 días</option>
+      </select></div>
+    <p class="hint">Cada lugar donde compartes tu WhatsApp o tu página de enlaces lleva su propio enlace, y aquí ves cuántos lo usaron y desde qué país. El mensaje de WhatsApp ya llega diciendo de dónde viene (Google, Instagram, tarjeta…). Lo que llega a un número personal no se puede contar: ese número no debe estar publicado en ningún lado.</p>
+    <div class="field"><label for="r-fuente">¿Dónde lo vas a compartir?</label>
+      <div class="chips" id="r-chips"></div>
+      <input id="r-fuente" style="margin-top:8px" placeholder="Otro: ej. vivane, feria-bogota, anuncio-nov" oninput="pintarEnlacesRastreo()" autocomplete="off">
+    </div>
+    <div class="card-item" id="r-gen"></div>
+    <div id="r-stats"><p class="hint" style="margin:0">Cargando cifras…</p></div>
+  </section>
 
   <!-- APARIENCIA -->
   <section>
@@ -189,6 +232,80 @@ const DEF={
 };
 const LINK_LABELS={wa:'WhatsApp',quote:'Cotizar',web:'Sitio web',ig:'Instagram'};
 
+/* ── Rastreo de enlaces (estilo Beacons) ─────────────────────────────────────────────
+   Enlaces: /wa/<origen> (functions/wa/[[fuente]].js → evento 'wa_click') y /links?src=<origen>
+   (js/rastreo-enlaces.js → 'page_view' con pagina '/links' y 'links_click'). Lee analytics_events
+   (RLS: solo admin por app_metadata). Todo lo que viene de la tabla es texto ajeno → esc(). */
+const R_CHIPS=[['google','Google (Maps)'],['instagram','Instagram'],['facebook','Facebook'],['tiktok','TikTok'],
+  ['tarjeta','Tarjeta'],['volante','Volante'],['correo','Correo'],['referido','Recomendados']];
+const R_NOMBRE={directo:'Directo o QR impreso',web:'Desde la web',google:'Google',instagram:'Instagram',facebook:'Facebook',
+  tiktok:'TikTok',youtube:'YouTube',linkedin:'LinkedIn',whatsapp:'Reenviado por WhatsApp',tarjeta:'Tarjeta',volante:'Volante',
+  qr:'Código QR',correo:'Correo',referido:'Recomendados',evento:'Evento o feria',otro:'Otro'};
+const rNombre=k=>R_NOMBRE[k]||k;
+const rLimpia=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9-]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40);
+let _rTurno=0;
+let _rPais=null; try{ _rPais=new Intl.DisplayNames(['es'],{type:'region'}); }catch(e){}
+
+function pintarChipsRastreo(){
+  const f=rLimpia(document.getElementById('r-fuente').value)||'google';
+  document.getElementById('r-chips').innerHTML=R_CHIPS.map(([k,l])=>
+    `<button type="button" class="chip${k===f?' on':''}" onclick="elegirFuente('${k}')">${esc(l)}</button>`).join('');
+}
+function elegirFuente(k){ document.getElementById('r-fuente').value=k; pintarEnlacesRastreo(); }
+function pintarEnlacesRastreo(){
+  const n=negocio(), f=rLimpia(document.getElementById('r-fuente').value)||'google', base=DEF[n].web;
+  const filas=[['WhatsApp',base+'/wa/'+f],['WhatsApp inglés',base+'/wa/en/'+f],['Página de enlaces',base+'/links?src='+f]];
+  document.getElementById('r-gen').innerHTML=filas.map(([l,u],i)=>
+    `<div class="r-url"><span>${l}</span><code id="r-u${i}">${esc(u)}</code>
+      <button type="button" class="btn btn-sm" onclick="copiarRastreo('r-u${i}')">Copiar</button></div>`).join('')+
+    `<p class="hint" style="margin:4px 0 0">${f==='google'
+      ?'Pon el de WhatsApp en tu ficha de Google (sitio web o botón de chat) y revisa que el teléfono de la ficha sea el de WhatsApp Business.'
+      :'Usa uno distinto por lugar o por cliente (ej. <b>/wa/vivane</b>) y sabrás exactamente cuál funcionó.'}</p>`;
+  pintarChipsRastreo();
+}
+async function copiarRastreo(id){
+  const t=document.getElementById(id).textContent;
+  try{ await navigator.clipboard.writeText(t); toast('Enlace copiado'); }
+  catch(e){ toast('Cópialo a mano: '+t,true); }
+}
+function rAgrupar(rows,clave){
+  const m=new Map();
+  rows.forEach(r=>{ const k=clave(r)||'otro'; const g=m.get(k)||{n:0,p:new Set()}; g.n++; if(r.ip_hash) g.p.add(r.ip_hash); m.set(k,g); });
+  return [...m.entries()].map(([k,g])=>({k,n:g.n,p:g.p.size})).sort((a,b)=>b.n-a.n);
+}
+function rBarras(lista,nombre){
+  if(!lista.length) return '<p class="hint" style="margin:0">Todavía sin datos en este periodo.</p>';
+  const max=lista[0].n;
+  return lista.slice(0,12).map(x=>`<div class="r-row"><span class="r-lbl" title="${esc(nombre(x.k))}">${esc(nombre(x.k))}</span>
+    <span class="r-bar"><i style="width:${Math.max(4,Math.round(x.n/max*100))}%"></i></span>
+    <span class="r-num">${x.n} <small>· ${x.p} pers.</small></span></div>`).join('');
+}
+async function cargarRastreo(){
+  const turno=++_rTurno, n=negocio(), dias=+document.getElementById('r-dias').value||30;
+  const box=document.getElementById('r-stats');
+  box.innerHTML='<p class="hint" style="margin:0">Cargando cifras…</p>';
+  const desde=new Date(Date.now()-dias*864e5).toISOString();
+  const {data,error}=await sb.from('analytics_events').select('evento,pagina,metadata,country,ip_hash')
+    .eq('negocio',n).gte('created_at',desde)
+    .or('evento.in.(wa_click,links_click),and(evento.eq.page_view,pagina.eq./links)')
+    .order('created_at',{ascending:false}).limit(5000);
+  if(turno!==_rTurno) return;
+  if(error){ box.innerHTML=''; const p=document.createElement('p'); p.className='hint'; p.textContent='No pude leer las cifras: '+error.message; box.appendChild(p); return; }
+  const rows=data||[];
+  const meta=r=>(r.metadata&&typeof r.metadata==='object')?r.metadata:{};
+  const wa=rows.filter(r=>r.evento==='wa_click'), vis=rows.filter(r=>r.evento==='page_view'), cli=rows.filter(r=>r.evento==='links_click');
+  const nombrePais=c=>{ if(!c||c==='otro'||c==='XX') return 'Sin dato'; try{ return (_rPais&&_rPais.of(c))||c; }catch(e){ return c; } };
+  box.innerHTML=
+    `<p class="r-tot">Últimos ${dias} días: <b>${wa.length}</b> aperturas de WhatsApp · <b>${vis.length}</b> visitas a /links · <b>${cli.length}</b> toques en sus botones</p>
+    <div class="r-grid">
+      <div class="r-box r-wa"><h3>WhatsApp por origen</h3>${rBarras(rAgrupar(wa,r=>meta(r).fuente),rNombre)}</div>
+      <div class="r-box r-vis"><h3>Visitas a /links por origen</h3>${rBarras(rAgrupar(vis,r=>meta(r).fuente),rNombre)}</div>
+      <div class="r-box r-btn"><h3>Botones más tocados en /links</h3>${rBarras(rAgrupar(cli,r=>meta(r).boton||meta(r).destino),k=>k)}</div>
+      <div class="r-box r-pais"><h3>Países (WhatsApp y /links)</h3>${rBarras(rAgrupar(wa.concat(vis),r=>r.country),nombrePais)}</div>
+    </div>
+    <p class="hint" style="margin:10px 0 0">«pers.» = personas distintas por día (anónimo, sin cookies). No se cuentan robots ni vistas previas de enlaces.</p>`;
+}
+
 (async()=>{ const s=await ProdigyAuth.require(['admin']); _email=s.user.email; cargar(); })();
 
 function negocio(){ return document.getElementById('neg').value; }
@@ -201,6 +318,7 @@ async function cargar(){
   if(error && error.code!=='PGRST116'){ toast('Error al cargar: '+error.message,true); }
   CFG=(data&&data.config)||{};
   pintar();
+  pintarEnlacesRastreo(); cargarRastreo();
 }
 
 function pintar(){
