@@ -987,7 +987,8 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
     const codigo = 'SC-' + _ymd + '-' + _hex;
 
     // 1. Guardar solicitud
-    await sb.from('solicitudes_scanner').insert({
+    // Antes no se revisaba el error: si la base rechazaba la solicitud, el doctor veía éxito y no quedaba registro (19-nov-2026).
+    const { error: _errSolicitud } = await sb.from('solicitudes_scanner').insert({
         negocio: 'prodigy', codigo,
         doctor, clinica, whatsapp, email: email || null,
         escaner_marca: marca, servicio, piezas: piezas || null,
@@ -995,10 +996,11 @@ document.getElementById('scannerForm').addEventListener('submit', async e => {
         acepta_marketing: document.getElementById('checkMarketing').checked,
         acepta_habeas:    document.getElementById('checkHabeas').checked
     });
+    if (_errSolicitud) console.error('[solicitud] NO se guardó en la base:', _errSolicitud.message);
 
     // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
     fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
-        body: JSON.stringify({ doctor, servicio, whatsapp, codigo, tipo:'Solicitud de escáner',
+        body: JSON.stringify({ doctor, servicio, whatsapp, codigo, tipo:'Solicitud de escáner'+(_errSolicitud?' ⚠️ NO guardada en la base, registrar a mano':''),
           contexto:'⚠️ Carril rápido (Envía tu escáner): SIN pago ni datos completos. Cotizar y pedir al Dr el protocolo del caso (material, color VITA, antagonista, tipo de trabajo).' }) }).catch(()=>{});
 
     // Suscribir al newsletter si acepta marketing y tiene email

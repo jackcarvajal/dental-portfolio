@@ -489,7 +489,7 @@ render();
       'puente':    'puente',
       'provisional':'provisional',
     };
-    const r = await fetch(`${SURL}/rest/v1/catalogo?id=in.(corona,carilla,inlay,puente,provisional)&select=id,precio,activo`, {
+    const r = await fetch(`${SURL}/rest/v1/catalogo?id=in.(corona,carilla,inlay,puente,provisional)&flujo=eq.fresado&select=id,precio,activo`, {
       headers: { 'apikey': SKEY, 'Authorization': 'Bearer ' + SKEY }
     });
     if (!r.ok) return;
@@ -539,7 +539,7 @@ render();
   window.guardarCotizacion=async function(){
     const btn=document.getElementById('btnGuardarCot');
     const msg=document.getElementById('cotMsg');
-    const p=SERVICES[ST.srv]||{};
+    const p=PRECIOS[ST.srv]||{}; // antes SERVICES (no existe): «Guardar cotización» nunca funcionaba
     const qty=p.fixedQty?1:ST.qty;
     const unit=(p.base||0)+(typeof MAT_DELTA!=='undefined'&&MAT_DELTA[ST.mat]?MAT_DELTA[ST.mat]:0);
     const total=unit*qty+(ST.urgente?EXTRAS.urgente:0)+(ST.glaze?EXTRAS.glaze:0)+(ST.envio?EXTRAS.envio:0);

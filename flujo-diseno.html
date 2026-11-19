@@ -2075,6 +2075,11 @@ const lineWompi = document.getElementById('line-wompi');
         // ── ENVIAR WHATSAPP ───────────────────────────────────────────────────
         async function enviarWhatsApp() {
             const btn = document.getElementById('btn-wa');
+            // esLocal / waFull / indSel vivían solo dentro de submitOrden(): aquí daban ReferenceError y
+            // el pedido nunca se enviaba ni se guardaba (desde abr-2026; corregido 19-nov-2026).
+            const indSel  = document.getElementById('indicativo');
+            const esLocal = (indSel ? indSel.value : '+57') === '+57';
+            const waFull  = STATE.whatsappCliente || '';
             if (btn && btn.dataset.sending === '1') return;
 
             const rls = localStorage.getItem('prodigy_cad_wts');

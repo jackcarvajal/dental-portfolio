@@ -3974,7 +3974,10 @@ if(window.ProdigyAuth){
                 return;
             }
 
-            if (!STATE.timeSlot && !STATE.horaCorte) {
+            // Metal y cera ocultan la línea de tiempo (la entrega se coordina): no se puede exigir un turno que no se ve.
+            // Antes esto bloqueaba todo pedido de metal, barras y cera (19-nov-2026).
+            const _sinHorario = (document.getElementById('timeline-section')?.style.display === 'none');
+            if (!STATE.timeSlot && !STATE.horaCorte && !_sinHorario) {
                 showProdigyAlert('⏰ Horario Requerido', 'Para finalizar tu orden, selecciona un <strong>horario de entrega</strong> en la línea de tiempo. Elige la opción que mejor se adapte a tus necesidades.', 'Seleccionar Horario');
                 document.querySelector('.timeline-slots')?.scrollIntoView({behavior:'smooth',block:'center'});
                 return;
@@ -4037,7 +4040,7 @@ if(window.ProdigyAuth){
                 return;
             }
 
-            if (!STATE.timeSlot) {
+            if (!STATE.timeSlot && document.getElementById('timeline-section')?.style.display !== 'none') {
                 showProdigyAlert('⏰ Horario Pendiente', 'Para enviar tu orden por WhatsApp, selecciona el <strong>horario de entrega</strong> que prefieras en la línea de tiempo.', 'Seleccionar Horario');
                 return;
             }
@@ -4114,7 +4117,7 @@ if(window.ProdigyAuth){
             STATE.linkSTL = linkSTL || 'Carga directa PRODIGY';
             STATE.cantidad = cantidad;
             STATE.total = total;
-            STATE.timeSlotName = timeSlotNames[STATE.timeSlot];
+            STATE.timeSlotName = timeSlotNames[STATE.timeSlot] || 'A coordinar por WhatsApp';
             STATE.pagoMetodo = pMetodo;
             STATE.pagoTitular = pTitular;
             STATE.pagoReferencia = pRef;

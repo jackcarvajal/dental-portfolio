@@ -306,7 +306,8 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
     (convenio?'\n\n💳 CLIENTE CONVENIO MENSUAL — sumar al corte del mes.':'')+
     '\n\n✅ Aceptó las políticas de alineadores (alineadores-2026-09-29b) el '+new Date().toLocaleString('es-CO');
 
-  await sb.from('solicitudes_scanner').insert({
+  // Antes no se revisaba el error: si la base rechazaba la solicitud, el doctor veía éxito y no quedaba registro (19-nov-2026).
+  const { error: _errSolicitud } = await sb.from('solicitudes_scanner').insert({
     negocio:'prodigy', codigo,
     doctor, clinica, whatsapp, email:email||null,
     escaner_marca:'N/A (alineadores)',
@@ -318,12 +319,13 @@ document.getElementById('alnForm').addEventListener('submit',async e=>{
     acepta_marketing:false,
     acepta_habeas:true
   });
+  if (_errSolicitud) console.error('[solicitud] NO se guardó en la base:', _errSolicitud.message);
 
   // Correo de respaldo al admin con los enlaces de los archivos
   fetch('/api/respaldo-alineadores',{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},body:JSON.stringify({tipo:'solicitud',codigo})}).catch(()=>{});
   // Aviso al staff (además del trigger AFTER INSERT de la tabla)
   fetch('/api/notify-staff',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({doctor,servicio:'Alineadores — '+paciente,whatsapp,codigo,tipo:'Solicitud de alineadores',
+    body:JSON.stringify({doctor,servicio:'Alineadores — '+paciente,whatsapp,codigo,tipo:'Solicitud de alineadores'+(_errSolicitud?' ⚠️ NO guardada en la base, registrar a mano':''),
       contexto:'😁 Caso de ALINEADORES (ortodoncia).'+(convenio?' 💳 CLIENTE CONVENIO MENSUAL — sumar al corte.':'')+' Incluye STL + radiografías + fotos + indicación. Revisar y planificar setup / cotizar.'})}).catch(()=>{});
 
   // Portal opcional: la cuenta la crea el SERVIDOR y la clave temporal llega SOLO al correo del doctor

@@ -9,6 +9,15 @@
 
 ---
 
+## 2026-11-19 (c) — Auditoría de flujos (3 agentes) + arreglos sin decisión de negocio
+
+- 🔴→🟡 flujo-diseno (PRODIGY y Alejandro): enviarWhatsApp() usaba esLocal/waFull/indSel de submitOrden() → ReferenceError: el pedido de diseño nunca se enviaba ni guardaba (desde abr-2026).
+- 🔴→🟡 flujo-fresado: metal, barras y cera ocultan la línea de tiempo pero se exigía turno → no se podían pedir. Ahora la entrega queda «A coordinar por WhatsApp».
+- calculadora-fresado: tomaba de catalogo los precios de DISEÑO (corona 15.000 en vez de 180.000) → filtra flujo=fresado; «Guardar cotización» usaba SERVICES (no existe).
+- flujo-lab: decía USD en precios COP; validador biomecánico leía i.nombre (el carrito usa name).
+- envia-alineadores / envia-tu-scanner: el insert no revisaba error; ahora se registra y el aviso al equipo dice «NO guardada en la base».
+- Pendientes de decisión (preguntas a Alejandro): 50/50 vs 100 %, Express diseño 20k vs 50k, precios calculadoras vs flujos, sinterizado rápido, guía quirúrgica, fee internacional, sábados, ciudad base (BGA), datos de cobro personales en el front.
+
 ## 2026-11-19 (b) — Seguridad de Functions (agente, revisado)
 
 - 🟡 send-email (Alejandro): sin sesión solo confirma al correo guardado en el pedido (el flujo ahora lo guarda), tope global 30/h y 5/h por destinatario. cotizacion-auto y lead-magnet ya no mandan WhatsApp al número del body. cuenta-implicita: una cuenta por código y correo exacto. Topes globales por hora en notify-staff (y ya no devuelve los teléfonos del equipo) y waitlist-notify. Errores genéricos al cliente (detalle solo en logs). leer-comprobante: solo URLs del storage del proyecto, sin redirecciones. *.pages.dev con X-Robots-Tag noindex (_headers + _middleware para /article y /wa).

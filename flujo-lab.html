@@ -808,7 +808,7 @@ function buildGrids() {
         : '';
       var priceLabel = item.quote
         ? '<span class="work-price">Cotizar</span>'
-        : '<span class="work-price">$' + item.price + ' USD · <em style="font-weight:400;font-style:normal;color:var(--muted);">' + item.note + '</em></span>';
+        : '<span class="work-price">$' + Number(item.price).toLocaleString('es-CO') + ' COP · <em style="font-weight:400;font-style:normal;color:var(--muted);">' + item.note + '</em></span>';
       return '<div class="work-item" id="wi-' + item.id + '">' +
         '<div class="work-item-top">' +
           '<div class="work-ico" style="background:' + item.col + '"><i class="' + item.ico + '" style="color:' + item.icol + '"></i></div>' +
@@ -859,7 +859,7 @@ function changeQty(itemId, delta) {
   document.getElementById('qty-' + itemId).textContent = cur;
   var sub = document.getElementById('sub-' + itemId);
   if (sub) {
-    sub.textContent = cur > 0 ? '$' + (item.price * cur) + ' USD' : '—';
+    sub.textContent = cur > 0 ? '$' + (item.price * cur).toLocaleString('es-CO') + ' COP' : '—'; // precios del lab en COP (antes decía USD)
     sub.className = 'work-subtotal' + (cur > 0 ? ' active' : '');
   }
   updateCart();
@@ -931,7 +931,7 @@ async function generarOrden() {
   // Validación biomecánica sobre los items del carrito
   if (window.BiomecanicaRules && Object.keys(cart).length > 0) {
     var totalUds = Object.values(cart).reduce(function(s,i){ return s + (i.qty||1); }, 0);
-    var servicios = Object.values(cart).map(function(i){ return (i.nombre||'').toLowerCase(); }).join(' ');
+    var servicios = Object.values(cart).map(function(i){ return (i.nombre||i.name||'').toLowerCase(); /* el carrito guarda name: el validador nunca veía nada */ }).join(' ');
     var materiales = Object.values(cart).map(function(i){ return (i.variant||'').toLowerCase(); }).join(' ');
     var r = BiomecanicaRules.validate(servicios, materiales, totalUds);
     if (r.bloqueos.length > 0) {
