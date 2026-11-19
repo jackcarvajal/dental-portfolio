@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-18 (i) — Cookies con anuncios, analítica diferida, CLS y letra mínima
+
+- ✅ Cookies (PRODIGY): aceptar concede analytics + ad_storage + ad_user_data + ad_personalization (Consent Mode v2 completo); el aviso ya no dice «Sin anuncios»; política de cookies de ambos sitios nombra Google Ads y Meta. Verificado en vivo: G100 antes → G111 después + fbevents.
+- ✅ gtag/Clarity (header.js) y Meta Pixel (conversions.js) de ambos sitios se cargan con la primera interacción o a los 6 s del load (antes: al load → TBT 0,6-1,4 s en celular). La cola de gtag guarda los eventos. Verificado local (sin interacción carga a los 6,3 s; con scroll, al instante).
+- ✅ Home PRODIGY: CLS 0,32 → 0,07 (regla móvil del hero y padding del header subidos al inicio, alto reservado del portafolio, img con width/height y fetchpriority). LCP sigue ~4,3-5 s (pendiente).
+- ✅ Letra mínima 12 px en etiquetas/chips de ~60 páginas de ambos repos (agente Sonnet) + CTA flotante y chat en header.js.
+- ✅ Alejandro /links: imágenes del portafolio por /render (600 px) con tamaño reservado; academia con fuente de respaldo métrica.
+
 ## 2026-11-18 (h) — Medición verificada + bitácora puesta al día
 
 - ✅ Medición (agente Sonnet, en vivo): PRODIGY GA4 + whatsapp_click + Clarity ✓ tras aceptar; Alejandro GA4 con todo concedido ✓ y fbevents ✓. 🔴→✅ el Pixel de PRODIGY no cargaba en la visita en que se aceptan cookies (footer.js no disparaba `prodigy_consent_granted`) → arreglado, footer.js ?v=20261118b.

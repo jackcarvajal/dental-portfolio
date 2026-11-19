@@ -14,7 +14,7 @@ const CSS = `
 .lab3d{position:relative;height:540px;border-radius:18px;overflow:hidden;background:radial-gradient(900px 420px at 50% 20%,rgba(0,210,255,.10),transparent 60%),radial-gradient(700px 400px at 80% 100%,rgba(217,70,166,.10),transparent 60%),#070b12;border:1px solid rgba(255,255,255,.07);font-family:Inter,-apple-system,'Segoe UI',sans-serif;color:#e2e8f0;text-align:left}
 .lab3d .lienzo,.lab3d .capa{position:absolute;inset:0}.lab3d .capa{pointer-events:none}
 .lab3d .et{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center}
-.lab3d .et .t{background:rgba(10,15,24,.88);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:5px 10px;font-size:.72rem;font-weight:800;white-space:nowrap;color:#e2e8f0}
+.lab3d .et .t{background:rgba(10,15,24,.88);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:5px 10px;font-size:.75rem;font-weight:800;white-space:nowrap;color:#e2e8f0}
 .lab3d .et .t b{color:#94a3b8;font-weight:700;margin-right:6px}
 .lab3d .et .palo{width:1px;height:18px;background:rgba(255,255,255,.25)}
 .lab3d .et.activa .t{border-color:#D946A6;box-shadow:0 0 0 3px rgba(217,70,166,.25);color:#fff}
@@ -39,7 +39,7 @@ const CSS = `
 .lab3d .barra{height:4px;border-radius:4px;background:rgba(255,255,255,.08);margin-top:10px;overflow:hidden}
 .lab3d .barra i{display:block;height:100%;background:linear-gradient(90deg,#D946A6,#D4AF37,#00d2ff);transition:width .5s}
 .lab3d .ayuda{position:absolute;right:14px;top:14px;font-size:.72rem;color:#94a3b8;background:rgba(10,15,24,.7);border-radius:50px;padding:6px 12px}
-@media(max-width:700px){.lab3d{height:auto}.lab3d .lienzo{position:relative;height:340px}.lab3d .capa{bottom:auto;height:340px;overflow:hidden}.lab3d .ayuda{display:none}.lab3d .et .t{font-size:.6rem;padding:3px 6px}.lab3d .et .palo{height:10px}.lab3d .estado{position:relative;left:auto;bottom:auto;width:auto;max-width:none;margin:0 10px 10px}}
+@media(max-width:700px){.lab3d{height:auto}.lab3d .lienzo{position:relative;height:340px}.lab3d .capa{bottom:auto;height:340px;overflow:hidden}.lab3d .ayuda{display:none}.lab3d .et .t{font-size:.75rem;padding:3px 6px}.lab3d .et .palo{height:10px}.lab3d .estado{position:relative;left:auto;bottom:auto;width:auto;max-width:none;margin:0 10px 10px}}
 `;
 
 function montar(contenedor, caso0, opciones = {}) {

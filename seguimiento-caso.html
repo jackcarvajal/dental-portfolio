@@ -96,9 +96,9 @@
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <noscript><div style="text-align:center;padding:40px 20px;background:#0d1520;color:#94a3b8;font-family:sans-serif;">El seguimiento de caso requiere JavaScript. Actívalo o <a href="https://wa.me/573212816716" style="color:#D946A6;">consulta tu caso por WhatsApp</a>.</div></noscript>
-<link rel="preload" href="js/header.js?v=20261118f" as="script">
+<link rel="preload" href="js/header.js?v=20261118h" as="script">
 <script>window._headerConfig = Object.assign(window._headerConfig || {}, { noCta: true });</script>
-<script src="js/header.js?v=20261118f"></script>
+<script src="js/header.js?v=20261118h"></script>
 <main id="main-content">
 
     <style>
@@ -528,7 +528,7 @@
             if (window.ProdigyLab3D) return montar();
             window.addEventListener('prodigy-lab3d-listo', montar, { once: true });
             if (!document.getElementById('lab3d-js')) {
-                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261002m';
+                const sc = document.createElement('script'); sc.type = 'module'; sc.id = 'lab3d-js'; sc.src = 'js/laboratorio-3d.js?v=20261118x';
                 sc.onerror = () => { sec.remove(); };   // si no carga, no deja un hueco
                 document.body.appendChild(sc);
             }
@@ -979,7 +979,7 @@
   </div>
 </section>
 <script src="js/dientes.js?v=20261008b" defer></script>
-<script src="js/footer.js?v=20261118c"></script>
+<script src="js/footer.js?v=20261118d"></script>
 
     <script>
         function toggleMobileMenu() {

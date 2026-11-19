@@ -241,7 +241,15 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     }
     if (window._loadClarity) window._loadClarity();
   }
-  function _luego() { if (window.requestIdleCallback) requestIdleCallback(_cargar, { timeout: 4000 }); else setTimeout(_cargar, 1500); }
+  // gtag (y Clarity) pesan ~350 KB de JS de terceros y frenaban el celular al cargar (TBT 0,6-1,4 s). Se cargan con la
+  // primera interacción (toque, tecla, scroll) o 6 s después del load si nadie interactúa. La cola de gtag ya
+  // guarda los eventos (whatsapp_click, etc.) mientras tanto, así que no se pierde medición.
+  var _yaCargo = false;
+  function _ya() { if (_yaCargo) return; _yaCargo = true; _cargar(); }
+  window._cargarAnaliticaYa = _ya;
+  // Los oyentes van desde ya (una interacción antes del load también cuenta); el plazo de 6 s corre desde el load.
+  ['pointerdown', 'keydown', 'touchstart', 'scroll', 'wheel'].forEach(function (ev) { window.addEventListener(ev, _ya, { passive: true, once: true, capture: true }); });
+  function _luego() { setTimeout(_ya, 6000); }
   if (document.readyState === 'complete') _luego(); else window.addEventListener('load', _luego);
 })();
 
@@ -466,9 +474,9 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     '.pcta-card-scan{border-color:rgba(0,255,65,0.35);}',
     '.pcta-card-scan i{color:#00FF41;}',
     '.pcta-card-scan:hover{border-color:rgba(0,255,65,0.8);box-shadow:0 12px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,255,65,0.3);}',
-    '.pcta-card-title{font-size:11px;font-weight:900;letter-spacing:1px;',
+    '.pcta-card-title{font-size:12px;font-weight:900;letter-spacing:1px;',
     'text-transform:uppercase;color:#e2e8f0;line-height:1.2;}',
-    '.pcta-card-sub{font-size:9px;font-weight:600;letter-spacing:.5px;',
+    '.pcta-card-sub{font-size:12px;font-weight:600;letter-spacing:.5px;',
     'color:#94a3b8;line-height:1.2;text-transform:none;}',
     '.pcta-card:hover .pcta-card-sub{color:#94a3b8;}',
     '#pcta-label{transition:opacity .3s;text-align:center;',
@@ -542,7 +550,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     'background:linear-gradient(135deg,#00d2ff,#006699);',
     'display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;}',
     '.pg-chat-info h4{font-size:.9rem;font-weight:700;color:#e2e8f0;margin:0;}',
-    '.pg-chat-info p{font-size:.72rem;color:#00FF41;display:flex;align-items:center;gap:4px;margin:0;}',
+    '.pg-chat-info p{font-size:.75rem;color:#00FF41;display:flex;align-items:center;gap:4px;margin:0;}',
     '.pg-chat-info p::before{content:"";width:6px;height:6px;background:#00FF41;',
     'border-radius:50%;display:inline-block;}',
     '.pg-chat-close{margin-left:auto;background:none;border:none;color:#94a3b8;',
@@ -573,7 +581,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     '.pg-tdots span:nth-child(3){animation-delay:.4s;}',
     '.pg-chat-sugs{padding:0 12px 10px;display:flex;flex-wrap:wrap;gap:6px;}',
     '.pg-sug-btn{background:rgba(0,210,255,0.08);border:1px solid rgba(0,210,255,0.2);',
-    'color:#00d2ff;font-size:.72rem;font-weight:600;padding:5px 12px;',
+    'color:#00d2ff;font-size:.75rem;font-weight:600;padding:5px 12px;',
     'border-radius:100px;cursor:pointer;transition:background .2s;white-space:nowrap;',
     'font-family:inherit;}',
     '.pg-sug-btn:hover{background:rgba(0,210,255,0.15);}',

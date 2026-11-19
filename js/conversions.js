@@ -201,7 +201,15 @@ window.ProdigyConversions = window.ProdigyConversions || (function () {   // gua
   });
 
   /* ── CARGAR META PIXEL CUANDO HAY CONSENTIMIENTO ────────────── */
-  try { if (localStorage.getItem('prodigy_cookies_ok') === '1') _loadMetaPixel(); } catch (e) {}
+  // Visitante que ya aceptó: el Pixel (~150 KB) se carga con la primera interacción o a los 6 s, no al abrir la página.
+  // Se llama directo (no en idle) para que fbq exista antes de que corra el clic que dispara Contact/Lead.
+  function _cuandoInteractue(fn) {
+    var hecho = false;
+    function go() { if (hecho) return; hecho = true; fn(); }
+    ['pointerdown', 'keydown', 'touchstart', 'scroll', 'wheel'].forEach(function (ev) { window.addEventListener(ev, go, { passive: true, once: true, capture: true }); });
+    setTimeout(go, 6000);
+  }
+  try { if (localStorage.getItem('prodigy_cookies_ok') === '1') _cuandoInteractue(_loadMetaPixel); } catch (e) {}
   document.addEventListener('prodigy_consent_granted', _loadMetaPixel);
 
   function trackFormSubmitOk() {
