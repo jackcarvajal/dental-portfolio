@@ -2388,6 +2388,10 @@ if(window.ProdigyAuth){
                             <div class="alert alert-error" style="margin-top:8px;">
                                 <i class="fas fa-ban"></i> Sin comprobante NO se inicia producción
                             </div>
+                            <!-- Visible solo si eligió PSE / tarjeta (casilla de transferencia desmarcada) — lo controla validateChecks() -->
+                            <div id="nota-wompi-comprobante" style="display:none;margin-top:8px;padding:10px 12px;border-radius:8px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.35);color:#ddd6fe;font-size:.85rem;line-height:1.5;">
+                                <i class="fas fa-credit-card" aria-hidden="true"></i> Elegiste <strong>PSE / tarjeta (Wompi)</strong>: no necesitas comprobante. Al registrar la orden se habilita el pago en línea.
+                            </div>
                         </div>
                         </div><!-- /bloque comprobante -->
 
@@ -2500,9 +2504,9 @@ if(window.ProdigyAuth){
             <div id="pago-co">
             <div style="background:rgba(212,175,55,.07);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
                 <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;font-size:.82rem;color:#e2e8f0;line-height:1.5;">
-                    <input type="checkbox" id="chk-transferencia" onchange="calcularTotal()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;" checked>
+                    <input type="checkbox" id="chk-transferencia" onchange="calcularTotal();validateChecks()" style="width:16px;height:16px;accent-color:#D4AF37;flex-shrink:0;margin-top:2px;" checked>
                     <span>Pago por <strong style="color:#D4AF37;">transferencia directa</strong> (Nequi / Daviplata / Nu)<br>
-                    <span style="font-size:.85rem;color:#94a3b8;">Sin comisión. PSE / tarjeta: +3% Wompi.</span></span>
+                    <span style="font-size:.85rem;color:#94a3b8;">Sin comisión. PSE / tarjeta: +3% Wompi (se paga al registrar la orden).</span></span>
                 </label>
             </div>
             <button type="button" onclick="pagarConWompi()" style="width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:.9rem;margin-bottom:12px;">
@@ -3887,9 +3891,14 @@ if(window.ProdigyAuth){
             const check2 = document.getElementById('check2').checked;
             const check3 = document.getElementById('check3').checked;
             const comprobante = document.getElementById('comprobante').files.length > 0;
+            // PSE / tarjeta (Wompi): se paga DESPUÉS de registrar la orden → no se exige comprobante
+            const _chkT = document.getElementById('chk-transferencia');
+            const pagaWompi = !window.FRESADO_COTIZAR && !!(_chkT && !_chkT.checked);
+            const notaW = document.getElementById('nota-wompi-comprobante');
+            if (notaW) notaW.style.display = pagaWompi ? '' : 'none';
 
             const btnSubmit = document.getElementById('btn-submit');
-            if (check1 && check2 && check3 && (comprobante || window.FRESADO_COTIZAR)) {
+            if (check1 && check2 && check3 && (comprobante || window.FRESADO_COTIZAR || pagaWompi)) {
                 btnSubmit.disabled = false;
             } else {
                 btnSubmit.disabled = true;
@@ -3988,8 +3997,11 @@ if(window.ProdigyAuth){
             const pMetodo = document.getElementById('pago_metodo').value;
             const pTitular = document.getElementById('pago_titular').value.trim();
             const pRef = document.getElementById('pago_referencia').value.trim();
+            // PSE / tarjeta (Wompi): se paga después de registrar la orden → aún no hay datos de pago
+            const _chkTW = document.getElementById('chk-transferencia');
+            const _pagaWompi = !window.FRESADO_COTIZAR && !!(_chkTW && !_chkTW.checked);
 
-            if (!window.FRESADO_COTIZAR && (!pMetodo || !pTitular)) {   // en modo «cotizar» no se paga antes
+            if (!window.FRESADO_COTIZAR && !_pagaWompi && (!pMetodo || !pTitular)) {   // en modo «cotizar» no se paga antes
                 showProdigyAlert('📋 Datos Incompletos', 'Para procesar tu orden, completa el <strong>método de pago</strong> y el nombre del <strong>titular</strong>. Estos datos nos permiten verificar tu transacción. ¡Ya casi terminamos!', 'Completar Datos');
                 document.getElementById('pago_metodo').focus();
                 return;
@@ -4136,8 +4148,8 @@ if(window.ProdigyAuth){
             STATE.cantidad = cantidad;
             STATE.total = total;
             STATE.timeSlotName = timeSlotNames[STATE.timeSlot] || 'A coordinar por WhatsApp';
-            STATE.pagoMetodo = pMetodo;
-            STATE.pagoTitular = pTitular;
+            STATE.pagoMetodo = _pagaWompi ? 'Wompi (PSE / tarjeta) — en línea al registrar la orden' : pMetodo;
+            STATE.pagoTitular = pTitular || (_pagaWompi ? nombreCliente : '');
             STATE.pagoReferencia = pRef;
 
             // Facturación DIAN
@@ -4206,28 +4218,48 @@ if(window.ProdigyAuth){
             const fechaElem = fechaEntregaTurno();
             if(fechaElem) texto += `📅 *Fecha:* ${fechaElem.txt}\n\n`;
             
+            // Totales del pedido — UNA sola fuente para WhatsApp, BD (precio_base / precio_total) y Wompi.
+            // STATE.total ya trae el 3 % si eligió PSE / tarjeta (calcularTotal). precio_base = antes del cupón,
+            // precio_total = con cupón: es lo que firma wompi-signature → lo que ve el cliente = lo que cobra Wompi.
+            const _cupFrs = (window._cuponCreditoActivo && window._cuponCreditoActivo.cupon) ? window._cuponCreditoActivo : null;
+            const _chkTF = document.getElementById('chk-transferencia');
+            const _wompiFrs = !window.FRESADO_COTIZAR && !!(_chkTF && !_chkTF.checked);
+            let _precioBaseFrs = 0, _descCuponFrs = 0, _precioTotalFrs = 0;
+            try {
+                const _n = typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g, ''), 10) : Number(STATE.total);
+                _precioBaseFrs = (Number.isFinite(_n) && _n > 0) ? _n : 0;
+                _descCuponFrs  = _cupFrs ? Math.min(Math.max(0, Number(_cupFrs.monto) || 0), _precioBaseFrs) : 0;
+                _precioTotalFrs = Math.max(0, _precioBaseFrs - _descCuponFrs);
+            } catch (_) { /* defensivo: si algo falla, el pedido sigue con 0 y el staff lo corrige */ }
+
             if (!window.FRESADO_COTIZAR) {
             texto += `💰 *CONFIRMACIÓN DE PAGO*\n`;
             texto += `• Medio: ${STATE.pagoMetodo}\n`;
             texto += `• Titular: ${STATE.pagoTitular}\n`;
             texto += `• Ref: ${STATE.pagoReferencia || 'No proporcionada'}\n\n`;
-            
-            let _totalFrs = STATE.total;
-            if (window._cuponCreditoActivo) {
-                const n = parseInt((STATE.total||'0').replace(/[^0-9]/g,''),10)||0;
-                const d = window._cuponCreditoActivo.monto||0;
-                _totalFrs = '$'+(Math.max(0,n-d)).toLocaleString('es-CO');
-                texto += `🎁 *CUPÓN:* ${window._cuponCreditoActivo.cupon} (-$${d.toLocaleString('es-CO')} COP)\n`;
-            }
+
+            if (_wompiFrs) texto += `💳 *Incluye comisión Wompi (PSE / tarjeta, 3 %)*\n`;
+            if (_cupFrs) texto += `🎁 *CUPÓN:* ${_cupFrs.cupon} (-$${_descCuponFrs.toLocaleString('es-CO')} COP)\n`;
+            const _totalFrs = _cupFrs ? '$' + _precioTotalFrs.toLocaleString('es-CO') : STATE.total;
             texto += `💵 *TOTAL: ${_totalFrs}* (pago 100% al confirmar)\n\n`;
             } else {
-            texto += `💵 *PRECIO:* a cotizar por PRODIGY (precios de fresado en ajuste)\n\n`;
+            texto += `💵 *PRECIO:* a cotizar por PRODIGY (precios de fresado en ajuste)\n`;
+            // El cupón también viaja en modo «cotizar» (antes se gastaba al validar y no aparecía en ningún lado)
+            if (_cupFrs) texto += `🎁 *CUPÓN:* ${_cupFrs.cupon} (-$${(Math.max(0, Number(_cupFrs.monto) || 0)).toLocaleString('es-CO')} COP) — se descuenta de la cotización\n`;
+            texto += `\n`;
             }
             texto += `📎 *Archivos STL:* ${STATE.linkSTL}\n`;
 
             const _nonce = btoa(STATE.ordenId + ':' + Date.now().toString(36)).replace(/[+/=]/g, c => c==='+' ? '-' : c==='/' ? '_' : '');
             STATE.nonce = _nonce;
             texto += `🔍 *Seguimiento:* https://prodigylabdental.com/seguimiento-caso?id=${STATE.ordenId}&key=${_nonce}\n\n`;
+
+            // Correo del formulario (antes el callback usaba `emailCliente`, que aquí no existe y resolvía al <input> del DOM)
+            const _emailFormFrs = (document.getElementById('emailCliente')?.value || '').trim();
+            // Pedido de esta página para el pago con Wompi: la promesa dice si el INSERT salió bien (sin SDK → false)
+            const _pgFrs = { codigo: STATE.ordenId, monto: _precioTotalFrs, wompi: _wompiFrs,
+                             email: _emailFormFrs, promesa: Promise.resolve(false) };
+            window._pedidoFrsGuardado = _pgFrs;
 
             try {
                 const _sb = (typeof getSupabase === 'function') ? getSupabase() : null;
@@ -4247,13 +4279,15 @@ if(window.ProdigyAuth){
                         if (!window.FRESADO_COTIZAR) {
                             const _pg = [STATE.pagoMetodo, STATE.pagoTitular, STATE.pagoReferencia].filter(Boolean).join(' / ');
                             if (_pg) _pf.push('Pago: ' + _pg);
-                            if (window._cuponCreditoActivo && window._cuponCreditoActivo.cupon) _pf.push('Cupón: ' + window._cuponCreditoActivo.cupon);
+                            if (_wompiFrs) _pf.push('Incluye comisión Wompi 3 %');
                         }
+                        // El cupón DEBE quedar en notas (también en «cotizar»): prodigy_consumir_cupon_pedido() lo exige para gastarlo
+                        if (_cupFrs) _pf.push('Cupón: ' + _cupFrs.cupon + ' (-$' + (window.FRESADO_COTIZAR ? Math.max(0, Number(_cupFrs.monto) || 0) : _descCuponFrs).toLocaleString('es-CO') + (window.FRESADO_COTIZAR ? ', descontar de la cotización)' : ')'));
                         const _obs = (document.getElementById('otro-observaciones')?.value || '').trim();
                         if (_obs) _pf.push('Obs: ' + _obs);
                         _notasFrs = _pf.join(' · ').slice(0, 1000);
                     } catch (_) { _notasFrs = ''; }
-                    _sb.from('pedidos').insert([{ ...((window.ModoPrueba && ModoPrueba.camposPedido()) || {}),  /* modo prueba: es_prueba + pago ficticio (igual que diseño) */
+                    const _insFrs = Promise.resolve(_sb.from('pedidos').insert([{ ...((window.ModoPrueba && ModoPrueba.camposPedido()) || {}),  /* modo prueba: es_prueba + pago ficticio (igual que diseño) */
                         id:               _pedId,
                         nombre_paciente:  STATE.nombrePaciente || null,
                         proceso:          STATE.proceso || null,
@@ -4269,8 +4303,10 @@ if(window.ProdigyAuth){
                         submaterial:      STATE.submaterialNombre,
                         color_vita:       STATE.colorVita,
                         cantidad:         STATE.cantidad,
-                        precio_base:      (typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total) || 0,
-                        precio_total:     typeof STATE.total === 'string' ? parseInt(STATE.total.replace(/\D/g,'')) : STATE.total,
+                        // precio_base = antes del cupón · precio_total = con cupón (y con el 3 % si eligió Wompi):
+                        // es lo que firma wompi-signature → lo que ve el cliente = lo que cobra Wompi.
+                        precio_base:      _precioBaseFrs,
+                        precio_total:     _precioTotalFrs,
                         estado:           'Pendiente',
                         fecha_entrega:    _fechaTxt,
                         stl_url:          STATE.linkSTL,
@@ -4292,7 +4328,10 @@ if(window.ProdigyAuth){
                     // El flujo genera el id (uuid) arriba y lo manda: se elimina el
                     // .select('id') (RETURNING), que como anon revertía el insert por
                     // falta de policy SELECT (42501) y dejaba la tabla `pedidos` vacía.
-                    }]).then(({ error: _e }) => {
+                    }]));
+                    // Wompi solo se habilita si el INSERT salió bien (cadena aparte: no depende de los avisos de abajo)
+                    _pgFrs.promesa = _insFrs.then(r => !(r && r.error), () => false);
+                    _insFrs.then(({ error: _e }) => {
                         if (window.PedidoGuard) {
                             PedidoGuard.verificar(_e, { codigo: STATE.ordenId, flujo: 'fresado', sb: _sb });
                         } else if (_e) {
@@ -4321,17 +4360,23 @@ if(window.ProdigyAuth){
                                     resuelta: true
                                 })).catch(()=>{});
                             }
+                            // Cupón: se GASTA ahora que el pedido existe (antes se gastaba al «Validar»). Nunca lanza.
+                            if (_cupFrs) {
+                                try { if (typeof window.consumirCuponPedido === 'function') window.consumirCuponPedido(_sb, STATE.ordenId); } catch (_) {}
+                            }
                         }
                         // Portal del doctor (sin sesión): la cuenta la crea el SERVIDOR y la clave temporal llega SOLO a su correo
                         // (antes auth.signUp aquí: el navegador conocía la clave y cualquiera podía abrir cuenta con el correo de otro)
-                        if (!_e && emailCliente && !_uid) {
+                        // Valores del formulario/STATE: `emailCliente`, `nombreCliente` y `whatsappCliente` no existen en esta
+                        // función y resolvían a los <input> del DOM (se enviaba "{}" como correo).
+                        if (!_e && _emailFormFrs && !_uid) {
                             fetch('/api/cuenta-implicita', { method:'POST', headers:{ 'Content-Type':'application/json' },
-                                body: JSON.stringify({ origen:'pedido', email: emailCliente, codigo: STATE.ordenId, nombre: nombreCliente, whatsapp: whatsappCliente })
+                                body: JSON.stringify({ origen:'pedido', email: _emailFormFrs, codigo: STATE.ordenId, nombre: STATE.nombreCliente, whatsapp: STATE.whatsappCliente })
                             }).catch(()=>{});
                         }
                         const ref = sessionStorage.getItem('prodigy_ref');
                         if (ref && !_e) {
-                            _sb.from('referidos').update({ referido_email: emailCliente||STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
+                            _sb.from('referidos').update({ referido_email: _emailFormFrs||STATE.whatsappCliente||null, referido_nombre: STATE.nombreCliente||null, referido_at: new Date().toISOString(), estado:'registrado' }).eq('codigo',ref).then(()=>sessionStorage.removeItem('prodigy_ref'));
                         }
                     });
                 }
@@ -4366,7 +4411,9 @@ if(window.ProdigyAuth){
                 if (exito) {
                     document.getElementById('exito-orden-id').textContent = STATE.ordenId || '—';
                     document.getElementById('exito-cliente').textContent = STATE.nombreCliente || '—';
-                    document.getElementById('exito-total').textContent = window.FRESADO_COTIZAR ? 'A cotizar por WhatsApp' : (STATE.total || '—');
+                    document.getElementById('exito-total').textContent = window.FRESADO_COTIZAR ? 'A cotizar por WhatsApp'
+                        : (_cupFrs ? '$' + _precioTotalFrs.toLocaleString('es-CO') : (STATE.total || '—'));
+                    if (typeof _prepararWompiExitoFrs === 'function') _prepararWompiExitoFrs(_pgFrs);
                     exito.classList.add('active');
                 }
             } catch(e) {
@@ -4628,6 +4675,11 @@ if(window.ProdigyAuth){
                 </p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Cliente:</strong> <span id="exito-cliente">—</span></p>
                 <p style="margin-top:6px;"><strong style="color:var(--gold-primary);">Total:</strong> <span id="exito-total">—</span></p>
+            </div>
+            <!-- Pago en línea: solo si eligió PSE / tarjeta, no está en «cotizar» y el pedido YA quedó guardado (wompi-signature firma pedidos.codigo) -->
+            <div id="exito-wompi" style="display:none;margin-bottom:16px;">
+                <button type="button" id="btn-exito-wompi" onclick="pagarPedidoConWompiFrs()" disabled style="width:100%;padding:13px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:.92rem;">💳 Pagar con Wompi (PSE / Tarjeta)</button>
+                <p id="exito-wompi-estado" style="font-size:.85rem;color:#aaa;margin-top:8px;line-height:1.5;" aria-live="polite"></p>
             </div>
             <p style="font-size:0.8rem;color:#aaa;margin-bottom:15px;">Selecciona tu método de pago:</p>
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
@@ -4953,13 +5005,86 @@ if(window.ProdigyAuth){
     })();
     </script>
     <script>
+        /* ── PAGO CON WOMPI SOBRE EL PEDIDO REAL (19-nov-2026) ───────────────────
+           wompi-signature v2.0 busca pedidos.codigo = referencia y firma SU precio_total (el monto del
+           navegador se ignora). Antes se pagaba con una referencia inventada (PRD-FRS-xxxx) y ANTES de que
+           existiera la fila → 400 «Pedido no encontrado» y el checkout nunca abría. Ahora el pedido se guarda
+           primero y Wompi se ofrece en el modal de éxito solo si el INSERT salió bien.
+           Recargo: calcularTotal() ya suma el 3 % cuando se desmarca «transferencia» → va en precio_total →
+           total que ve el cliente = precio_total guardado = lo que cobra Wompi. En modo «cotizar» no hay Wompi.
+        ─────────────────────────────────────────────────────────────────────── */
+        function _avisoWompiFrs(msg, tipo) {
+            try { if (typeof frsToast === 'function') frsToast(msg, tipo || 'info'); else showProdigyAlert('💳 Pago con Wompi', msg, 'Entendido'); } catch (_) {}
+        }
+
+        // Prepara el bloque «Pagar con Wompi» del modal de éxito (oculto si no aplica). Nunca lanza.
+        function _prepararWompiExitoFrs(p) {
+            try {
+                const box = document.getElementById('exito-wompi');
+                if (!box) return;
+                if (window.FRESADO_COTIZAR || !p || !p.wompi || !(p.monto > 0)) { box.style.display = 'none'; return; }
+                const btn = document.getElementById('btn-exito-wompi');
+                const est = document.getElementById('exito-wompi-estado');
+                const fmt = '$' + Number(p.monto).toLocaleString('es-CO') + ' COP';
+                box.style.display = '';
+                if (window.ModoPrueba && typeof ModoPrueba.activo === 'function' && ModoPrueba.activo()) {
+                    if (btn) { btn.disabled = true; btn.style.opacity = '.55'; btn.textContent = '💳 Wompi desactivado en modo prueba'; }
+                    if (est) est.textContent = 'Modo prueba: el pago se da por confirmado y no se abre Wompi (cobraría dinero real).';
+                    return;
+                }
+                if (btn) { btn.disabled = true; btn.style.opacity = '.6'; btn.textContent = '⏳ Registrando tu orden…'; }
+                if (est) est.textContent = 'Pago único de ' + fmt + ' (incluye la comisión Wompi del 3 %). Se confirma solo, sin enviar comprobante.';
+                Promise.resolve(p.promesa).then(ok => {
+                    if (!btn) return;
+                    if (ok) {
+                        btn.disabled = false; btn.style.opacity = '1';
+                        btn.textContent = '💳 Pagar ' + fmt + ' con Wompi (PSE / Tarjeta)';
+                    } else {
+                        btn.textContent = 'Pago en línea no disponible';
+                        if (est) est.textContent = 'Tu orden no quedó registrada en el sistema. Escríbenos por WhatsApp o paga por transferencia.';
+                    }
+                }, () => {});
+            } catch (_) {}
+        }
+
+        // Botón «Pagar con Wompi» (calculadora y modal de éxito)
+        async function pagarPedidoConWompiFrs() {
+            if (window.FRESADO_COTIZAR) { _avisoWompiFrs('Los precios de fresado se cotizan por WhatsApp; el pago se coordina ahí.', 'info'); return; }
+            const p = window._pedidoFrsGuardado;
+            if (!p || !p.codigo) {
+                // Aún no hay pedido: se elige PSE / tarjeta (+3 %) y se paga al registrar la orden
+                try {
+                    const chk = document.getElementById('chk-transferencia');
+                    if (chk && chk.checked) { chk.checked = false; calcularTotal(); }
+                    if (typeof validateChecks === 'function') validateChecks();
+                } catch (_) {}
+                _avisoWompiFrs('Elegiste PSE / tarjeta (+3 % Wompi). Genera tu orden: al registrarla se habilita el pago en línea.', 'info');
+                return;
+            }
+            if (!p.wompi) {
+                _avisoWompiFrs('Tu orden ' + p.codigo + ' quedó para pago por transferencia (sin comisión). Si prefieres PSE / tarjeta, escríbenos por WhatsApp.', 'info');
+                return;
+            }
+            if (window.ModoPrueba && typeof ModoPrueba.activo === 'function' && ModoPrueba.activo()) {
+                _avisoWompiFrs('Modo prueba: no se abre Wompi (cobraría dinero real).', 'warning');
+                return;
+            }
+            if (!(p.monto > 0)) { _avisoWompiFrs('Esta orden no tiene saldo para pagar en línea.', 'info'); return; }
+            let ok = false;
+            try { ok = await Promise.race([p.promesa, new Promise(r => setTimeout(() => r(false), 8000))]); } catch (_) { ok = false; }
+            if (!ok) {
+                _avisoWompiFrs('Tu orden todavía no quedó registrada, así que no se puede cobrar en línea. Paga por transferencia o escríbenos por WhatsApp.', 'warning');
+                return;
+            }
+            if (typeof abrirCheckoutWompi !== 'function') { _avisoWompiFrs('No se pudo cargar el pago en línea. Usa transferencia.', 'error'); return; }
+            abrirCheckoutWompi({ monto: p.monto, referencia: p.codigo, email: p.email || undefined, descripcion: 'PRODIGY — Fresado CAD/CAM ' + p.codigo });
+        }
+
         function pagarConWompi() {
             const totalEl = document.getElementById('calc-total');
             const monto = parseInt((totalEl?.textContent || '$0').replace(/[^0-9]/g, ''), 10) || 0;
             if (!monto) { frsToast('Selecciona un material y proceso para calcular el total.','info'); return; }
-            const _r2 = new Uint8Array(5); crypto.getRandomValues(_r2);
-            const ref = 'PRD-FRS-' + Array.from(_r2).map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
-            abrirCheckoutWompi({ monto, referencia: ref, descripcion: 'PRODIGY — Fresado CAD/CAM' });
+            pagarPedidoConWompiFrs();
         }
 
         /* ── Pre-fill desde diseño aprobado ───────────────────────────────────
@@ -5040,6 +5165,9 @@ if(window.ProdigyAuth){
       const SANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
       let _sb;
       function _getSb(){if(!_sb&&window.supabase)_sb=window.supabase.createClient(SURL,SANON);return _sb;}
+      // ¿La RPC aún no existe? (sql/cupones-consumo-diferido-2026.sql sin correr) → se usa el camino anterior
+      function _rpcNoExiste(err){const m=String((err&&(err.message||''))||'');return !!err&&(err.code==='PGRST202'||err.code==='42883'||/could not find the function|does not exist/i.test(m));}
+      // «Validar» ya NO gasta el cupón: solo consulta. Se gasta al guardar el pedido (consumirCuponPedido).
       window.validarCuponFresado=async function(){
         const cupon=(document.getElementById('cupon-input')?.value||'').trim().toUpperCase();
         const msg=document.getElementById('cupon-msg-fresado');
@@ -5047,14 +5175,35 @@ if(window.ProdigyAuth){
         if(msg){msg.style.color='#94a3b8';msg.textContent='Validando...';}
         try{
           const sb=_getSb();if(!sb)throw new Error('SDK no disponible');
-          const{data,error}=await sb.rpc('prodigy_usar_cupon_credito',{p_cupon:cupon});
+          let consumido=false;
+          let{data,error}=await sb.rpc('prodigy_validar_cupon_credito',{p_cupon:cupon});
+          if(error&&_rpcNoExiste(error)){({data,error}=await sb.rpc('prodigy_usar_cupon_credito',{p_cupon:cupon}));consumido=true;}
           if(error)throw error;
-          if(!data.ok){if(msg){msg.style.color='#f87171';msg.textContent=data.error||'Cupón inválido o ya usado.';}return;}
-          window._cuponCreditoActivo={cupon,monto:data.monto};
-          if(msg){msg.style.color='#00FF41';msg.textContent='✓ Cupón válido — crédito de $'+Number(data.monto).toLocaleString('es-CO')+' COP aplicado.';}
+          if(!data||!data.ok){if(msg){msg.style.color='#f87171';msg.textContent=(data&&data.error)||'Cupón inválido o ya usado.';}return;}
+          const monto=Math.max(0,Number(data.monto)||0);
+          window._cuponCreditoActivo={cupon,monto,consumido};
+          const _cot=!!window.FRESADO_COTIZAR;
+          if(msg){msg.style.color='#00FF41';msg.textContent=consumido
+            ?'✓ Cupón válido — crédito de $'+monto.toLocaleString('es-CO')+' COP aplicado.'
+            :'✓ Cupón válido — $'+monto.toLocaleString('es-CO')+' COP se descontarán '+(_cot?'de la cotización':'al confirmar')+' (solo se usa si la orden queda registrada).';}
           const inp=document.getElementById('cupon-input');
           if(inp){inp.disabled=true;inp.style.borderColor='rgba(0,255,65,.5)';}
-        }catch(e){if(msg){msg.style.color='#f87171';msg.textContent='Error validando: '+e.message;}}
+        }catch(e){if(msg){msg.style.color='#f87171';msg.textContent='Error validando: '+((e&&e.message)||'intenta de nuevo');}}
+      };
+      // Gasta el cupón DESPUÉS de que el INSERT del pedido salió bien (lo llama sendToWhatsApp). Nunca lanza.
+      window.consumirCuponPedido=async function(sbExt,codigo){
+        const c=window._cuponCreditoActivo;
+        try{
+          if(!c||!c.cupon||!codigo)return;
+          window._cuponCreditoActivo=null;   // ya va en este pedido: no se reaplica a otro desde esta página
+          const inp=document.getElementById('cupon-input');if(inp){inp.disabled=false;inp.value='';inp.style.borderColor='';}
+          const m=document.getElementById('cupon-msg-fresado');if(m)m.textContent='';
+          if(c.consumido)return;             // camino anterior: se gastó al validar
+          const sb=sbExt||_getSb();if(!sb)return;
+          let{data,error}=await sb.rpc('prodigy_consumir_cupon_pedido',{p_cupon:c.cupon,p_pedido_codigo:codigo});
+          if(error&&_rpcNoExiste(error))({data,error}=await sb.rpc('prodigy_usar_cupon_credito',{p_cupon:c.cupon,p_pedido_codigo:codigo}));
+          if(error||!data||!data.ok)console.error('[PRODIGY] Cupón',c.cupon,'no se gastó en',codigo,(error&&error.message)||(data&&data.error)||'');
+        }catch(e){console.error('[PRODIGY] Cupón: error al gastarlo',e&&e.message);}
       };
     })();
     </script>

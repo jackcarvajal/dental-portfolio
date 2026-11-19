@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-19 (i) — Wompi con el pedido real + cupones sin pérdida (impresión y fresado)
+
+- Wompi: se paga DESPUÉS de guardar el pedido y con su código real (la firma v2.0 lo exige); 3 % dentro de precio_total solo si elige PSE/tarjeta; sin comprobante en ese caso. Fresado en «cotizar» no ofrece Wompi.
+- Cupones: «Validar» solo consulta; se gasta después del INSERT; precio_total guarda el descuento y notas el cupón. Arreglado de paso: aviso de cuenta nueva/referidos en fresado usaba emailCliente (el input) y mandaba «{}».
+- 🟡 SQL pendiente: sql/cupones-consumo-diferido-2026.sql (prodigy_validar_cupon_credito + prodigy_consumir_cupon_pedido). Sin correrlo, el front usa el camino anterior.
+
 ## 2026-11-19 (h) — Recepción 24/7, datos del pedido y cliente recurrente
 
 - js/recepcion-24h.js (ambos repos): aviso «Recibimos casos 24/7… arranca en horario hábil y los tiempos corren desde ahí» en diseño, fresado, impresión, laboratorio, escáner y alineadores; banner en cian sin parpadeo. Sábado: se recibe y trabaja a puerta cerrada.
