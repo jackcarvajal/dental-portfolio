@@ -217,7 +217,8 @@ Auditoría Sonnet de `meta-capi`, `notify-wa`, `send-push` (versiones Deno en `s
 
 ---
 
-## 🔴🔴 REDESPLEGAR Edge Function — wompi-signature firmaba montos arbitrarios del cliente (EL HUECO DE DINERO MÁS GRAVE)
+## ✅ (verificado 19-nov-2026: wompi-signature v2.0 desplegada, firma el precio_total de la BD) — wompi-signature firmaba montos arbitrarios del cliente
+> ⚠️ Queda: impresión/fresado llaman a Wompi con referencia PRD-…-xxxx aleatoria y ANTES de crear el pedido → la firma no encuentra el pedido. Ver informe 19-nov.
 
 **Hallazgo (auditoría Opus):** `supabase/functions/wompi-signature/index.ts` tomaba `monto_en_centavos` **directo del body del cliente** y firmaba ESE monto sin cruzarlo con el pedido real en la BD. Un atacante podía pedir una firma válida para $1.000 sobre un pedido de $500.000 — la firma era criptográficamente correcta (la generaba el servidor), Wompi la aceptaba, y el webhook confirmaba el pago "íntegro". **Vector real de pagar de menos.** (La función `verify-price` que parecía validar precio resultó ser **código muerto** — nadie la llama y ni siquiera consulta la BD; la conclusión previa de "precio sin validar server-side" se confirma.)
 
