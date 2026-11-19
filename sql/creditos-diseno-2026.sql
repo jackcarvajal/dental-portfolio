@@ -272,6 +272,9 @@ BEGIN
     v_sla := creditos_regla(v_neg, 'sla_simple_h');
   END IF;
 
+  -- El trigger prodigy_restrict_client_pedido_updates impide que un cliente confirme un pago. Aquí el pago
+  -- es real (créditos descontados arriba), así que se le avisa con una marca que vive solo en esta transacción.
+  PERFORM set_config('prodigy.pago_por_creditos', 'true', true);
   UPDATE pedidos
      SET modalidad_cobro = 'creditos',
          pago_estado = 'pago_confirmado',
@@ -280,6 +283,7 @@ BEGIN
          sla_horas_objetivo = COALESCE(v_sla::int, sla_horas_objetivo),
          sla_alerta_enviada = false
    WHERE id = p_pedido;
+  PERFORM set_config('prodigy.pago_por_creditos', 'false', true);
 
   RETURN jsonb_build_object('ok', true, 'creditos', v_cred, 'saldo', v_e.disponibles - v_cred,
                             'sla_horas', v_sla, 'entrega_limite', CASE WHEN v_sla IS NULL THEN NULL ELSE now() + make_interval(hours => v_sla::int) END);
@@ -450,8 +454,56 @@ GRANT EXECUTE ON FUNCTION public.creditos_devolver_pedido(uuid, text)         TO
 GRANT EXECUTE ON FUNCTION public.creditos_ajustar(uuid, text, numeric, text)  TO authenticated;   -- ídem
 GRANT EXECUTE ON FUNCTION public.creditos_resumen(text)                       TO authenticated;   -- ídem
 
--- ── 7. Verificación ─────────────────────────────────────────────────────────
--- Debe dar: planes_alejandro = 4 · reglas_alejandro = 11 · funciones = 13 · tablas_con_rls = 4 · anon_puede_ejecutar = 0
+-- ── 7. Ajustes del 19-nov-2026 (volver a correr TODO el archivo: es idempotente) ──────────────────
+-- 7a. El trigger de protección de pedidos bloqueaba el cobro con créditos cuando lo hacía el propio cliente
+--     («Clientes no pueden confirmar pago directamente»). Cambio puntual sobre la definición viva (mismo método
+--     que sql/fabricacion-pago-verificado-2026.sql): deja pasar el pago solo si lo marca creditos_consumir_pedido.
+--     De paso, «OLD != 'pago_confirmado'» con OLD nulo daba NULL y no protegía: ahora es IS DISTINCT FROM.
+DO $$
+DECLARE def text; nuevo text;
+BEGIN
+  SELECT pg_get_functiondef(p.oid) INTO def FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
+   WHERE n.nspname = 'public' AND p.proname = 'prodigy_restrict_client_pedido_updates';
+  IF def IS NULL OR def ~ 'pago_por_creditos' THEN RETURN; END IF;
+  nuevo := regexp_replace(def,
+    'IF NEW\.pago_estado = ''pago_confirmado'' AND OLD\.pago_estado != ''pago_confirmado'' THEN',
+    'IF NEW.pago_estado = ''pago_confirmado'' AND OLD.pago_estado IS DISTINCT FROM ''pago_confirmado''
+       AND current_setting(''prodigy.pago_por_creditos'', true) IS DISTINCT FROM ''true'' THEN');
+  IF nuevo <> def THEN EXECUTE nuevo; RAISE NOTICE 'actualizada: prodigy_restrict_client_pedido_updates'; END IF;
+END $$;
+
+-- 7b. Revisiones adicionales cobradas EN LA BASE: cuando un pedido pagado con créditos pasa la revisión incluida
+--     (revisiones_usadas sube más allá de 2), se descuenta 0,5 crédito por cada una. No depende del navegador.
+--     Idempotente por referencia «<pedido>:rev:<n>» (la misma que usa creditos_cobrar_revision).
+CREATE OR REPLACE FUNCTION public.creditos_trg_revision()
+RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
+DECLARE v_neg text; v_incl int; v_costo numeric; v_cli uuid; v_e record; v_n int; v_ref text;
+BEGIN
+  IF COALESCE(NEW.revisiones_usadas, 0) <= COALESCE(OLD.revisiones_usadas, 0) THEN RETURN NEW; END IF;
+  IF NOT EXISTS (SELECT 1 FROM creditos_movimientos WHERE pedido_id = NEW.id AND tipo = 'consumo') THEN RETURN NEW; END IF;
+  v_neg   := COALESCE(NEW.negocio, 'alejandrocadcam');
+  v_incl  := COALESCE(creditos_regla(v_neg, 'revisiones_incluidas'), 2)::int;
+  v_costo := COALESCE(creditos_regla(v_neg, 'revision_extra'), 0.5);
+  v_cli   := COALESCE(NEW.cliente_id, NEW.doctor_uid, NEW.user_id);
+  FOR v_n IN GREATEST(COALESCE(OLD.revisiones_usadas, 0) + 1, v_incl + 1) .. NEW.revisiones_usadas LOOP
+    v_ref := NEW.id::text || ':rev:' || v_n;
+    CONTINUE WHEN EXISTS (SELECT 1 FROM creditos_movimientos WHERE referencia = v_ref);
+    SELECT * INTO v_e FROM creditos_estado(v_cli, v_neg);
+    IF v_e.disponibles < v_costo THEN
+      RAISE EXCEPTION 'SALDO_INSUFICIENTE: la revisión adicional cuesta % crédito', v_costo;
+    END IF;
+    PERFORM creditos_descontar_fifo(v_cli, v_neg, v_costo, NEW.id, 'revision_extra', v_ref, 'Revisión adicional #' || v_n);
+  END LOOP;
+  RETURN NEW;
+END $$;
+REVOKE ALL ON FUNCTION public.creditos_trg_revision() FROM PUBLIC, anon, authenticated;
+DROP TRIGGER IF EXISTS trg_creditos_revision ON public.pedidos;
+CREATE TRIGGER trg_creditos_revision BEFORE UPDATE OF revisiones_usadas ON public.pedidos
+  FOR EACH ROW EXECUTE FUNCTION public.creditos_trg_revision();
+
+-- ── 8. Verificación ─────────────────────────────────────────────────────────
+-- Debe dar: planes_alejandro = 4 · reglas_alejandro = 11 · funciones = 14 · tablas_con_rls = 4 · anon_puede_ejecutar = 0
+--           · cliente_puede_pagar_con_creditos = true · cobro_marca_el_pago = true · revisiones_en_la_base = 1
 SELECT
   (SELECT count(*) FROM public.creditos_planes WHERE negocio = 'alejandrocadcam')                       AS planes_alejandro,
   (SELECT count(*) FROM public.creditos_reglas WHERE negocio = 'alejandrocadcam')                       AS reglas_alejandro,
@@ -460,4 +512,7 @@ SELECT
   (SELECT count(*) FROM pg_class WHERE relname IN ('creditos_planes','creditos_reglas','creditos_lotes','creditos_movimientos')
     AND relrowsecurity)                                                                                  AS tablas_con_rls,
   (SELECT count(*) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
-    WHERE n.nspname = 'public' AND p.proname LIKE 'creditos\_%' AND has_function_privilege('anon', p.oid, 'EXECUTE')) AS anon_puede_ejecutar;
+    WHERE n.nspname = 'public' AND p.proname LIKE 'creditos\_%' AND has_function_privilege('anon', p.oid, 'EXECUTE')) AS anon_puede_ejecutar,
+  (SELECT prosrc ~ 'pago_por_creditos' FROM pg_proc WHERE proname = 'prodigy_restrict_client_pedido_updates')     AS cliente_puede_pagar_con_creditos,
+  (SELECT prosrc ~ 'pago_por_creditos' FROM pg_proc WHERE proname = 'creditos_consumir_pedido')                   AS cobro_marca_el_pago,
+  (SELECT count(*) FROM pg_trigger WHERE tgname = 'trg_creditos_revision' AND NOT tgisinternal)                    AS revisiones_en_la_base;

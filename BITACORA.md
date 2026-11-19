@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-19 (a) — Créditos: SQL corrido + ajustes para pagar desde el cliente
+
+- ✅ Alejandro corrió `sql/creditos-diseno-2026.sql`: planes 4 · reglas 11 · funciones 13 · RLS 4 · anon 0.
+- 🟡 **Volver a correr el MISMO archivo** (idempotente): el trigger `prodigy_restrict_client_pedido_updates` bloqueaba el cobro con créditos hecho por el propio cliente («Clientes no pueden confirmar pago directamente»). Ahora `creditos_consumir_pedido` marca la transacción (`prodigy.pago_por_creditos`) y el trigger la deja pasar; además `OLD.pago_estado != …` con nulo ya no deja hueco. Nuevo trigger `trg_creditos_revision`: la 3.ª revisión en adelante de un caso pagado con créditos se cobra en la base (0,5 crédito). Verificación esperada: funciones 14 · cliente_puede_pagar_con_creditos true · cobro_marca_el_pago true · revisiones_en_la_base 1.
+- Front en el repo de Alejandro (ver su bitácora).
+
 ## 2026-11-18 (l) — Rastreo de enlaces estilo Beacons (PRODIGY y Alejandro)
 
 - 🟡 `functions/wa/[[fuente]].js` (+ `wa/index.js`, `wa-en.js`, rutas en `_routes.json`): `/wa`, `/wa/<origen>` y `/wa/en/<origen>` anotan el clic en `analytics_events` (`wa_click`, `metadata.fuente`, país, hash diario anónimo) y redirigen a wa.me con un mensaje que dice el origen («los encontré en Google…»). Destino fijo (sin open redirect), sin robots ni vistas previas, tope 10/min por IP, nunca bloquea al cliente. Las líneas `/wa` de `_redirects` quedan de respaldo.
