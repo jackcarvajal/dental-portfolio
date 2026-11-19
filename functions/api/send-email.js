@@ -146,7 +146,9 @@ export async function onRequestPost({ request, env }) {
 
     if (!resp.ok) {
       await logFalloEmail(env, to, subject, JSON.stringify(data));
-      return new Response(JSON.stringify({ error: data.message || 'Error Resend', data }), { status: 502, headers: cors });
+      // El detalle de Resend queda en logs_incidencias y en el log del servidor, no en la respuesta al navegador
+      console.error('[send-email] Resend', resp.status, JSON.stringify(data).slice(0, 400));
+      return new Response(JSON.stringify({ error: 'No se pudo enviar el correo' }), { status: 502, headers: cors });
     }
 
     return new Response(JSON.stringify({ ok: true, id: data.id }), { status: 200, headers: cors });

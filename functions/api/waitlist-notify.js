@@ -37,8 +37,18 @@ export async function onRequestPost(context) {
   let body;
   try { body = await request.json(); } catch { body = {}; }
 
-  const { nombre_lab, nombre_contacto, ciudad, pedidos_mes, whatsapp } = body;
+  const corta = s => String(s || '').replace(/[\r\n]+/g, ' ').slice(0, 120);
+  const nombre_lab = corta(body.nombre_lab), nombre_contacto = corta(body.nombre_contacto), ciudad = corta(body.ciudad),
+        pedidos_mes = corta(body.pedidos_mes), whatsapp = corta(body.whatsapp);
   if (!nombre_lab) return new Response(JSON.stringify({ ok: false }), { headers: CORS });
+
+  // Tope GLOBAL (no solo por IP): una botnet no puede inundar el correo/WhatsApp del equipo.
+  // Ventana fija de 1 h (la hora va en la clave); caches.default es por centro de datos de Cloudflare.
+  const glKey = new Request('https://rl.internal/waitlist-notify-global_' + Math.floor(Date.now() / 3600000));
+  const gl = await caches.default.match(glKey);
+  const g = gl ? (parseInt(await gl.text(), 10) || 0) : 0;
+  if (g >= 20) return new Response(JSON.stringify({ ok: false, reason: 'rate-limit' }), { status: 429, headers: CORS });
+  await caches.default.put(glKey, new Response(String(g + 1), { headers: { 'Cache-Control': 'max-age=3600' } }));
 
   const results = {};
 
@@ -63,8 +73,9 @@ export async function onRequestPost(context) {
             <p style="margin-top:16px;"><a href="https://prodigylabdental.com/app/panel-interno-operaciones.html" style="background:#D4AF37;color:#000;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:bold;">Ver en Admin Panel →</a></p>`,
         }),
       });
-      results.email = r.ok ? 'ok' : `error ${r.status}`;
-    } catch(e) { results.email = 'exception: ' + e.message; }
+      results.email = r.ok ? 'ok' : 'error';
+      if (!r.ok) console.error('[waitlist-notify] Resend', r.status, (await r.text().catch(() => '')).slice(0, 300));
+    } catch(e) { results.email = 'error'; console.error('[waitlist-notify] email', e); }
   }
 
   // 2. WA via Callmebot
@@ -74,8 +85,10 @@ export async function onRequestPost(context) {
       const url = `https://api.callmebot.com/whatsapp.php?phone=573212816716&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`;
       const r = await fetch(url);
       const rTxt = await r.text();
-      results.wa = (r.ok && /message queued/i.test(rTxt)) ? 'ok' : `error: ${rTxt.slice(0, 150)}`;
-    } catch(e) { results.wa = 'exception: ' + e.message; }
+      // La respuesta de CallMeBot no viaja al navegador (solo al log del servidor)
+      results.wa = (r.ok && /message queued/i.test(rTxt)) ? 'ok' : 'error';
+      if (results.wa !== 'ok') console.error('[waitlist-notify] CallMeBot', r.status, rTxt.slice(0, 300));
+    } catch(e) { results.wa = 'error'; console.error('[waitlist-notify] wa', e); }
   }
 
   return new Response(JSON.stringify({ ok: true, results }), { headers: CORS });

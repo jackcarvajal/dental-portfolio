@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-11-19 (b) — Seguridad de Functions (agente, revisado)
+
+- 🟡 send-email (Alejandro): sin sesión solo confirma al correo guardado en el pedido (el flujo ahora lo guarda), tope global 30/h y 5/h por destinatario. cotizacion-auto y lead-magnet ya no mandan WhatsApp al número del body. cuenta-implicita: una cuenta por código y correo exacto. Topes globales por hora en notify-staff (y ya no devuelve los teléfonos del equipo) y waitlist-notify. Errores genéricos al cliente (detalle solo en logs). leer-comprobante: solo URLs del storage del proyecto, sin redirecciones. *.pages.dev con X-Robots-Tag noindex (_headers + _middleware para /article y /wa).
+
 ## 2026-11-19 (a) — Créditos: SQL corrido + ajustes para pagar desde el cliente
 
 - ✅ Alejandro corrió `sql/creditos-diseno-2026.sql`: planes 4 · reglas 11 · funciones 13 · RLS 4 · anon 0.

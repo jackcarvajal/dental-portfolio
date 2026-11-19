@@ -67,7 +67,7 @@ export async function onRequestPost({ request, env }){
     })
   });
   const data = await r.json();
-  if(!r.ok) return new Response(JSON.stringify({ error: data.msg || data.error_description || data.error || 'No se pudo crear el usuario', detalle:data }),{ status:r.status, headers:h });
+  if(!r.ok){ console.error('[crear-operario]', r.status, JSON.stringify(data).slice(0, 300)); return new Response(JSON.stringify({ error: data.msg || data.error_description || data.error || 'No se pudo crear el usuario' }),{ status:r.status, headers:h }); }
 
   return new Response(JSON.stringify({ ok:true, id:data.id, email:data.email, role }),{ status:200, headers:h });
 }

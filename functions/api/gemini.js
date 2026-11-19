@@ -176,7 +176,10 @@ export async function onRequestPost(context) {
     lastError = data.error?.message || `HTTP ${geminiRes.status}`;
   }
 
-  return new Response(JSON.stringify({ error: lastError || 'Todos los modelos fallaron' }), {
+  // El error del proveedor (cupo, clave, modelo) va al log del servidor; al navegador, un mensaje genérico
+  // (sin «configurado» ni «solicitudes», que header.js usa para otros casos)
+  console.error('[gemini] todos los modelos fallaron:', String(lastError || '').slice(0, 300));
+  return new Response(JSON.stringify({ error: 'El asistente no está disponible en este momento' }), {
     status: 502, headers: corsHeaders(origin)
   });
 }

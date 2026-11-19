@@ -91,7 +91,8 @@ export async function onRequestPost({ request, env }){
         const friendly=(m.includes('registered')||m.includes('already'))
           ? 'Ese email YA está en uso (ya tiene cuenta). Edítalo desde la lista para darle/cambiar roles, o usa otro correo.'
           : (d.msg||d.error_description||d.error||'No se pudo crear');
-        return new Response(JSON.stringify({error:friendly,detalle:d}),{status:r.status,headers:h});
+        console.error('[gestion-usuarios] crear', r.status, JSON.stringify(d).slice(0, 300));
+        return new Response(JSON.stringify({error:friendly}),{status:r.status,headers:h});
       }
       return new Response(JSON.stringify({ok:true,id:d.id,email:d.email,roles}),{status:200,headers:h});
     }
@@ -110,7 +111,7 @@ export async function onRequestPost({ request, env }){
         ...(typeof body.nombre==='string' && body.nombre.trim() ? { user_metadata:{ nombre:body.nombre.trim().slice(0,120) } } : {})
       })});
       const d = await r.json();
-      if(!r.ok) return new Response(JSON.stringify({error:d.msg||d.error||'No se pudo actualizar',detalle:d}),{status:r.status,headers:h});
+      if(!r.ok){ console.error('[gestion-usuarios] set_roles', r.status, JSON.stringify(d).slice(0, 300)); return new Response(JSON.stringify({error:d.msg||d.error||'No se pudo actualizar'}),{status:r.status,headers:h}); }
       return new Response(JSON.stringify({ok:true,id,roles,active}),{status:200,headers:h});
     }
 
@@ -122,12 +123,13 @@ export async function onRequestPost({ request, env }){
       if(uinfo && ADMIN_EMAILS.includes((uinfo.email||'').toLowerCase()))
         return new Response(JSON.stringify({error:'No se puede borrar una cuenta admin'}),{status:400,headers:h});
       const r = await fetch(`${URL}/auth/v1/admin/users/${id}`,{method:'DELETE',headers:admH});
-      if(!r.ok){ const d=await r.json().catch(()=>({})); return new Response(JSON.stringify({error:d.msg||'No se pudo borrar',detalle:d}),{status:r.status,headers:h}); }
+      if(!r.ok){ const d=await r.json().catch(()=>({})); console.error('[gestion-usuarios] delete', r.status, JSON.stringify(d).slice(0, 300)); return new Response(JSON.stringify({error:d.msg||'No se pudo borrar'}),{status:r.status,headers:h}); }
       return new Response(JSON.stringify({ok:true,id}),{status:200,headers:h});
     }
 
     return new Response(JSON.stringify({error:'Acción no válida'}),{status:400,headers:h});
   }catch(e){
-    return new Response(JSON.stringify({error:'Error: '+e.message}),{status:500,headers:h});
+    console.error('[gestion-usuarios]', e);
+    return new Response(JSON.stringify({error:'Error interno del servidor'}),{status:500,headers:h});
   }
 }

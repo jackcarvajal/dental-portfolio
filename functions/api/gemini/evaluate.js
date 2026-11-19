@@ -152,7 +152,10 @@ export async function onRequestPost(context) {
   // el cuerpo por su propia página "error code: 502" y el front nunca ve el mensaje real.
   let r;
   try { r = await llamarGemini(env.GEMINI_API_KEY, (lang === 'en' ? SISTEMA_EN : SISTEMA).replace('{zona}', zona), userText, image); }
-  catch (e) { return new Response(JSON.stringify({ error: 'Fallo interno: ' + (e && e.message || e) }), { status: 200, headers: H }); }
+  catch (e) {
+    console.error('[evaluate] fallo interno:', e);
+    return new Response(JSON.stringify({ error: lang === 'en' ? 'The evaluator is unavailable right now. Please try again.' : 'El evaluador no está disponible ahora. Intenta de nuevo.' }), { status: 200, headers: H });
+  }
   if (!r || !r.text) {
     var msg = String(r && r.err || '');
     var badImg = /process input image|INVALID_ARGUMENT/i.test(msg);

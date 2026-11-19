@@ -148,7 +148,7 @@ export async function onRequestPost(context) {
 
     if (!stripeRes.ok) {
       console.error('Stripe error:', session);
-      return new Response(JSON.stringify({ error: session.error?.message || 'Error de Stripe' }), { status: 502, headers: corsH });
+      return new Response(JSON.stringify({ error: 'No se pudo iniciar el pago. Intenta de nuevo o escríbenos por WhatsApp.' }), { status: 502, headers: corsH });
     }
 
     return new Response(JSON.stringify({ url: session.url, session_id: session.id }), { status: 200, headers: corsH });

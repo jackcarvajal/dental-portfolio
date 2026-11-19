@@ -7,7 +7,8 @@
  * La IA solo LEE: contabilidad compara con el abono esperado y confirma a mano (la decisión sigue siendo humana).
  * Seguridad:
  *   · Solo personal (admin por correo o app_metadata.role admin/contabilidad/secretaria/operator) con su sesión.
- *   · Solo descarga archivos de *.supabase.co (no sirve de proxy a otras direcciones) y de máx. 8 MB.
+ *   · Solo descarga del Storage de este proyecto (zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/object/…), sin
+ *     seguir redirecciones (no sirve de proxy a otras direcciones) y de máx. 8 MB.
  *   · Límite: 40 lecturas por IP por hora.
  * Variables de entorno: GEMINI_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY (las mismas que ya usa la web).
  */
@@ -16,6 +17,7 @@ const ADMIN_EMAILS = ['jackalejandroc@gmail.com', 'labdentalprodigy@gmail.com', 
 const ROLES = ['admin', 'contabilidad', 'secretaria', 'operator'];
 const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.0-flash-lite'];
 const MAX_BYTES = 8 * 1024 * 1024;
+const STORAGE_HOST = 'zgihrwqfyvgyapbwzkvw.supabase.co';   // único origen permitido para el comprobante
 
 function cors(origin) {
   const ok = /^https:\/\/(www\.)?prodigylabdental\.com$/.test(origin || '') || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '');
@@ -81,9 +83,12 @@ export async function onRequestPost({ request, env }) {
   try { url = String((await request.json()).url || ''); } catch { return json({ error: 'Cuerpo inválido' }, 400, h); }
   let u;
   try { u = new URL(url); } catch { return json({ error: 'URL inválida' }, 400, h); }
-  if (u.protocol !== 'https:' || !/\.supabase\.co$/i.test(u.hostname)) return json({ error: 'Solo comprobantes guardados en Supabase' }, 400, h);
+  // Anti-SSRF: solo el Storage de NUESTRO proyecto (antes valía cualquier *.supabase.co, incluido el de un tercero),
+  // sin puerto ni credenciales en la URL, y sin seguir redirecciones hacia otra dirección.
+  if (u.protocol !== 'https:' || u.hostname.toLowerCase() !== STORAGE_HOST || u.port || u.username || u.password ||
+      !u.pathname.startsWith('/storage/v1/object/')) return json({ error: 'Solo comprobantes guardados en Supabase' }, 400, h);
 
-  const r = await fetch(u.toString());
+  const r = await fetch(u.toString(), { redirect: 'manual' });
   if (!r.ok) return json({ error: 'No se pudo descargar el comprobante (' + r.status + ')' }, 502, h);
   const tipo = (r.headers.get('Content-Type') || '').split(';')[0].trim().toLowerCase();
   if (!/^image\/(png|jpe?g|webp|heic|heif)$|^application\/pdf$/.test(tipo)) return json({ error: 'Formato no compatible: ' + tipo }, 415, h);
@@ -112,5 +117,7 @@ export async function onRequestPost({ request, env }) {
       }, 200, h);
     } catch (e) { ultimo = e.message; }
   }
-  return json({ error: 'La IA no pudo leer el comprobante: ' + ultimo }, 502, h);
+  // El detalle del proveedor de IA queda en el log del servidor, no en la respuesta
+  console.error('[leer-comprobante] IA sin respuesta:', String(ultimo).slice(0, 300));
+  return json({ error: 'La IA no pudo leer el comprobante. Revísalo a mano o intenta de nuevo.' }, 502, h);
 }

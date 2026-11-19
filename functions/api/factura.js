@@ -89,7 +89,8 @@ export async function onRequestGet(context) {
     }), { status: res.ok ? 200 : 502, headers: cors });
 
   } catch (e) {
-    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: cors });
+    console.error('[factura] GET', e);
+    return new Response(JSON.stringify({ error: 'No se pudo consultar la factura en Factus' }), { status: 502, headers: cors });
   }
 }
 
@@ -288,8 +289,10 @@ export async function onRequestPost(context) {
     });
 
   } catch (e) {
+    // El detalle queda en pedidos.factura_error (solo lo ve el equipo) y en el log del servidor
+    console.error('[factura] POST', e);
     await patchPedido(env, pedido_id, { factura_estado: 'error', factura_error: e.message });
-    return new Response(JSON.stringify({ error: e.message }), { status: 502, headers: cors });
+    return new Response(JSON.stringify({ error: 'No se pudo emitir la factura (detalle guardado en el pedido)' }), { status: 502, headers: cors });
   }
 }
 

@@ -176,6 +176,6 @@ export async function onRequestPost({ request, env }) {
   } catch (_) {}
 
   await caches.default.put(unico, new Response('1', { headers: { 'Cache-Control': 'max-age=86400' } }));
-  if (!emailOk && !wa) return J({ error: 'No se pudo enviar el correo', detalle: det }, 502);
+  if (!emailOk && !wa) { console.error('[respaldo-alineadores] correo:', det); return J({ error: 'No se pudo enviar el correo' }, 502); }
   return J({ ok: true, email: !b.sin_email && emailOk, whatsapp: wa });
 }

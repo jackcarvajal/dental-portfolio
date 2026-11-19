@@ -46,6 +46,15 @@ export async function onRequestPost({ request, env }) {
   if (n >= 20) return new Response(JSON.stringify({ error: 'Rate limit' }), { status: 429, headers: h });
   await caches.default.put(rlKey, new Response(String(n + 1), { headers: { 'Cache-Control': 'max-age=3600' } }));
 
+  // Tope GLOBAL (no solo por IP): una botnet con muchas IP no puede inundar el WhatsApp/correo del equipo.
+  // Ventana fija de 1 h (la hora va en la clave) para que el contador no se acumule con tráfico normal.
+  // caches.default vive en cada centro de datos de Cloudflare: el tope es por colo.
+  const glKey = new Request('https://rl.internal/notify-staff-pg-global_' + Math.floor(Date.now() / 3600000));
+  const gl = await caches.default.match(glKey);
+  const g = gl ? (parseInt(await gl.text(), 10) || 0) : 0;
+  if (g >= 60) return new Response(JSON.stringify({ error: 'Rate limit' }), { status: 429, headers: h });
+  await caches.default.put(glKey, new Response(String(g + 1), { headers: { 'Cache-Control': 'max-age=3600' } }));
+
   let body;
   try { body = await request.json(); } catch { return new Response(JSON.stringify({ error: 'JSON inválido' }), { status: 400, headers: h }); }
 
@@ -84,7 +93,8 @@ export async function onRequestPost({ request, env }) {
     correo = await respaldoCorreo(env, { tipo, codigo, servicio, doctor, waLead, pais, contexto });
   }
 
-  return new Response(JSON.stringify({ ok: true, enviados: resultados, correo }), { status: 200, headers: h });
+  // Solo el conteo: antes devolvía los teléfonos del equipo a cualquiera que llamara
+  return new Response(JSON.stringify({ ok: true, enviados: resultados.filter(r => r.ok).length, correo }), { status: 200, headers: h });
 }
 
 const escH = s => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

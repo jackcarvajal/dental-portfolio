@@ -75,7 +75,7 @@ export async function onRequestPost(context) {
       const rTxt = await r.text();
       // CallMeBot responde HTTP 200 incluso en fallos — r.ok solo no basta.
       const waOk = r.ok && /message queued/i.test(rTxt);
-      results.wa = waOk ? 'ok' : `error: ${rTxt.slice(0, 150)}`;
+      results.wa = waOk ? 'ok' : 'error';   // la respuesta de CallMeBot queda en logs_incidencias, no en el navegador
       if (!waOk && env.SUPABASE_URL && env.SUPABASE_SERVICE_KEY) {
         await fetch(`${env.SUPABASE_URL}/rest/v1/logs_incidencias`, {
           method: 'POST',
@@ -83,7 +83,7 @@ export async function onRequestPost(context) {
           body: JSON.stringify({ tipo: 'REVISION_NOTIFY_WA_ERROR', severidad: 'WARN', descripcion: `[revision-notify] Falló WA operario (${codigo||pedido_id}): ${rTxt.slice(0, 300)}`, resuelta: false }),
         }).catch(() => {});
       }
-    } catch(e) { results.wa = 'exception: ' + e.message; }
+    } catch(e) { results.wa = 'error'; console.error('[revision-notify] wa', e); }
   }
 
   // 2. Email al equipo via Resend
@@ -126,8 +126,9 @@ export async function onRequestPost(context) {
           html,
         }),
       });
-      results.email = r.ok ? 'ok' : `error ${r.status}`;
-    } catch(e) { results.email = 'exception: ' + e.message; }
+      results.email = r.ok ? 'ok' : 'error';
+      if (!r.ok) console.error('[revision-notify] Resend', r.status);
+    } catch(e) { results.email = 'error'; console.error('[revision-notify] email', e); }
   }
 
   return new Response(JSON.stringify({ ok: true, results }), { headers: CORS });

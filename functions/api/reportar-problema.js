@@ -213,7 +213,7 @@ export async function onRequestPost({ request, env }){
     aviso_pendiente: ia
   };
   const ins = await fetch(`${c.URL}/rest/v1/reportes_web?select=id,folio`, { method:'POST', headers:{ ...H, Prefer:'return=representation' }, body:JSON.stringify(fila) });
-  if (!ins.ok) { const t = await ins.text(); return J({ error:'No se pudo guardar el reporte', detalle:t.slice(0,200) }, 500); }
+  if (!ins.ok) { const t = await ins.text(); console.error('[reportar-problema] insert', ins.status, t.slice(0, 300)); return J({ error:'No se pudo guardar el reporte' }, 500); }
   const [row] = await ins.json();
   fila.folio = row.folio;
 

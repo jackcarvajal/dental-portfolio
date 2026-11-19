@@ -3,8 +3,8 @@
  * POST /api/lead-magnet
  * Body: { nombre, email, whatsapp, recurso, negocio? }
  *
- * Guarda el lead en tabla leads_doctores y envía WA de bienvenida.
- * Env vars: SUPABASE_SERVICE_KEY, CALLMEBOT_APIKEY
+ * Guarda el lead en tabla leads_doctores (ya no envía WhatsApp al número del formulario).
+ * Env vars: SUPABASE_SERVICE_KEY
  */
 
 const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
@@ -57,22 +57,9 @@ export async function onRequestPost({ request, env }) {
       body: JSON.stringify({ nombre: escH(nombre), email: escH(email), whatsapp: escH(whatsapp), origen: 'lead-magnet', notas: [recurso ? 'Recurso: ' + escH(recurso) : null, negocio && negocio !== 'prodigy' ? 'negocio: ' + escH(negocio) : null].filter(Boolean).join(' · ') || null }),
     });
 
-    // Enviar WA de bienvenida si hay WA y CALLMEBOT_APIKEY
-    if (whatsapp && env.CALLMEBOT_APIKEY) {
-      const wa = String(whatsapp).replace(/\D/g,'');
-      const waFull = wa.length === 10 ? '57'+wa : wa;
-
-      // Límite por número destino (no solo por IP) — máx 3/día al mismo número
-      const rlDestKey = new Request('https://rl.internal/lead-magnet-dest_' + waFull);
-      const rlDestHit = await caches.default.match(rlDestKey);
-      const destCount = rlDestHit ? (parseInt(await rlDestHit.text(), 10) || 0) : 0;
-      if (destCount < 3) {
-        await caches.default.put(rlDestKey, new Response(String(destCount+1), { headers: { 'Cache-Control': 'max-age=86400' } }));
-        const nombreCorto = (nombre||'Doctor').split(' ')[0];
-        const msg = `💎 *PRODIGY Lab Dental*\n\nHola ${nombreCorto}, gracias por descargar *${recurso||'el catálogo'}*.\n\nCualquier consulta sobre servicios o precios, estamos aquí:\n👉 prodigylabdental.com\n📱 WhatsApp: +57 321 281 6716\n\n_¡Esperamos trabajar contigo!_`;
-        await fetch(`https://api.callmebot.com/whatsapp.php?phone=${waFull}&text=${encodeURIComponent(msg)}&apikey=${env.CALLMEBOT_APIKEY}`).catch(()=>{});
-      }
-    }
+    // Sin WhatsApp al número que trae el formulario (nov-2026): este endpoint es público y mandaba un mensaje
+    // a cualquier número que se le pasara. Además CallMeBot solo entrega al dueño de cada apikey, así que al
+    // doctor nunca le llegaba. El equipo hace el seguimiento desde leads_doctores.
 
     return new Response(JSON.stringify({ ok: true }), { status: 200, headers: h });
   } catch (err) {

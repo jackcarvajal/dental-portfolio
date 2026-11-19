@@ -36,14 +36,23 @@ export async function onRequestPost({ request, env }) {
   // correo estricto: sin comas, paréntesis ni % (va dentro de un filtro de PostgREST)
   if (!['escaner', 'alineadores', 'pedido'].includes(b.origen) || !/^[a-z0-9._+'-]+@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/.test(email) || email.length > 254 || !codigo) return J({ error: 'Datos incompletos' }, 400, h);
 
-  // La solicitud/pedido tiene que existir y ser de hace menos de 15 minutos
+  // Una sola cuenta por código: el mismo pedido/solicitud no sirve para abrir cuentas a varios correos
+  const unaVez = new Request('https://rl.internal/cuenta-implicita-cod_' + encodeURIComponent(codigo));
+  if (await caches.default.match(unaVez)) return J({ error: 'No autorizado' }, 403, h);
+
+  // La solicitud/pedido tiene que existir, ser de hace menos de 15 minutos y ser de ESE correo. La comparación
+  // es exacta aquí y no con ilike en el filtro (en ilike el «_» del correo es comodín).
   const desde = encodeURIComponent(new Date(Date.now() - 15 * 60000).toISOString());
-  const cod = encodeURIComponent(codigo), mail = encodeURIComponent(email);
+  const cod = encodeURIComponent(codigo);
   const ruta = b.origen === 'pedido'
-    ? `pedidos?codigo=eq.${cod}&negocio=eq.prodigy&or=(email.is.null,email.ilike.${mail})&created_at=gte.${desde}`
-    : `solicitudes_scanner?codigo=eq.${cod}&email=ilike.${mail}&created_at=gte.${desde}`;
-  const rs = await fetch(`${c.URL}/rest/v1/${ruta}&select=id&limit=1`, { headers: adminH(c.SERVICE) });
-  if (!rs.ok || !(await rs.json()).length) return J({ error: 'No autorizado' }, 403, h);
+    ? `pedidos?codigo=eq.${cod}&negocio=eq.prodigy&created_at=gte.${desde}`
+    : `solicitudes_scanner?codigo=eq.${cod}&created_at=gte.${desde}`;
+  const rs = await fetch(`${c.URL}/rest/v1/${ruta}&select=email&limit=1`, { headers: adminH(c.SERVICE) });
+  const fila = rs.ok ? ((await rs.json())[0] || null) : null;
+  const correoFila = String(fila?.email || '').trim().toLowerCase();
+  // pedido anónimo: guarda el correo vacío → vale el del formulario; escáner/alineadores: tiene que coincidir
+  if (!fila || !(correoFila === email || (b.origen === 'pedido' && !correoFila))) return J({ error: 'No autorizado' }, 403, h);
+  await caches.default.put(unaVez, new Response('1', { headers: { 'Cache-Control': 'max-age=86400' } }));
 
   const nombre = String(b.nombre || '').slice(0, 120), clinica = String(b.clinica || '').slice(0, 120), whatsapp = String(b.whatsapp || '').slice(0, 30);
   const clave = claveTemporal();

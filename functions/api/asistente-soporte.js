@@ -226,7 +226,8 @@ export async function onRequestPost(ctx){
     }
   }
   // 503 (no 502): Cloudflare reemplaza los 502 por su propia página de error y se pierde el detalle
-  if (!up) return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».', detalle: detalle.slice(0, 600) }, 503);
+  // El detalle de los proveedores de IA va al log del servidor, no al navegador
+  if (!up) { console.error('[asistente-soporte] IA sin respuesta:', detalle.slice(0, 600)); return J({ error:'La IA no respondió. Intenta de nuevo o toca «Necesito al equipo».' }, 503); }
 
   // SSE (Gemini o Claude) → texto plano en vivo
   const dec = new TextDecoder(), enc = new TextEncoder();

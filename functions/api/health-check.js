@@ -163,7 +163,7 @@ async function checkService(service, env) {
     name:     service.name,
     ok:       false,
     status:   lastStatus || 'ERROR',
-    error:    lastErr?.message,
+    error:    lastErr ? (lastStatus === 'TIMEOUT' ? 'timeout' : 'error de red') : undefined,   // sin el texto de la excepción (endpoint público)
     ms:       Date.now() - start,
     critical: service.critical,
     attempt:  maxTries,
