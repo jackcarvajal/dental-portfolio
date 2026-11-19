@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-11-19 (e) — Cobro por flujo (decisión de Alejandro)
+
+- 💡 Diseño 100 % anticipado · Impresión y Laboratorio: primer pedido 100 %, recurrentes 50 % abono / 50 % contra entrega · Fresado en «Cotizar».
+- flujo-impresion (banner, términos y WhatsApp con Total/Abono/Saldo + nota), flujo-lab (nota en WhatsApp), calculadora-impresion (texto). js/flujo-impresion.js?v=20261119a.
+
 ## 2026-11-19 (d) — Fresado en modo «Cotizar» (precios suspendidos)
 
 - 💡 Alejandro: los precios de fresado quedan suspendidos hasta terminar de comprar material. flujo-fresado.html con FRESADO_COTIZAR = true: no muestra precios ni pide pago/comprobante; el WhatsApp dice «PRECIO: a cotizar». Para volver: FRESADO_COTIZAR = false.

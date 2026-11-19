@@ -2233,7 +2233,14 @@
                 _totalImp = '$'+(Math.max(0,n-d)).toLocaleString('es-CO');
                 texto += `🎁 *CUPÓN:* ${window._cuponCreditoActivo.cupon} (-$${d.toLocaleString('es-CO')} COP)\n`;
             }
-            texto += `💵 *TOTAL: ${_totalImp}* (pago 100% al confirmar)\n\n`;
+            // Política de Alejandro (19-nov-2026): primer pedido 100 % · clientes recurrentes 50 % abono / 50 % contra entrega.
+            texto += `💵 *TOTAL: ${_totalImp}*\n`;
+            {
+                const _n = parseInt(String(_totalImp).replace(/[^0-9]/g, ''), 10) || 0, _ab = Math.round(_n / 2);
+                texto += `💳 *Abono para iniciar (50 %):* $${_ab.toLocaleString('es-CO')}\n`;
+                texto += `💳 *Saldo contra entrega (50 %):* $${(_n - _ab).toLocaleString('es-CO')}\n`;
+                texto += `_Primer pedido con PRODIGY: se paga el 100 % para iniciar. Clientes recurrentes: 50/50._\n\n`;
+            }
 
             // Anillas (solo para guías quirúrgicas)
             const _anillasR = document.querySelector('input[name="anillas_opcion"]:checked');
