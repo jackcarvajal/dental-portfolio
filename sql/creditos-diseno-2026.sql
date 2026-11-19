@@ -321,6 +321,8 @@ END $$;
 
 -- ── 5. RPC para el administrador ────────────────────────────────────────────
 -- Activa una compra cuando llega el pago (Wise / PayPal / transferencia).
+-- Gemela automática (pago PayPal verificado, solo service_role): creditos_activar_lote_pago en
+-- sql/creditos-pago-paypal-2026.sql. Si cambias el efecto de activar aquí, cámbialo allá también.
 CREATE OR REPLACE FUNCTION public.creditos_activar_lote(p_lote uuid, p_referencia text)
 RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE v_l creditos_lotes%ROWTYPE;
@@ -504,6 +506,7 @@ CREATE TRIGGER trg_creditos_revision BEFORE UPDATE OF revisiones_usadas ON publi
 -- ── 8. Verificación ─────────────────────────────────────────────────────────
 -- Debe dar: planes_alejandro = 4 · reglas_alejandro = 11 · funciones = 14 · tablas_con_rls = 4 · anon_puede_ejecutar = 0
 --           · cliente_puede_pagar_con_creditos = true · cobro_marca_el_pago = true · revisiones_en_la_base = 1
+--           (si ya corriste sql/creditos-pago-paypal-2026.sql: reglas_alejandro = 12 · funciones = 15)
 SELECT
   (SELECT count(*) FROM public.creditos_planes WHERE negocio = 'alejandrocadcam')                       AS planes_alejandro,
   (SELECT count(*) FROM public.creditos_reglas WHERE negocio = 'alejandrocadcam')                       AS reglas_alejandro,
