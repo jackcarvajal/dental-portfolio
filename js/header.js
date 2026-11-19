@@ -223,16 +223,14 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   window.dataLayer = window.dataLayer || [];
   if (!window.gtag) {
     window.gtag = function(){ window.dataLayer.push(arguments); };
-    gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});
-    try { if (localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1') gtag('consent','update',{analytics_storage:'granted'}); } catch (e) {}
+    gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',wait_for_update:500});
+    try { if (localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1') gtag('consent','update',{analytics_storage:'granted',ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted'}); } catch (e) {}
     gtag('js', new Date());
     gtag('config', GA_ID, {anonymize_ip:true});
-    // Medición de Google Ads (AW-18130335500): SOLO conversiones. ad_storage sigue denegado por defecto
-    // (footer.js nunca lo concede) → sin cookies de anuncio y sin remarketing, consistente con «Sin anuncios».
-    // allow_ad_personalization_signals:false refuerza que es medición, no publicidad dirigida. El conversion
-    // linker captura el gclid para atribuir en GA4/Ads; las conversiones de _sendGAds() empiezan a contar en
-    // cuanto existan los labels reales (hoy placeholders «_LABEL», ver js/conversions.js).
-    gtag('config', 'AW-18130335500', {allow_ad_personalization_signals:false});
+    // Google Ads (AW-18130335500): conversiones y públicos (remarketing) SOLO si la persona acepta el aviso de
+    // cookies (footer.js concede ad_storage/ad_user_data/ad_personalization; antes los dejaba denegados con el
+    // texto «Sin anuncios»). Rechazar deja todo denegado. Las conversiones principales se importan desde GA4.
+    gtag('config', 'AW-18130335500');
   }
   function _cargar() {
     if (!document.getElementById('prodigy-ga4-script')) {
@@ -1369,8 +1367,8 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     'Términos': ['Terms', 'Termos'], 'Privacidad': ['Privacy', 'Privacidade'],
     // aviso de cookies (footer.js)
     'Ayúdanos a mejorar': ['Help us improve', 'Ajude-nos a melhorar'],
-    'Analytics anónimo para ver qué te es útil.': ['Anonymous analytics to see what helps you.', 'Análise anônima para ver o que é útil para você.'],
-    'Sin anuncios.': ['No ads.', 'Sem anúncios.'], 'Ver política →': ['See policy →', 'Ver política →'],
+    'Usamos cookies de analítica y de anuncios para ver qué te sirve y mostrar nuestros servicios a otros colegas.': ['We use analytics and advertising cookies to see what helps you and to show our services to other colleagues.', 'Usamos cookies de análise e de anúncios para ver o que é útil para você e mostrar nossos serviços a outros colegas.'],
+    'Puedes rechazarlas.': ['You can decline them.', 'Você pode recusá-los.'], 'Ver política →': ['See policy →', 'Ver política →'],
     '✓ Sí, mejorar la experiencia': ['✓ Yes, improve my experience', '✓ Sim, melhorar a experiência'], 'No por ahora': ['Not now', 'Agora não']
   };
   _TXT['Las marcas registradas ' + _MARCAS + 'y Blender® son propiedad de sus respectivos dueños y se mencionan exclusivamente con fines informativos sobre la compatibilidad de nuestros flujos de trabajo.'] = [

@@ -295,17 +295,20 @@
   if (!_pgConsentVal) { var _dec = localStorage.getItem('pg_cookies_decision'); if (_dec) _pgConsentVal = _dec === 'accepted' ? '1' : '0'; }   // aviso viejo de header.js
 
   // Aplicar consent state al cargar si ya hay decisión previa
+  // Consent Mode v2: aceptar concede analítica y anuncios (medición y públicos); rechazar deja todo denegado.
+  var _PG_SI = { analytics_storage: 'granted', ad_storage: 'granted', ad_user_data: 'granted', ad_personalization: 'granted' };
+  var _PG_NO = { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' };
   if (_pgConsentVal === '1' && window.gtag) {
-    window.gtag('consent', 'update', { analytics_storage: 'granted', ad_storage: 'denied' });
+    window.gtag('consent', 'update', _PG_SI);
   } else if (_pgConsentVal === '0' && window.gtag) {
-    window.gtag('consent', 'update', { analytics_storage: 'denied', ad_storage: 'denied' });
+    window.gtag('consent', 'update', _PG_NO);
   }
 
   if (!_pgConsentVal) {
     function _pgAccept() {
       setTimeout(function(){ if (window._loadClarity) window._loadClarity(); }, 0);   // Clarity solo con permiso
       localStorage.setItem('prodigy_cookies_ok','1');
-      if(window.gtag) window.gtag('consent','update',{analytics_storage:'granted',ad_storage:'denied'});
+      if(window.gtag) window.gtag('consent','update',_PG_SI);
       // conversions.js espera este evento para cargar el Pixel de Meta en la misma visita (antes solo en la página siguiente)
       try { document.dispatchEvent(new Event('prodigy_consent_granted')); } catch (e) {}
       var b = document.getElementById('pfoot-cookie-banner');
@@ -313,7 +316,7 @@
     }
     function _pgReject() {
       localStorage.setItem('prodigy_cookies_ok','0');
-      if(window.gtag) window.gtag('consent','update',{analytics_storage:'denied',ad_storage:'denied'});
+      if(window.gtag) window.gtag('consent','update',_PG_NO);
       var b = document.getElementById('pfoot-cookie-banner');
       if(b){ b.style.transform='translateY(100%)'; setTimeout(function(){ b.remove(); }, 300); }
     }
@@ -344,8 +347,8 @@
           '<div>' +
             '<div style="font-size:.84rem;font-weight:800;color:#f8fafc;margin-bottom:4px;">Ayúdanos a mejorar</div>' +
             '<div style="font-size:.72rem;color:#64748b;line-height:1.5;">' +
-              'Analytics anónimo para ver qué te es útil. ' +
-              '<strong style="color:#94a3b8;">Sin anuncios.</strong> ' +
+              'Usamos cookies de analítica y de anuncios para ver qué te sirve y mostrar nuestros servicios a otros colegas. ' +
+              '<strong style="color:#94a3b8;">Puedes rechazarlas.</strong> ' +
               '<a href="/terminos-y-legal#privacidad" style="color:rgba(217,70,166,.8);text-decoration:none;">Ver política →</a>' +
             '</div>' +
           '</div>' +
