@@ -92,6 +92,30 @@
         let SUB_MATERIALES = SUB_MATERIALES_FALLBACK;
 
         // ─────────────────────────────────────────────
+        // CLIENTE RECURRENTE (política 19-nov-2026): recurrente = ya tiene un pedido con pago_confirmado.
+        // null = sin sesión / consulta fallida (mensaje genérico); true / false = con sesión. Nunca bloquea el pedido.
+        // ─────────────────────────────────────────────
+        let _clienteRecurrente = null;
+        async function detectarClienteRecurrente() {
+            try {
+                const sb = (typeof getSupabase === 'function') ? getSupabase() : null;
+                if (!sb) return;
+                const consulta = (async () => {
+                    const user = (await sb.auth.getSession()).data?.session?.user;
+                    if (!user) return null;
+                    const filtro = 'user_id.eq.' + user.id + (user.email ? ',email.eq."' + String(user.email).replace(/"/g, '') + '"' : '');
+                    const { data, error } = await sb.from('pedidos').select('id')
+                        .eq('negocio', 'prodigy').eq('pago_estado', 'pago_confirmado').eq('es_prueba', false)
+                        .or(filtro).limit(1);
+                    if (error) return null;
+                    return (data || []).length > 0;
+                })();
+                const limite = new Promise(res => setTimeout(() => res(null), 2000));
+                _clienteRecurrente = await Promise.race([consulta, limite]);
+            } catch (_) { _clienteRecurrente = null; }
+        }
+
+        // ─────────────────────────────────────────────
         // CATÁLOGO DINÁMICO: precios desde Supabase + Kill Switch
         // ─────────────────────────────────────────────
         async function inicializarCatalogo() {
@@ -2237,9 +2261,16 @@
             texto += `💵 *TOTAL: ${_totalImp}*\n`;
             {
                 const _n = parseInt(String(_totalImp).replace(/[^0-9]/g, ''), 10) || 0, _ab = Math.round(_n / 2);
-                texto += `💳 *Abono para iniciar (50 %):* $${_ab.toLocaleString('es-CO')}\n`;
-                texto += `💳 *Saldo contra entrega (50 %):* $${(_n - _ab).toLocaleString('es-CO')}\n`;
-                texto += `_Primer pedido con PRODIGY: se paga el 100 % para iniciar. Clientes recurrentes: 50/50._\n\n`;
+                // _clienteRecurrente: true / false (con sesión) o null (sin sesión / falló la consulta → texto genérico)
+                if (_clienteRecurrente === false) {
+                    texto += `_Primer pedido: se paga el 100 % para iniciar._\n\n`;
+                } else {
+                    texto += `💳 *Abono para iniciar (50 %):* $${_ab.toLocaleString('es-CO')}\n`;
+                    texto += `💳 *Saldo contra entrega (50 %):* $${(_n - _ab).toLocaleString('es-CO')}\n`;
+                    texto += _clienteRecurrente === true
+                        ? `_✅ Cliente recurrente: pagas 50 % para iniciar y 50 % contra entrega._\n\n`
+                        : `_Primer pedido con PRODIGY: se paga el 100 % para iniciar. Clientes recurrentes: 50/50._\n\n`;
+                }
             }
 
             // Anillas (solo para guías quirúrgicas)
@@ -2565,6 +2596,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Cargar precios dinámicos desde Supabase (async, no bloquea UI)
             inicializarCatalogo();
+            detectarClienteRecurrente(); // async, cachea en _clienteRecurrente
 
             limitarExtras();
 
