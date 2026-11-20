@@ -29,6 +29,24 @@ https://:version.:project.pages.dev/*
   Pragma: no-cache
   X-Robots-Tag: noindex, nofollow
 
+# Páginas que abren el checkout de PayPal: su ventana debe poder hablar con la página; con el COOP global
+# «same-origin» queda aislada y el pago no vuelve. (Va DESPUÉS de /* para que el «!» quite el valor global.)
+/flujo-diseno*
+  ! Cross-Origin-Opener-Policy
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+/flujo-impresion*
+  ! Cross-Origin-Opener-Policy
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+/flujo-fresado*
+  ! Cross-Origin-Opener-Policy
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+/pagar*
+  ! Cross-Origin-Opener-Policy
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
 /patient.html
   Cache-Control: no-store, no-cache, must-revalidate
   Pragma: no-cache
