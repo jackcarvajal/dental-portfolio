@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-18a",
+  "version": "2026-11-20a",
   "categorias": [
     {
       "id": "inicio",
@@ -189,7 +189,8 @@
       },
       "kw": "solicitud web escaner domicilio lead cotizar bandeja nueva",
       "rel": [
-        "aln-cliente-subir"
+        "aln-cliente-subir",
+        "recepcion-24-7"
       ]
     },
     {
@@ -687,6 +688,9 @@
         "**Enlace de pedido** abre «Envía tu escáner» ya identificado con su nombre, clínica y código: la solicitud llega marcada como «Enlace personal · cliente DR-…».",
         "En la ventana del enlace ves **cuántas veces lo abrió** y cuándo. Si se filtró o el doctor ya no es cliente, usa **Anular enlace**.",
         "Si al crear un enlace sale «Falta activar los enlaces privados», hay que correr una vez el SQL **sql/enlaces-cliente-2026.sql** en Supabase."
+      ],
+      "rel": [
+        "politica-pago"
       ]
     },
     {
@@ -701,6 +705,9 @@
         "Arriba sale en verde si el monto **coincide** con el abono esperado (50%) o con el total, y en rojo si no.",
         "**Usar en la nota de confirmación** copia lo leído a la nota.",
         "La IA puede equivocarse: confirma siempre con el extracto del banco antes de aprobar el pago."
+      ],
+      "rel": [
+        "pagos-paypal"
       ]
     },
     {
@@ -800,6 +807,100 @@
         "Lo que escriben a un número personal no se puede contar: ese número no debe estar en la ficha de Google, la web ni las redes."
       ],
       "rel": []
+    },
+    {
+      "id": "politica-pago",
+      "cat": "clientes",
+      "titulo": "Cuánto paga el cliente para empezar (100 % o 50/50)",
+      "resumen": "La regla de pago de cada flujo y cómo sabe la web si el cliente es recurrente.",
+      "para": "Todo el equipo",
+      "kw": "pago abono 50 100 anticipado recurrente primer pedido saldo despacho politica cobro",
+      "pasos": [
+        "**Diseño:** se paga el 100 % antes de empezar, siempre.",
+        "**Impresión y Laboratorio:** primer pedido, 100 % para empezar. **Cliente recurrente** (ya tiene al menos un pedido con pago confirmado): 50 % de abono para empezar y 50 % antes del despacho.",
+        "**Fresado:** por ahora no tiene precios en la web (modo «cotizar»): se cotiza por WhatsApp. Ver el artículo de fresado.",
+        "Si el doctor entra con su cuenta, la web detecta sola si es recurrente y se lo muestra en el carrito, en el mensaje de WhatsApp y al terminar. Sin sesión, la web muestra el 100 % y avisa que los recurrentes pagan 50 %: confirma tú en el panel si ya tiene pedidos pagados.",
+        "Ningún caso sale del laboratorio sin el saldo pagado al 100 %.",
+        "Cliente nuevo de WhatsApp: también paga el 100 % por adelantado. No hay recogidas ni casos de prueba sin costo."
+      ],
+      "rel": [
+        "codigo-cliente",
+        "estado-cuenta-enlaces"
+      ]
+    },
+    {
+      "id": "fresado-cotizar",
+      "cat": "casos",
+      "titulo": "Pedidos de fresado en modo «cotizar»",
+      "resumen": "Mientras se termina de comprar el material, el formulario de fresado no muestra precios ni cobra.",
+      "para": "Administración y producción",
+      "kw": "fresado cotizar precio sin precio material zirconio pmma metal cera cotizacion whatsapp",
+      "pasos": [
+        "El formulario de fresado recibe el caso con todos sus datos y archivos, pero **no muestra precios, ni pago, ni comprobante**.",
+        "El pedido llega por WhatsApp con la línea **«PRECIO: a cotizar»** y queda guardado en el panel.",
+        "Revisa el caso y responde al doctor por WhatsApp con el valor. Cuando pague, registra el pago en el panel como en cualquier pedido.",
+        "Metal y cera no piden turno de fresado: se programan al confirmar.",
+        "Cuando estén los precios definitivos, sistemas cambia un solo interruptor (FRESADO_COTIZAR) y vuelven precios y cobro en línea."
+      ],
+      "rel": [
+        "politica-pago",
+        "estados-caso"
+      ]
+    },
+    {
+      "id": "recepcion-24-7",
+      "cat": "casos",
+      "titulo": "Casos que llegan de noche o en fin de semana (recepción 24/7)",
+      "resumen": "La web recibe casos a cualquier hora; el trabajo y los tiempos empiezan en horario hábil.",
+      "para": "Todo el equipo",
+      "kw": "24 7 horario noche fin de semana sabado domingo festivo turno 5pm tiempos entrega habil",
+      "pasos": [
+        "El doctor puede subir archivos y enviar su caso **a cualquier hora, todos los días**. Así lo dicen todas las páginas de pedido.",
+        "Si el caso llega **antes de las 5:00 p. m.** (hora Colombia) entra en el turno de ese día; si llega después, empieza el **siguiente día hábil**.",
+        "Los tiempos de entrega se cuentan **desde ese inicio**, no desde la hora en que el doctor envió el caso.",
+        "Horario hábil: lunes a sábado, 8 a. m. a 6 p. m. El sábado se trabaja a puerta cerrada: sin atención presencial.",
+        "Lo que entra de noche aparece en la Bandeja y en la campana al abrir el panel: atiéndelo primero en la mañana."
+      ],
+      "rel": [
+        "bandeja",
+        "rutina-diaria"
+      ]
+    },
+    {
+      "id": "pagos-paypal",
+      "cat": "clientes",
+      "titulo": "Pagos internacionales con PayPal",
+      "resumen": "Cómo se cobra en dólares, qué avisa la campana y qué hacer si un pago no cuadra.",
+      "para": "Administración y contabilidad",
+      "kw": "paypal internacional dolares usd tarjeta extranjero 7 recargo pagar enlace revisar pago",
+      "pasos": [
+        "El cliente del exterior paga en **dólares** desde el enlace de pago del pedido (/pagar?ref=CÓDIGO) o al terminar el formulario. El monto lo calcula el servidor con el valor del pedido en pesos **más 7 %** (comisión de PayPal y cambio de moneda, lo asume el cliente).",
+        "Cuando el pago entra, el pedido queda **pagado solo** y la campana avisa a contabilidad y al área de producción.",
+        "Si la campana dice **«Revisar pago PayPal»**, PayPal cobró pero el valor o el pedido no cuadran: revísalo en PayPal antes de producir, y devuelve o cobra la diferencia.",
+        "Si PayPal deja el pago **en revisión**, el pedido se marca pagado solo cuando PayPal lo libere. No le pidas al cliente que pague de nuevo.",
+        "Mientras PayPal no esté configurado, la página de pago dice que aún no está activo: ofrece transferencia y pide el comprobante por WhatsApp."
+      ],
+      "rel": [
+        "politica-pago",
+        "comprobante-ia"
+      ]
+    },
+    {
+      "id": "alerta-precio",
+      "cat": "problemas",
+      "titulo": "Aviso «Revisar precio del pedido»",
+      "resumen": "La campana avisa cuando un pedido entra por menos de la mitad del precio de lista.",
+      "para": "Administración",
+      "kw": "revisar precio pedido alerta sospechoso barato cupon descuento manipulado catalogo",
+      "pasos": [
+        "El aviso sale cuando un pedido nuevo se guardó por **menos del 50 %** de lo que dice la lista de precios para ese trabajo y esa cantidad. No bloquea nada: es para revisar **antes de facturar o producir**.",
+        "Causas normales: un cupón grande, un descuento acordado o una oferta. Si es eso, no hay que hacer nada.",
+        "Si no hay razón, el precio pudo cambiarse desde el navegador: confirma el valor real con el doctor antes de empezar.",
+        "Los pedidos en dólares (Alejandro CAD/CAM) solo se revisan si la lista tiene precio en dólares para ese trabajo."
+      ],
+      "rel": [
+        "estado-cuenta-enlaces"
+      ]
     }
   ]
 }
