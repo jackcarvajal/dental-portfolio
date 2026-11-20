@@ -21,7 +21,7 @@ const ROOT = process.argv.find((a, i) => i >= 2 && !a.startsWith('--')) || proce
 const ALLOW = new Set([
   'cotizaciones.cantidad', 'cotizaciones.material', 'cotizaciones.urgente', // van en jsonb items[]
   'catalogo.precio_base',                                                    // bleed
-  'inventario_items.costo_unitario', 'inventario_items.proveedor',           // otra tabla / bleed
+  // (19-nov-2026) quitado inventario_items.costo_unitario/proveedor: ya no eran falsos positivos (tapaban un bug del CSV)
   // columnas de pedidos que llegan por embed despachos->pedidos(...) — se atribuyen mal a "despachos"
   'despachos.codigo', 'despachos.nombre_cliente', 'despachos.nombre_doctor', 'despachos.telefono',
   'despachos.direccion', 'despachos.precio_total', 'despachos.saldo_pendiente_monto',

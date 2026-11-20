@@ -2528,7 +2528,7 @@ function iniciarRealtimeRutador() {
                 if (ESTADOS_ACTIVOS.includes(nuevo.estado)) {
                     _rutCasos.unshift(nuevo);
                     renderRutador(_rutCasos);
-                    showToast('Nuevo caso recibido — ' + (nuevo.doctor_nombre || ''), 'success');
+                    toast('Nuevo caso recibido — ' + (nuevo.doctor_nombre || ''), 'success');
                 }
             } else if (eventType === 'UPDATE') {
                 const idx = _rutCasos.findIndex(c => c.id === nuevo.id);
@@ -2656,18 +2656,18 @@ function toggleDsh(id) {
 
 async function guardarLinkDiseno(id) {
     const url = (document.getElementById('dsh-url-' + id).value || '').trim();
-    if (!url) { showToast('Pega el link del HTML primero', 'error'); return; }
+    if (!url) { toast('Pega el link del HTML primero', 'error'); return; }
 
     const { error } = await sb.from('pedidos_doctor')
         .update({ link_diseno: url, diseno_aprobado: false })
         .eq('id', id);
 
-    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    if (error) { toast('Error: ' + error.message, 'error'); return; }
 
     const caso = _rutCasos.find(c => c.id === id);
     if (caso) caso.link_diseno = url;
     renderRutador(_rutCasos);
-    showToast('Link guardado — el doctor verá el botón de aprobación en su portal', 'success');
+    toast('Link guardado — el doctor verá el botón de aprobación en su portal', 'success');
 
     // Notificar al doctor por WhatsApp
     if (caso?.doctor_whatsapp) {
@@ -2685,8 +2685,8 @@ async function guardarLinkDiseno(id) {
                 pais:          caso.pais || 'CO'
             })
         }).then(r => r.json()).then(r => {
-            if (r.enviado) showToast('WhatsApp enviado al doctor', 'success');
-            else if (r.wa_url) { window.open(r.wa_url, '_blank', 'noopener,noreferrer'); showToast('Abriendo WhatsApp para avisar al doctor…', 'success'); }
+            if (r.enviado) toast('WhatsApp enviado al doctor', 'success');
+            else if (r.wa_url) { window.open(r.wa_url, '_blank', 'noopener,noreferrer'); toast('Abriendo WhatsApp para avisar al doctor…', 'success'); }
         }).catch(() => {}); // WA no crítico
     }
 }
@@ -2700,10 +2700,10 @@ async function asignarCaso(id, nombre) {
         .update({ asignado_a: valor || null })
         .eq('id', id);
 
-    if (error) { showToast('Error al asignar: ' + error.message, 'error'); return; }
+    if (error) { toast('Error al asignar: ' + error.message, 'error'); return; }
 
     if (caso) caso.asignado_a = valor || null;
-    showToast(valor ? `Asignado a ${valor}` : 'Asignación removida', 'success');
+    toast(valor ? `Asignado a ${valor}` : 'Asignación removida', 'success');
 }
 
 async function avanzarCaso(id, nuevoEstado) {
@@ -2715,7 +2715,7 @@ async function avanzarCaso(id, nuevoEstado) {
         .eq('id', id);
 
     if (error) {
-        showToast('Error: ' + error.message, 'error');
+        toast('Error: ' + error.message, 'error');
         if (btn) { btn.disabled = false; btn.textContent = 'Reintentar'; }
         return;
     }
@@ -2724,7 +2724,7 @@ async function avanzarCaso(id, nuevoEstado) {
     const caso = _rutCasos.find(c => c.id === id);
     if (caso) caso.estado = nuevoEstado;
     renderRutador(_rutCasos);
-    showToast('Caso avanzado → ' + nuevoEstado.replace('_',' '), 'success');
+    toast('Caso avanzado → ' + nuevoEstado.replace('_',' '), 'success');
 }
 
 /* ══════════════════════════════════════════

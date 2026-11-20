@@ -623,6 +623,7 @@ async function avanzar(id, nuevoEstado, dept) {
           );
           if (!forzar) { toast('Producción cancelada — pago pendiente','err'); return; }
           // Log de excepción (sin exponer montos)
+          const _userEmail = (await sb.auth.getSession()).data?.session?.user?.email;   // antes: variable nunca declarada → ReferenceError al forzar producción
           await Promise.resolve(sb.from('logs_incidencias').insert({
               pedido_id: id, tipo:'PAGO_NO_CONFIRMADO', severidad:'ADVERTENCIA',
               descripcion: `Producción iniciada sin pago confirmado. Operario: ${_userEmail||'?'}`,

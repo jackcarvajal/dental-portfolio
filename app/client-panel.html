@@ -1460,9 +1460,11 @@ async function cancelarPedido(id, codigo) {
     if (!confirm(`¿Cancelar el pedido ${codigo}?\n\nSe retira antes de entrar a producción y podrás corregir o volver a subir tus archivos. Esta acción no se puede deshacer.`)) return;
     const sello = `Cancelado por el doctor el ${new Date().toLocaleString('es-CO')}`;
     const notas = [(p.notas_cambios || '').trim(), sello].filter(Boolean).join(' | ');
+    const _uid = (await sb.auth.getUser()).data?.user?.id;   // antes: _userId (nunca declarada → ReferenceError y el botón Cancelar no hacía nada)
+    if (!_uid) { toast('Tu sesión expiró. Vuelve a ingresar.', 'error'); return; }
     const { error } = await sb.from('pedidos')
         .update({ estado_operativo: 'CANCELADO_DOCTOR', notas_cambios: notas })
-        .eq('id', id).eq('user_id', _userId);
+        .eq('id', id).eq('user_id', _uid);
     if (error) { toast('No se pudo cancelar: ' + error.message, 'error'); return; }
     p.estado_operativo = 'CANCELADO_DOCTOR';
     p.notas_cambios = notas;

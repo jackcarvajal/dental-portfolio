@@ -298,7 +298,7 @@ async function init(){
       .on('postgres_changes',{event:'UPDATE',schema:'public',table:'pedidos'}, async (payload)=>{
           const e=(payload.new?.estado_operativo||'').toUpperCase();
           if(e.includes('EN_REPARTO')||e.includes('LISTO_DESPACHAR')||e.includes('ENTREGADO')){
-              showToast('🏍️ Nuevo estado en ruta: '+(payload.new?.codigo||payload.new?.nombre_doctor||'caso'));
+              toast('🏍️ Nuevo estado en ruta: '+(payload.new?.codigo||payload.new?.nombre_doctor||'caso'));
               await cargarRuta();
           }
       })
@@ -676,12 +676,13 @@ async function procesarConfirmacion(){
             }
         }
 
+        // NO escribir el enum `estado` con 'ENTREGADO' (no existe en estado_pedido → 22P02 y el update entero fallaba en silencio); estado_operativo manda.
         const pedUpdate = {
-            estado: 'ENTREGADO',
             estado_operativo: 'ENTREGADO',
             ...(compSaldoUrl ? { comprobante_saldo_url: compSaldoUrl, pago_estado: 'pago_confirmado', saldo_pendiente_monto: 0 } : {}),
         };
-        await sb.from('pedidos').update(pedUpdate).eq('id', _activePedidoId);
+        const { error: ePed } = await sb.from('pedidos').update(pedUpdate).eq('id', _activePedidoId);
+        if (ePed) toast('Entrega guardada, pero no se pudo actualizar el pedido: ' + ePed.message, 'error');
         if (compSaldoUrl) {
             const { data: { user } } = await sb.auth.getUser();
             await Promise.resolve(sb.from('logs_incidencias').insert({

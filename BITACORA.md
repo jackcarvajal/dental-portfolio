@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-19 (l) — Auditoría del panel interno (34 páginas de app/)
+
+- Corregido: mensajero escribía estado=ENTREGADO (no existe en el enum → la entrega fallaba en silencio: no guardaba ENTREGADO, comprobante ni saldo 0); showToast inexistente en panel-interno (10 llamadas) y mensajero; operario «forzar producción» usaba _userEmail sin declarar; client-panel «cancelar pedido» usaba _userId sin declarar; inventario CSV pedía columnas inexistentes; cotizaciones al editar borraba los ítems.
+- tools/audit-schema-live: fuera de ALLOW inventario_items.costo_unitario/proveedor (tapaban el bug del CSV).
+- Pendiente de decisión: dejar de escribir pedidos.estado en todo el código (enum vivo: Pendiente/Pendiente_LS/Pagado/Pagado_LS/Pagado_PayPal); rol secretaria en mover/rastreo; código real en cotizaciones (SQL).
+
 ## 2026-11-19 (k) — «Mi academia» de Alejandro (SQL compartido)
 
 - ✅ SQL corrido 19-nov (verificación OK): sql/academia-cursos-2026.sql (5 tablas academia_*, 14 RPC, RLS, permisos por columna: video_key/recursos/comunidad ocultos). Esperado: tablas=5 · rls=5 · politicas=7 · funciones=14 · anon_puede_ejecutar=1 · los «ve_» en false · cursos=0. El front (repo Alejandro) se publica después de correrlo (el pre-push lo bloquea por drift).

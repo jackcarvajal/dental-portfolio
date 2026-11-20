@@ -322,6 +322,7 @@ async function guardarCotizacion() {
   try {
     let err;
     if (id) {
+      delete payload.items; delete payload.subtotal; // editar no debe borrar los ítems de la cotización original
       ({error:err} = await sb.from('cotizaciones').update(payload).eq('id',id));
     } else {
       ({error:err} = await sb.from('cotizaciones').insert([payload]));
