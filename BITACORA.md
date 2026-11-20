@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-20 (f) — Analítica de verdad diferida, home más liviana, revisión mensual
+
+- ✅ 🔴→✅ header.js + conversions.js (las 2 webs): el oyente de «scroll» iba en captura y también recibía el scroll de carruseles internos (la rejilla de producción al armarse en el celular) → GA4, Ads, Clarity y Meta cargaban a los ~2,3 s sin que nadie tocara la página. Ahora scroll sin captura (solo el de la página): cargan con el primer toque/tecla/rueda/scroll real o 6 s después del load. Verificado en local: 0 scripts de analítica a los 4,5 s; tras deslizar, cargan.
+- ✅ ?v= subido: header.js y footer.js → 20261120b en todas las páginas (PRODIGY 59 archivos, Alejandro 55); conversions.js → 20261120b (footer.js + 6 páginas que lo cargan directo).
+- ✅ index.html: content-visibility:auto en las 8 secciones bajo el primer pantallazo (Alejandro ya lo tenía). Local, móvil CPU 4x, sin terceros: bloqueo 1,94 → 1,61 s, LCP 1,20 → 0,96 s. Recorrido completo móvil/PC: CLS 0, nada atascado; anclas #blog/#academy/#envia-caso correctas. Probado también que simetria.js salte lo oculto: sin ganancia → no se cambió.
+- ✅ tools/revision-sitio.mjs (nuevo, sirve para las 2 webs): revisión en vivo de todo el sitemap; exit 1 solo con hallazgos graves. Base de la rutina mensual.
+
 ## 2026-11-20 (e) — Títulos cortos para Google, velocidad de la home
 
 - ✅ articles.js: campo opcional "titulo_seo" (≤ 60 car., término clave al inicio) en los 46 artículos cuyo titular pasaba de 60. functions/article.js + article.html lo usan solo para <title> (con « | PRODIGY Lab Dental» si cabe en 65); h1, og y JSON-LD siguen con el titular. extraerMeta lo busca solo en la cabecera del artículo (antes de "contenido") para no tomar el del siguiente; probado contra los 52 artículos: 0 discrepancias. scripts/auto-journal.js: el prompt pide titulo_seo y se guarda solo si mide 15–60 y es distinto del titular (= Alejandro).

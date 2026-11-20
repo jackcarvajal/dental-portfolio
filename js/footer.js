@@ -237,7 +237,7 @@
     document.body.appendChild(s);
   }
   _loadScript('/js/utm-tracker.js?v=20260528');
-  _loadScript('/js/conversions.js?v=20261118a');
+  _loadScript('/js/conversions.js?v=20261120b');
   _loadScript('/js/geo-detect.js?v=20261113');
   _loadScript('/js/content-protection.js?v=20260528');
   /* GSAP + ScrollTrigger + animaciones PRODIGY */

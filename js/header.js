@@ -248,7 +248,10 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   function _ya() { if (_yaCargo) return; _yaCargo = true; _cargar(); }
   window._cargarAnaliticaYa = _ya;
   // Los oyentes van desde ya (una interacción antes del load también cuenta); el plazo de 6 s corre desde el load.
-  ['pointerdown', 'keydown', 'touchstart', 'scroll', 'wheel'].forEach(function (ev) { window.addEventListener(ev, _ya, { passive: true, once: true, capture: true }); });
+  ['pointerdown', 'keydown', 'touchstart', 'wheel'].forEach(function (ev) { window.addEventListener(ev, _ya, { passive: true, once: true, capture: true }); });
+  // scroll SIN captura = solo el de la página. En captura también llegaba el de cualquier carrusel interno (p. ej. la
+  // rejilla de producción al armarse en el celular) y la analítica se cargaba a los ~2 s sin que nadie tocara (20-nov-2026).
+  window.addEventListener('scroll', _ya, { passive: true, once: true });
   function _luego() { setTimeout(_ya, 6000); }
   if (document.readyState === 'complete') _luego(); else window.addEventListener('load', _luego);
 })();

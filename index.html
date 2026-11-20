@@ -1264,12 +1264,13 @@
   <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/">
 
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"}]}</script>
+<style>/* Secciones bajo el primer pantallazo: el navegador no las calcula ni pinta hasta acercarse (20-nov-2026). Medido en celular con CPU lenta: bloqueo 1,94 → 1,61 s y LCP 1,20 → 0,96 s; sin elementos atascados, CLS 0 y anclas (#blog, #academy) correctas. auto = recuerda la altura real tras pintarse. */#por-que,#workflow-247,.unete-prodigy,#production,#envia-caso,#academy,#blog,#tech-ecosystem{content-visibility:auto;contain-intrinsic-size:auto 900px}</style>
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <script>window._headerConfig = { noCta: true };</script>
-<link rel="preload" href="js/header.js?v=20261120a" as="script">
-<script src="js/header.js?v=20261120a"></script>
+<link rel="preload" href="js/header.js?v=20261120b" as="script">
+<script src="js/header.js?v=20261120b"></script>
 <style>
 /* CLS: reserva desde el primer pintado el alto del menú fijo que header.js inyecta después (evita el salto del hero) */
 body{padding-top:114px;}
@@ -2665,10 +2666,11 @@ body{padding-top:114px;}
   var shown=false;
   function onScroll(){ var y=window.pageYOffset||document.documentElement.scrollTop; if(y>680){ if(!shown){bar.classList.add('show');shown=true;} } else if(shown){ bar.classList.remove('show');shown=false; } }
   // Revisión inicial en el próximo frame: leer pageYOffset aquí (en pleno parseo) forzaba un cálculo de diseño de toda la página
+  // (la home además salta el diseño de las secciones de abajo hasta acercarse: ver content-visibility en el <head>)
   window.addEventListener('scroll',onScroll,{passive:true}); requestAnimationFrame(onScroll);
 })();
 </script>
-<script src="js/footer.js?v=20261120a"></script>
+<script src="js/footer.js?v=20261120b"></script>
 
     <!-- ============================================
          FLOTANTES UX — BOTTOM RIGHT

@@ -14,6 +14,7 @@ IDs duplicados, enlaces rotos. Estas dos herramientas los detectan **antes** de 
 | **3b. Backend/BD en vivo** (`audit-schema-live.mjs`) | igual pero **contra la base REAL** (columnas/RPCs/valores de enum inexistentes) — sin snapshot | Node + red, ~10s | **en cada `git push`** (hook) |
 | **3c. Gobernanza SQL** (`sql-map.mjs`) | código↔repo: RPC **duplicadas** en varios .sql, opacas (solo desplegadas), definiciones sin uso | Node puro, ~1s | al ordenar el `sql/` |
 | **4. Hook/CI** | corre las capas 1 y 3b automáticamente y bloquea si hay crítico | — | automático |
+| **5. Sitio en vivo** (`revision-sitio.mjs <https://dominio>`) | todas las URLs del sitemap: no-200, noindex, canonical, títulos/descripciones largos o duplicados, JSON-LD roto, og:image caída, cabeceras de seguridad, 404 real, http→https. Exit 1 solo con hallazgos graves | Node + red, ~1 min, sin navegador | mensual (rutina) y tras cambios de SEO; sirve para las dos webs |
 
 > **Gobernanza del `sql/`**: son ~158 parches sin fuente de verdad (36 RPC duplicadas). Ver `sql/_baseline/README.md`
 > — el plan es exportar lo desplegado (`EXPORTAR-BASELINE.sql`) y dejar 1 definición canónica por RPC.
