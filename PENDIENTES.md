@@ -7,11 +7,7 @@
 
 ## 🎯 EN TU CANCHA (20-nov-2026) — lo que solo puedes hacer tú
 
-1. **Correr** `sql/academia-cursos-2026.sql` (completo; es idempotente) → en la verificación debe salir además
-   `registra_primer_acceso = true`. Guarda la fecha en que cada alumno abre su primera clase (define el retracto al 100 %)
-   y la muestra en admin-panel de Alejandro → Academia → Alumnos («No ha abierto clases» / «Abrió clases el …»).
-   También crea la calificación pública de cada curso (estrellas en /curso y en Google): `funciones = 15`,
-   `anon_puede_ejecutar = 2`, `anon_ve_resenas = false`.
+1. ✅ `sql/academia-cursos-2026.sql` corrido 20-nov (primer acceso + estrellas públicas; verificado en la base).
 2. **Configurar PayPal** en Cloudflare (pasos abajo) → avisar a Claude para verificar.
 3. ✅ **Redirección www** aplicada 20-nov (regla 301 en Rules → Redirect Rules de cada zona, verificada en vivo).
 4. **Supabase → Auth → URL Configuration**: confirmar que estén las 4 Redirect URLs (login y reset de los dos dominios).
