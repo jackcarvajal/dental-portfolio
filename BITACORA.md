@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-20 (c) — SQL de alerta corrido, precios USD del catálogo
+
+- ✅ sql/patch-deteccion-precio-manipulado-2026-07.sql corrido por Alejandro (verificado en la base: true · true · false).
+- 🟡 sql/catalogo-precio-usd-alejandro-2026.sql (nuevo): llena catalogo.precio_usd con la lista que ya cobra flujo-diseno de Alejandro (14 servicios, sin cambiar precios) para que la alerta vigile también los pedidos en USD. Plan validado con EXPLAIN (sin escribir). PENDIENTE: que Alejandro lo corra.
+- PENDIENTES: pasos de PayPal al día (paso 8 ya resuelto en código).
+
 ## 2026-11-20 (b) — health-check privado, ?v= de header/footer unificado, centro de ayuda
 
 - ✅ functions/api/health-check.js: el público (soporte.html) solo recibe {timestamp,status,summary} y la copia de los últimos 2 min (antes cada visita disparaba 17 llamadas externas y la respuesta listaba los proveedores). El detalle por servicio exige Bearer CRON_SECRET o sesión admin; vigía, configuración y pruebas de carga lo envían. Verificado en vivo.

@@ -5,13 +5,22 @@
 - 🟡 **Agente de research propio** (idea 13-oct, aplazada): montar un agente que vigile X/Reddit/YouTube/Instagram buscando tendencias de odontología digital, quejas de labs y movidas de la competencia, y lo resuma solo. Herramientas candidatas (vetar antes de instalar — cadena de suministro): Scrapling, Patchright Enhanced, Agent-Reach. NO prioritario (primero PRODIGY + Ads/marketing).
 ---
 
+## ⏳ SQL POR CORRER — precios en dólares del catálogo (20-nov-2026)
+
+- Archivo: sql/catalogo-precio-usd-alejandro-2026.sql → Supabase SQL Editor → Run.
+- Carga en catalogo.precio_usd la misma lista que ya cobra la web de Alejandro (14 servicios); no cambia precios. Así la alerta «Revisar precio del pedido» también vigila los pedidos en dólares.
+- Resultado esperado: con_precio_usd = 14 · corona = 12 · all_on_4 = 180.
+- Desde ahí, el precio en USD de esos 14 servicios se cambia en la base, no en el HTML.
+
+---
+
 ## ⏳ CONFIGURAR PAYPAL EN CLOUDFLARE — pagos en línea de las dos webs (anotado 19-nov-2026)
 
 Hoy NO existe ninguna variable PAYPAL_* en Cloudflare: PayPal no cobra en ninguna web (ni pedidos ni planes de créditos).
 El SQL de créditos con PayPal ya está corrido ✅ (19-nov: funcion_existe 1 · solo service_role · recargo 7 %).
 
 1. **developer.paypal.com** → entrar con la cuenta PayPal Business → **Apps & Credentials** → arriba elegir **Live**.
-2. Abrir la app que ya usa la web (su Client ID está en js/pagos.js) o crear una → copiar **Client ID** y **Secret**.
+2. Si ya hay una app en la lista (p. ej. «Default Application») úsala; si no, **Create App** (tipo Merchant) → copiar **Client ID** y **Secret**. Una sola app sirve para las dos webs.
 3. En esa app → **Webhooks** → **Add webhook**:
    - Alejandro: `https://alejandrocadcam.com/api/paypal-webhook` · evento **PAYMENT.CAPTURE.COMPLETED** → guardar → copiar el **Webhook ID**.
    - PRODIGY: otro webhook igual con `https://prodigylabdental.com/api/paypal-webhook` → su propio Webhook ID.
@@ -20,7 +29,7 @@ El SQL de créditos con PayPal ya está corrido ✅ (19-nov: funcion_existe 1 ·
 5. Repetir el paso 4 en el proyecto de PRODIGY (**dental-portfolio**) con SU Webhook ID.
 6. **Deployments** → en el último despliegue «Retry deployment» (o pedirle a Claude un push) para que tome las variables.
 7. Prueba con US$1: bloque 4 de `sql/creditos-pago-paypal-2026.sql` (plan oculto «prueba» de 1 crédito) → pagar desde app/client-panel con una cuenta de cliente.
-8. Avisar a Claude: falta corregir el PayPal de PEDIDOS de Alejandro (trata precios USD como COP y la descripción dice «PRODIGY») y el COOP same-origin-allow-popups en flujo-diseno/pagar de las dos webs.
+8. ✅ (20-nov) Ya corregido en código: PayPal de pedidos de Alejandro cobra en USD con su nombre; COOP listo en las páginas de pago de las dos webs. Al terminar los pasos 1-6, avisar a Claude para verificar que /api/paypal-create-order?tipo=pedido diga «disponible: true».
 
 ## 🎯 EN TU CANCHA AHORA (2026-10-06)
 0. ✅ **SQL corrido 6-oct** (`funciones-definer-permisos-2026.sql` + `fabricacion-pago-verificado-2026.sql`): verificado
