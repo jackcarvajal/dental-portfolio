@@ -30,7 +30,7 @@ const CARPETAS = ['pedidos-archivos', 'scanner-uploads', 'diseno-archivos', 'evi
 
 const conDatos = j => Array.isArray(j) ? j.length > 0 : (j && typeof j === 'object' && !j.code && !j.message && Object.keys(j).length > 0);
 
-export async function revisar(env, base, parte) {
+export async function revisar(env, base, parte, autorizacion = '') {
   const c = cfg(env);
   const HA = { apikey: ANON, Authorization: 'Bearer ' + ANON, 'Content-Type': 'application/json' };
   const problemas = [], sin_datos = []; let revisados = 0;
@@ -58,7 +58,8 @@ export async function revisar(env, base, parte) {
   }
   // Salud de los servicios externos (Supabase, Wompi, Resend…)
   if (parte === 'funciones') try {
-    const r = await fetch(new URL('/api/health-check', base), { cache: 'no-store' });
+    // Con la misma autorización (CRON_SECRET o sesión admin): sin ella health-check solo da el resumen público
+    const r = await fetch(new URL('/api/health-check', base), { headers: autorizacion ? { Authorization: autorizacion } : {}, cache: 'no-store' });
     const j = await r.json().catch(() => ({}));
     revisados++;
     if (j.status && j.status !== 'OK') problemas.push(`Servicios externos: ${j.status} — ${(j.services || []).filter(s => !s.ok).map(s => s.name).join(', ')}`);
@@ -79,7 +80,7 @@ export async function onRequestGet({ request, env }) {
   }
   if (!ok) return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401, headers: h });
   const parte = new URL(request.url).searchParams.get('parte');
-  if (parte === 'datos' || parte === 'funciones') return new Response(JSON.stringify(await revisar(env, request.url, parte)), { status: 200, headers: h });
+  if (parte === 'datos' || parte === 'funciones') return new Response(JSON.stringify(await revisar(env, request.url, parte, request.headers.get('Authorization') || '')), { status: 200, headers: h });
   return new Response(JSON.stringify(await vigiaCompleto(request.url, request.headers.get('Authorization') || '')), { status: 200, headers: h });
 }
 

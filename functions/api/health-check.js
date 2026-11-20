@@ -12,7 +12,16 @@
  *   SUPABASE_URL, SUPABASE_ANON_KEY
  *   CALLMEBOT_PHONE, CALLMEBOT_APIKEY (para alertas WA)
  *   GEMINI_API_KEY
+ *   CRON_SECRET (el vigía y los crons ven el detalle con Authorization: Bearer CRON_SECRET)
+ *
+ * QUÉ VE CADA QUIEN (20-nov-2026): el público (página de soporte) solo recibe el estado general
+ * { timestamp, status, summary } y, si se acaba de revisar, la copia de los últimos 2 minutos (no dispara
+ * 15 llamadas externas por visita). La lista de servicios —que delata qué proveedores usa el negocio
+ * (Factus, Resend, CallMeBot, Stripe…)— solo la ven el equipo admin (sesión) o el vigía (CRON_SECRET).
  */
+import { cfg, usuarioDe, ADMIN_EMAILS } from './reportar-problema.js';
+
+const RESUMEN_CACHE = 'https://rl.internal/health-check-resumen';   // último estado público (2 min)
 
 const TIMEOUT_MS = 5000; // 5 segundos máximo por servicio
 
@@ -196,8 +205,28 @@ async function _rlHealthCheck(request) {
   } catch { return true; }
 }
 
+// ¿Quién pide? Vigía/cron con CRON_SECRET o un admin con sesión → detalle. Cualquier otro → solo el resumen.
+async function veDetalle(request, env) {
+  const key = (request.headers.get('Authorization') || '').replace('Bearer ', '').trim();
+  if (!key) return false;
+  if (env.CRON_SECRET && key === env.CRON_SECRET) return true;
+  const c = cfg(env);
+  const yo = c.SERVICE ? await usuarioDe(request, c) : null;
+  const roles = [].concat(yo?.app_metadata?.roles || [], yo?.app_metadata?.role || []);
+  return !!yo && (ADMIN_EMAILS.includes(String(yo.email || '').toLowerCase()) || roles.includes('admin'));
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
+  const detalle = await veDetalle(request, env);
+
+  // Público: si hay un estado de hace menos de 2 minutos, se devuelve ese (sin llamar a nadie)
+  if (!detalle) {
+    try {
+      const hit = await caches.default.match(new Request(RESUMEN_CACHE));
+      if (hit) { const txt = await hit.text(); let crit = false; try { crit = JSON.parse(txt).status === 'CRITICAL'; } catch (_) {} return new Response(txt, { status: crit ? 503 : 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'Access-Control-Allow-Origin': '*' } }); }
+    } catch (_) {}
+  }
 
   if (!(await _rlHealthCheck(request))) {
     return new Response(JSON.stringify({ error: 'Demasiadas solicitudes.' }), {
@@ -246,7 +275,7 @@ export async function onRequestGet(context) {
     await sendWhatsAppAlert(critical, env);
   }
 
-  const body = {
+  const resumen = {
     timestamp: new Date().toISOString(),
     status:    allOk ? 'OK' : (critical.length > 0 ? 'CRITICAL' : 'DEGRADED'),
     summary: {
@@ -255,11 +284,20 @@ export async function onRequestGet(context) {
       failing:  failed.length,
       critical: critical.length,
     },
-    services: checks,
   };
+  const status = allOk ? 200 : (critical.length > 0 ? 503 : 207);
+  try {
+    await caches.default.put(new Request(RESUMEN_CACHE), new Response(JSON.stringify(resumen), { status: 200, headers: { 'Cache-Control': 'max-age=120' } }));
+  } catch (_) {}
 
-  return new Response(JSON.stringify(body, null, 2), {
-    status: allOk ? 200 : (critical.length > 0 ? 503 : 207),
+  // Detalle por servicio: solo equipo/vigía, y solo para la misma web (sin CORS abierto)
+  if (detalle) {
+    return new Response(JSON.stringify({ ...resumen, services: checks }, null, 2), {
+      status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+    });
+  }
+  return new Response(JSON.stringify(resumen, null, 2), {
+    status,
     headers: {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-store',

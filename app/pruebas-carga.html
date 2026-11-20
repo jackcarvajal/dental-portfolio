@@ -359,7 +359,7 @@ async function testHealth(){
   log('result-edge','⏳ Revisando servicios externos…');
   const t0=performance.now();
   try{
-    const r=await fetch('/api/health-check',{cache:'no-store'}); const j=await r.json().catch(()=>({}));
+    const r=await fetch('/api/health-check',{cache:'no-store',headers:{Authorization:'Bearer '+await token()}});   // con sesión admin trae el detalle por servicio const j=await r.json().catch(()=>({}));
     if(r.status===429) return pintar('result-edge',['⚠️ Demasiadas revisiones seguidas: espera un minuto.']);
     const L=[`${j.status==='OK'?'✅':j.status==='DEGRADED'?'⚠️':'❌'} Salud: ${j.status||r.status} — ${j.summary?.passing??'?'}/${j.summary?.total??'?'} servicios bien (${ms(t0)} ms)`];
     (j.services||[]).filter(s=>!s.ok).forEach(s=>L.push(`${s.critical?'❌':'⚠️'} ${s.name}: ${s.status} (${s.ms} ms)`));

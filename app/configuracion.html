@@ -242,7 +242,7 @@
         <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#00d2ff;margin-bottom:12px;"><i class="fas fa-plug" aria-hidden="true"></i> Verificar edge functions (estado live)</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
             <button type="button" onclick="verificarEdgeFns()" style="background:rgba(0,210,255,.1);border:1px solid rgba(0,210,255,.3);color:#00d2ff;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-bolt" aria-hidden="true"></i> Verificar todas</button>
-            <button type="button" onclick="window.open('/api/health-check','_blank','noopener')" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-external-link" aria-hidden="true"></i> Health Check JSON</button>
+            <button type="button" onclick="verHealthCheck()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#94a3b8;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-external-link" aria-hidden="true"></i> Health Check JSON</button>
             <button type="button" id="btn-correo-prueba" onclick="enviarCorreoPrueba()" style="background:rgba(212,175,55,.1);border:1px solid rgba(212,175,55,.35);color:#D4AF37;border-radius:8px;padding:8px 16px;font-size:.78rem;font-weight:700;cursor:pointer;"><i class="fas fa-envelope" aria-hidden="true"></i> Enviarme un correo de prueba</button>
         </div>
         <div id="edge-results" style="font-size:.76rem;font-family:monospace;background:rgba(0,0,0,.3);border-radius:8px;padding:12px;min-height:40px;color:#94a3b8;max-height:200px;overflow-y:auto;" aria-live="polite">Haz click en "Verificar todas" para comprobar el estado de cada edge function.</div>
@@ -283,6 +283,16 @@
 
 <script>
 const sb = ProdigyAuth.getSb();
+// Health check con detalle: el endpoint solo lo da con sesión de admin (el público ve el estado general)
+async function verHealthCheck(){
+    const w = window.open('', '_blank');
+    try {
+        const { data: { session } } = await sb.auth.getSession();
+        const r = await fetch('/api/health-check', { cache: 'no-store', headers: session ? { Authorization: 'Bearer ' + session.access_token } : {} });
+        const txt = await r.text();
+        if (w) { w.document.title = 'Health Check'; const pre = w.document.createElement('pre'); pre.style.cssText = 'white-space:pre-wrap;font:13px/1.5 monospace;padding:16px;'; pre.textContent = txt; w.document.body.appendChild(pre); }
+    } catch (e) { if (w) w.close(); alert('No se pudo leer el health check: ' + e.message); }
+}
 let toastTimer;
 
 function showToast(msg) {
