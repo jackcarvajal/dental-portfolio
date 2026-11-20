@@ -10,10 +10,10 @@
 1. **Correr** `sql/academia-cursos-2026.sql` (completo; es idempotente) → en la verificación debe salir además
    `registra_primer_acceso = true`. Guarda la fecha en que cada alumno abre su primera clase (define el retracto al 100 %)
    y la muestra en admin-panel de Alejandro → Academia → Alumnos («No ha abierto clases» / «Abrió clases el …»).
+   También crea la calificación pública de cada curso (estrellas en /curso y en Google): `funciones = 15`,
+   `anon_puede_ejecutar = 2`, `anon_ve_resenas = false`.
 2. **Configurar PayPal** en Cloudflare (pasos abajo) → avisar a Claude para verificar.
-3. **Redirección www** (las dos webs): hoy `www.alejandrocadcam.com` da **404** y `www.prodigylabdental.com` sirve el sitio
-   duplicado. Falta una regla 301 www → dominio raíz en Cloudflare (Rules → Redirect Rules) en cada zona. Claude la
-   tiene lista (cf CLI): solo hay que decirle «aplica las reglas www» y renovar la sesión con `cf auth login` si pide.
+3. ✅ **Redirección www** aplicada 20-nov (regla 301 en Rules → Redirect Rules de cada zona, verificada en vivo).
 4. **Supabase → Auth → URL Configuration**: confirmar que estén las 4 Redirect URLs (login y reset de los dos dominios).
 5. **Prueba real** con la cuenta de prueba (rol test) en cada flujo: un pedido de Alejandro debe entrar SIN el aviso
    «Revisar precio del pedido».

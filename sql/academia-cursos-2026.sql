@@ -15,6 +15,9 @@
 --     del dueño a la regla «sin precios en español», solo para la Academia). Sin precio = «Reservar cupo».
 --   · Clases agrupadas por módulo (modulo_orden + modulo_titulo en la misma tabla: sin tabla de módulos).
 --   · Calificación: una por alumno y curso (1 a 5 estrellas + comentario), solo con inscripción activa.
+--     Lo PÚBLICO (20-nov-2026) es solo el promedio y el número de calificaciones de cada curso publicado
+--     (academia_calificaciones_publicas, para las estrellas de /curso y la ficha Course de Google). Nunca quién
+--     calificó ni el comentario: eso lo escribió el alumno en su área privada y solo lo ve el admin.
 --   · Comunidad (p. ej. grupo de WhatsApp): comunidad_url solo la ven los inscritos (permiso por columna).
 --   · Certificado digital: se emite al 100 % de las clases publicadas vistas y queda fijo (nombre, horas, fecha):
 --     si después se agregan clases, el certificado ya emitido sigue valiendo. Anular la inscripción lo invalida.
@@ -312,6 +315,21 @@ BEGIN
                             'horas', v_r.certificado_horas, 'fecha', (v_r.certificado_at AT TIME ZONE 'America/Bogota')::date);
 END $$;
 
+-- Calificación PÚBLICA (anon) de cada curso publicado: SOLO promedio (1 decimal) y número de calificaciones.
+-- Cuenta solo alumnos con inscripción ACTIVA: si una inscripción se anula (reembolso), su calificación deja de contar.
+-- La usan functions/curso.js (JSON-LD AggregateRating), curso.html y academia.html. Filtrable: ?slug=eq.<slug>.
+DROP FUNCTION IF EXISTS public.academia_calificaciones_publicas(text);
+CREATE FUNCTION public.academia_calificaciones_publicas(p_negocio text DEFAULT 'alejandrocadcam')
+RETURNS TABLE (slug text, calificaciones integer, promedio numeric)
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$
+  SELECT c.slug, count(*)::int, round(avg(r.estrellas), 1)
+    FROM academia_resenas r
+    JOIN academia_cursos c ON c.id = r.curso_id
+    JOIN academia_inscripciones i ON i.curso_id = r.curso_id AND i.alumno_id = r.alumno_id AND i.estado = 'activa'
+   WHERE c.publicado AND c.negocio = p_negocio
+   GROUP BY c.slug;
+$$;
+
 -- ── 4. RPC para el administrador (revisan es_admin_lab() adentro) ──────────
 -- Inscribir (o reactivar) a un alumno. Pago por fuera: la referencia es obligatoria («cortesia» + nota para pruebas).
 CREATE OR REPLACE FUNCTION public.academia_inscribir(p_curso uuid, p_alumno uuid, p_referencia text,
@@ -544,6 +562,7 @@ REVOKE ALL ON FUNCTION public.academia_marcar_leccion(uuid)                     
 REVOKE ALL ON FUNCTION public.academia_calificar(uuid, integer, text)                FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.academia_certificado(uuid)                             FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.academia_verificar_certificado(text)                   FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.academia_calificaciones_publicas(text)                 FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.academia_inscribir(uuid, uuid, text, text, text)       FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.academia_anular(uuid, uuid, text)                      FROM PUBLIC, anon, authenticated;
 REVOKE ALL ON FUNCTION public.academia_admin_cursos(text)                            FROM PUBLIC, anon, authenticated;
@@ -559,6 +578,7 @@ GRANT EXECUTE ON FUNCTION public.academia_marcar_leccion(uuid)                  
 GRANT EXECUTE ON FUNCTION public.academia_calificar(uuid, integer, text)          TO authenticated;
 GRANT EXECUTE ON FUNCTION public.academia_certificado(uuid)                       TO authenticated;
 GRANT EXECUTE ON FUNCTION public.academia_verificar_certificado(text)             TO anon, authenticated;   -- página pública de verificación
+GRANT EXECUTE ON FUNCTION public.academia_calificaciones_publicas(text)           TO anon, authenticated;   -- solo promedio y cantidad
 GRANT EXECUTE ON FUNCTION public.academia_inscribir(uuid, uuid, text, text, text) TO authenticated;   -- revisa es_admin_lab() adentro
 GRANT EXECUTE ON FUNCTION public.academia_anular(uuid, uuid, text)                TO authenticated;   -- ídem
 GRANT EXECUTE ON FUNCTION public.academia_admin_cursos(text)                      TO authenticated;   -- ídem
@@ -568,10 +588,11 @@ GRANT EXECUTE ON FUNCTION public.academia_admin_lecciones(uuid)                 
 GRANT EXECUTE ON FUNCTION public.academia_admin_alumnos(uuid, text)               TO authenticated;   -- ídem
 
 -- ── 6. Verificación ─────────────────────────────────────────────────────────
--- Debe dar: tablas = 5 · tablas_con_rls = 5 · politicas = 7 · funciones = 14
---           · anon_puede_ejecutar = 1 (solo academia_verificar_certificado)
+-- Debe dar: tablas = 5 · tablas_con_rls = 5 · politicas = 7 · funciones = 15
+--           · anon_puede_ejecutar = 2 (academia_verificar_certificado y academia_calificaciones_publicas)
 --           · anon_ve_video_key = false · alumno_ve_video_key = false · alumno_ve_recursos = false
---           · anon_ve_comunidad = false · alumno_puede_escribir = false · registra_primer_acceso = true
+--           · anon_ve_comunidad = false · anon_ve_resenas = false · alumno_puede_escribir = false
+--           · registra_primer_acceso = true
 --           · cursos (0 la primera vez; luego los que hayas creado)
 SELECT
   (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -587,6 +608,7 @@ SELECT
   has_column_privilege('authenticated', 'public.academia_lecciones', 'video_key', 'SELECT')                AS alumno_ve_video_key,
   has_column_privilege('authenticated', 'public.academia_lecciones', 'recursos', 'SELECT')                 AS alumno_ve_recursos,
   has_column_privilege('anon', 'public.academia_cursos', 'comunidad_url', 'SELECT')                        AS anon_ve_comunidad,
+  has_table_privilege('anon', 'public.academia_resenas', 'SELECT')                                         AS anon_ve_resenas,
   (has_table_privilege('authenticated', 'public.academia_progreso', 'INSERT')
     OR has_table_privilege('authenticated', 'public.academia_inscripciones', 'INSERT')
     OR has_table_privilege('authenticated', 'public.academia_resenas', 'INSERT')

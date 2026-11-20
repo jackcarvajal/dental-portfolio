@@ -11,6 +11,9 @@
 
 ## 2026-11-20 (c) — SQL de alerta corrido, precios USD del catálogo
 
+- 🟡 sql/academia-cursos-2026.sql: + RPC pública academia_calificaciones_publicas(p_negocio) → solo slug, cantidad y promedio (1 decimal) de cursos publicados, contando alumnos con inscripción activa; anon puede ejecutarla, NO leer academia_resenas (nuevo check anon_ve_resenas). La usa el repo de Alejandro (estrellas en /curso + AggregateRating). Consulta validada con EXPLAIN (sin escribir). Pendiente de correr.
+- ✅ Cloudflare (cf CLI, a pedido de Alejandro): regla 301 www.prodigylabdental.com → prodigylabdental.com conservando ruta y parámetros (Redirect Rules de la zona; no había reglas antes). Antes el www servía una copia del sitio (contenido duplicado para Google). Misma regla en alejandrocadcam.com. Verificado en vivo: http y https con www → 301 → 200.
+
 - ✅ sql/patch-deteccion-precio-manipulado-2026-07.sql corrido por Alejandro (verificado en la base: true · true · false).
 - ✅ sql/catalogo-precio-usd-alejandro-2026.sql (nuevo): llena catalogo.precio_usd con la lista que ya cobra flujo-diseno de Alejandro (14 servicios, sin cambiar precios) para que la alerta vigile también los pedidos en USD. Plan validado con EXPLAIN (sin escribir). Corrido por Alejandro el 20-nov: 14 servicios con precio_usd.
 - PENDIENTES: pasos de PayPal al día (paso 8 ya resuelto en código).
