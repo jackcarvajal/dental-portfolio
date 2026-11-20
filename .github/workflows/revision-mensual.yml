@@ -1,0 +1,62 @@
+# Revisión mensual EN VIVO de las dos webs (prodigylabdental.com y alejandrocadcam.com) con tools/revision-sitio.mjs.
+# Solo hace GET a las páginas del sitemap: no toca la base ni el código.
+# Entrega: un issue «Revisión mensual de las webs — AAAA-MM» con el informe completo (GitHub avisa por correo) y cierra el
+# del mes anterior. Si hay hallazgos graves la ejecución queda en rojo (GitHub también avisa). Manual: Actions → Run workflow.
+# 20-nov-2026 (reemplaza la rutina en la nube, que no tiene salida a internet hacia los dominios).
+name: Revisión mensual de las webs
+
+on:
+  schedule:
+    - cron: '0 13 1 * *'   # Día 1 de cada mes, 8 AM Bogotá (13:00 UTC)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  revisar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Revisar las dos webs
+        id: rev
+        run: |
+          set +e
+          node tools/revision-sitio.mjs https://prodigylabdental.com > prodigy.txt 2>&1; P=$?
+          node tools/revision-sitio.mjs https://alejandrocadcam.com > alejandro.txt 2>&1; A=$?
+          echo "p=$P" >> "$GITHUB_OUTPUT"
+          echo "a=$A" >> "$GITHUB_OUTPUT"
+          {
+            echo "Revisión automática de todas las páginas del sitemap (estado, noindex, canonical, títulos, datos para Google, imágenes para compartir, cabeceras de seguridad, 404 y https)."
+            echo "Los «títulos/descripciones largos» y el «HTML pesado» son avisos; lo grave es lo que rompe la indexación o la seguridad."
+            echo
+            echo "## PRODIGY Lab Dental"
+            echo '```'; cat prodigy.txt; echo '```'
+            echo "## Alejandro CAD/CAM"
+            echo '```'; cat alejandro.txt; echo '```'
+          } > informe.md
+          cat informe.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publicar el informe como issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MES=$(date -u +%Y-%m)
+          if [ "${{ steps.rev.outputs.p }}" = "0" ] && [ "${{ steps.rev.outputs.a }}" = "0" ]; then V="sin hallazgos graves"; else V="HAY HALLAZGOS GRAVES"; fi
+          for n in $(gh issue list --state open --search "Revisión mensual de las webs in:title" --json number -q '.[].number'); do
+            gh issue close "$n" --comment "Reemplazado por la revisión de $MES."
+          done
+          gh issue create --title "Revisión mensual de las webs — $MES · $V" --body-file informe.md
+
+      - name: Marcar en rojo si hay hallazgos graves
+        if: steps.rev.outputs.p != '0' || steps.rev.outputs.a != '0'
+        run: |
+          echo "::error::Hay hallazgos graves en la revisión (ver el issue del mes)."
+          exit 1
