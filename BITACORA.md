@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-20 (d) — Títulos de artículos para Google + revisión completa en vivo
+
+- ✅ article.html + functions/article.js (= Alejandro): <title> con « | PRODIGY Lab Dental» solo si cabe en 65 caracteres (antes 52 artículos pasaban de 70: Google los cortaba) y meta description ≤ 160 cortada en palabra completa (23 pasaban). og/twitter y la página siguen con el texto completo.
+- Revisión en vivo (sitemap completo, 100 URLs): todas 200, sin noindex, canonical correcto, sin títulos/descripciones duplicados, JSON-LD válido, og:image cargan, cabeceras de seguridad completas, 404 real, http→https. 0 img sin alt y 0 _blank sin noopener en 119 páginas. /servicios sigue pausada a propósito (302 en _redirects).
+- CWV móvil (CPU 4x): home LCP 2,3 s · CLS 0,001 pero ~2 s de tareas largas en el hilo principal (riesgo de INP) · 979 KB; /links LCP 0,8 s. 🟡 flujo-fresado pesa 286 KB de HTML.
+
 ## 2026-11-20 (c) — SQL de alerta corrido, precios USD del catálogo
 
 - 🟡 sql/academia-cursos-2026.sql: + RPC pública academia_calificaciones_publicas(p_negocio) → solo slug, cantidad y promedio (1 decimal) de cursos publicados, contando alumnos con inscripción activa; anon puede ejecutarla, NO leer academia_resenas (nuevo check anon_ve_resenas). La usa el repo de Alejandro (estrellas en /curso + AggregateRating). Consulta validada con EXPLAIN (sin escribir). ✅ Corrido por Alejandro el 20-nov: tablas 5 · RLS 5 · políticas 7 · funciones 15 · anon ejecuta solo verificar_certificado + calificaciones_publicas · anon_ve_resenas false · registra_primer_acceso true.

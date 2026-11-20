@@ -450,10 +450,12 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   const url = `https://prodigylabdental.com/article?id=${id}`;
   const canonicalUrl = url;
 
-  /* Meta tags */
-  document.title = art.titulo + ' | PRODIGY Lab Dental';
-  document.getElementById('meta-title').textContent = art.titulo + ' | PRODIGY Lab Dental';
-  document.getElementById('meta-desc').content = art.subtitulo;
+  /* Meta tags — misma regla que functions/article.js (tituloSEO/descSEO): marca solo si cabe en 65; descripción ≤ 160 */
+  const _tSuf = art.titulo + ' | PRODIGY Lab Dental', _tSEO = _tSuf.length <= 65 ? _tSuf : art.titulo;
+  const _dSub = String(art.subtitulo || ''), _dSEO = _dSub.length <= 160 ? _dSub : _dSub.slice(0, 157).replace(/[\s,;:.\-–—]+\S*$/, '') + '…';
+  document.title = _tSEO;
+  document.getElementById('meta-title').textContent = _tSEO;
+  document.getElementById('meta-desc').content = _dSEO;
   document.getElementById('og-title').content = art.titulo;
   document.getElementById('og-desc').content = art.subtitulo;
   document.getElementById('og-url').content   = canonicalUrl;

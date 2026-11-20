@@ -140,7 +140,8 @@ export async function onRequest(context) {
     .on('link[hreflang="en"]', new Quitar());
 
   if (meta && meta.titulo) {
-    const full = meta.titulo + ' | PRODIGY Lab Dental';
+    // Lo que Google muestra (~60-65 car.): la marca solo si cabe; el titular nunca se recorta. Misma regla en article.html.
+    const conMarca = meta.titulo + ' | PRODIGY Lab Dental', full = conMarca.length <= 65 ? conMarca : meta.titulo;
     rw = rw
       .on('title', new PonerTexto(full))
       .on('meta#meta-title', new PonerAttr('content', full))
@@ -155,7 +156,8 @@ export async function onRequest(context) {
   }
   if (meta && meta.subtitulo) {
     rw = rw
-      .on('meta#meta-desc', new PonerAttr('content', meta.subtitulo))
+      // Descripción para Google ≤ 160 (corte en palabra completa + «…»); redes y página la ven completa.
+      .on('meta#meta-desc', new PonerAttr('content', meta.subtitulo.length <= 160 ? meta.subtitulo : meta.subtitulo.slice(0, 157).replace(/[\s,;:.\-–—]+\S*$/, '') + '…'))
       .on('meta#og-desc', new PonerAttr('content', meta.subtitulo))
       .on('meta#tw-desc', new PonerAttr('content', meta.subtitulo))
       .on('p#article-sub', new PonerTexto(meta.subtitulo)); // subtítulo visible server-side (anti-CLS)
