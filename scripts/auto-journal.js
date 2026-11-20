@@ -600,6 +600,7 @@ REGLAS ABSOLUTAS — VIOLACIÓN = ARTÍCULO RECHAZADO:
 Devuelve EXACTAMENTE este JSON (sin texto antes ni después, sin markdown):
 {
   "titulo": "Título descriptivo y preciso en español (máx 85 chars)",
+  "titulo_seo": "Versión corta del título para Google (máx 60 chars), con el término clave al inicio, sin guiones largos",
   "subtitulo": "Resumen del valor clínico del artículo en 1-2 oraciones",
   "contenido": [
     {"t": "p", "c": "Párrafo introductorio con contexto clínico y epidemiológico actual..."},
@@ -828,6 +829,8 @@ function buildArticleObject(topic, aiData, image) {
   return {
     id:        uid(topic.slug_prefix),
     titulo:    aiData.titulo,
+    // <title> de Google (functions/article.js): solo si es corto y distinto; si no, se omite (undefined no se serializa)
+    titulo_seo: (() => { const t = String(aiData.titulo_seo || '').replace(/\s+/g, ' ').trim(); return t.length >= 15 && t.length <= 60 && t !== aiData.titulo ? t : undefined; })(),
     subtitulo: aiData.subtitulo || '',
     categoria: topic.categoria,
     chip:      topic.chip,

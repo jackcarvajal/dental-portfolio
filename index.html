@@ -2664,7 +2664,8 @@ body{padding-top:114px;}
   if(x) x.addEventListener('click',function(){ bar.classList.remove('show'); try{localStorage.setItem('pg_sticky_cta','off');}catch(e){} });
   var shown=false;
   function onScroll(){ var y=window.pageYOffset||document.documentElement.scrollTop; if(y>680){ if(!shown){bar.classList.add('show');shown=true;} } else if(shown){ bar.classList.remove('show');shown=false; } }
-  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  // Revisión inicial en el próximo frame: leer pageYOffset aquí (en pleno parseo) forzaba un cálculo de diseño de toda la página
+  window.addEventListener('scroll',onScroll,{passive:true}); requestAnimationFrame(onScroll);
 })();
 </script>
 <script src="js/footer.js?v=20261120a"></script>

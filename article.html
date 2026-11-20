@@ -451,7 +451,7 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   const canonicalUrl = url;
 
   /* Meta tags — misma regla que functions/article.js (tituloSEO/descSEO): marca solo si cabe en 65; descripción ≤ 160 */
-  const _tSuf = art.titulo + ' | PRODIGY Lab Dental', _tSEO = _tSuf.length <= 65 ? _tSuf : art.titulo;
+  const _tBase = art.titulo_seo || art.titulo, _tSuf = _tBase + ' | PRODIGY Lab Dental', _tSEO = _tSuf.length <= 65 ? _tSuf : _tBase;
   const _dSub = String(art.subtitulo || ''), _dSEO = _dSub.length <= 160 ? _dSub : _dSub.slice(0, 157).replace(/[\s,;:.\-–—]+\S*$/, '') + '…';
   document.title = _tSEO;
   document.getElementById('meta-title').textContent = _tSEO;

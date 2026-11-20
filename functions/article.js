@@ -50,11 +50,12 @@ function extraerMeta(txt, id) {
   const m = new RegExp('"id"\\s*:\\s*"' + esc + '"').exec(txt);
   if (!m) return null;
   const slice = txt.slice(m.index, m.index + 4000); // dentro del objeto del artículo
-  const campo = (n) => {
-    const r = new RegExp('"' + n + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"').exec(slice);
+  const cab = slice.split('"contenido"')[0];        // cabecera del artículo: un campo opcional ausente no se toma del siguiente
+  const campo = (n, en = slice) => {
+    const r = new RegExp('"' + n + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"').exec(en);
     return r ? r[1].replace(/\\"/g, '"').replace(/\\n/g, ' ').replace(/\\\\/g, '\\') : null;
   };
-  return { titulo: campo('titulo'), subtitulo: campo('subtitulo'), og_img: campo('og_img'), fecha: campo('fecha'), chip: campo('chip'), categoria: campo('categoria') };
+  return { titulo: campo('titulo'), titulo_seo: campo('titulo_seo', cab), subtitulo: campo('subtitulo'), og_img: campo('og_img'), fecha: campo('fecha'), chip: campo('chip'), categoria: campo('categoria') };
 }
 
 // Replica server-side de buildSchema(art) de article.html (Article + BreadcrumbList).
@@ -140,8 +141,9 @@ export async function onRequest(context) {
     .on('link[hreflang="en"]', new Quitar());
 
   if (meta && meta.titulo) {
-    // Lo que Google muestra (~60-65 car.): la marca solo si cabe; el titular nunca se recorta. Misma regla en article.html.
-    const conMarca = meta.titulo + ' | PRODIGY Lab Dental', full = conMarca.length <= 65 ? conMarca : meta.titulo;
+    // Lo que Google muestra (~60-65 car.): titulo_seo (corto, ≤ 60) si el artículo lo trae; la marca solo si cabe.
+    // El titular visible (h1, og) sigue siendo meta.titulo. Misma regla en article.html.
+    const base = meta.titulo_seo || meta.titulo, conMarca = base + ' | PRODIGY Lab Dental', full = conMarca.length <= 65 ? conMarca : base;
     rw = rw
       .on('title', new PonerTexto(full))
       .on('meta#meta-title', new PonerAttr('content', full))

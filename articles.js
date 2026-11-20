@@ -11,6 +11,7 @@ const ARTICLES = [
 {
   "id": "implantes-nobel-all-on-4-2026-11-19-8242",
   "titulo": "Revisión del Concepto All-on-4: Fundamentos, Protocolos y Complicaciones Clínicas",
+  "titulo_seo": "All-on-4: fundamentos, protocolo y complicaciones",
   "subtitulo": "Una exploración basada en evidencia de la rehabilitación de arcadas edéntulas con el protocolo All-on-4, destacando su fiabilidad y ventajas clínicas.",
   "categoria": "implantologia",
   "chip": "Implantología",
@@ -206,6 +207,7 @@ const ARTICLES = [
 {
   "id": "implantes-osstem-megagen-2026-11-17-ed96",
   "titulo": "Análisis de Sistemas de Implantes Coreanos: Diseño, Osteointegración y Supervivencia",
+  "titulo_seo": "Implantes coreanos: diseño, osteointegración y supervivencia",
   "subtitulo": "Exploración de las características de diseño y superficie de implantes dentales y su impacto en la estabilidad y éxito clínico, con foco en principios aplicables a Osstem TSIII SA y MegaGen AnyRidge.",
   "categoria": "implantologia",
   "chip": "Implantología",
@@ -405,6 +407,7 @@ const ARTICLES = [
 {
   "id": "scanner-intraoral-2025-2026-11-17-9828",
   "titulo": "Evaluación Clínica de Escáneres Intraorales: Avances y Métricas Clave en Odontología Digital",
+  "titulo_seo": "Escáneres intraorales: evaluación clínica y métricas clave",
   "subtitulo": "Este artículo técnico explora los criterios esenciales para la evaluación de escáneres intraorales, destacando su impacto en la precisión, eficiencia y flujo de trabajo digital en la práctica odontológica moderna.",
   "categoria": "tecnologia",
   "chip": "Escáneres",
@@ -590,6 +593,7 @@ const ARTICLES = [
 {
   "id": "resinas-3d-biocompatibles-2026-11-12-381b",
   "titulo": "Comparativa de Resinas 3D Dentales: Propiedades, Biocompatibilidad y Usos Clínicos",
+  "titulo_seo": "Resinas 3D dentales: propiedades, biocompatibilidad y usos",
   "subtitulo": "Este artículo técnico analiza las propiedades mecánicas, precisión dimensional y biocompatibilidad de resinas fotopolimerizables para impresión 3D en aplicaciones dentales, basándose en la evidencia científica más reciente.",
   "categoria": "fabricacion",
   "chip": "Impresión 3D",
@@ -784,6 +788,7 @@ const ARTICLES = [
 {
   "id": "pmma-provisional-multicapa-2026-11-10-ff34",
   "titulo": "PMMA en Prótesis Provisionales CAD/CAM: Propiedades y Aplicaciones Clínicas",
+  "titulo_seo": "PMMA para provisionales CAD/CAM: propiedades y usos",
   "subtitulo": "Análisis basado en evidencia de las propiedades mecánicas, biocompatibilidad y fabricación digital del PMMA para restauraciones provisionales.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -983,6 +988,7 @@ const ARTICLES = [
 {
   "id": "vita-suprinity-zirconia-litio-2026-11-10-7d6b",
   "titulo": "Vita Suprinity PC: Caracterización Clínica y Técnica de una Vitrocerámica ZLS",
+  "titulo_seo": "Vita Suprinity PC: la vitrocerámica ZLS en clínica",
   "subtitulo": "Una revisión basada en evidencia de las propiedades, adhesión y estética de Vita Suprinity PC, una vitrocerámica de silicato de litio reforzada con zirconio para CAD/CAM.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -1174,6 +1180,7 @@ const ARTICLES = [
 {
   "id": "alineadores-invisalign-vs-oe-2026-11-05-5438",
   "titulo": "Eficacia y Precisión de la Terapia con Alineadores Transparentes: Una Revisión Clínica",
+  "titulo_seo": "Alineadores transparentes: eficacia y precisión clínica",
   "subtitulo": "Análisis basado en evidencia de la efectividad del movimiento dental y la predictibilidad en el tratamiento con alineadores transparentes.",
   "categoria": "ortodoncia",
   "chip": "Ortodoncia Digital",
@@ -1356,6 +1363,7 @@ const ARTICLES = [
 {
   "id": "emax-cad-2025-2026-11-05-1467",
   "titulo": "Análisis Clínico de Cerámicas de Disilicato de Litio Monolíticas",
+  "titulo_seo": "Disilicato de litio monolítico: análisis clínico",
   "subtitulo": "Exploración de la supervivencia clínica y el rol de las cerámicas de disilicato de litio en la prostodoncia fija digital.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -1546,6 +1554,7 @@ const ARTICLES = [
 {
   "id": "celtra-duo-vita-enamic-2026-11-03-e0cb",
   "titulo": "Comparativa Clínica de Cerámicas Híbridas CAD/CAM: Celtra Duo vs Vita Enamic",
+  "titulo_seo": "Celtra Duo vs Vita Enamic: cerámicas híbridas CAD/CAM",
   "subtitulo": "Este artículo técnico compara Celtra Duo (ZLS) y Vita Enamic (PICN), dos cerámicas híbridas CAD/CAM. Se analizan sus propiedades, resistencia al desgaste y supervivencia clínica a medio plazo, basándose en la evidencia actual.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -1741,6 +1750,7 @@ const ARTICLES = [
 {
   "id": "cementacion-adhesiva-ceramicas-2026-11-03-b104",
   "titulo": "Protocolos de Cementación Adhesiva para Restauraciones CAD/CAM: Evidencia Actual",
+  "titulo_seo": "Cementación adhesiva en cerámicas CAD/CAM: protocolo",
   "subtitulo": "Guía basada en evidencia para la selección de tratamientos de superficie y cementos resinosos en restauraciones CAD/CAM de disilicato de litio, cerámicas híbridas y zirconia.",
   "categoria": "clinica",
   "chip": "Protocolos",
@@ -1925,6 +1935,7 @@ const ARTICLES = [
 {
   "id": "exocad-dentalcad-funciones-2026-10-29-cf08",
   "titulo": "Evaluación de la Precisión y Eficiencia en el Diseño Digital de Restauraciones Dentales",
+  "titulo_seo": "Diseño digital de restauraciones: precisión y eficiencia",
   "subtitulo": "Análisis basado en evidencia sobre la adaptación marginal, trueness y precisión de flujos de trabajo CAD/CAM en prostodoncia.",
   "categoria": "software",
   "chip": "Software CAD",
@@ -2110,6 +2121,7 @@ const ARTICLES = [
 {
   "id": "ia-cad-margenes-2026-10-29-172e",
   "titulo": "Inteligencia Artificial en Diseño CAD Dental: Avances y Validación Clínica",
+  "titulo_seo": "IA en diseño CAD dental: avances y validación clínica",
   "subtitulo": "La IA optimiza el diseño de restauraciones dentales, mejorando la eficiencia y precisión en flujos de trabajo CAD/CAM.",
   "categoria": "ia",
   "chip": "IA en CAD",
@@ -2310,6 +2322,7 @@ const ARTICLES = [
 {
   "id": "rehabilitacion-oral-colombia-2026-10-22-19b4",
   "titulo": "Análisis del Flujo Protésico CAD/CAM en Laboratorios Dentales: Evidencia Actual",
+  "titulo_seo": "Flujo protésico CAD/CAM en el laboratorio: evidencia",
   "subtitulo": "Análisis del flujo protésico CAD/CAM: precisión, eficiencia y predictibilidad.",
   "categoria": "clinica",
   "chip": "Rehab Colombia",
@@ -2515,6 +2528,7 @@ const ARTICLES = [
 {
   "id": "implantes-straumann-2025-2026-10-22-6a92",
   "titulo": "Implantes BLX y BLT: Evidencia Clínica en Torque, Estabilidad y Supervivencia",
+  "titulo_seo": "Implantes BLX y BLT: torque, estabilidad y supervivencia",
   "subtitulo": "Análisis riguroso de la evidencia publicada sobre implantes cónicos a nivel óseo y de conexión cónica, sus tasas de éxito y protocolos de carga.",
   "categoria": "implantologia",
   "chip": "Implantología",
@@ -2903,6 +2917,7 @@ const ARTICLES = [
 {
   "id": "scanner-intraoral-cad-2026-10-20-1869",
   "titulo": "Precisión de Escáneres Intraorales y Adaptación Marginal en Restauraciones CAD/CAM",
+  "titulo_seo": "Escáner intraoral y adaptación marginal en CAD/CAM",
   "subtitulo": "Análisis basado en evidencia sobre el impacto de las técnicas de impresión digital en el ajuste de restauraciones protésicas fijas.",
   "categoria": "diseno",
   "chip": "Escáneres",
@@ -3096,6 +3111,7 @@ const ARTICLES = [
 {
   "id": "carillas-emax-laboratorio-2026-10-15-4b83",
   "titulo": "Carillas de Disilicato de Litio: Rendimiento Clínico y Flujos Digitales",
+  "titulo_seo": "Carillas de disilicato de litio: rendimiento clínico",
   "subtitulo": "Exploración de la evidencia sobre la supervivencia y el potencial estético de las carillas de disilicato de litio, y el rol de los flujos de trabajo digitales.",
   "categoria": "estetica",
   "chip": "Carillas Lab",
@@ -3271,6 +3287,7 @@ const ARTICLES = [
 {
   "id": "guia-quirurgica-precision-implante-2026-10-15-f676",
   "titulo": "Precisión de Cirugía Guiada Estática para Implantes Dentales: Un Meta-análisis",
+  "titulo_seo": "Precisión de la cirugía guiada estática: meta-análisis",
   "subtitulo": "Este artículo técnico detalla la precisión de la cirugía guiada estática en implantología, analizando desviaciones medias y factores influyentes para optimizar resultados clínicos.",
   "categoria": "implantologia",
   "chip": "Guías Quirúrgicas",
@@ -3456,6 +3473,7 @@ const ARTICLES = [
 {
   "id": "brackets-guias-posicionamiento-2026-10-13-7e74",
   "titulo": "IBT Digital: Precisión en el Posicionamiento de Brackets con Guías Impresas 3D",
+  "titulo_seo": "IBT digital: brackets con guías impresas en 3D",
   "subtitulo": "Análisis basado en evidencia de la digitalización, planificación virtual y fabricación de cubetas de IBT, y su precisión comparada con el bonding directo.",
   "categoria": "ortodoncia",
   "chip": "Ortodoncia Lab",
@@ -3635,6 +3653,7 @@ const ARTICLES = [
 {
   "id": "dsd-protocolo-2025-2026-10-13-9178",
   "titulo": "DSD: Protocolo Actualizado, Integración Digital y Predictibilidad Estética",
+  "titulo_seo": "DSD: protocolo digital y predictibilidad estética",
   "subtitulo": "Este artículo detalla la evolución del Diseño Digital de Sonrisa (DSD), su integración tecnológica y el impacto en la predictibilidad y satisfacción del paciente.",
   "categoria": "estetica",
   "chip": "Diseño Sonrisa",
@@ -3824,6 +3843,7 @@ const ARTICLES = [
 {
   "id": "impresoras-3d-dentales-2025-2026-10-08-da63",
   "titulo": "Impresión 3D de Resina en Odontología: Tecnologías y Aplicaciones Clínicas",
+  "titulo_seo": "Impresión 3D de resina en odontología: tecnologías y usos",
   "subtitulo": "Análisis basado en evidencia de las tecnologías de polimerización en cuba para la fabricación de dispositivos dentales.",
   "categoria": "fabricacion",
   "chip": "Impresión 3D",
@@ -4001,6 +4021,7 @@ const ARTICLES = [
 {
   "id": "endocrown-laboratorio-2025-2026-10-08-0b17",
   "titulo": "Endocoronas CAD/CAM: Protocolo, Materiales y Resistencia en Dientes Endodonciados",
+  "titulo_seo": "Endocoronas CAD/CAM: protocolo, materiales y resistencia",
   "subtitulo": "Este artículo técnico explora la fabricación de endocoronas mediante CAD/CAM, analizando su rendimiento biomecánico y supervivencia como alternativa a restauraciones convencionales en dientes tratados endodónticamente.",
   "categoria": "clinica",
   "chip": "Endocorona Lab",
@@ -4182,6 +4203,7 @@ const ARTICLES = [
 {
   "id": "pilares-titanio-cad-2026-09-29-548d",
   "titulo": "Pilares Implantarios Individualizados CAD/CAM: Diseño, Ventajas y Supervivencia",
+  "titulo_seo": "Pilares personalizados CAD/CAM: diseño y supervivencia",
   "subtitulo": "La precisión del diseño CAD/CAM en pilares de titanio mejora la salud periimplantaria y la longevidad de las restauraciones.",
   "categoria": "implantologia",
   "chip": "Pilares CAD",
@@ -4313,6 +4335,7 @@ const ARTICLES = [
 {
   "id": "fresadoras-5ejes-2025-2026-09-29-db75",
   "titulo": "Fresadoras Dentales de 5 Ejes: Análisis Técnico de Precisión y Materiales",
+  "titulo_seo": "Fresadoras dentales de 5 ejes: precisión y materiales",
   "subtitulo": "Este artículo evalúa la precisión de fresado y la compatibilidad de materiales de las fresadoras dentales de 5 ejes líderes, proporcionando una guía basada en evidencia para profesionales.",
   "categoria": "maquinaria",
   "chip": "Fresadoras",
@@ -4428,6 +4451,7 @@ const ARTICLES = [
 {
   "id": "full-arch-digital-2026-09-17-97cf",
   "titulo": "Rehabilitaciones Full Arch Digitales: Protocolo Clínico y Evidencia Actual",
+  "titulo_seo": "Full Arch digital: protocolo clínico y evidencia",
   "subtitulo": "Este artículo detalla un protocolo clínico basado en evidencia para rehabilitaciones Full Arch digitales, abordando la digitalización, diseño CAD, materiales y resultados clínicos.",
   "categoria": "implantologia",
   "chip": "Full Arch",
@@ -4711,6 +4735,7 @@ const ARTICLES = [
 {
   "id": "materiales-cad-comparativa-2026-08-25-b91f",
   "titulo": "Propiedades Mecánicas y Clínicas de Materiales CAD/CAM: Zirconia, Disilicato y Resinas",
+  "titulo_seo": "Zirconia, disilicato y resinas CAD/CAM: propiedades",
   "subtitulo": "Análisis comparativo de resistencia, módulo elástico, tenacidad y translucidez para restauraciones dentales.",
   "categoria": "materiales",
   "chip": "Materiales CAD",
@@ -4881,6 +4906,7 @@ const ARTICLES = [
 {
   "id": "flujo-digital-completo-lab-2026-08-20-470d",
   "titulo": "Flujo Digital en Laboratorio Dental 2025: Precisión, Eficiencia y Rentabilidad",
+  "titulo_seo": "Flujo digital en el laboratorio: precisión y rentabilidad",
   "subtitulo": "La implementación de un flujo de trabajo completamente digital optimiza la producción, reduce tiempos y mejora la calidad de las restauraciones dentales.",
   "categoria": "tecnologia",
   "chip": "Flujo Digital",
@@ -5025,6 +5051,7 @@ const ARTICLES = [
 {
   "id": "exocad-vs-3shape-2026-08-13-293c",
   "titulo": "Exocad DentalCAD 3.5 Rijeka vs. 3Shape Dental System: Análisis Técnico y Clínico",
+  "titulo_seo": "Exocad 3.5 Rijeka vs 3Shape Dental System: comparativa",
   "subtitulo": "Comparativa basada en evidencia de los software CAD dentales líderes para optimizar la práctica odontológica digital.",
   "categoria": "software",
   "chip": "Software CAD",
@@ -5167,6 +5194,7 @@ const ARTICLES = [
 {
   "id": "titanio-vs-zirconia-implantes-cuando-usar",
   "titulo": "Titanio vs Zirconia en implantes: cuándo usar cada material según el caso clínico",
+  "titulo_seo": "Titanio vs zirconia en implantes: cuándo usar cada uno",
   "subtitulo": "Guía definitiva para elegir entre pilares de titanio y zirconia en implantología. Comparativa de resistencia, estética, biocompatibilidad y costo real por caso.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -5299,6 +5327,7 @@ const ARTICLES = [
 {
   "id": "medit-vs-itero-vs-3shape-trios-comparativa-2026",
   "titulo": "Medit vs iTero vs 3Shape Trios en 2026: ¿cuál escáner intraoral conviene comprar?",
+  "titulo_seo": "Medit vs iTero vs Trios en 2026: ¿qué escáner comprar?",
   "subtitulo": "Análisis técnico y económico de los 3 escáneres intraorales más vendidos en Colombia y Latinoamérica. Precisión real, costo de licencia, compatibilidad con laboratorio y veredicto final.",
   "categoria": "tecnologia",
   "chip": "Escáneres",
@@ -5439,6 +5468,7 @@ const ARTICLES = [
 {
   "id": "implantes-digitales-flujo-cad-cam-2026",
   "titulo": "Cómo integrar implantología digital en tu clínica en 2026: flujo completo CAD/CAM",
+  "titulo_seo": "Implantología digital en tu clínica: flujo CAD/CAM 2026",
   "subtitulo": "Del CBCT al implante colocado: guía técnica completa del flujo digital de implantología con CoDiagnostiX, guías quirúrgicas en resina y pilares personalizados en zirconia. Para cirujanos y odontólogos generales.",
   "categoria": "clinico",
   "chip": "Implantología Digital",
@@ -5579,6 +5609,7 @@ const ARTICLES = [
 {
   "id": "zirconio-fractura-sinterizado-rapido",
   "titulo": "Cómo evitar que el Zirconio se fracture en el sinterizado rápido",
+  "titulo_seo": "Zirconio y sinterizado rápido: cómo evitar fracturas",
   "subtitulo": "La fractura de zirconia durante el sinterizado rápido no es mala suerte — es química. Guía técnica completa con causas, parámetros correctos y protocolo de hornos Dentsply Sirona, Vita e Ivoclar.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -5723,6 +5754,7 @@ const ARTICLES = [
 {
   "id": "scanner-intraoral-comparativa-2025",
   "titulo": "Escáneres intraorales 2025: comparativa real de precisión (iTero, Trios, Medit, Carestream)",
+  "titulo_seo": "Escáneres intraorales 2025: comparativa de precisión",
   "subtitulo": "Análisis técnico de los 4 escáneres intraorales más usados en Colombia según estudios clínicos publicados: trueness, precision, velocidad y compatibilidad con laboratorio CAD/CAM.",
   "categoria": "tecnologia",
   "chip": "Escáneres",
@@ -5932,6 +5964,7 @@ const ARTICLES = [
 {
   "id": "zirconia-multicapa-vs-monocapa",
   "titulo": "Zirconia multicapa vs monocapa: cuál elegir según el caso clínico",
+  "titulo_seo": "Zirconia multicapa vs monocapa: cuál elegir según el caso",
   "subtitulo": "Análisis técnico de resistencia flexural, translucidez y protocolo de cementación entre bloques 3Y-TZP monolíticos y 5Y-PSZ multicapa — con datos de estudios clínicos 2022-2025.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -6091,6 +6124,7 @@ const ARTICLES = [
 {
   "id": "impresion-3d-guias-quirurgicas",
   "titulo": "Impresión 3D en guías quirúrgicas de implantes: precisión, protocolos y evidencia 2025",
+  "titulo_seo": "Guías quirúrgicas impresas en 3D: precisión y protocolos",
   "subtitulo": "Cómo la fabricación aditiva transformó la implantología guiada — materiales, software de planificación, precisión clínica documentada y protocolo PRODIGY para guías de resina.",
   "categoria": "fabricacion",
   "chip": "Impresión 3D",
@@ -6241,6 +6275,7 @@ const ARTICLES = [
 {
   "id": "flujo-digital-reduce-tiempo-sillon",
   "titulo": "Cómo el flujo digital CAD/CAM reduce el tiempo de sillón del paciente",
+  "titulo_seo": "Cómo el flujo digital reduce el tiempo de sillón",
   "subtitulo": "Del escáner intraoral a la restauración terminada: análisis de cada etapa del flujo digital y su impacto en la eficiencia clínica — con datos reales de laboratorios que ya lo implementaron.",
   "categoria": "protocolo",
   "chip": "Protocolo",
@@ -6564,6 +6599,7 @@ const ARTICLES = [
 {
   "id": "zirconio-ultratranslucido-5ypzs",
   "titulo": "Zirconio Multicapa Ultra-Translúcido: el nuevo estándar anterior",
+  "titulo_seo": "Zirconio multicapa ultratranslúcido para el sector anterior",
   "subtitulo": "Evaluación clínica de los bloques 5Y-PSZ con gradiente de translucidez y su impacto real en la estética del sector anterior.",
   "categoria": "material",
   "chip": "Materiales",
@@ -7034,6 +7070,7 @@ const ARTICLES = [
 {
   "id": "escaneres-intraorales-2026",
   "titulo": "Escáneres intraorales 2026: guía para elegir, calibrar y exportar correctamente",
+  "titulo_seo": "Escáneres intraorales 2026: elegir, calibrar y exportar",
   "subtitulo": "Comparativa iTero vs Medit vs 3Shape Trios, protocolo de calibración, exportación STL sin errores y compatibilidad real con Exocad y 3Shape Dental System.",
   "categoria": "equipo",
   "chip": "Equipos",
@@ -7391,6 +7428,7 @@ const ARTICLES = [
 {
   "id": "disilicato-litio-vs-zirconia-cuando-usar",
   "titulo": "Disilicato de litio vs. zirconia: cuándo usar cada uno en 2026",
+  "titulo_seo": "Disilicato de litio vs zirconia: cuándo usar cada uno",
   "subtitulo": "La elección entre e.max y zirconia no es de modas — es de biomecánica, estética y zona de riesgo. Una guía clínica con criterios claros para cada situación.",
   "categoria": "materiales",
   "chip": "Materiales",
@@ -7593,6 +7631,7 @@ const ARTICLES = [
 {
   "id": "contraccion-resinas-3d-dental-como-compensar",
   "titulo": "Contracción de polimerización en resinas 3D dental: cómo compensarla en CAD",
+  "titulo_seo": "Resinas 3D: cómo compensar la contracción en CAD",
   "subtitulo": "Las resinas fotopolimerizables encogen entre 2% y 6% durante el curado. Si no compensas esto en el diseño CAD y los ajustes de la impresora, tus modelos y guías no van a encajar. Aquí el protocolo técnico.",
   "categoria": "impresion3d",
   "chip": "Impresión 3D",
@@ -7771,6 +7810,7 @@ const ARTICLES = [
 {
   "id": "impresion-3d-dental-post-procesado-completo",
   "titulo": "Post-procesado en impresión 3D dental: lavado, curado y acabado paso a paso",
+  "titulo_seo": "Post-procesado en impresión 3D dental, paso a paso",
   "subtitulo": "La impresión 3D dental no termina cuando la pieza sale de la máquina. El post-procesado define el 40% del resultado final. Protocolo completo con tiempos y temperaturas.",
   "categoria": "impresion3d",
   "chip": "Impresión 3D",
@@ -7956,6 +7996,7 @@ const ARTICLES = [
 {
   "id": "guias-quirurgicas-digitales-tipos-cuando-usar",
   "titulo": "Guías quirúrgicas digitales: tipos, cuándo usar cada una y cómo se diseñan",
+  "titulo_seo": "Guías quirúrgicas digitales: tipos y cuándo usar cada una",
   "subtitulo": "Mucificación, hueso escaso, apilables, de reducción ósea. Hay más tipos de guías que los que la mayoría de clínicas conoce. Esta guía explica cuándo indica cada una y cómo el laboratorio CAD las produce.",
   "categoria": "flujos",
   "chip": "Implantología",
@@ -8114,6 +8155,7 @@ const ARTICLES = [
 {
   "id": "ferulas-oclusales-cad-michigan-nti-diferencias",
   "titulo": "Férulas oclusales CAD: Michigan, NTI y plano de mordida — diferencias y cuándo indicar cada una",
+  "titulo_seo": "Férulas Michigan, NTI y plano de mordida: diferencias",
   "subtitulo": "No todas las férulas son iguales ni sirven para lo mismo. Diseñar una férula de Michigan cuando el paciente necesita un NTI puede empeorar el bruxismo. Aquí las diferencias clínicas y el protocolo CAD para cada tipo.",
   "categoria": "clinico",
   "chip": "Oclusión",
@@ -8289,6 +8331,7 @@ const ARTICLES = [
 {
   "id": "diseno-cad-remoto-como-enviar-escaner-laboratorio",
   "titulo": "Diseño CAD remoto: cómo enviarle el escáner a un laboratorio digital y qué esperar",
+  "titulo_seo": "Diseño CAD remoto: cómo enviar el escáner al laboratorio",
   "subtitulo": "Para el odontólogo que nunca ha trabajado con un laboratorio CAD remoto: el proceso completo desde la toma de impresión digital hasta recibir el STL listo para fresar, con los errores más frecuentes y cómo evitarlos.",
   "categoria": "flujos",
   "chip": "Guía práctica",
@@ -8459,6 +8502,7 @@ const ARTICLES = [
 {
   "id": "escaner-intraoral-domicilio-bogota",
   "titulo": "Escáner intraoral a domicilio en Bogotá: cómo funciona y qué esperar",
+  "titulo_seo": "Escáner intraoral a domicilio en Bogotá: cómo funciona",
   "subtitulo": "Si tu clínica no tiene escáner, PRODIGY va a tu consultorio. Qué escáneres usamos, qué zonas cubrimos, cuánto tarda y qué pasa con el archivo STL después.",
   "categoria": "tecnologia",
   "chip": "Escáner Bogotá",
@@ -8585,6 +8629,7 @@ const ARTICLES = [
 {
   "id": "fresado-dental-colombia-como-elegir-laboratorio",
   "titulo": "Fresado dental en Colombia: materiales, tiempos y cómo elegir el laboratorio correcto",
+  "titulo_seo": "Fresado dental en Colombia: cómo elegir laboratorio",
   "subtitulo": "Guía para odontólogos y técnicos dentales que quieren enviar casos a maquila CAM en Colombia. Qué preguntar, qué materiales exigir y qué red logística cubre el envío nacional.",
   "categoria": "materiales",
   "chip": "Fresado CAM",
@@ -8726,6 +8771,7 @@ const ARTICLES = [
 {
   "id": "impresion-3d-dental-colombia-resinas-biomodelos",
   "titulo": "Impresión 3D dental en Colombia: tipos de resina, biomodelos y guías quirúrgicas",
+  "titulo_seo": "Impresión 3D dental en Colombia: resinas y biomodelos",
   "subtitulo": "Todo lo que necesitas saber sobre impresión 3D dental en Colombia: qué resinas usar, cómo encargar biomodelos, qué son las guías quirúrgicas impresas y cómo cotizarlas.",
   "categoria": "tecnologia",
   "chip": "Impresión 3D",

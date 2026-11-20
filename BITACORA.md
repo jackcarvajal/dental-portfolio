@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-20 (e) — Títulos cortos para Google, velocidad de la home
+
+- ✅ articles.js: campo opcional "titulo_seo" (≤ 60 car., término clave al inicio) en los 46 artículos cuyo titular pasaba de 60. functions/article.js + article.html lo usan solo para <title> (con « | PRODIGY Lab Dental» si cabe en 65); h1, og y JSON-LD siguen con el titular. extraerMeta lo busca solo en la cabecera del artículo (antes de "contenido") para no tomar el del siguiente; probado contra los 52 artículos: 0 discrepancias. scripts/auto-journal.js: el prompt pide titulo_seo y se guarda solo si mide 15–60 y es distinto del titular (= Alejandro).
+- Home móvil (CPU 4x, mediana de 5): bloqueo total ~1,75 s. Sin ningún tercero: ~1,07 s. Facebook ≈ 200 ms, etiqueta de Google Ads (AW) ≈ 200 ms; Clarity y la detección de bots de Cloudflare, dentro del ruido. El resto es el cálculo de diseño propio de una home de 190 KB. 🟡 Decisión de Alejandro: cargar Facebook/Ads tras la primera interacción (ahorra ~400 ms; se pierden PageView de quien entra y sale sin tocar nada).
+- ✅ index.html: la barra fija revisa el scroll en requestAnimationFrame (leer pageYOffset en pleno parseo forzaba un cálculo de diseño). Probado también simetria.js con rAF: 2082 → 2038 ms (ruido) → revertido (no justifica subir ?v= en ~200 páginas).
+- flujo-fresado (284 KB, 65 KB comprimido): 118 KB son la lógica del pedido (calcularTotal/STATE, intocables) y 64 KB CSS → no se toca.
+
 ## 2026-11-20 (d) — Títulos de artículos para Google + revisión completa en vivo
 
 - ✅ article.html + functions/article.js (= Alejandro): <title> con « | PRODIGY Lab Dental» solo si cabe en 65 caracteres (antes 52 artículos pasaban de 70: Google los cortaba) y meta description ≤ 160 cortada en palabra completa (23 pasaban). og/twitter y la página siguen con el texto completo.
