@@ -375,4 +375,4 @@
 })();
 
 /* Simetría automática (js/simetria.js) también en las páginas que no cargan header.js (el módulo evita cargarse dos veces) */
-if (location.pathname.indexOf('/app/') !== 0 && !document.querySelector('script[src*="simetria.js"]')) { (function () { var s = document.createElement('script'); s.src = '/js/simetria.js?v=20261008'; s.async = true; document.head.appendChild(s); })(); }
+if (location.pathname.indexOf('/app/') !== 0 && !document.querySelector('script[src*="simetria.js"]')) { (function () { var s = document.createElement('script'); s.src = '/js/simetria.js?v=20261119'; s.async = true; document.head.appendChild(s); })(); }

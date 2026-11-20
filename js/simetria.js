@@ -28,7 +28,8 @@
       var h = el.children[i];
       if (h.offsetParent === null) continue;
       var s = getComputedStyle(h);
-      if (s.position === 'absolute' || s.position === 'fixed' || s.display === 'none') continue;
+      // sticky/fixed = panel flotante (p. ej. RESUMEN del pedido), no una tarjeta de la fila
+      if (s.position === 'absolute' || s.position === 'fixed' || s.position === 'sticky' || s.position === '-webkit-sticky' || s.display === 'none') continue;
       if (h.getBoundingClientRect().width < 40) continue;
       out.push(h);
     }

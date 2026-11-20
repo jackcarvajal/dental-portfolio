@@ -113,7 +113,33 @@
                 const limite = new Promise(res => setTimeout(() => res(null), 2000));
                 _clienteRecurrente = await Promise.race([consulta, limite]);
             } catch (_) { _clienteRecurrente = null; }
+            pintarAvisoRecurrente();
         }
+
+        // Aviso en pantalla de la condición de pago (misma política que el texto de WhatsApp). Solo lee #calc-total:
+        // no toca calcularTotal() ni STATE. Se repinta al terminar la detección y cada vez que cambia el total.
+        function pintarAvisoRecurrente() {
+            const el = document.getElementById('aviso-recurrente');
+            if (!el) return;
+            const tot = document.getElementById('calc-total');
+            const n = tot ? (parseInt(String(tot.textContent).replace(/[^0-9]/g, ''), 10) || 0) : 0;
+            const fm = v => '$' + v.toLocaleString('es-CO');
+            let h;
+            if (_clienteRecurrente === true) {
+                h = '<strong style="color:#D4AF37;">Cliente recurrente:</strong> pagas 50 % para iniciar y 50 % contra entrega';
+                if (n > 0) { const ab = Math.round(n / 2); h += '<br>Abono ' + fm(ab) + ' · Saldo ' + fm(n - ab); }
+            } else if (_clienteRecurrente === false) {
+                h = '<strong style="color:#D946A6;">Primer pedido:</strong> se paga el 100 % para iniciar';
+            } else {
+                h = '<strong style="color:#00d2ff;">Primer pedido 100 %</strong> · clientes recurrentes 50/50';
+            }
+            if (el.innerHTML !== h) el.innerHTML = h;
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            pintarAvisoRecurrente();
+            const t = document.getElementById('calc-total');
+            if (t && window.MutationObserver) new MutationObserver(pintarAvisoRecurrente).observe(t, { childList: true, characterData: true, subtree: true });
+        });
 
         // ─────────────────────────────────────────────
         // PAGO CON WOMPI SOBRE EL PEDIDO REAL (19-nov-2026)

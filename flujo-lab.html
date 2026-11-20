@@ -591,6 +591,8 @@ if(window.ProdigyAuth){
     </div>
   </div>
 
+  <div id="aviso-recurrente" role="status" aria-live="polite" style="margin:10px 0;padding:10px 12px;border-radius:8px;background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.35);color:#e2e8f0;font-size:.92rem;line-height:1.45;"></div>
+
   <!-- Resumen del carrito -->
   <div class="cart-section">
     <div id="cart-list"><div class="cart-empty"><i class="fas fa-shopping-cart" style="font-size:1.5rem;display:block;margin-bottom:8px;opacity:.3;"></i>Aún no has agregado trabajos</div></div>
@@ -721,6 +723,25 @@ async function detectarClienteRecurrente() {
         var limite = new Promise(function (res) { setTimeout(function () { res(null); }, 2000); });
         _clienteRecurrente = await Promise.race([consulta, limite]);
     } catch (_) { _clienteRecurrente = null; }
+    pintarAvisoRecurrente();
+}
+
+/* Aviso en pantalla de la condición de pago (misma política que el texto de WhatsApp); se repinta en updateCart() y al terminar la detección */
+function pintarAvisoRecurrente() {
+    var el = document.getElementById('aviso-recurrente');
+    if (!el) return;
+    var total = 0;
+    Object.keys(cart).forEach(function (id) { total += cart[id].price * cart[id].qty; });
+    var h;
+    if (_clienteRecurrente === true) {
+        h = '<strong style="color:#D4AF37;">Cliente recurrente:</strong> pagas 50 % para iniciar y 50 % contra entrega';
+        if (total > 0) { var ab = Math.round(total / 2); h += '<br>Abono ' + fmtCOP(ab) + ' · Saldo ' + fmtCOP(total - ab); }
+    } else if (_clienteRecurrente === false) {
+        h = '<strong style="color:#D946A6;">Primer pedido:</strong> se paga el 100 % para iniciar';
+    } else {
+        h = '<strong style="color:#00d2ff;">Primer pedido 100 %</strong> · clientes recurrentes 50/50';
+    }
+    if (el.innerHTML !== h) el.innerHTML = h;
 }
 
 /* ── SYNC PRECIOS DESDE SUPABASE (admin-precios → catalogo) ── */
@@ -903,6 +924,7 @@ function updateCart() {
     lines.push({ id:id, name:c.name, qty:c.qty, price:c.price, variant:c.variant });
   });
   document.getElementById('total-val').textContent = total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  pintarAvisoRecurrente();
   var cartEl = document.getElementById('cart-list');
   if (!lines.length) {
     cartEl.innerHTML = '<div class="cart-empty"><i class="fas fa-shopping-cart" style="font-size:1.5rem;display:block;margin-bottom:8px;opacity:.3;"></i>Aún no has agregado trabajos</div>';

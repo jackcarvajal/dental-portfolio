@@ -209,7 +209,7 @@ window._IDIOMA_CFG = {"hubEn": "/en/", "paginasEn": ["/envia-tu-scanner", "/preg
 })();
 
 /* Simetría automática de rejillas de tarjetas (js/simetria.js): sin huérfanas ni bloques corridos. Solo páginas públicas. */
-if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.createElement('script'); s.src = '/js/simetria.js?v=20261008'; s.async = true; document.head.appendChild(s); })(); }
+if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.createElement('script'); s.src = '/js/simetria.js?v=20261119'; s.async = true; document.head.appendChild(s); })(); }
 
 /* ── GA4 (y Clarity) — DESPUÉS de cargar la página ─────────────────────────
    La cola de gtag (consentimiento + config) se crea YA, sin red, para que «Aceptar cookies» funcione
