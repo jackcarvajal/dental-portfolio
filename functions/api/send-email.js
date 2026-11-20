@@ -121,6 +121,8 @@ export async function onRequestPost({ request, env }) {
   }
 
   const fromEmail = env.FROM_EMAIL || 'PRODIGY Lab Dental <noreply@prodigylabdental.com>';
+  // Responder a: casos@ (Email Routing → Gmail). Sin esto, la respuesta del cliente iba a noreply@ y se perdía. (= Alejandro, 20-nov-2026)
+  const replyTo = 'casos@prodigylabdental.com';
 
   // Contenido SIEMPRE generado server-side desde plantillas (no se acepta HTML del cliente — evita relay de phishing)
   const htmlContent = buildTemplate(tipo, { text, to, subject, temp_pass })
@@ -139,6 +141,7 @@ export async function onRequestPost({ request, env }) {
         subject,
         html: htmlContent,
         text: text || subject,
+        reply_to: replyTo,
       }),
     });
 

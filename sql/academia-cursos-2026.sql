@@ -20,6 +20,9 @@
 --     si después se agregan clases, el certificado ya emitido sigue valiendo. Anular la inscripción lo invalida.
 --   · Verificación pública: alejandrocadcam.com/verificar-certificado?codigo=AC-XXXX-XXXX-XXXX (RPC para anon que
 --     devuelve SOLO nombre, curso, horas y fecha; nunca el correo).
+--   · Retracto (20-nov-2026): primer_acceso_at = la 1.ª vez que el alumno pidió el video o un recurso de una clase
+--     que NO es de muestra (lo fija /api/academia-video-token). Vacío = no ha abierto ninguna clase → retracto al 100 %
+--     (Ley 1480 art. 47). Lo ve el admin en la lista de alumnos.
 --
 -- Diseño:
 --   · academia_cursos         catálogo (slug único, nivel, software, instructor, precio opcional, comunidad).
@@ -99,6 +102,8 @@ CREATE TABLE IF NOT EXISTS public.academia_inscripciones (
   updated_at          timestamptz NOT NULL DEFAULT now(),
   UNIQUE (curso_id, alumno_id)
 );
+-- Tabla ya creada en una corrida anterior: la columna nueva se agrega aparte (20-nov-2026, ver «Retracto» arriba).
+ALTER TABLE public.academia_inscripciones ADD COLUMN IF NOT EXISTS primer_acceso_at timestamptz;
 CREATE INDEX IF NOT EXISTS academia_inscripciones_alumno_idx ON public.academia_inscripciones (alumno_id, estado);
 -- Búsqueda del código de verificación (AC-XXXX-XXXX-XXXX = 12 primeros hex de md5('academia:' || id)).
 CREATE INDEX IF NOT EXISTS academia_inscripciones_codigo_idx
@@ -461,7 +466,7 @@ CREATE FUNCTION public.academia_admin_alumnos(p_curso uuid DEFAULT NULL, p_negoc
 RETURNS TABLE (inscripcion_id uuid, curso_id uuid, curso_titulo text, alumno_id uuid, email text, estado text,
                origen text, referencia_pago text, nombre_certificado text, inscrito_at timestamptz,
                lecciones integer, completadas integer, porcentaje integer, ultima_actividad timestamptz,
-               estrellas smallint, comentario text)
+               estrellas smallint, comentario text, primer_acceso_at timestamptz)
 LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = public AS $$
 #variable_conflict use_column
 BEGIN
@@ -470,7 +475,7 @@ BEGIN
     SELECT i.id, c.id, c.titulo, i.alumno_id, u.email::text, i.estado, i.origen, i.referencia_pago, i.nombre_certificado,
            i.created_at, COALESCE(a.total, 0)::int, COALESCE(a.hechas, 0)::int,
            CASE WHEN COALESCE(a.total, 0) = 0 THEN 0 ELSE floor(100.0 * a.hechas / a.total)::int END, a.ultima,
-           r.estrellas, r.comentario
+           r.estrellas, r.comentario, i.primer_acceso_at
       FROM academia_inscripciones i
       JOIN academia_cursos c ON c.id = i.curso_id
       JOIN auth.users u ON u.id = i.alumno_id
@@ -566,7 +571,7 @@ GRANT EXECUTE ON FUNCTION public.academia_admin_alumnos(uuid, text)             
 -- Debe dar: tablas = 5 · tablas_con_rls = 5 · politicas = 7 · funciones = 14
 --           · anon_puede_ejecutar = 1 (solo academia_verificar_certificado)
 --           · anon_ve_video_key = false · alumno_ve_video_key = false · alumno_ve_recursos = false
---           · anon_ve_comunidad = false · alumno_puede_escribir = false
+--           · anon_ve_comunidad = false · alumno_puede_escribir = false · registra_primer_acceso = true
 --           · cursos (0 la primera vez; luego los que hayas creado)
 SELECT
   (SELECT count(*) FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
@@ -586,4 +591,6 @@ SELECT
     OR has_table_privilege('authenticated', 'public.academia_inscripciones', 'INSERT')
     OR has_table_privilege('authenticated', 'public.academia_resenas', 'INSERT')
     OR has_table_privilege('authenticated', 'public.academia_cursos', 'UPDATE'))                            AS alumno_puede_escribir,
+  EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public'
+          AND table_name = 'academia_inscripciones' AND column_name = 'primer_acceso_at')                    AS registra_primer_acceso,
   (SELECT count(*) FROM public.academia_cursos)                                                             AS cursos;

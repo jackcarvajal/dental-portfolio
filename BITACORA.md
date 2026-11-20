@@ -12,8 +12,11 @@
 ## 2026-11-20 (c) — SQL de alerta corrido, precios USD del catálogo
 
 - ✅ sql/patch-deteccion-precio-manipulado-2026-07.sql corrido por Alejandro (verificado en la base: true · true · false).
-- 🟡 sql/catalogo-precio-usd-alejandro-2026.sql (nuevo): llena catalogo.precio_usd con la lista que ya cobra flujo-diseno de Alejandro (14 servicios, sin cambiar precios) para que la alerta vigile también los pedidos en USD. Plan validado con EXPLAIN (sin escribir). PENDIENTE: que Alejandro lo corra.
+- ✅ sql/catalogo-precio-usd-alejandro-2026.sql (nuevo): llena catalogo.precio_usd con la lista que ya cobra flujo-diseno de Alejandro (14 servicios, sin cambiar precios) para que la alerta vigile también los pedidos en USD. Plan validado con EXPLAIN (sin escribir). Corrido por Alejandro el 20-nov: 14 servicios con precio_usd.
 - PENDIENTES: pasos de PayPal al día (paso 8 ya resuelto en código).
+- ✅ Correos: send-email responde a casos@ (antes a noreply@, que no es buzón: la respuesta del cliente se perdía) y bienvenida-referido también (= Alejandro). JSON-LD de index, escaner-domicilio y soporte: contacto@/soporte@ (no enrutados) → gerencia@.
+- 🟡 sql/academia-cursos-2026.sql (canónico): columna academia_inscripciones.primer_acceso_at + academia_admin_alumnos la devuelve (retracto de la Academia de Alejandro). PENDIENTE: que Alejandro lo corra.
+- PENDIENTES: bloque «EN TU CANCHA (20-nov)» con todo lo que depende de Alejandro (SQL, PayPal, www, Redirect URLs, prueba real).
 
 ## 2026-11-20 (b) — health-check privado, ?v= de header/footer unificado, centro de ayuda
 

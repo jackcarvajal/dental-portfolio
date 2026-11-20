@@ -5,12 +5,19 @@
 - 🟡 **Agente de research propio** (idea 13-oct, aplazada): montar un agente que vigile X/Reddit/YouTube/Instagram buscando tendencias de odontología digital, quejas de labs y movidas de la competencia, y lo resuma solo. Herramientas candidatas (vetar antes de instalar — cadena de suministro): Scrapling, Patchright Enhanced, Agent-Reach. NO prioritario (primero PRODIGY + Ads/marketing).
 ---
 
-## ⏳ SQL POR CORRER — precios en dólares del catálogo (20-nov-2026)
+## 🎯 EN TU CANCHA (20-nov-2026) — lo que solo puedes hacer tú
 
-- Archivo: sql/catalogo-precio-usd-alejandro-2026.sql → Supabase SQL Editor → Run.
-- Carga en catalogo.precio_usd la misma lista que ya cobra la web de Alejandro (14 servicios); no cambia precios. Así la alerta «Revisar precio del pedido» también vigila los pedidos en dólares.
-- Resultado esperado: con_precio_usd = 14 · corona = 12 · all_on_4 = 180.
-- Desde ahí, el precio en USD de esos 14 servicios se cambia en la base, no en el HTML.
+1. **Correr** `sql/academia-cursos-2026.sql` (completo; es idempotente) → en la verificación debe salir además
+   `registra_primer_acceso = true`. Guarda la fecha en que cada alumno abre su primera clase (define el retracto al 100 %)
+   y la muestra en admin-panel de Alejandro → Academia → Alumnos («No ha abierto clases» / «Abrió clases el …»).
+2. **Configurar PayPal** en Cloudflare (pasos abajo) → avisar a Claude para verificar.
+3. **Redirección www** (las dos webs): hoy `www.alejandrocadcam.com` da **404** y `www.prodigylabdental.com` sirve el sitio
+   duplicado. Falta una regla 301 www → dominio raíz en Cloudflare (Rules → Redirect Rules) en cada zona. Claude la
+   tiene lista (cf CLI): solo hay que decirle «aplica las reglas www» y renovar la sesión con `cf auth login` si pide.
+4. **Supabase → Auth → URL Configuration**: confirmar que estén las 4 Redirect URLs (login y reset de los dos dominios).
+5. **Prueba real** con la cuenta de prueba (rol test) en cada flujo: un pedido de Alejandro debe entrar SIN el aviso
+   «Revisar precio del pedido».
+6. ✅ SQL de alerta por moneda y ✅ precios USD del catálogo (14 servicios): corridos 20-nov.
 
 ---
 

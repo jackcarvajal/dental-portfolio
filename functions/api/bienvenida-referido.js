@@ -123,6 +123,7 @@ export async function onRequestPost(context) {
       body: JSON.stringify({
         from: 'PRODIGY Lab Dental <bienvenida@prodigylabdental.com>',
         to:   [email],
+        reply_to: 'casos@prodigylabdental.com',   // bienvenida@ no es buzón: sin esto la respuesta del doctor se perdía
         subject: `¡Bienvenido a PRODIGY! Tu 5% de descuento fue aplicado 🎁`,
         html,
       }),
