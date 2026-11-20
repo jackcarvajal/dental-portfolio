@@ -14,7 +14,9 @@
 - ✅ 🔴→✅ header.js + conversions.js (las 2 webs): el oyente de «scroll» iba en captura y también recibía el scroll de carruseles internos (la rejilla de producción al armarse en el celular) → GA4, Ads, Clarity y Meta cargaban a los ~2,3 s sin que nadie tocara la página. Ahora scroll sin captura (solo el de la página): cargan con el primer toque/tecla/rueda/scroll real o 6 s después del load. Verificado en local: 0 scripts de analítica a los 4,5 s; tras deslizar, cargan.
 - ✅ ?v= subido: header.js y footer.js → 20261120b en todas las páginas (PRODIGY 59 archivos, Alejandro 55); conversions.js → 20261120b (footer.js + 6 páginas que lo cargan directo).
 - ✅ index.html: content-visibility:auto en las 8 secciones bajo el primer pantallazo (Alejandro ya lo tenía). Local, móvil CPU 4x, sin terceros: bloqueo 1,94 → 1,61 s, LCP 1,20 → 0,96 s. Recorrido completo móvil/PC: CLS 0, nada atascado; anclas #blog/#academy/#envia-caso correctas. Probado también que simetria.js salte lo oculto: sin ganancia → no se cambió.
-- ✅ tools/revision-sitio.mjs (nuevo, sirve para las 2 webs): revisión en vivo de todo el sitemap; exit 1 solo con hallazgos graves. Base de la rutina mensual.
+- ✅ tools/revision-sitio.mjs (nuevo, sirve para las 2 webs): revisión en vivo de todo el sitemap; exit 1 solo con hallazgos graves.
+- ✅ .github/workflows/revision-mensual.yml: día 1 de cada mes 8 AM Bogotá corre la revisión de las 2 webs → issue con el informe (cierra el anterior), en rojo si hay graves. Primera corrida manual: issue #1, sin hallazgos graves (173 URLs). Se probó antes una rutina en la nube de Claude: sin salida a internet hacia los dominios (proxy 403) → desactivada.
+- Verificado en vivo tras el deploy: 0 scripts de analítica sin interacción en las 2 webs (antes 6 a los 2,3 s); LCP home PRODIGY 1,41 → 1,01 s; recorrido completo CLS 0.
 
 ## 2026-11-20 (e) — Títulos cortos para Google, velocidad de la home
 
