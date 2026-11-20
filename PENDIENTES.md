@@ -5,14 +5,6 @@
 - 🟡 **Agente de research propio** (idea 13-oct, aplazada): montar un agente que vigile X/Reddit/YouTube/Instagram buscando tendencias de odontología digital, quejas de labs y movidas de la competencia, y lo resuma solo. Herramientas candidatas (vetar antes de instalar — cadena de suministro): Scrapling, Patchright Enhanced, Agent-Reach. NO prioritario (primero PRODIGY + Ads/marketing).
 ---
 
-## ⏳ SQL POR CORRER — alerta de precio sospechoso por moneda (20-nov-2026)
-
-- Archivo: sql/patch-deteccion-precio-manipulado-2026-07.sql → Supabase SQL Editor → Run.
-- Arregla las alertas falsas «Revisar precio del pedido» en todos los pedidos de Alejandro (dólares comparados con el catálogo en pesos).
-- Resultado esperado: trigger_activo = true · revisa_moneda = true · anon_puede_ejecutar = false.
-
----
-
 ## ⏳ CONFIGURAR PAYPAL EN CLOUDFLARE — pagos en línea de las dos webs (anotado 19-nov-2026)
 
 Hoy NO existe ninguna variable PAYPAL_* en Cloudflare: PayPal no cobra en ninguna web (ni pedidos ni planes de créditos).
