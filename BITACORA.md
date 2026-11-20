@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-11-19 (k) — «Mi academia» de Alejandro (SQL compartido)
+
+- 🟡 SQL pendiente de correr: sql/academia-cursos-2026.sql (5 tablas academia_*, 14 RPC, RLS, permisos por columna: video_key/recursos/comunidad ocultos). Esperado: tablas=5 · rls=5 · politicas=7 · funciones=14 · anon_puede_ejecutar=1 · los «ve_» en false · cursos=0. El front (repo Alejandro) se publica después de correrlo (el pre-push lo bloquea por drift).
+
 ## 2026-11-19 (j) — Diseño al día con Wompi/cupones, seguro de repetición y comprobante en celular
 
 - flujo-diseno (PRODIGY): Wompi solo con el pedido guardado (sin PRD-DIS inventado); casilla de transferencia sigue desmarcada por defecto → es Wompi si además es +57 y «¿Por dónde pagaste?» vacío o PSE/Tarjeta. Cupón: validar sin gastar, se gasta tras el INSERT, precio_total con descuento.
