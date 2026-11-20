@@ -74,7 +74,7 @@ medio de una RPC o vista del dueño, no tocando sus tablas directamente.
 | **Diseño** | `app/operario-diseno`, `revision-diseno`, `revision-express` | `historial_diseno`, `diseno_*`, `operarios_tarifas` | — |
 | **Alineadores** | `envia-alineadores`, `app/alineadores`, `nueva-orden-alineadores`, `facturacion-alineadores` | `alineadores_*` | `docs/PROTOCOLO-ALINEADORES.md` |
 | **Gestión del lab** | `app/rastreo`, `mover`, `caso-qr`, `etiqueta`, `inventario`, `calidad`, `taller`, `mensajero` | `inventario_*`, `despachos`, `lotes_material`, `pedido_movimientos`, `pedido_incidencias` | `docs/ROADMAP-GESTION-LAB.md` |
-| **Cobros** | `pagar`, `calculadora*`, `app/cotizaciones`, `contabilidad`, `admin-precios` | `cotizaciones`, `pagos`, `config_precios`, `catalogo`, `creditos_planes`/`creditos_reglas`/`creditos_lotes`/`creditos_movimientos` (créditos de diseño prepagados, solo vía RPC `creditos_*`; la vieja `creditos_cliente` es deuda sin uso) | `docs/ACTIVAR-PAGOS.md` · Ley 50/50 |
+| **Cobros** | `pagar`, `calculadora*`, `app/cotizaciones`, `contabilidad`, `admin-precios` | `cotizaciones`, `pagos`, `config_precios`, `catalogo`, `creditos_planes`/`creditos_reglas`/`creditos_lotes`/`creditos_movimientos` (créditos de diseño prepagados, solo vía RPC `creditos_*`; la vieja `creditos_cliente` es deuda sin uso) | `docs/ACTIVAR-PAGOS.md` · Ley 50/50 · PayPal: el monto de un pedido sale SOLO de `functions/api/paypal-pedidos.js` (módulo sin endpoint que usan create-order, capture y webhook; cada repo con su moneda y su `negocio`) |
 | **Clientes y crecimiento** | `app/client-panel`, `referidos-portal`, `metricas*`, `clientes`, `app/editar-links` (rastreo de enlaces: `/wa/<origen>` + `js/rastreo-enlaces.js`) | `doctores_perfil`, `referidos`, `leads_doctores`, `analytics_events` | — |
 | **Identidad y acceso** | `app/login`, `gestionar-usuarios`, `crear-operario`, `cambiar-contrasena` | `perfiles`, `staff_departamentos` (+ `app_metadata.roles`) | `docs/GUIA-SEGURIDAD.md` |
 | **Notificaciones y soporte** | `app/reportes-web`, `bandeja-whatsapp`, `ayuda`, `soporte` | `notificaciones_internas`, `avisos_whatsapp`, `push_subscriptions`, `reportes_web`, `logs_incidencias` | `docs/PROTOCOLO-WHATSAPP.md`, `docs/WHATSAPP-OFICIAL.md` |
@@ -89,7 +89,7 @@ la copian y solo cambian su configuración (marca, `negocio`, textos), nunca la 
 
 - **JS:** `auth-guard`, `rol-actual`, `notif-panel`, `ver-clave`, `webpush`, `modo-prueba`, `pedido-guard`,
   `upload-guard`, `registro-archivos`, `fechas-habiles`, `formatos`, `visor-universal`, `historial`, `imprimir`.
-- **Functions:** `notify-staff`, `reportar-problema`, `send-email`, `send-push`, `gemini`, `paypal-*`.
+- **Functions:** `notify-staff`, `reportar-problema`, `send-email`, `send-push`, `gemini`, `paypal-*` (misma lógica en los dos repos desde el 20-nov-2026; lo que cambia —moneda, `negocio`, marca— vive en `paypal-pedidos.js`).
 
 **Estado medido (2026-10-01, PRODIGY ↔ Alejandro):** 36 archivos JS en común — 12 idénticos y 24 con
 diferencias (p. ej. `auth-guard` 132 líneas, `pagos` 1 201); 14 funciones en común — 13 con diferencias.
