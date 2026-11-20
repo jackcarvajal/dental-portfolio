@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-20 (a) — PayPal con la misma seguridad que Alejandro, alerta de precio por moneda, lab y /links
+
+- ✅ functions/api/paypal-pedidos.js (nuevo, módulo compartido): monto COP × 1,07 → USD en un solo lugar; solo pedidos negocio=prodigy (o vacío). create-order: 409 si ya está pagado, GET ?tipo=pedido entrega el client-id. capture: lee la orden ANTES de capturar (pedido, USD, monto), PayPal-Request-Id, PENDING → 202, tarjeta rechazada → reintentar, aviso a contabilidad si no cuadra; tolerancia 1 centavo (antes 0,50 USD). webhook: misma regla, solo COMPLETED. Capture y webhook marcan Pagado solo si sigue sin confirmar (no duplican pagos en la carrera). Simulado en local con fetch falso: 10/10 escenarios.
+- ✅ js/pagos.js (?v=20261120a en diseño, fresado, impresión, pagar): client-id desde el servidor; sin PayPal configurado no pinta un botón que falle.
+- 🟡 sql/patch-deteccion-precio-manipulado-2026-07.sql (definición canónica de detectar_precio_sospechoso): pedidos en USD contra catalogo.precio_usd (hoy vacío → no se juzgan), COP contra el menor entre precio y precio_oferta; aviso con moneda y panel del negocio. Lógica probada en una tabla temporal (sin tocar la base). PENDIENTE: que Alejandro lo corra.
+- ✅ flujo-lab: la fila «para iniciar» del carrito y el modal de éxito siguen la política: recurrente 50 %, primer pedido 100 %, sin sesión 100 % + nota del abono; nombres del carrito escapados (escH).
+- ✅ links + js/card-fan-carousel.js (?v=20261120a, ambos repos): la config de la galería se pide en el <head> (antes esperaba a GSAP), las 7 cartas visibles cargan ya y la del centro con fetchpriority=high; leyendas escapadas. Alejandro /links en 4G lenta: LCP 4,8 s → 2,7–3,2 s (local).
+
 ## 2026-11-19 (l) — Auditoría del panel interno (34 páginas de app/)
 
 - Corregido: mensajero escribía estado=ENTREGADO (no existe en el enum → la entrega fallaba en silencio: no guardaba ENTREGADO, comprobante ni saldo 0); showToast inexistente en panel-interno (10 llamadas) y mensajero; operario «forzar producción» usaba _userEmail sin declarar; client-panel «cancelar pedido» usaba _userId sin declarar; inventario CSV pedía columnas inexistentes; cotizaciones al editar borraba los ítems.

@@ -82,8 +82,10 @@
       var el=document.createElement(c.link?'a':'div');el.className='fan-card';
       if(c.link){el.href=c.link;el.target=/^https?:/i.test(c.link)?'_blank':'_self';el.rel='noopener noreferrer';}
       else{el.style.cursor='zoom-in';el.addEventListener('click',function(ev){ev.preventDefault();openLightbox(c.img,c.cap,c.caso);});}
-      var cap=(c.cap||'').replace(/"/g,'&quot;');
-      el.innerHTML='<img src="'+c.img+'" loading="lazy" alt="'+cap+'">'+(c.cap?'<span class="cap">'+c.cap+'</span>':'');
+      var capTxt=String(c.cap||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'), cap=capTxt.replace(/"/g,'&quot;');   // texto del panel: escapado (XSS)
+      // Las cartas que se ven al abrir (hasta 7) cargan ya y la del centro es el LCP: prioridad alta (20-nov-2026)
+      var _vis=cards.length>MAX_VISIBLE?MAX_VISIBLE:cards.length, _cen=cards.length>MAX_VISIBLE?HALF:cards.length>>1;
+      el.innerHTML='<img src="'+c.img+'" '+(i<_vis?(i===_cen?'fetchpriority="high" ':'')+'decoding="async"':'loading="lazy"')+' alt="'+cap+'">'+(c.cap?'<span class="cap">'+capTxt+'</span>':'');
       layout.appendChild(el);
     });
     mount.innerHTML='';mount.appendChild(layout);

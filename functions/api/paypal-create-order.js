@@ -1,11 +1,14 @@
 /**
  * Cloudflare Pages Function — PayPal: crear orden (server-side, precio autoritativo)
- * POST /api/paypal-create-order   Body: { referencia }   → { id, monto_usd }
+ * POST /api/paypal-create-order   Body: { referencia }   → { id, monto_usd, recargo_pct }
+ * GET  /api/paypal-create-order?tipo=pedido → { disponible, client_id, sandbox, recargo_pct }
  *
- * SEGURIDAD: el monto NUNCA viene del cliente. Se lee `precio_total` (COP) del
- * pedido en la BD por su `codigo` (=referencia), se le suma el recargo PayPal
- * (7 %, que absorbe el cliente) y se convierte a USD. PayPal crea la orden con
- * ESE monto. La captura se verifica en /api/paypal-capture.
+ * SEGURIDAD: el monto NUNCA viene del cliente. Se lee `precio_total` (COP) del pedido de PRODIGY
+ * en la BD por su `codigo` (=referencia) y se calcula con cobroPedido() de ./paypal-pedidos.js
+ * (+7 % de recargo internacional que asume el pagador, convertido a USD). PayPal crea la orden con
+ * ESE monto. La captura se verifica en /api/paypal-capture. 20-nov-2026: solo pedidos de PRODIGY
+ * (la app de PayPal es compartida con Alejandro CAD/CAM), no se crea orden para un pedido ya pagado
+ * y el client-id público lo entrega el servidor (GET), igual que en el gemelo.
  *
  * Env vars (Cloudflare Pages → Settings → Environment Variables):
  *   PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET   (Live)
@@ -13,8 +16,7 @@
  *   SUPABASE_URL, SUPABASE_SERVICE_KEY
  */
 
-const RECARGO_PAYPAL = 0.07;    // 7 % (19-nov-2026; antes 5.4%) — lo absorbe el cliente (igual que PAGOS_CONFIG.paypal)
-const TASA_COP_USD   = 4200;    // misma tasa referencial que js/pagos.js
+import { cobroPedido, configPedidos, descripcionPedido, leerPedido } from './paypal-pedidos.js';
 
 const PP_BASE = (env) => (env.PAYPAL_ENV === 'sandbox')
   ? 'https://api-m.sandbox.paypal.com'
@@ -25,7 +27,7 @@ function cors(origin) {
     || /^https:\/\/([a-z0-9-]+\.)?dental-portfolio-em6\.pages\.dev$/.test(origin || '');
   return {
     'Access-Control-Allow-Origin':  ok ? origin : 'https://prodigylabdental.com',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Content-Type': 'application/json',
   };
@@ -46,6 +48,14 @@ async function ppToken(env) {
 
 export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: cors(context.request.headers.get('Origin') || '') });
+}
+
+// GET ?tipo=pedido → { disponible, client_id, recargo_pct } (js/pagos.js decide si pinta el botón de PayPal)
+export async function onRequestGet(context) {
+  const { request, env } = context;
+  const h = cors(request.headers.get('Origin') || '');
+  if (new URL(request.url).searchParams.get('tipo') !== 'pedido') return new Response(JSON.stringify({ error: 'Usa POST' }), { status: 405, headers: h });
+  return configPedidos(env, h);
 }
 
 export async function onRequestPost(context) {
@@ -69,23 +79,19 @@ export async function onRequestPost(context) {
   const referencia = String(body.referencia || '').trim().slice(0, 60);
   if (!referencia) return new Response(JSON.stringify({ error: 'Falta la referencia del pedido' }), { status: 400, headers: h });
 
-  // Precio AUTORITATIVO desde la BD (por codigo), nunca del cliente
-  let precioCOP = 0, pedidoId = null;
-  try {
-    const pr = await fetch(
-      `${env.SUPABASE_URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(referencia)}&select=id,precio_total&limit=1`,
-      { headers: { Authorization: `Bearer ${env.SUPABASE_SERVICE_KEY}`, apikey: env.SUPABASE_SERVICE_KEY } }
-    );
-    const d = await pr.json();
-    precioCOP = Math.round(Number(d?.[0]?.precio_total) || 0);
-    pedidoId  = d?.[0]?.id || null;
-  } catch { return new Response(JSON.stringify({ error: 'No se pudo validar el pedido' }), { status: 502, headers: h }); }
-
-  if (!pedidoId || precioCOP < 1000) {
+  // Precio AUTORITATIVO desde la BD (por codigo + negocio), nunca del cliente
+  let pedido;
+  try { pedido = await leerPedido(env, referencia); }
+  catch { return new Response(JSON.stringify({ error: 'No se pudo validar el pedido' }), { status: 502, headers: h }); }
+  if (pedido && pedido.pago_estado === 'pago_confirmado') {
+    return new Response(JSON.stringify({ error: 'Este pedido ya está pagado: no se cobró nada.' }), { status: 409, headers: h });
+  }
+  const cobro = pedido ? cobroPedido(pedido) : null;
+  if (!pedido || !(cobro.total_usd > 0)) {
     return new Response(JSON.stringify({ error: 'Pedido no encontrado o sin monto válido' }), { status: 400, headers: h });
   }
 
-  const montoUSD = (Math.round(precioCOP * (1 + RECARGO_PAYPAL)) / TASA_COP_USD).toFixed(2);
+  const montoUSD = cobro.total_usd.toFixed(2);
 
   try {
     const token = await ppToken(env);
@@ -97,9 +103,10 @@ export async function onRequestPost(context) {
         purchase_units: [{
           reference_id: referencia,
           custom_id: referencia,
-          description: `PRODIGY Lab · Pedido ${referencia}`,
+          description: descripcionPedido(referencia),
           amount: { currency_code: 'USD', value: montoUSD },
         }],
+        application_context: { brand_name: 'PRODIGY Lab Dental', shipping_preference: 'NO_SHIPPING', user_action: 'PAY_NOW' },
       }),
     });
     const order = await r.json();
@@ -107,7 +114,7 @@ export async function onRequestPost(context) {
       console.error('[paypal-create-order]', JSON.stringify(order).slice(0, 300));
       return new Response(JSON.stringify({ error: 'No se pudo crear la orden de PayPal' }), { status: 502, headers: h });
     }
-    return new Response(JSON.stringify({ id: order.id, monto_usd: montoUSD }), { status: 200, headers: h });
+    return new Response(JSON.stringify({ id: order.id, monto_usd: montoUSD, recargo_pct: cobro.recargo_pct }), { status: 200, headers: h });
   } catch (e) {
     console.error('[paypal-create-order]', e.message);
     return new Response(JSON.stringify({ error: 'Error conectando con PayPal' }), { status: 502, headers: h });

@@ -727,6 +727,7 @@ async function detectarClienteRecurrente() {
         _clienteRecurrente = await Promise.race([consulta, limite]);
     } catch (_) { _clienteRecurrente = null; }
     pintarAvisoRecurrente();
+    if (typeof updateCart === 'function') updateCart();   // la fila «para iniciar» del carrito depende de esto
 }
 
 /* Aviso en pantalla de la condición de pago (misma política que el texto de WhatsApp); se repinta en updateCart() y al terminar la detección */
@@ -935,7 +936,7 @@ function updateCart() {
     var abono = Math.round(total * 0.5);
     cartEl.innerHTML = lines.map(function(l) {
       return '<div class="cart-item">' +
-        '<span class="ci-name">' + l.name + (l.variant ? ' <em style="color:var(--muted);font-style:normal;font-size:.75rem;">· ' + l.variant + '</em>' : '') + '</span>' +
+        '<span class="ci-name">' + escH(l.name) + (l.variant ? ' <em style="color:var(--muted);font-style:normal;font-size:.75rem;">· ' + escH(l.variant) + '</em>' : '') + '</span>' +
         '<span class="ci-qty">×' + l.qty + '</span>' +
         '<span class="ci-val">' + fmtCOP(l.price * l.qty) + '</span>' +
         '<i class="fas fa-times ci-del" onclick="changeQty(\'' + l.id + '\',-' + l.qty + ')"></i>' +
@@ -945,9 +946,17 @@ function updateCart() {
       '<span class="ci-name" style="font-weight:900;color:var(--text);">TOTAL ESTIMADO</span>' +
       '<span class="ci-val" style="font-size:1rem;color:var(--gold2);">' + fmtCOP(total) + '</span>' +
     '</div>' +
-    '<div class="cart-item" style="border-bottom:none;background:rgba(212,175,55,0.06);border-radius:8px;padding:10px 12px;margin-top:4px;">' +
-      '<span class="ci-name" style="font-size:.78rem;color:var(--gold2);"><i class="fas fa-hand-holding-usd"></i> Abono para iniciar (50%)</span>' +
-      '<span class="ci-val" style="color:var(--gold2);">' + fmtCOP(abono) + '</span>' +
+    // Lo que se paga para iniciar según la política 19-nov-2026: recurrente 50 %, primer pedido 100 %.
+    // Sin sesión (null) no se sabe: se muestra el 100 % y, debajo, el abono si ya es cliente.
+    '<div class="cart-item" style="border-bottom:none;background:rgba(212,175,55,0.06);border-radius:8px;padding:10px 12px;margin-top:4px;flex-wrap:wrap;">' +
+      (_clienteRecurrente === true
+        ? '<span class="ci-name" style="font-size:.78rem;color:var(--gold2);"><i class="fas fa-hand-holding-usd"></i> Abono para iniciar (50%)</span>' +
+          '<span class="ci-val" style="color:var(--gold2);">' + fmtCOP(abono) + '</span>'
+        : '<span class="ci-name" style="font-size:.78rem;color:var(--gold2);"><i class="fas fa-hand-holding-usd"></i> Pago para iniciar (100%' + (_clienteRecurrente === false ? ', primer pedido' : '') + ')</span>' +
+          '<span class="ci-val" style="color:var(--gold2);">' + fmtCOP(total) + '</span>' +
+          (_clienteRecurrente === null
+            ? '<span style="flex-basis:100%;font-size:.72rem;color:var(--muted);margin-top:4px;">Si ya eres cliente recurrente: abono 50 % de ' + fmtCOP(abono) + '</span>'
+            : '')) +
     '</div>';
   }
 }
@@ -1116,7 +1125,15 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
     document.getElementById('lab-exito-id').textContent    = ordenId;
     document.getElementById('lab-exito-doc').textContent   = doctor;
     document.getElementById('lab-exito-total').textContent = fmtCOP(total);
-    document.getElementById('lab-exito-abono').textContent = fmtCOP(abono);
+    var _lblIni = document.getElementById('lab-exito-abono-lbl');
+    if (_clienteRecurrente === true) {
+      if (_lblIni) _lblIni.textContent = 'Abono para iniciar (50%):';
+      document.getElementById('lab-exito-abono').textContent = fmtCOP(abono);
+    } else {
+      if (_lblIni) _lblIni.textContent = 'Pago para iniciar (100%):';
+      document.getElementById('lab-exito-abono').textContent = fmtCOP(total) +
+        (_clienteRecurrente === null ? ' · si ya eres cliente recurrente, abono 50 %: ' + fmtCOP(abono) : '');
+    }
     mEl.classList.add('active');
   }
 
@@ -1160,7 +1177,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
       </p>
       <p style="margin-bottom:4px;"><strong style="color:#D946A6;">Doctor:</strong> <span id="lab-exito-doc">—</span></p>
       <p style="margin-bottom:4px;"><strong style="color:#D4AF37;">Total estimado:</strong> <span id="lab-exito-total">—</span></p>
-      <p style="margin-bottom:0;"><strong style="color:#00d2ff;">Abono para iniciar (50%):</strong> <span id="lab-exito-abono">—</span></p>
+      <p style="margin-bottom:0;"><strong id="lab-exito-abono-lbl" style="color:#00d2ff;">Para iniciar:</strong> <span id="lab-exito-abono">—</span></p>
     </div>
     <div style="background:rgba(52,199,89,.08);border:1px solid rgba(52,199,89,.3);border-radius:8px;padding:10px 14px;font-size:.78rem;color:#8fd9a3;margin-bottom:12px;text-align:left;line-height:1.5;">
       ⏱️ ¿Subiste el archivo equivocado? Puedes <strong>cancelar este pedido</strong> desde tu panel mientras aún no lo tomamos para validación. <a href="/app/client-panel.html" style="color:#34c759;text-decoration:underline;">Ir a mi panel →</a>

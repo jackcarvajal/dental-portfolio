@@ -16,10 +16,13 @@
  * Registrar en PayPal: Developer Dashboard → Webhooks → Add:
  *   URL: https://prodigylabdental.com/api/paypal-webhook
  *   Evento: PAYMENT.CAPTURE.COMPLETED
+ *
+ * 20-nov-2026 (paridad con Alejandro CAD/CAM): monto con cobroPedido() de ./paypal-pedidos.js (misma regla
+ * que create-order y capture, tolerancia de 1 centavo), solo pedidos de PRODIGY (la app de PayPal es
+ * compartida: un pedido de Alejandro lo reconcilia el webhook de Alejandro) y solo capturas COMPLETED.
  */
+import { cobroPedido, cubreElPedido, leerPedido } from './paypal-pedidos.js';
 
-const RECARGO_PAYPAL = 0.07;   // 7 % pago internacional (PayPal + cambio de moneda) — decisión de Alejandro 19-nov-2026
-const TASA_COP_USD   = 4200;
 const MAX_BODY       = 64 * 1024;
 const PP_BASE = (env) => (env.PAYPAL_ENV === 'sandbox') ? 'https://api-m.sandbox.paypal.com' : 'https://api-m.paypal.com';
 
@@ -82,35 +85,37 @@ export async function onRequestPost(context) {
   const pagadoUSD  = Number(res.amount?.value || 0);
   const monedaPagada = String(res.amount?.currency_code || '');
   if (!referencia) return new Response('sin referencia', { status: 200 });
+  if (res.status && res.status !== 'COMPLETED') return new Response('captura no completada', { status: 200 });
 
-  // Pedido autoritativo
+  // Pedido autoritativo (solo de PRODIGY: uno de Alejandro CAD/CAM lo reconcilia su propio webhook)
   let pedido;
-  try {
-    const pr = await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?codigo=eq.${encodeURIComponent(referencia)}&select=id,codigo,precio_total,pago_estado,flujo&limit=1`, { headers: sbH(env) });
-    pedido = (await pr.json())?.[0];
-  } catch { return new Response('error BD', { status: 502 }); }
+  try { pedido = await leerPedido(env, referencia); }
+  catch { return new Response('error BD', { status: 502 }); }
   if (!pedido?.id) return new Response('pedido no encontrado', { status: 200 });
 
   // Idempotencia: si ya lo procesó la captura síncrona (o un reintento), salir
   if (pedido.pago_estado === 'pago_confirmado') return new Response('ya procesado', { status: 200 });
 
-  const precioCOP  = Math.round(Number(pedido.precio_total) || 0);
-  const montoTotal = Math.round(precioCOP * (1 + RECARGO_PAYPAL));
-  const esperadoUSD = montoTotal / TASA_COP_USD;
+  const cobro = cobroPedido(pedido);
+  const precioCOP   = cobro.cop;
+  const montoTotal  = cobro.total_cop;
+  const esperadoUSD = cobro.total_usd;
   if (monedaPagada !== 'USD') {
     console.error('[paypal-webhook] moneda inesperada:', monedaPagada, 'ref', referencia);
     return new Response('moneda no coincide', { status: 200 }); // 200 para que PayPal no reintente infinito
   }
-  if (!(pagadoUSD > 0) || Math.abs(pagadoUSD - esperadoUSD) > 0.5) {
+  if (!(esperadoUSD > 0) || !cubreElPedido(pagadoUSD, esperadoUSD)) {
     console.error('[paypal-webhook] monto no coincide: pagado', pagadoUSD, 'esperado', esperadoUSD, 'ref', referencia);
     return new Response('monto no coincide', { status: 200 }); // 200 para que PayPal no reintente infinito
   }
 
   try {
-    await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedido.id}&pago_estado=neq.pago_confirmado`, {
-      method: 'PATCH', headers: { ...sbH(env), Prefer: 'return=minimal' },
+    // Solo si sigue sin confirmar: si la captura síncrona ganó la carrera, no se duplica el registro ni el aviso.
+    const up = await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedido.id}&pago_estado=neq.pago_confirmado&select=id`, {
+      method: 'PATCH', headers: { ...sbH(env), Prefer: 'return=representation' },
       body: JSON.stringify({ pago_estado: 'pago_confirmado', estado: 'Pagado', timestamp_pago_confirmado: new Date().toISOString(), pago_confirmado_por: 'paypal-webhook' }),
     });
+    if (up.ok && !((await up.json()) || []).length) return new Response('ya procesado', { status: 200 });
     await fetch(`${env.SUPABASE_URL}/rest/v1/pagos`, {
       method: 'POST', headers: { ...sbH(env), Prefer: 'return=minimal' },
       body: JSON.stringify({

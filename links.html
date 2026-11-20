@@ -4,7 +4,7 @@
 <meta name="description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores."><meta name="theme-color" content="#D946A6"><meta name="color-scheme" content="dark"><meta name="robots" content="index, follow">
 <link rel="canonical" href="https://prodigylabdental.com/links"><link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%94%97</text></svg>"><link rel="apple-touch-icon" href="/assets/icons/icon-192.png?v=20260928">
 <meta property="og:type" content="website"><meta property="og:site_name" content="PRODIGY Lab Dental"><meta property="og:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D"><meta property="og:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores."><meta property="og:url" content="https://prodigylabdental.com/links"><meta property="og:image" content="https://prodigylabdental.com/assets/og-index.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="es_CO"><meta property="og:locale:alternate" content="en_US">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D"><meta name="twitter:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores."><meta name="twitter:image" content="https://prodigylabdental.com/assets/og-index.jpg"></head>
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="PRODIGY Lab Dental — Diseño CAD, fresado e impresión 3D"><meta name="twitter:description" content="Laboratorio dental digital en Bogotá. Diseño CAD, fresado, impresión 3D, guías y alineadores."><meta name="twitter:image" content="https://prodigylabdental.com/assets/og-index.jpg"><link rel="preconnect" href="https://zgihrwqfyvgyapbwzkvw.supabase.co" crossorigin><script>/* La galería de /links es el LCP: su config se pide aquí, sin esperar a GSAP ni al resto de scripts (20-nov-2026) */(function(){var U='https://zgihrwqfyvgyapbwzkvw.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';window.__LNK={u:U,k:K};window.__linksCfg=fetch(U+'/rest/v1/links_config?select=config&negocio=eq.prodigy',{headers:{apikey:K,Authorization:'Bearer '+K}}).then(function(r){return r.ok?r.json():null;}).catch(function(){return null;});})();</script></head>
 <body>
 <style>
   :root{
@@ -497,13 +497,13 @@ html,body{overflow-x:hidden;}
 
 <!-- Carrusel abanico (GSAP + módulo) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="js/card-fan-carousel.js?v=20260806d"></script>
+<script src="js/card-fan-carousel.js?v=20261120a"></script>
 
 <!-- Hidratación de galería desde Supabase (config del panel /editar-links) -->
 <script>
 (function(){
-  var SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';
-  var SKEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+  var SURL=window.__LNK.u;
+  var SKEY=window.__LNK.k;   // anon key: una sola copia, en el <head>
   var NEG='prodigy';
   var H={apikey:SKEY,Authorization:'Bearer '+SKEY};
   function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -560,8 +560,7 @@ html,body{overflow-x:hidden;}
     var rn=document.querySelector('[data-i="revNote"]'); if(rn){var p=rn.closest('.ph-note'); if(p)p.style.display='none';}
   }
   // 1) galería del panel; 2) si vacía, casos reales del portafolio
-  fetch(SURL+'/rest/v1/links_config?select=config&negocio=eq.'+NEG,{headers:H})
-   .then(function(r){return r.json();})
+  (window.__linksCfg||fetch(SURL+'/rest/v1/links_config?select=config&negocio=eq.'+NEG,{headers:H}).then(function(r){return r.json();}))
    .then(function(rows){
      var cfg=(rows&&rows[0]&&rows[0].config)||{};
      var revs=Array.isArray(cfg.reviews)?cfg.reviews.filter(function(r){return r&&(r.es||'').trim();}):[];

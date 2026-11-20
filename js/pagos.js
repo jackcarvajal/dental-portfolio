@@ -300,24 +300,44 @@ async function pasarelaOptimaPorPais(precioBase) {
    PAYPAL — checkout internacional
 ═══════════════════════════════════════ */
 
-let _paypalLoaded = false;
+let _paypalSdk = null;     // promesa única de carga
+let _paypalCfg = null;     // solo se recuerda si está disponible
+
+/**
+ * ¿PayPal está activo para pagar pedidos? El client-id sale del SERVIDOR (GET /api/paypal-create-order?tipo=pedido):
+ * así el botón siempre usa las mismas credenciales con que el servidor crea la orden (también en sandbox) y, si
+ * aún no están las variables PAYPAL_* en Cloudflare, no se pinta un botón que fallaría al pagar (20-nov-2026,
+ * paridad con Alejandro CAD/CAM).
+ */
+async function configPayPalPedido() {
+    if (_paypalCfg) return _paypalCfg;
+    let d = null;
+    try {
+        const r = await fetch('/api/paypal-create-order?tipo=pedido', { headers: { Accept: 'application/json' } });
+        d = await r.json();
+    } catch { d = null; }
+    if (d && d.disponible && d.client_id) { _paypalCfg = d; return d; }
+    return { disponible: false, motivo: (d && d.motivo) || 'sin_conexion' };
+}
 
 /**
  * Carga el SDK de PayPal de forma diferida (solo para usuarios internacionales).
  */
-function cargarSDKPayPal() {
-    if (_paypalLoaded || document.getElementById('paypal-sdk')) return Promise.resolve();
-    return new Promise((resolve, reject) => {
+function cargarSDKPayPal(clientId) {
+    if (window.paypal && window.paypal.Buttons) return Promise.resolve();
+    if (_paypalSdk) return _paypalSdk;
+    _paypalSdk = new Promise((resolve, reject) => {
         const s  = document.createElement('script');
         s.id     = 'paypal-sdk';
-        // Entorno Live — no agregar &debug=true ni &env=sandbox
+        // El entorno (live / sandbox) lo decide el client-id que entrega el servidor.
         // disable-funding=credit (sin pay-later) pero SÍ permitir tarjeta (guest checkout,
         // sin cuenta PayPal) — coincide con la etiqueta "Tarjeta Internacional".
-        s.src    = `https://www.paypal.com/sdk/js?client-id=${PAGOS_CONFIG.paypal.clientId}&currency=USD&intent=capture&disable-funding=credit`;
-        s.onload  = () => { _paypalLoaded = true; resolve(); };
-        s.onerror = () => reject(new Error('No se pudo cargar PayPal SDK'));
+        s.src    = `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId || PAGOS_CONFIG.paypal.clientId)}&currency=USD&intent=capture&components=buttons&disable-funding=credit`;
+        s.onload  = () => resolve();
+        s.onerror = () => { _paypalSdk = null; s.remove(); reject(new Error('No se pudo cargar PayPal SDK')); };
         document.head.appendChild(s);
     });
+    return _paypalSdk;
 }
 
 /**
@@ -331,15 +351,25 @@ function cargarSDKPayPal() {
  */
 async function abrirCheckoutPayPal({ referencia, containerId, onSuccess }) {
     if (window.ProdigyAnalytics) ProdigyAnalytics.trackPaymentIntent('paypal', null, referencia);
+    const cid = containerId || 'paypal-button-container';
+    const container = document.getElementById(cid);
+    if (!container) return;
+    const cfg = await configPayPalPedido();
+    if (!cfg.disponible) {
+        // Sin credenciales todavía: no se pinta un botón que fallaría; quedan transferencia / WhatsApp.
+        container.innerHTML = '';
+        const p = document.createElement('p');
+        p.style.cssText = 'font-size:.85rem;color:#94a3b8;margin:6px 0;line-height:1.5;';
+        p.textContent = 'El pago con PayPal aún no está activo. Paga por transferencia y envíanos el comprobante por WhatsApp.';
+        container.appendChild(p);
+        return;
+    }
     try {
-        await cargarSDKPayPal();
+        await cargarSDKPayPal(cfg.client_id);
     } catch {
         _pgToast('No se pudo conectar con PayPal. Intenta con transferencia o contáctanos.');
         return;
     }
-    const cid = containerId || 'paypal-button-container';
-    const container = document.getElementById(cid);
-    if (!container) return;
     container.innerHTML = '';
 
     window.paypal.Buttons({
@@ -352,10 +382,12 @@ async function abrirCheckoutPayPal({ referencia, containerId, onSuccess }) {
             return d.id;
         }),
         // La captura se verifica server-side (monto + referencia + COMPLETED)
-        onApprove: (data) => fetch('/api/paypal-capture', {
+        onApprove: (data, actions) => fetch('/api/paypal-capture', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ orderID: data.orderID, referencia })
         }).then(r => r.json()).then(res => {
+            // Tarjeta rechazada: PayPal deja elegir otro medio sin crear otra orden
+            if (res.reintentar && actions && actions.restart) { _pgToast(res.error); return actions.restart(); }
             if (!res.ok) { _pgToast(res.error || 'No se pudo confirmar el pago.'); return; }
             if (onSuccess) onSuccess({ referencia });
             else window.location.href = `/seguimiento-caso?pedido=${encodeURIComponent(referencia)}&pago=ok`;
