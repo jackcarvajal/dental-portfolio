@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-20 (b) — health-check privado, ?v= de header/footer unificado, centro de ayuda
+
+- ✅ functions/api/health-check.js: el público (soporte.html) solo recibe {timestamp,status,summary} y la copia de los últimos 2 min (antes cada visita disparaba 17 llamadas externas y la respuesta listaba los proveedores). El detalle por servicio exige Bearer CRON_SECRET o sesión admin; vigía, configuración y pruebas de carga lo envían. Verificado en vivo.
+- ✅ 🔴→✅ header.js/footer.js: 81 páginas pedían ?v=20261118h, que el CDN tenía guardado con la simetría VIEJA (el arreglo de formularios móviles del 19-nov no estaba en flujo-diseno, home, etc.). Todas a ?v=20261120a (también en Alejandro). Verificado: la home ya carga simetria ?v=20261119.
+- ✅ app/ayuda-articulos.json (?v=20261120a): artículos politica-pago, fresado-cotizar, recepcion-24-7, pagos-paypal, alerta-precio.
+- ✅ ARCHITECTURE.md: PayPal — el monto sale solo de functions/api/paypal-pedidos.js en los dos repos.
+- 💡 Analítica (gtag/Pixel/Clarity) ya carga con la primera interacción o a los 6 s (header.js); con la versión unificada eso por fin aplica en todas las páginas.
+
 ## 2026-11-20 (a) — PayPal con la misma seguridad que Alejandro, alerta de precio por moneda, lab y /links
 
 - ✅ functions/api/paypal-pedidos.js (nuevo, módulo compartido): monto COP × 1,07 → USD en un solo lugar; solo pedidos negocio=prodigy (o vacío). create-order: 409 si ya está pagado, GET ?tipo=pedido entrega el client-id. capture: lee la orden ANTES de capturar (pedido, USD, monto), PayPal-Request-Id, PENDING → 202, tarjeta rechazada → reintentar, aviso a contabilidad si no cuadra; tolerancia 1 centavo (antes 0,50 USD). webhook: misma regla, solo COMPLETED. Capture y webhook marcan Pagado solo si sigue sin confirmar (no duplican pagos en la carrera). Simulado en local con fetch falso: 10/10 escenarios.
