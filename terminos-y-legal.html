@@ -1671,6 +1671,14 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Enlace directo a una pestaña: /terminos-y-legal#pol-fresado (lo usan las preguntas frecuentes). Gemelo de Alejandro.
+        (function abrirPestanaDelEnlace() {
+            var id = (location.hash || '').slice(1);
+            if (!/^[a-z-]+$/.test(id) || !document.getElementById(id) || !document.getElementById(id).classList.contains('tab-content')) return;
+            var btn = document.querySelector('.tab-button[onclick*="\'' + id + '\'"]');
+            if (btn) openTab({ currentTarget: btn }, id);
+        })();
+
         // =============================================
         // EFECTO NAVBAR AL HACER SCROLL (main.js)
         // =============================================

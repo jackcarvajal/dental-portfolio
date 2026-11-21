@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-21 (a) — Preguntas frecuentes al día con lo nuevo
+
+- 🟡 preguntas.html: cobro por flujo (diseño 100 % · impresión y lab: primer pedido 100 %, recurrentes 50/50 · fresado a cotizar), internacional PayPal/Wise +7 % (fuera Stripe, que ninguna página usa), revisiones = 2 (como los términos), horario L–V 8–5 + recepción 24/7, fresado «se cotiza por caso» (ya no remite a precios), nuevas: seguimiento del caso, garantía con exclusiones, seguro de repetición, referidos/cupones, clientes de otros países. JSON-LD FAQPage con los mismos textos y nombres idénticos a las preguntas visibles (28). sitemap lastmod.
+- terminos-y-legal: enlace directo a pestaña (#pol-fresado), gemelo del de Alejandro.
+- 🔴 Por decidir: los términos (Política de Pagos — Diseño Remoto) aún dicen «cliente existente 50/50» en diseño; la decisión del 19-nov y el flujo dicen 100 % anticipado.
+
 ## 2026-11-20 (f) — Analítica de verdad diferida, home más liviana, revisión mensual
 
 - ✅ 🔴→✅ header.js + conversions.js (las 2 webs): el oyente de «scroll» iba en captura y también recibía el scroll de carruseles internos (la rejilla de producción al armarse en el celular) → GA4, Ads, Clarity y Meta cargaban a los ~2,3 s sin que nadie tocara la página. Ahora scroll sin captura (solo el de la página): cargan con el primer toque/tecla/rueda/scroll real o 6 s después del load. Verificado en local: 0 scripts de analítica a los 4,5 s; tras deslizar, cargan.
