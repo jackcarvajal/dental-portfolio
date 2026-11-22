@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-11-22 (b) — Sin repetir «100 % anticipado»
+
+- ✅ Decisión de Alejandro (22-nov): el cliente se entera al registrarse y pedir; no hace falta recordarlo en todas partes. Quitado: cartel «💵 PAGO 100% ANTICIPADO» de flujo-diseno/fresado/impresión, «(pago 100% al confirmar)» de los WhatsApp, fila duplicada del odontograma y del cotizador de impresión, etiqueta de og-flujo-diseno.jpg, tarjeta de las /en/ de diseño, «Do I pay upfront?» de /en/faq (fusionada en la de pago). Queda en: términos, respuesta de pagos en /preguntas, panel y correo del cliente, centro de ayuda y asistente (solo si preguntan). ?v= header 20261122c, flujo-impresion.js 20261122a, ODO_CFG 20261122a.
+- ✅ /para-laboratorios: sin Stripe ni «Lanzamiento Q3 2026» (fecha vencida).
+
 ## 2026-11-22 — Preguntas en inglés (/en/faq) y restos del 50/50
 
 - 🟡 Nueva página https://prodigylabdental.com/en/faq: 16 preguntas para clínicas y labs del exterior (servicios, archivos, tiempos, USD/PayPal/Wise +7 %, 100 % anticipado, 2 revisiones, seguimiento, envíos y garantía de /en/veneer-terms). Lista blanca publicPages + header.js?v=20261122a solo en esa página; hreflang con /preguntas; botón «FAQ» en el hub /en/; sitemap, _headers y og-en-faq.jpg.
