@@ -100,7 +100,7 @@
         function pintarAvisoPago() {
             const el = document.getElementById("aviso-recurrente");
             if (!el) return;
-            el.innerHTML = "<strong style=\"color:#D4AF37;\">Pago 100 % anticipado:</strong> en la página (PSE / tarjeta) o por transferencia; envías el comprobante por WhatsApp y por ahí coordinamos los detalles.";
+            el.innerHTML = "<strong style=\"color:#D4AF37;\">Cómo pagar:</strong> en la página (PSE / tarjeta) o por transferencia; envías el comprobante por WhatsApp y por ahí coordinamos los detalles.";
         }
         document.addEventListener("DOMContentLoaded", pintarAvisoPago);
 
@@ -2387,8 +2387,8 @@
             // Política 21-nov-2026: impresión 3D (modelos incluidos) 100 % anticipado para todos los clientes.
             texto += `💵 *TOTAL: ${_totalImp}*\n`;
             texto += _recargoImp > 0
-                ? `_Pago en línea con Wompi: el 100 % en un solo pago al registrar la orden._\n\n`
-                : `_Pago 100 % anticipado por transferencia: envío el comprobante por este chat._\n\n`;
+                ? `_Pago en línea con Wompi al registrar la orden._\n\n`
+                : `_Pago por transferencia: envío el comprobante por este chat._\n\n`;
 
             // Anillas (solo para guías quirúrgicas)
             const _anillasR = document.querySelector('input[name="anillas_opcion"]:checked');
