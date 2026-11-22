@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-11-22 (e) — La revisión adicional solo se cobra si la piden + cifras reales
+
+- 🟡 Aclaración de Alejandro: el 20 % aplica solo si, DESPUÉS de recibir la segunda revisión, el cliente pide más cambios. Nada se cobra por adelantado; se le avisa al pedir la 1.ª y la 2.ª. Términos (2 secciones), /preguntas, /en/faq, asistente y articles.js reescritos así.
+- 🟡 calculadora-diseno: fuera el interruptor «Revisión adicional» (sumaba 20 % al cotizar) → fila informativa «2 revisiones · Incluidas».
+- 🟡 Avisos al pedir cambios: revision-diseno («Esta será tu revisión N de 2…»; con las 2 usadas decía «costo equivalente a un nuevo diseño» → 20 %), revision-express (subtítulo y mensaje tras enviar) y app/client-panel (texto dinámico; decía «sin costo»).
+- 🟡 Cifras reales (Alejandro, 22-nov: ≈150 unidades de diseño y ≈150 terminadas al mes; ≈10 casos completos al mes): calculadora-diseno, diseno-cad, diseno-remoto y nosotros → 1.800 unidades de diseño al año; fresado-cam y nosotros → 1.800 unidades terminadas al año; nosotros + 120 casos completos al año; 4 /en/ → «1,800 design units a year». Cifras fijas (sin contador).
+- 🟡 ferulas-oclusales: «una ronda de ajustes sin costo» → 2 revisiones en el precio.
+- 💡 Tiempos de PRODIGY se quedan «desde 15 minutos*» (decisión de Alejandro).
+- ?v= header 20261122f, articles 20261122c.
+
 ## 2026-11-22 (d) — Revisión adicional = 20 % y valoración según el caso
 
 - 🟡 Decisión de Alejandro (22-nov): tras las 2 revisiones incluidas, cada revisión cuesta el **20 %** del valor del diseño (antes los términos decían 20 % en un lado y 50 % en otro). Unificado en terminos-y-legal (2 secciones), /preguntas, /en/faq, asistente, articles.js y calculadora-diseno (la opción «Revisión adicional» ahora suma 20 % del diseño, no $5 fijos).

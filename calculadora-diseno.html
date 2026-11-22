@@ -132,14 +132,14 @@
 /* Below-fold optimization */
 .sec-below,.faq-section,.why-section,.testimonials,.cta-section{content-visibility:auto;contain-intrinsic-size:0 300px;}
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"El precio del diseño CAD incluye revisión?","acceptedAnswer":{"@type":"Answer","text":"Sí. Incluye hasta 2 revisiones, incluidas en el precio, pedidas dentro de las 48 horas siguientes a la entrega. Desde la tercera, cada revisión cuesta el 20 % del valor del diseño."}},{"@type":"Question","name":"En cuánto tiempo recibo el STL del diseño?","acceptedAnswer":{"@type":"Answer","text":"En 24-48h hábiles desde aprobación. Casos urgentes desde 2h con recargo. Trabajamos de lunes a viernes, de 8 a.m. a 5 p.m. (hora Colombia), y recibimos casos 24/7: lo que llega fuera de horario entra el siguiente día hábil."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"El precio del diseño CAD incluye revisión?","acceptedAnswer":{"@type":"Answer","text":"Sí. Incluye hasta 2 revisiones, incluidas en el precio, pedidas dentro de las 48 horas siguientes a la entrega. Si después de la segunda pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño; solo se cobra si la pides."}},{"@type":"Question","name":"En cuánto tiempo recibo el STL del diseño?","acceptedAnswer":{"@type":"Answer","text":"En 24-48h hábiles desde aprobación. Casos urgentes desde 2h con recargo. Trabajamos de lunes a viernes, de 8 a.m. a 5 p.m. (hora Colombia), y recibimos casos 24/7: lo que llega fuera de horario entra el siguiente día hábil."}}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo cotizar diseño CAD dental con PRODIGY Lab","totalTime":"PT2M","step":[{"@type":"HowToStep","name":"Selecciona el tipo de diseño","text":"Corona, carilla, inlay, puente, Full Arch o guía quirúrgica."},{"@type":"HowToStep","name":"Configura cantidad e idioma","text":"Indica el número de unidades. El precio se muestra en USD para clientes internacionales."},{"@type":"HowToStep","name":"Cotiza por WhatsApp","text":"Envía el resumen al +57 321 281 6716 para confirmar precio final y tiempo de entrega."}]}</script>
 </head>
 <body>
 <noscript><div style="text-align:center;padding:40px 20px;background:#050505;color:#94a3b8;font-family:sans-serif;">Esta calculadora requiere JavaScript. <a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20una%20cotización." style="color:#D946A6">Cotizar por WhatsApp →</a></div></noscript>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261122e" as="script">
-<script src="js/header.js?v=20261122e"></script>
+<link rel="preload" href="js/header.js?v=20261122f" as="script">
+<script src="js/header.js?v=20261122f"></script>
 <main id="main-content">
 <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.78rem;">
   <i class="fas fa-circle-question" style="color:#00d2ff;" aria-hidden="true"></i>
@@ -173,8 +173,8 @@
 <!-- Stats animados -->
 <div id="calc-stats" style="display:flex;justify-content:center;flex-wrap:wrap;gap:0;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07);padding:14px 24px;">
   <div style="flex:1;min-width:100px;text-align:center;padding:8px 16px;border-right:1px solid rgba(255,255,255,.07);">
-    <div style="font-size:1.3rem;font-weight:900;color:#D4AF37;"><span class="cds" data-target="500" data-prefix="+">500</span></div>
-    <div style="font-size:.66rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">casos/año</div>
+    <div style="font-size:1.3rem;font-weight:900;color:#D4AF37;">1.800</div>
+    <div style="font-size:.66rem;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.06em;">unidades/año</div>
   </div>
   <div style="flex:1;min-width:100px;text-align:center;padding:8px 16px;border-right:1px solid rgba(255,255,255,.07);">
     <div style="font-size:1.3rem;font-weight:900;color:#D946A6;"><span class="cds" data-target="24" data-suffix="h">24h</span></div>
@@ -384,11 +384,11 @@ html,body{overflow-x:clip;}
       </div>
       <div class="tog-row">
         <div class="tog-info">
-          <div class="lbl">Revisión adicional</div>
-          <small>Desde la 3.ª revisión: 20 % del valor del diseño (las 2 primeras van incluidas)</small>
+          <div class="lbl">2 revisiones</div>
+          <small>Si después de la segunda pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño. No se cobra por adelantado.</small>
         </div>
-        <span class="tog-price" id="tp-revision">+20 %</span>
-        <button type="button" class="tog" role="switch" aria-checked="false" aria-label="Revisión de diseño" onclick="togOp('revision', this)"></button>
+        <span class="tog-price" style="color:var(--cyan)">Incluidas</span>
+        <div class="tog on" style="pointer-events:none;opacity:.6;"></div>
       </div>
     </div>
 
@@ -474,9 +474,9 @@ const PRECIOS_USD = {
   guia_desgaste: { base:21, lbl:'Guía de Desgaste',         fixedQty:false, time:'24h'    },
   plano_mordida: { base:21, lbl:'Plano de Mordida',         fixedQty:false, time:'24h'    },
 };
-const EXTRAS_USD = { urgente:8, revisionPct:0.20 };   // revisión adicional = 20 % del valor del diseño (22-nov-2026)
+const EXTRAS_USD = { urgente:8 };   // la revisión adicional (20 %) no se cotiza: solo se cobra si la piden tras la 2.ª (22-nov-2026)
 let cur = 'USD';
-let ST  = { srv:'corona', qty:1, urgente:false, revision:false };
+let ST  = { srv:'corona', qty:1, urgente:false };
 
 function fmtVal(v) {
   if (cur === 'USD') return v === 0 ? 'Cotizar' : '$' + (Number.isInteger(v) ? v : v.toFixed(2)) + ' USD';
@@ -490,7 +490,6 @@ function calc() {
   const unit = p.base;
   let extras = 0;
   if (ST.urgente)  extras += EXTRAS_USD.urgente;
-  if (ST.revision && unit) extras += Math.round(unit * qty * EXTRAS_USD.revisionPct * 100) / 100;
   const total = unit === 0 ? 0 : unit * qty + extras;
   return { unit, qty, extras, total, p };
 }
@@ -506,7 +505,6 @@ function render() {
   document.getElementById('bdExtras').textContent = extras > 0 ? fmtVal(extras) : '$0';
   document.getElementById('bdTotal').textContent  = cotizar ? '—' : fmtVal(total);
   document.getElementById('tp-urgente').textContent  = cur === 'USD' ? '+$8 USD' : '+$' + (8*USD_COP).toLocaleString('es-CO');
-  document.getElementById('tp-revision').textContent = '+' + Math.round(EXTRAS_USD.revisionPct * 100) + ' %';
   // Actualizar precios en botones de servicio
   Object.keys(PRECIOS_USD).forEach(function(key) {
     const el = document.getElementById('p-' + key);

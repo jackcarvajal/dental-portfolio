@@ -69,7 +69,7 @@ html,body{overflow-x:hidden;}
     <div id="main-content" style="display:none">
         <div class="status-icon">🎨</div>
         <h1 id="title">Diseño listo para revisar</h1>
-        <p id="subtitle">Antes de aprobar, revisa el diseño 3D en el visor. Tienes hasta 2 revisiones incluidas en el precio.</p>
+        <p id="subtitle">Antes de aprobar, revisa el diseño 3D en el visor. Tienes hasta 2 revisiones incluidas en el precio. Si después de la segunda pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño (solo se cobra si la pides).</p>
 
         <div class="caso-info">
             <div class="label">Caso</div>
@@ -284,7 +284,7 @@ async function confirmarCambios() {
             })
         }).catch(() => {});
 
-        showMsg(`Cambios enviados (revisión ${rev}/2). El equipo PRODIGY los atenderá pronto.`, 'ok');
+        showMsg(`Cambios enviados (revisión ${rev}/2). El equipo PRODIGY los atenderá pronto.` + (rev < 2 ? ' Te queda 1 revisión incluida.' : ' Si después de esta pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño.'), 'ok');
         document.getElementById('title').textContent    = '✏️ Cambios solicitados';
         document.getElementById('subtitle').textContent = 'Procesaremos tus cambios y te avisamos cuando el nuevo diseño esté listo.';
 

@@ -605,7 +605,7 @@
             <iframe id="dap-iframe" src="" allowfullscreen title="Visor de diseño dental"></iframe>
         </div>
         <div class="dap-notas-area" id="dap-notas-area">
-            <p style="font-size:.75rem;color:#94a3b8;margin-bottom:8px;">Describe qué cambios necesitas (hasta 2 revisiones sin costo):</p>
+            <p id="dap-rev-msg" style="font-size:.75rem;color:#94a3b8;margin-bottom:8px;">Describe qué cambios necesitas. Tienes 2 revisiones incluidas en el precio; si después de la segunda pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño.</p>
             <textarea id="dap-notas" placeholder="Ej: aumentar emergencia del perfil, ajustar contacto proximal diente 12…"></textarea>
         </div>
         <div class="dap-footer">
@@ -1663,6 +1663,10 @@ function abrirAprobacion(id, link) {
     if (!_pedidosDoc.find(p => p.id === id)) { toast('Pedido no encontrado', 'error'); return; }
     try { const u = new URL(link); if (u.protocol !== 'https:') throw new Error(); } catch { toast('Link de diseño inválido', 'error'); return; }
     _dapId = id;
+    const _revN = (_pedidosDoc.find(p => p.id === id)?.revisiones_usadas || 0) + 1;
+    document.getElementById('dap-rev-msg').innerHTML = _revN <= 2
+        ? 'Describe qué cambios necesitas. Esta será tu <strong>revisión ' + _revN + ' de 2</strong> incluidas en el precio. Si después de la segunda pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño (no se cobra por adelantado).'
+        : 'Ya usaste las 2 revisiones incluidas. Cada revisión adicional cuesta el 20 % del valor del diseño: escríbenos por WhatsApp y te confirmamos el valor antes de hacer el cambio.';
     document.getElementById('dap-iframe').src = link;
     document.getElementById('dap-link-ext').href = link;
     document.getElementById('dap-notas-area').style.display = 'none';
@@ -1703,7 +1707,7 @@ async function enviarCambios() {
     if (typeof validarTextoPublico === 'function') { const v = validarTextoPublico(notas); if (!v.ok) { toast(v.error, 'error'); return; } }
     const pedido = _pedidosDoc.find(p => p.id === _dapId);
     const rev = (pedido?.revisiones_usadas || 0) + 1;
-    if (rev > 2) { toast('Ya usaste las 2 revisiones sin costo. Contáctanos por WhatsApp.', 'error'); return; }
+    if (rev > 2) { toast('Ya usaste las 2 revisiones incluidas. Cada revisión adicional cuesta el 20 % del valor del diseño: escríbenos por WhatsApp.', 'error'); return; }
     const { error } = await sb.from('pedidos_doctor').update({ notas_cambios: notas, revisiones_usadas: rev }).eq('id', _dapId);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
     if (typeof notif_cambiosSolicitados === 'function') notif_cambiosSolicitados(pedido.id, _nombreDoctor || 'Cliente', notas, rev);

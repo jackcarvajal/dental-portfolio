@@ -1025,8 +1025,8 @@ async function uploadFotos(files, prefix, barEl, statEl) {
 function abrirCambio() {
   const cc = _p.cambios_count || 0;
   document.getElementById('cambio-costo-msg').innerHTML = cc >= 2
-    ? '<strong style="color:#fbbf24;">⚠️ Tus 2 cambios incluidos ya fueron usados.</strong> Esta solicitud tiene costo equivalente a un nuevo diseño. El equipo te contactará para confirmar antes de proceder.'
-    : `Incluimos 2 cambios antes de descargar. <strong style="color:var(--text);">Tienes ${2-cc} restante${2-cc===1?'':'s'} sin costo.</strong>`;
+    ? '<strong style="color:#fbbf24;">⚠️ Ya usaste las 2 revisiones incluidas.</strong> Esta revisión adicional cuesta el 20 % del valor del diseño. El equipo te confirma el valor antes de hacer el cambio.'
+    : `Incluimos 2 revisiones en el precio. <strong style="color:var(--text);">Esta será tu revisión ${cc+1} de 2.</strong> Si después de la segunda pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño (solo se cobra si la pides).`;
   document.getElementById('cambio-texto').value = '';
   document.getElementById('cambio-fotos').value = '';
   document.getElementById('cambio-prog').style.display = 'none';
