@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-22 (h) — Sin 50/50 fuera de Laboratorio Full; auditoría de política ampliada
+
+- 🟡 Diseño, fresado e impresión son 100 % anticipado: fuera «abona el 50 % / 50 % contra entrega» de los HowTo (index, nosotros, envia-tu-scanner, alineadores-cad, impresion-3d), las FAQ de ferulas-oclusales y rehabilitacion-sobre-implantes y las plantillas de WhatsApp de app/clientes y app/bandeja-solicitudes. Sin repetir la regla (se quita la coletilla; vive en términos, /preguntas, panel y correo).
+- 🟡 tools/audit.mjs sección 7: bloquea el 50/50 fuera de flujo-lab, «refinamiento/entrega sin costo», «Retiro en sede (Gratis)», y revisa también js/*.js.
+- ✅ Auditoría en vivo (audit-live): 116 páginas, 0 problemas.
+- Nota: en/veneer-terms y el asistente (carillas para EE. UU.) siguen con «50 % para iniciar y 50 % antes del envío»: es producto terminado (Laboratorio Full); pendiente que Alejandro decida si el primer pedido va al 100 %.
+
 ## 2026-11-22 (g) — SQL de créditos corrido; envíos y refinamiento sin «gratis»
 
 - ✅ `sql/creditos-revision-20-2026.sql` corrido por Alejandro; verificado en la base: revision_extra = 0.20, revisiones_incluidas = 2.00 (negocio alejandrocadcam).
