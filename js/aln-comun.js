@@ -1,7 +1,7 @@
 /* PRODIGY — Alineadores: lógica compartida del tablero de la técnica/admin (app/alineadores.html)
    y del portal del cliente (app/facturacion-alineadores.html).
    · Fase del TRATAMIENTO según el pronóstico: fin = fecha_fin_tratamiento o (fecha de envío + «N meses»).
-     En tratamiento → Refinamiento sin costo (hasta 6 meses después del fin) → Término vencido.
+     En tratamiento → Refinamiento incluido en el plan (hasta 6 meses después del fin) → Término vencido.
    · Gráficos ligeros sin librerías (barras apiladas y dona SVG). */
 (function(){
   const esc = s => String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -35,7 +35,7 @@
     if (hoy < hasta) return { k:'refina', fin:f.d, est:f.est, hasta };
     return { k:'vencido', fin:f.d, est:f.est, hasta };
   }
-  const TRAT_LBL = { curso:'En tratamiento', refina:'Refinamiento sin costo', vencido:'Término vencido', sindatos:'Faltan fechas' };
+  const TRAT_LBL = { curso:'En tratamiento', refina:'Refinamiento incluido', vencido:'Término vencido', sindatos:'Faltan fechas' };
   function celdaTrat(c){
     const t = trat(c);
     if (!t) return '<span class="l2" style="margin:0">—</span>';
@@ -43,7 +43,7 @@
     const aprox = t.est ? '~' : '';
     if (t.k === 'curso') return `<span class="pill enviado">En tratamiento</span><span class="l2">Fin ${aprox}${fmtDY(t.fin)}</span>` +
       (t.p != null ? `<div class="prog" title="${Math.round(t.p*100)} % del tiempo previsto"><i style="width:${Math.round(t.p*100)}%"></i></div>` : '');
-    if (t.k === 'refina') return `<span class="pill aprobado">Refinamiento sin costo</span><span class="l2">Hasta ${fmtDY(t.hasta)} · terminó ${aprox}${fmtDY(t.fin)}</span>`;
+    if (t.k === 'refina') return `<span class="pill aprobado">Refinamiento incluido</span><span class="l2">Hasta ${fmtDY(t.hasta)} · terminó ${aprox}${fmtDY(t.fin)}</span>`;
     return `<span class="pill factur">Término vencido</span><span class="l2">Terminó ${aprox}${fmtDY(t.fin)} · refinamiento con costo</span>`;
   }
 

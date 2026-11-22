@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-22 (g) — SQL de créditos corrido; envíos y refinamiento sin «gratis»
+
+- ✅ `sql/creditos-revision-20-2026.sql` corrido por Alejandro; verificado en la base: revision_extra = 0.20, revisiones_incluidas = 2.00 (negocio alejandrocadcam).
+- 🟡 terminos-y-legal: «Entrega personal en Bogotá: sin costo» no existe en los flujos → retiro en el laboratorio + mensajería por app que paga el cliente (como el selector de envío de flujo-fresado / flujo-impresion). Esos selectores: «Retiro en sede (Gratis)» → «(sin envío)».
+- 🟡 Alineadores: «Refinamiento sin costo» → «Refinamiento incluido» (va en el precio del plan; la política no cambia: 1 refinamiento dentro de 6 meses del fin, después con costo) en js/aln-comun.js, app/alineadores, app/facturacion-alineadores, envia-alineadores y el Centro de ayuda (ayuda-articulos.json).
+- ?v= aln-comun 20261122a (alineadores, facturacion-alineadores, nueva-orden-alineadores), ayuda-articulos 20261122a.
+
 ## 2026-11-22 (f) — Sin «ajustes sin costo» ni envío gratis; auditoría más estricta
 
 - 🟡 Textos que prometían ajustes ilimitados o «sin costo» → «2 revisiones incluidas en el precio» (y el 20 % después de la segunda donde aplica): diseno-cad (+ diccionario EN), diseno-remoto (FAQ, tarjeta, flujo), envia-tu-scanner (garantía: error nuestro = se corrige sin cargo), guias-quirurgicas (paso 3, FAQ, HowTo), js/i18n.js, js/caso-etapas.js, js/emailnotif.js (correo de revisión: «última revisión incluida; después, 20 %»), i18n/en.json, app/panel-interno-operaciones y app/papeleria (WhatsApp «2 revisiones incluidas»), revision-express.
@@ -32,7 +39,7 @@
 - 🟡 Valoración del caso: su valor depende del caso y del tipo de servicio (se confirma por WhatsApp antes de empezar) en /preguntas, /en/faq, guias-quirurgicas y asistente. Guías quirúrgicas: «Pedir valoración previa (opcional)» abre WhatsApp con el mensaje listo.
 - 🟡 Barra «Order in … receive today» de 4 /en/: tampoco sale en festivos colombianos (js/fechas-habiles.js, solo lectura; calcularFechaEntrega() intacta).
 - 🟡 tools/audit.mjs (y el de Alejandro), sección 7 CRÍTICA: bloquea el push si una página promete algo gratis («Primera consulta gratis», «you don't pay», «Sin riesgo», «Evaluación gratis»…) o pone la revisión adicional a un % distinto de 20. Excluye las preguntas («¿Hacen un caso de prueba gratis?») y las palabras clave del buscador.
-- 🔴 **SQL pendiente de correr:** `sql/creditos-revision-20-2026.sql` — regla revision_extra de Alejandro 0,5 → 0,2 crédito. Hasta correrlo, una 3.ª revisión pagada con créditos descuenta 0,5. `sql/creditos-diseno-2026.sql` ya trae 0,2 en la semilla y los respaldos.
+- ✅ **SQL corrido (22-nov, verificado: revision_extra 0.20, revisiones_incluidas 2.00):** `sql/creditos-revision-20-2026.sql` — regla revision_extra de Alejandro 0,5 → 0,2 crédito. Hasta correrlo, una 3.ª revisión pagada con créditos descuenta 0,5. `sql/creditos-diseno-2026.sql` ya trae 0,2 en la semilla y los respaldos.
 - ?v= header 20261122e, articles 20261122b.
 
 ## 2026-11-22 (c) — Nada gratis + horario del sábado

@@ -242,7 +242,7 @@ ol.seg-pasos li span.d{display:block;font-size:.8rem;color:var(--muted);font-wei
 <script src="../js/auth-guard.js?v=20260929"></script>
 <script>ProdigyAuth.require(['client','admin','operator','contabilidad']);</script>
 <script src="../js/notif-panel.js?v=20260924"></script>
-<script src="../js/aln-comun.js?v=20260929b"></script>
+<script src="../js/aln-comun.js?v=20261122a"></script>
 <script>
 const escH=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const escJ=s=>escH(String(s==null?'':s).replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\r?\n/g,'\\n'));   // texto dentro de '…' en onclick
@@ -301,7 +301,7 @@ function render(){
     <div class="kc deuda"><div class="k">Pendiente por pagar</div><div class="v">$${nf.format(Math.round(pend))}</div><div class="sub" style="margin:0">USD</div></div>
     <div class="kc pagado"><div class="k">Ya pagado</div><div class="v">$${nf.format(Math.round(pag))}</div><div class="sub" style="margin:0">USD</div></div>
     <div class="kc info"><div class="k">Por revisar</div><div class="v">${nRev}</div><div class="sub" style="margin:0">viabilidad o plan</div></div>
-    <div class="kc mg"><div class="k">En tratamiento</div><div class="v">${nTrat}</div><div class="sub" style="margin:0">${nRef} con refinamiento sin costo</div></div>`;
+    <div class="kc mg"><div class="k">En tratamiento</div><div class="v">${nTrat}</div><div class="sub" style="margin:0">${nRef} con refinamiento incluido</div></div>`;
   document.getElementById('guia').innerHTML = nRev ? `👉 Tienes <b>${nRev}</b> entrega${nRev===1?'':'s'} por revisar: pulsa <b>Revisar</b> para aprobar o pedir cambios.` : '';
   document.getElementById('nRev').textContent = nRev||'';
   renderCasos();
@@ -403,7 +403,7 @@ const FILTROS=[
   {k:'proceso', lbl:'En proceso', dot:'var(--mg)', f:c=>etapaCli(c)==='proceso'},
   {k:'espera',  lbl:'En espera de pago', dot:'#ef4444', f:c=>etapaCli(c)==='espera', ocultarSiCero:true},
   {k:'curso',   lbl:'En tratamiento', dot:'#00d2ff', f:c=>faseC(c)==='curso'},
-  {k:'refina',  lbl:'Refinamiento sin costo', dot:'var(--green)', f:c=>faseC(c)==='refina'},
+  {k:'refina',  lbl:'Refinamiento incluido', dot:'var(--green)', f:c=>faseC(c)==='refina'},
   {k:'vencido', lbl:'Término vencido', dot:'#64748b', f:c=>faseC(c)==='vencido'},
   {k:'soloval', lbl:'Solo viabilidad y valoración', dot:'#94a3b8', f:c=>etapaCli(c)==='soloval'},
   {k:'cancelado', lbl:'Cancelados', dot:'#475569', f:c=>c.estado==='cancelado', ocultarSiCero:true}
@@ -548,7 +548,7 @@ async function guardarPago(){
 }
 function verPoliticas(){ document.getElementById('polTxt').innerHTML=ALN.POLITICAS_HTML+'<p class="sub" style="margin:10px 0 0">Versión '+escH(ALN.POL_VER)+'. Las tarifas vigentes constan en tu estado de cuenta.</p>'; document.getElementById('ovPol').classList.add('show'); }
 /* ── Seguimiento del caso: en qué etapa va y de quién es el turno (cliente o PRODIGY) ── */
-const PASOS_ALN=['Caso recibido','Viabilidad y valoración','Planificación del tratamiento','Planificación aprobada','En tratamiento','Refinamiento sin costo'];
+const PASOS_ALN=['Caso recibido','Viabilidad y valoración','Planificación del tratamiento','Planificación aprobada','En tratamiento','Refinamiento incluido'];
 function seguimiento(c){
   const e=entregasDe(c.id)[0], t=ALN.trat(c);
   const r={paso:1, turno:'lab', titulo:'', detalle:''};
@@ -564,8 +564,8 @@ function seguimiento(c){
   if(c.estado==='valoracion') return {paso:1, turno:'lab', titulo:'En nuestra cancha: viabilidad y valoración', detalle:'Estamos revisando los archivos para decirte si el caso es viable y cómo se plantea.'};
   if(c.estado==='planificacion') return {paso:2, turno:'lab', titulo:'En nuestra cancha: planificación del tratamiento', detalle:'Estamos haciendo la planificación (movimientos y número de alineadores). Te la enviamos para que la revises.'};
   if(t && t.k==='curso') return {paso:4, turno:'ok', titulo:'En tratamiento', detalle:'El paciente está usando sus alineadores. Fin estimado: '+ALN.fmtDY(t.fin)+'. Si necesitas ajustar algo antes de terminar, es una modificación de la planeación.'};
-  if(t && t.k==='refina') return {paso:5, turno:'ok', titulo:'Ventana de refinamiento sin costo', detalle:'El tratamiento terminó; puedes pedir refinamiento sin costo hasta el '+ALN.fmtDY(t.hasta)+'.'};
-  if(t && t.k==='vencido') return {paso:6, turno:'ok', titulo:'Tratamiento terminado', detalle:'Terminó el tratamiento y la ventana de refinamiento sin costo.'};
+  if(t && t.k==='refina') return {paso:5, turno:'ok', titulo:'Ventana de refinamiento incluido', detalle:'El tratamiento terminó; el refinamiento va incluido en el plan hasta el '+ALN.fmtDY(t.hasta)+'.'};
+  if(t && t.k==='vencido') return {paso:6, turno:'ok', titulo:'Tratamiento terminado', detalle:'Terminó el tratamiento y la ventana de refinamiento incluido; desde ahora el refinamiento tiene costo.'};
   return {paso:3, turno:'ok', titulo:'Planificación aprobada', detalle:'La planificación está aprobada y los archivos fueron entregados.'};
 }
 const TURNO_TXT={cli:'En tu cancha', lab:'En PRODIGY', ok:'Sin pendientes', pausa:'En pausa'};
