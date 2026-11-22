@@ -36,7 +36,7 @@
 <link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/diseno-remoto">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
 <link rel="preload" href="https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiJ-Ek-_EeA.woff2" as="font" type="font/woff2" crossorigin fetchpriority="high">
-<link rel="preload" href="../js/header.js?v=20261122c" as="script">
+<link rel="preload" href="../js/header.js?v=20261122d" as="script">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -85,7 +85,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Skip to main content</a>
-<script src="../js/header.js?v=20261122c"></script>
+<script src="../js/header.js?v=20261122d"></script>
 <div id="urgencia-bar"></div>
 <main id="main-content">
 
@@ -157,8 +157,8 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
       </div>
       <div class="card">
         <div style="font-size:1.5rem;margin-bottom:10px;">🔄</div>
-        <div style="font-size:.88rem;font-weight:800;color:#4ade80);margin-bottom:6px;">2 free revisions</div>
-        <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">Every case includes up to 2 free revision rounds before final approval — plus a 3D preview video for full-arch or complex cases.</p>
+        <div style="font-size:.88rem;font-weight:800;color:#4ade80);margin-bottom:6px;">2 revisions included</div>
+        <p style="font-size:.8rem;color:var(--muted);line-height:1.6;">Every case includes up to 2 revision rounds before final approval — plus a 3D preview video for full-arch or complex cases.</p>
       </div>
       <div class="card">
         <div style="font-size:1.5rem;margin-bottom:10px;">📁</div>
@@ -269,11 +269,11 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 <!-- CTA FINAL -->
 <section style="padding:60px 24px;background:linear-gradient(135deg,rgba(217,70,166,.1),rgba(0,210,255,.06));text-align:center;">
   <div style="max-width:520px;margin:0 auto;">
-    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:10px;">Send your first case today.<br>No risk.</h2>
-    <p style="color:var(--muted);font-size:.9rem;margin-bottom:8px;">First consultation free. No contract. No exclusivity.<br>If the first design doesn't meet your standards — <strong style="color:#e2e8f0;">you don't pay</strong>.</p>
+    <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:10px;">Send your first case today.</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-bottom:8px;">No contract. No exclusivity. No minimum orders.<br>Every design includes <strong style="color:#e2e8f0;">2 revisions</strong> before final approval.</p>
     <p style="font-size:.78rem;color:var(--muted);margin-bottom:24px;">+500 cases delivered · From 15 min* · Human-verified</p>
     <a href="https://wa.me/573212816716?text=Hello%20PRODIGY%2C%20I%20want%20to%20send%20my%20first%20CAD%20design%20case.%20How%20do%20we%20start%3F" target="_blank" rel="noopener noreferrer" class="btn-wa" style="max-width:440px;margin:0 auto;font-size:1rem;">
-      <span style="font-size:1.35rem;">💬</span><span>Send first case — free consultation</span>
+      <span style="font-size:1.35rem;">💬</span><span>Send your first case</span>
     </a>
     <div style="display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:.73rem;color:var(--muted);">
       <span>✓ No registration required</span><span>✓ 8-min response</span><span>✓ Files 24/7</span>
@@ -327,7 +327,7 @@ h1 em{font-style:normal;background:linear-gradient(90deg,var(--mg),var(--cyan));
 <script>
 (function(){
   var w=document.getElementById('urgencia-bar');
-  function tick(){var n=new Date(),d=n.getDay(),h=n.getHours(),m=n.getMinutes(),s=n.getSeconds();if(d===0||h<8||h>=17){w.style.display='none';return;}var secs=(17-h)*3600-m*60-s,hh=Math.floor(secs/3600),mm=Math.floor((secs%3600)/60),ss=secs%60;w.style.display='block';w.textContent='⚡ Order in '+(hh>0?hh+'h ':'')+mm+'min '+ss+'s and receive today';}tick();setInterval(tick,1000);
+  function tick(){var n=new Date(Date.now()-18e6),d=n.getUTCDay(),h=n.getUTCHours(),m=n.getUTCMinutes(),s=n.getUTCSeconds();if(d===0||d===6||h<8||h>=17){w.style.display='none';return;}var secs=(17-h)*3600-m*60-s,hh=Math.floor(secs/3600),mm=Math.floor((secs%3600)/60),ss=secs%60;w.style.display='block';w.textContent='⚡ Order in '+(hh>0?hh+'h ':'')+mm+'min '+ss+'s and receive today';}tick();setInterval(tick,1000);
 })();
 ['js/utm-tracker.js','js/conversions.js?v=20261120b'].forEach(function(s){var t=document.createElement('script');t.src='/'+s;t.defer=true;document.head.appendChild(t);});
 </script>

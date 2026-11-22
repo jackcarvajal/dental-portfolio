@@ -8479,10 +8479,10 @@ const ARTICLES = [
     },
     {
       "q": "¿Puedo pedir revisión si el diseño no me convence?",
-      "a": "Sí. Incluimos una ronda de revisión sin costo adicional. Si hay ajuste de márgenes, contactos o anatomía, lo hacemos y enviamos el archivo corregido. Revisiones adicionales o cambios de diseño completo tienen costo según el caso."
+      "a": "Sí. Cada diseño incluye 2 revisiones en el precio. Si hay ajuste de márgenes, contactos o anatomía, lo hacemos y enviamos el archivo corregido. Revisiones adicionales o cambios de diseño completo tienen costo según el caso."
     }
   ],
-  "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Nunca has enviado un caso a un lab CAD remoto? Así funciona.\"\n[ESCENA 2 — 5-18s] Screen recording: odontólogo exporta STL desde Medit Link → lo arrastra al chat de WA → \"Enviado ✓\"\n[ESCENA 3 — 18-30s] Pantalla Exocad: diseñador trabajando el caso. Texto: \"Tu caso entra en producción en minutos.\"\n[ESCENA 4 — 30-42s] WhatsApp recibe el STL terminado. Texto: \"24h después: STL listo para tu fresadora.\"\n[ESCENA 5 — 42-50s] Logo PRODIGY. \"Primer caso gratis para nuevos clientes · prodigylabdental.com\"\n📌 Música: workflow moderno, ligero. Muy visual, poco texto.",
+  "video_script": "🎬 GUIÓN REEL — 50 segundos\n[ESCENA 1 — 0-5s] Texto: \"¿Nunca has enviado un caso a un lab CAD remoto? Así funciona.\"\n[ESCENA 2 — 5-18s] Screen recording: odontólogo exporta STL desde Medit Link → lo arrastra al chat de WA → \"Enviado ✓\"\n[ESCENA 3 — 18-30s] Pantalla Exocad: diseñador trabajando el caso. Texto: \"Tu caso entra en producción en minutos.\"\n[ESCENA 4 — 30-42s] WhatsApp recibe el STL terminado. Texto: \"24h después: STL listo para tu fresadora.\"\n[ESCENA 5 — 42-50s] Logo PRODIGY. \"Envía tu primer caso · prodigylabdental.com\"\n📌 Música: workflow moderno, ligero. Muy visual, poco texto.",
   "referencias": [
     {
       "autores": "Mangano F, Gandolfi A, Luongo G, Logozzo S.",

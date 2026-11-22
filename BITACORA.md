@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-22 (c) — Nada gratis + horario del sábado
+
+- ✅ Decisión de Alejandro (22-nov): ningún servicio es gratis, tampoco el primer caso (horas del equipo, software, materiales). Valoración del caso = opcional y con costo (se confirma por WhatsApp); el trabajo empieza con el pago. Nueva pregunta «¿Hacen un caso de prueba gratis?» en /preguntas y /en/faq; fuera «First consultation free / you don't pay / No risk», «es gratis», «Evaluación gratis» (guías), «First quote free»; «revisiones gratuitas/free/sin costo» → «incluidas (en el precio)»; asistente: nunca ofrecer gratis.
+- ✅ Horario: L-V 8 a.m.-5 p.m.; sábado sin atención al público, a puerta cerrada (~9-12, recepción y despacho según el flujo); lo del sábado/domingo/festivo queda con fecha del lunes (martes si el lunes es festivo). Alineados nosotros, envia-alineadores, envia-tu-scanner, escaneo-fotogrametria, escaner-domicilio (sin sábados), flujo-lab, /preguntas, /en/faq y el asistente.
+- ✅ Barra «Order in … receive today» de 4 /en/: usaba la hora del visitante y se mostraba en sábado → hora de Colombia (UTC-5) y sin sábados.
+- 💡 Se dejan gratis (no usan tiempo del equipo): crear cuenta, cotizador, instalar la app, guías descargables del Journal, evaluador de implantes con IA. Refinamiento de alineadores <6 meses = política del tratamiento.
+- 🔴 Por decidir: términos de diseño dicen revisión extra = 20 % del valor; sección Revisiones / Alejandro = 50 % desde la tercera.
+
 ## 2026-11-22 (b) — Sin repetir «100 % anticipado»
 
 - ✅ Decisión de Alejandro (22-nov): el cliente se entera al registrarse y pedir; no hace falta recordarlo en todas partes. Quitado: cartel «💵 PAGO 100% ANTICIPADO» de flujo-diseno/fresado/impresión, «(pago 100% al confirmar)» de los WhatsApp, fila duplicada del odontograma y del cotizador de impresión, etiqueta de og-flujo-diseno.jpg, tarjeta de las /en/ de diseño, «Do I pay upfront?» de /en/faq (fusionada en la de pago). Queda en: términos, respuesta de pagos en /preguntas, panel y correo del cliente, centro de ayuda y asistente (solo si preguntan). ?v= header 20261122c, flujo-impresion.js 20261122a, ODO_CFG 20261122a.
