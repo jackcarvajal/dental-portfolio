@@ -14,7 +14,7 @@
 - ✅ `sql/creditos-revision-20-2026.sql` corrido por Alejandro; verificado en la base: revision_extra = 0.20, revisiones_incluidas = 2.00 (negocio alejandrocadcam).
 - 🟡 terminos-y-legal: «Entrega personal en Bogotá: sin costo» no existe en los flujos → retiro en el laboratorio + mensajería por app que paga el cliente (como el selector de envío de flujo-fresado / flujo-impresion). Esos selectores: «Retiro en sede (Gratis)» → «(sin envío)».
 - 🟡 Alineadores: «Refinamiento sin costo» → «Refinamiento incluido» (va en el precio del plan; la política no cambia: 1 refinamiento dentro de 6 meses del fin, después con costo) en js/aln-comun.js, app/alineadores, app/facturacion-alineadores, envia-alineadores y el Centro de ayuda (ayuda-articulos.json).
-- ?v= aln-comun 20261122a (alineadores, facturacion-alineadores, nueva-orden-alineadores), ayuda-articulos 20261122a.
+- ?v= aln-comun 20261122b (alineadores, facturacion-alineadores, nueva-orden-alineadores; la b incluye las políticas del pedido), ayuda-articulos 20261122a.
 
 ## 2026-11-22 (f) — Sin «ajustes sin costo» ni envío gratis; auditoría más estricta
 
