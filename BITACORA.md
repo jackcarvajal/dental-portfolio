@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-22 — Preguntas en inglés (/en/faq) y restos del 50/50
+
+- 🟡 Nueva página https://prodigylabdental.com/en/faq: 16 preguntas para clínicas y labs del exterior (servicios, archivos, tiempos, USD/PayPal/Wise +7 %, 100 % anticipado, 2 revisiones, seguimiento, envíos y garantía de /en/veneer-terms). Lista blanca publicPages + header.js?v=20261122a solo en esa página; hreflang con /preguntas; botón «FAQ» en el hub /en/; sitemap, _headers y og-en-faq.jpg.
+- ✅ La tarjeta «Payment terms» de /en/global-design, dental-aligners, surgical-guides y zirconia-crowns aún decía «Returning clients 50/50» → 100 % para todos; horario en inglés L-V 8-5 (sin sábado).
+- ✅ calculadora-diseno (JSON-LD «1 revisión» → 2 en 48 h; horario), diseno-remoto (horario), factura del panel del cliente → gerencia@, og-flujo-diseno.jpg regenerada sin «50 % abono» (?v=20261122 en og:image).
+- 💡 Sin tocar (lab físico, no diseño): /en/veneers, implant-crowns, full-arch, el hub /en/ y veneer-terms siguen 50 % al iniciar · 50 % antes del envío.
+- 🔴 Por decidir: horarios dispares en páginas de servicio (nosotros, envia-alineadores, envia-tu-scanner, escaneo-fotogrametria, escaner-domicilio, flujo-lab dicen sábado y/o 6 p.m.); «Subir mi primer caso — es gratis» (diseno-remoto) y «si el primer diseño no te convence, no pagas» (páginas /en/) con pago 100 % anticipado.
+
 ## 2026-11-21 (b) — Política de pago: 100 % anticipado en diseño, fresado y modelos
 
 - ✅ Decisión de Alejandro (21-nov): diseño, fresado e impresión (modelos incluidos) 100 % anticipado para TODOS; solo Laboratorio Full conserva primer pedido 100 % / recurrentes 50-50. Se paga en la página (Wompi) o por transferencia con comprobante por WhatsApp, donde se coordina el caso. CLAUDE.md §3b actualizado (antes «Ley 50/50»).
