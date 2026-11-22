@@ -164,7 +164,7 @@ function render(){
 function cardScanner(s){
   const est = s.estado||'nuevo';
   const wa = waNum(s.whatsapp);
-  const cot = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, soy del laboratorio PRODIGY. Recibimos su caso *${s.codigo||''}* (${s.servicio||'escáner'}). Para cotizarlo necesito: material, color VITA, antagonista y fecha deseada. El trabajo se maneja 50% al iniciar y 50% contra entrega. ¿Me confirma esos datos?`);
+  const cot = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, soy del laboratorio PRODIGY. Recibimos su caso *${s.codigo||''}* (${s.servicio||'escáner'}). Para cotizarlo necesito: material, color VITA, antagonista y fecha deseada. ¿Me confirma esos datos?`);
   const saludo = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, le escribo por su caso ${s.codigo||''} enviado a PRODIGY.`);
   const lista = esListaEspera(s);
   const avisar = encodeURIComponent(`Hola Dr(a) ${s.doctor||''}, le escribimos de PRODIGY 🦷 Usted se anotó en nuestra lista de espera de la fotogrametría full-arch (${s.codigo||''}): ¡ya está disponible! ¿Le agendamos el registro para su próximo caso All-on-X?`);

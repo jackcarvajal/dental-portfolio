@@ -203,7 +203,7 @@ async function enlace(id, tipo){
   const vence = new Date(data.expira_at).toLocaleDateString('es-CO', { day:'numeric', month:'long', year:'numeric' });
   const wa = waNum(d.whatsapp);
   const txt = tipo === 'precios'
-    ? `Hola ${saludo(d)} 👋\nLe comparto su lista de precios de PRODIGY Lab Dental. Es un enlace personal (vence el ${vence}):\n${url}\n\nPago 50% al iniciar y 50% contra entrega. Cualquier duda, por aquí le ayudamos.`
+    ? `Hola ${saludo(d)} 👋\nLe comparto su lista de precios de PRODIGY Lab Dental. Es un enlace personal (vence el ${vence}):\n${url}\n\nCualquier duda, por aquí le ayudamos.`
     : `Hola ${saludo(d)} 👋\nEste es su enlace personal para enviarnos casos sin crear cuenta: sube el escáner y nos llega con sus datos (vence el ${vence}):\n${url}`;
   document.getElementById('dlg-c').innerHTML = `
     <p class="nota">${tipo === 'precios'

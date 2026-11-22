@@ -169,6 +169,11 @@ hdr('7) Política comercial: nada gratis · 2 revisiones · revisión adicional 
 const GRATIS = /primera consulta gratis|consulta gratis|evaluaci[oó]n gratis|valoraci[oó]n gratis|primer caso gratis|caso de prueba gratis|(caso|dise[nñ]o|consulta)\s*[—–-]?\s*es gratis|first (consultation|case|quote|design)[^.<]{0,20}\bfree\b|free (consultation|test case|trial case|first case|evaluation|assessment|case review)|you don.t pay|no te (gusta|satisface)[^.<]{0,20}no pagas|paga solo si|primer ajuste gratis|free shipping|env[ií]o gratis|\b(sin riesgo|no risk)\s*[.!<—]/gi;
 // Las 2 revisiones incluidas (22-nov-2026): nada de «una ronda de ajustes», «1 revisión incluida» ni «revisiones sin costo».
 const REV_N = /una ronda de (ajustes|revisi[oó]n)|\b1 revisi[oó]n incluida|revisiones sin costo|one re-?design round|one round of (revisions|adjustments)|\b(ajustes|ajustamos|revisi[oó]n|revisiones|cambios|rondas?)\b[^.<'"]{0,50}sin costo|\b(revisions?|changes|adjust)\b[^.<'"]{0,40}at no (extra |additional )?cost/gi;
+// Lo que va en el precio se dice «incluido» (22-nov-2026): el refinamiento de alineadores, el retiro en sede, etc.
+const INCL = /refinamientos? (sin costo|gratis)|uno sin costo si se solicita|entrega personal[^.]{0,80}sin costo|retiro en sede \(gratis\)|free refinement/gi;
+const JS_POL = existsSync(join(ROOT, 'js')) ? readdirSync(join(ROOT, 'js')).filter(n => n.endsWith('.js')).map(n => join(ROOT, 'js', n)) : [];
+// Política de pago (21-nov-2026): diseño, fresado e impresión 100 % anticipado; el 50/50 solo existe en Laboratorio Full.
+const PAGO50 = /abona el 50 ?%|paga el 50 ?%|pagas el 50 ?% restante|50 ?% (inicio|para iniciar|al iniciar|de anticipo)/gi;
 const REV_PCT = /(revisi[oó]n|revisiones|revisions?)[^.<'"{}]{0,140}?(\d{1,3})\s?%/gi;
 let polIssues = 0;
 for (const f of htmlFiles) {
@@ -180,10 +185,17 @@ for (const f of htmlFiles) {
     if (/^[^.<!]*\?/.test(post)) continue;      // es la pregunta («¿Hacen un caso de prueba gratis?»), no una oferta
     polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m promete algo gratis: «' + t.slice(m.index, m.index + 70).replace(/\s+/g, ' ') + '»');
   }
+  if (rel(f) !== 'flujo-lab.html') for (const m of t.matchAll(PAGO50)) { polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m el 50/50 es solo de Laboratorio Full: «' + m[0] + '»'); }
+  for (const m of t.matchAll(INCL)) { polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m lo incluido en el precio se dice «incluido»: «' + m[0] + '»'); }
   for (const m of t.matchAll(REV_N)) { polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m contradice las 2 revisiones incluidas: «' + m[0] + '»'); }
   for (const m of t.replace(/<\/?(strong|b|em|i|a|span|small)\b[^>]*>/gi, '').replace(/<[^>]+>/g, '. ').matchAll(REV_PCT)) if (m[2] !== '20') {
     polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m revisión adicional al ' + m[2] + ' % (la política es 20 %): «' + m[0].slice(-90).replace(/\s+/g, ' ') + '»');
   }
+}
+for (const f of JS_POL) {
+  const t = readFileSync(f, 'utf8');
+  for (const m of t.matchAll(INCL)) { polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m lo incluido en el precio se dice «incluido»: «' + m[0] + '»'); }
+  for (const m of t.matchAll(REV_N)) { polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m contradice las 2 revisiones incluidas: «' + m[0] + '»'); }
 }
 critical += polIssues;
 if (!polIssues) console.log('   \x1b[32m✓ sin ofertas gratis ni revisiones a un porcentaje distinto del 20 %\x1b[0m');
