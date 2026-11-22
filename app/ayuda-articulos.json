@@ -811,15 +811,15 @@
     {
       "id": "politica-pago",
       "cat": "clientes",
-      "titulo": "Cuánto paga el cliente para empezar (100 % o 50/50)",
-      "resumen": "La regla de pago de cada flujo y cómo sabe la web si el cliente es recurrente.",
+      "titulo": "Cuánto paga el cliente para empezar (100 % anticipado)",
+      "resumen": "La regla de pago de cada flujo (decisión del 21-nov-2026) y cómo se paga.",
       "para": "Todo el equipo",
       "kw": "pago abono 50 100 anticipado recurrente primer pedido saldo despacho politica cobro",
       "pasos": [
-        "**Diseño:** se paga el 100 % antes de empezar, siempre.",
-        "**Impresión y Laboratorio:** primer pedido, 100 % para empezar. **Cliente recurrente** (ya tiene al menos un pedido con pago confirmado): 50 % de abono para empezar y 50 % antes del despacho.",
-        "**Fresado:** por ahora no tiene precios en la web (modo «cotizar»): se cotiza por WhatsApp. Ver el artículo de fresado.",
-        "Si el doctor entra con su cuenta, la web detecta sola si es recurrente y se lo muestra en el carrito, en el mensaje de WhatsApp y al terminar. Sin sesión, la web muestra el 100 % y avisa que los recurrentes pagan 50 %: confirma tú en el panel si ya tiene pedidos pagados.",
+        "**Diseño, fresado e impresión (modelos incluidos):** 100 % antes de empezar, para todos los clientes, nuevos o recurrentes.",
+        "**Fresado:** por ahora no tiene precios en la web (modo «cotizar»): se cotiza por WhatsApp y se paga el 100 % al aceptar la cotización. Ver el artículo de fresado.",
+        "**Laboratorio Full:** primer pedido, 100 % para empezar. **Cliente recurrente** (ya tiene al menos un pedido con pago confirmado): 50 % de abono para empezar y 50 % antes del despacho. La web lo detecta sola si el doctor entra con su cuenta.",
+        "**Cómo paga el cliente:** en la página al registrar el pedido (Wompi: PSE o tarjeta, +3 %) o por transferencia (Nequi, Daviplata, Bancolombia) sin comisión. Si transfiere, envía el comprobante por WhatsApp y por ahí se coordinan los detalles del caso. Exterior: PayPal o Wise (+7 %).",
         "Ningún caso sale del laboratorio sin el saldo pagado al 100 %.",
         "Cliente nuevo de WhatsApp: también paga el 100 % por adelantado. No hay recogidas ni casos de prueba sin costo."
       ],

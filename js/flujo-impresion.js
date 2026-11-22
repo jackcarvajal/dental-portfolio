@@ -92,54 +92,17 @@
         let SUB_MATERIALES = SUB_MATERIALES_FALLBACK;
 
         // ─────────────────────────────────────────────
-        // CLIENTE RECURRENTE (política 19-nov-2026): recurrente = ya tiene un pedido con pago_confirmado.
-        // null = sin sesión / consulta fallida (mensaje genérico); true / false = con sesión. Nunca bloquea el pedido.
+        // CONDICIÓN DE PAGO (política 21-nov-2026): la impresión 3D (modelos incluidos) se paga 100 % anticipado,
+        // para todos los clientes: en la página (Wompi) o por transferencia enviando el comprobante por WhatsApp.
+        // Antes (19-nov) los clientes recurrentes pagaban 50/50; ya no hace falta consultar el historial.
+        // No toca calcularTotal() ni STATE.
         // ─────────────────────────────────────────────
-        let _clienteRecurrente = null;
-        async function detectarClienteRecurrente() {
-            try {
-                const sb = (typeof getSupabase === 'function') ? getSupabase() : null;
-                if (!sb) return;
-                const consulta = (async () => {
-                    const user = (await sb.auth.getSession()).data?.session?.user;
-                    if (!user) return null;
-                    const filtro = 'user_id.eq.' + user.id + (user.email ? ',email.eq."' + String(user.email).replace(/"/g, '') + '"' : '');
-                    const { data, error } = await sb.from('pedidos').select('id')
-                        .eq('negocio', 'prodigy').eq('pago_estado', 'pago_confirmado').eq('es_prueba', false)
-                        .or(filtro).limit(1);
-                    if (error) return null;
-                    return (data || []).length > 0;
-                })();
-                const limite = new Promise(res => setTimeout(() => res(null), 2000));
-                _clienteRecurrente = await Promise.race([consulta, limite]);
-            } catch (_) { _clienteRecurrente = null; }
-            pintarAvisoRecurrente();
-        }
-
-        // Aviso en pantalla de la condición de pago (misma política que el texto de WhatsApp). Solo lee #calc-total:
-        // no toca calcularTotal() ni STATE. Se repinta al terminar la detección y cada vez que cambia el total.
-        function pintarAvisoRecurrente() {
-            const el = document.getElementById('aviso-recurrente');
+        function pintarAvisoPago() {
+            const el = document.getElementById("aviso-recurrente");
             if (!el) return;
-            const tot = document.getElementById('calc-total');
-            const n = tot ? (parseInt(String(tot.textContent).replace(/[^0-9]/g, ''), 10) || 0) : 0;
-            const fm = v => '$' + v.toLocaleString('es-CO');
-            let h;
-            if (_clienteRecurrente === true) {
-                h = '<strong style="color:#D4AF37;">Cliente recurrente:</strong> pagas 50 % para iniciar y 50 % contra entrega';
-                if (n > 0) { const ab = Math.round(n / 2); h += '<br>Abono ' + fm(ab) + ' · Saldo ' + fm(n - ab); }
-            } else if (_clienteRecurrente === false) {
-                h = '<strong style="color:#D946A6;">Primer pedido:</strong> se paga el 100 % para iniciar';
-            } else {
-                h = '<strong style="color:#00d2ff;">Primer pedido 100 %</strong> · clientes recurrentes 50/50';
-            }
-            if (el.innerHTML !== h) el.innerHTML = h;
+            el.innerHTML = "<strong style=\"color:#D4AF37;\">Pago 100 % anticipado:</strong> en la página (PSE / tarjeta) o por transferencia; envías el comprobante por WhatsApp y por ahí coordinamos los detalles.";
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            pintarAvisoRecurrente();
-            const t = document.getElementById('calc-total');
-            if (t && window.MutationObserver) new MutationObserver(pintarAvisoRecurrente).observe(t, { childList: true, characterData: true, subtree: true });
-        });
+        document.addEventListener("DOMContentLoaded", pintarAvisoPago);
 
         // ─────────────────────────────────────────────
         // PAGO CON WOMPI SOBRE EL PEDIDO REAL (19-nov-2026)
@@ -151,7 +114,7 @@
         // Recargo (mismo criterio que diseño y fresado): si el cliente eligió PSE / tarjeta (casilla de
         // transferencia desmarcada) el 3 % va DENTRO de precio_total → total que ve = precio_total
         // guardado = lo que cobra Wompi. Con transferencia no hay recargo y se paga como siempre.
-        // Wompi cobra el 100 % del pedido en un solo pago (el 50/50 de recurrentes aplica a transferencia).
+        // Wompi cobra el 100 % del pedido en un solo pago (por transferencia también se paga el 100 %: política 21-nov-2026).
         // ─────────────────────────────────────────────
         let _pedidoImpGuardado = null;   // { codigo, monto, wompi, email, promesa(→ true/false) }
 
@@ -2421,23 +2384,11 @@
             if (_recargoImp > 0) texto += `💳 *Comisión Wompi (PSE / tarjeta, 3 %):* +$${_recargoImp.toLocaleString('es-CO')}\n`;
             if (_cupImp) texto += `🎁 *CUPÓN:* ${_cupImp.cupon} (-$${_descCuponImp.toLocaleString('es-CO')} COP)\n`;
             let _totalImp = (_recargoImp > 0 || _cupImp) ? '$' + _precioTotalImp.toLocaleString('es-CO') : STATE.total;
-            // Política de Alejandro (19-nov-2026): primer pedido 100 % · clientes recurrentes 50 % abono / 50 % contra entrega.
+            // Política 21-nov-2026: impresión 3D (modelos incluidos) 100 % anticipado para todos los clientes.
             texto += `💵 *TOTAL: ${_totalImp}*\n`;
-            {
-                const _n = parseInt(String(_totalImp).replace(/[^0-9]/g, ''), 10) || 0, _ab = Math.round(_n / 2);
-                // _clienteRecurrente: true / false (con sesión) o null (sin sesión / falló la consulta → texto genérico)
-                if (_recargoImp > 0) {
-                    texto += `_Pago en línea con Wompi: el 100 % en un solo pago al registrar la orden._\n\n`;
-                } else if (_clienteRecurrente === false) {
-                    texto += `_Primer pedido: se paga el 100 % para iniciar._\n\n`;
-                } else {
-                    texto += `💳 *Abono para iniciar (50 %):* $${_ab.toLocaleString('es-CO')}\n`;
-                    texto += `💳 *Saldo contra entrega (50 %):* $${(_n - _ab).toLocaleString('es-CO')}\n`;
-                    texto += _clienteRecurrente === true
-                        ? `_✅ Cliente recurrente: pagas 50 % para iniciar y 50 % contra entrega._\n\n`
-                        : `_Primer pedido con PRODIGY: se paga el 100 % para iniciar. Clientes recurrentes: 50/50._\n\n`;
-                }
-            }
+            texto += _recargoImp > 0
+                ? `_Pago en línea con Wompi: el 100 % en un solo pago al registrar la orden._\n\n`
+                : `_Pago 100 % anticipado por transferencia: envío el comprobante por este chat._\n\n`;
 
             // Anillas (solo para guías quirúrgicas)
             const _anillasR = document.querySelector('input[name="anillas_opcion"]:checked');
@@ -2781,7 +2732,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             // Cargar precios dinámicos desde Supabase (async, no bloquea UI)
             inicializarCatalogo();
-            detectarClienteRecurrente(); // async, cachea en _clienteRecurrente
 
             limitarExtras();
 

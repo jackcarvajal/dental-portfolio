@@ -32,8 +32,8 @@ mismo proyecto Supabase (`zgihrwqfyvgyapbwzkvw`), separados por la columna `nego
 Checklist completo (meta-tags `<head>`, body, colores alternantes, login, multiidioma, og:image, precios duales, protocolo CDR): **`docs/GUIA-PAGINAS-NUEVAS.md`** — leer antes de crear una página pública.
 - ⚠️ "Mantenimiento" NO es sitio caído: es una **lista blanca** en `js/header.js` (`publicPages`). Toda página nueva DEBE agregarse ahí + bump `?v=` o cae en `/mantenimiento` (y Googlebot la ve "en construcción"). NUNCA se quita el candado para publicar algo: se agrega la página a la lista.
 
-## 3b. LEY 50/50
-Cotizaciones: "50% abono inicio · 50% saldo contra entrega". Precios en COP. WA incluye: Total, Abono, Saldo.
+## 3b. POLÍTICA DE PAGO (21-nov-2026, decisión de Alejandro)
+Diseño, fresado e impresión (modelos incluidos): **100 % anticipado** para todos. Solo Laboratorio Full: primer pedido 100 %, recurrentes 50 % abono · 50 % contra entrega. Se paga en la página (Wompi / créditos) o por transferencia enviando el comprobante por WhatsApp. Sin Stripe. Precios en COP. WA incluye Total (Abono/Saldo solo en Laboratorio Full). Aplica igual en Alejandro.
 
 ## 4. SEGURIDAD — reglas siempre-activas
 - `/app/*.html` (excl. login/reset): `noindex,nofollow` + `auth-guard.js` antes de JS de negocio.

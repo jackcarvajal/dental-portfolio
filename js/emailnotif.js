@@ -33,7 +33,7 @@ function email_nuevoCaso(emailDoctor, codigo, servicio) {
   return enviarEmail(
     emailDoctor,
     `✅ Pedido recibido #${codigo} — PRODIGY Lab`,
-    `Confirmamos que tu pedido #${codigo} (${servicio}) fue creado exitosamente. Pago: 50% abono al inicio · 50% contra entrega. Te avisaremos por WhatsApp y correo en cada etapa.`,
+    `Confirmamos que tu pedido #${codigo} (${servicio}) fue creado exitosamente. Pago: 100 % anticipado (en Laboratorio Full, si ya eres cliente, 50 % de abono y 50 % contra entrega). Te avisaremos por WhatsApp y correo en cada etapa.`,
     'pedido_confirmado'
   );
 }

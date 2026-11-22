@@ -9,6 +9,15 @@
 
 ---
 
+## 2026-11-21 (b) — Política de pago: 100 % anticipado en diseño, fresado y modelos
+
+- ✅ Decisión de Alejandro (21-nov): diseño, fresado e impresión (modelos incluidos) 100 % anticipado para TODOS; solo Laboratorio Full conserva primer pedido 100 % / recurrentes 50-50. Se paga en la página (Wompi) o por transferencia con comprobante por WhatsApp, donde se coordina el caso. CLAUDE.md §3b actualizado (antes «Ley 50/50»).
+- ✅ Alineados: términos (general, diseño, fresado/impresión + JSON-LD), preguntas, flujo-diseno (JSON-LD sin Stripe/50-50/«1 revisión», botón internacional = PayPal o tarjeta), flujo-impresion + js/flujo-impresion.js (aviso y WhatsApp 100 %, sin consulta de cliente recurrente; ?v=20261121a), calculadora-impresion (fila única «100 % anticipado»), odontograma (ODO_CFG.v=20261121a), HowTo de flujo-fresado/fresado-cam/catalogo, diseno-remoto, calculadora(s), recibo-caso, lista-precios, 4 páginas /en/ (sin Stripe, +7 %).
+- ✅ Asistente IA (header.js _pgBuildPrompt): pagos y política nuevos, 2 revisiones en 48 h, garantía, seguro de repetición, horario L-V 8-5 + recepción 24/7, 31 preguntas, formato de código. ?v= header.js → 20261121a en todas las páginas.
+- ✅ Código de pedido real en /seguimiento-caso y preguntas: CAD-/PROD-/LAB- + hexadecimal (antes mostraba «PROD-2026-XXXX», que ningún flujo genera).
+- ✅ Internos: centro de ayuda (politica-pago, ?v=20261121a), client-panel, clientes (WhatsApp de estado de cuenta), emailnotif.js (?v=20261121a).
+- 🔴 Por decidir: términos de diseño dicen revisión extra = 20 % del valor; la sección de revisiones dice 50 % desde la tercera.
+
 ## 2026-11-21 (a) — Preguntas frecuentes al día con lo nuevo
 
 - 🟡 preguntas.html: cobro por flujo (diseño 100 % · impresión y lab: primer pedido 100 %, recurrentes 50/50 · fresado a cotizar), internacional PayPal/Wise +7 % (fuera Stripe, que ninguna página usa), revisiones = 2 (como los términos), horario L–V 8–5 + recepción 24/7, fresado «se cotiza por caso» (ya no remite a precios), nuevas: seguimiento del caso, garantía con exclusiones, seguro de repetición, referidos/cupones, clientes de otros países. JSON-LD FAQPage con los mismos textos y nombres idénticos a las preguntas visibles (28). sitemap lastmod.

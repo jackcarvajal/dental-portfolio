@@ -175,7 +175,7 @@ async function estadoCuenta(id){
   const txt = conSaldo.length
     ? `Hola ${saludo(d)} 👋\nEste es su estado de cuenta con PRODIGY Lab Dental (${hoy}):\n\n` +
       conSaldo.map(p => `• #${p.codigo||p.id.slice(0,8)} — ${p.tipo_trabajo||'Caso'}: Total ${fmtCOP(p.total)} · Abonado ${fmtCOP(p.abonado)} · Saldo ${fmtCOP(p.pend)}`).join('\n') +
-      `\n\nTotal: ${fmtCOP(tTot)}\nAbonado: ${fmtCOP(tAbo)}\n*Saldo por pagar: ${fmtCOP(tPend)}*\n\nRecuerde: 50% de abono al iniciar y 50% de saldo contra entrega. Cualquier duda, por aquí le ayudamos. ¡Gracias!`
+      `\n\nTotal: ${fmtCOP(tTot)}\nAbonado: ${fmtCOP(tAbo)}\n*Saldo por pagar: ${fmtCOP(tPend)}*\n\nRecuerde: diseño, fresado e impresión se pagan 100 % por anticipado; en Laboratorio Full, 50 % de abono al iniciar y 50 % contra entrega. Cualquier duda, por aquí le ayudamos. ¡Gracias!`
     : `Hola ${saludo(d)} 👋\nLe confirmamos que su cuenta con PRODIGY Lab Dental está al día (${hoy}). ¡Gracias por su confianza!`;
   document.getElementById('dlg-c').innerHTML = `
     <div class="tot"><div><b>${fmtCOP(tTot)}</b><span>Total con saldo</span></div><div><b style="color:var(--neon)">${fmtCOP(tAbo)}</b><span>Abonado</span></div><div><b style="color:#f87171">${fmtCOP(tPend)}</b><span>Saldo por pagar</span></div></div>

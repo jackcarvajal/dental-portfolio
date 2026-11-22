@@ -140,8 +140,8 @@ html,body{overflow-x:clip;}
 </head>
 <body>
 <a href="#main-content" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top='0'" onblur="this.style.top='-100%'">Saltar al contenido</a>
-<link rel="preload" href="js/header.js?v=20261120b" as="script">
-<script src="js/header.js?v=20261120b"></script>
+<link rel="preload" href="js/header.js?v=20261121a" as="script">
+<script src="js/header.js?v=20261121a"></script>
 <main id="main-content">
 <div style="background:rgba(0,210,255,.05);border:1px solid rgba(0,210,255,.15);border-radius:10px;padding:10px 16px;margin:16px 0;display:flex;align-items:center;gap:10px;font-size:.78rem;">
   <i class="fas fa-circle-question" style="color:#00d2ff;" aria-hidden="true"></i>
@@ -299,13 +299,9 @@ html,body{overflow-x:clip;}
         <div class="res-bd-row"><span>Extras</span><span id="bdExtras">$0</span></div>
         <div class="res-bd-row total"><span>Total estimado</span><span id="bdTotal">$60.000</span></div>
       </div>
-      <div class="abono-row">
-        <span>Abono para inicio (50%)</span>
-        <strong id="bdAbono">$30.000</strong>
-      </div>
       <div class="abono-row" style="margin-bottom:20px;">
-        <span>Saldo contra entrega (50%)</span>
-        <strong id="bdSaldo">$30.000</strong>
+        <span>Pago para iniciar (100 % anticipado)</span>
+        <strong id="bdAbono">$60.000</strong>
       </div>
       <button type="button" class="btn-wa" onclick="abrirWA()">
         <i class="fab fa-whatsapp"></i> Confirmar por WhatsApp
@@ -322,7 +318,7 @@ html,body{overflow-x:clip;}
         <div class="trust-chip"><i class="fas fa-clock"></i> Respuesta &lt;2h</div>
         <div class="trust-chip"><i class="fas fa-check-circle"></i> Calibrado ±50μm</div>
       </div>
-      <div class="law50"><strong>Pago:</strong> primer pedido 100 % al confirmar · clientes recurrentes 50 % abono y 50 % contra entrega.</div>
+      <div class="law50"><strong>Pago:</strong> 100 % anticipado, en la página o por transferencia con el comprobante por WhatsApp.</div>
     </div>
   </div>
 </div>
@@ -370,8 +366,7 @@ function render() {
   document.getElementById('bdQty').textContent     = '× ' + qty;
   document.getElementById('bdExtras').textContent  = extras > 0 ? fmt(extras) : '$0';
   document.getElementById('bdTotal').textContent   = fmt(total);
-  document.getElementById('bdAbono').textContent   = fmt(total * 0.5);
-  document.getElementById('bdSaldo').textContent   = fmt(total * 0.5);
+  document.getElementById('bdAbono').textContent   = fmt(total);
 }
 
 function selSrv(btn) { document.querySelectorAll('.srv-btn').forEach(b=>b.classList.remove('selected')); btn.classList.add('selected'); ST.srv=btn.dataset.key; render(); }
@@ -382,7 +377,6 @@ function togOp(k,el) { ST[k]=!ST[k]; el.classList.toggle('on',ST[k]); el.setAttr
 function abrirWA() {
   if (!document.getElementById('chkHabeas').checked) { toast('Acepta el tratamiento de datos para continuar'); return; }
   const { unit, qty, extras, total, p } = calc();
-  const abono = Math.round(total * 0.5);
   const msg = `Hola PRODIGY, quiero confirmar impresión 3D:\n\n` +
     `🖨️ *Pieza:* ${p.lbl} · ${MAT_LBL[ST.mat]}\n` +
     `📦 *Cantidad:* ${qty}\n` +
@@ -390,8 +384,7 @@ function abrirWA() {
     (ST.pintura ? `🎨 Pintado y caracterización\n` : '') +
     (ST.envio   ? `🚚 Envío a domicilio\n` : '') +
     `\n💰 *Total:* ${fmt(total)} COP\n` +
-    `💵 *Abono (50%):* ${fmt(abono)} COP\n` +
-    `💵 *Saldo:* ${fmt(total - abono)} COP\n\n` +
+    `💵 *Pago 100 % anticipado* (envío el comprobante por este chat)\n\n` +
     `¿Me confirman disponibilidad?`;
   window.open('https://wa.me/573212816716?text=' + encodeURIComponent(msg), '_blank', 'noopener,noreferrer');
 }

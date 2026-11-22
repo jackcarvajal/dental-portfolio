@@ -118,7 +118,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,'S
       '<section class="hola"><div class="ceja">Lista de precios personal · ' + escH(hoyTxt) + '</div>' +
       '<h1>Hola, ' + escH(sal) + (d.clinica ? ' <span style="color:var(--muted);font-weight:700">· ' + escH(d.clinica) + '</span>' : '') + '</h1>' +
       '<p>Estos son los precios vigentes de PRODIGY Lab Dental en pesos colombianos (COP)' + (d.codigo ? ', para tu código de cliente <b style="color:var(--gold)">' + escH(d.codigo) + '</b>' : '') + '. El enlace es personal y vence el ' + escH(vence) + '.</p>' +
-      '<div class="reglas"><div><i class="fas fa-handshake"></i>50% de abono al iniciar · 50% de saldo contra entrega</div><div><i class="fas fa-eye"></i>Apruebas el diseño antes de producir</div><div><i class="fas fa-truck-fast"></i>Entrega 24–72 h con seguimiento en vivo</div></div></section>';
+      '<div class="reglas"><div><i class="fas fa-handshake"></i>Pago 100 % anticipado · en la página o por transferencia con comprobante por WhatsApp</div><div><i class="fas fa-eye"></i>Apruebas el diseño antes de producir</div><div><i class="fas fa-truck-fast"></i>Entrega 24–72 h con seguimiento en vivo</div></div></section>';
     ['diseno', 'fresado', 'impresion', 'otros'].forEach(function (f) {
       if (!grupos[f]) return;
       var F = FLUJOS[f] || { t: 'Otros servicios', i: 'fa-tooth', c: 'var(--text)', bg: 'rgba(255,255,255,.06)' };

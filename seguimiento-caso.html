@@ -96,9 +96,9 @@
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-100%;left:0;background:#B0267F;color:#fff;padding:10px 20px;font-weight:700;font-size:1rem;z-index:99999;border-radius:0 0 8px 0;transition:top .2s;text-decoration:none;" onfocus="this.style.top=0" onblur="this.style.top='-100%'">Saltar al contenido</a>
 <noscript><div style="text-align:center;padding:40px 20px;background:#0d1520;color:#94a3b8;font-family:sans-serif;">El seguimiento de caso requiere JavaScript. Actívalo o <a href="https://wa.me/573212816716" style="color:#D946A6;">consulta tu caso por WhatsApp</a>.</div></noscript>
-<link rel="preload" href="js/header.js?v=20261120b" as="script">
+<link rel="preload" href="js/header.js?v=20261121a" as="script">
 <script>window._headerConfig = Object.assign(window._headerConfig || {}, { noCta: true });</script>
-<script src="js/header.js?v=20261120b"></script>
+<script src="js/header.js?v=20261121a"></script>
 <main id="main-content">
 
     <style>
@@ -155,10 +155,10 @@
         <!-- BUSCADOR CENTRAL -->
         <div role="search" aria-label="Buscar caso" style="background:rgba(10,14,26,0.7);border:2px solid rgba(255,215,0,0.3);border-radius:20px;padding:28px 32px;text-align:left;">
           <label for="searchOrden" style="color:rgba(248,250,252,0.8);font-weight:700;display:block;margin-bottom:8px;font-size:1rem;letter-spacing:.5px;">NÚMERO DE ORDEN</label>
-          <input type="text" id="searchOrden" placeholder="PROD-2026-XXXX" autocomplete="off" enterkeyhint="search"
+          <input type="text" id="searchOrden" placeholder="Ej: CAD-7F3A9C21B4" autocomplete="off" enterkeyhint="search"
             style="width:100%;padding:14px 18px;background:rgba(5,5,5,0.6);border:2px solid rgba(255,215,0,0.22);border-radius:12px;color:white;font-size:1.05rem;margin-bottom:6px;box-sizing:border-box;outline:none;letter-spacing:1px;"
             onkeydown="if(event.key==='Enter') buscarCasoConSpinner()">
-          <p style="color:#94a3b8;font-size:1rem;margin:0 0 18px;">Lo recibes por WhatsApp cuando creas tu pedido (ej: PROD-2026-0042).</p>
+          <p style="color:#94a3b8;font-size:1rem;margin:0 0 18px;">Lo recibes por WhatsApp cuando creas tu pedido (ej: CAD-7F3A9C21B4).</p>
           <button type="button" onclick="buscarCasoConSpinner()"
             style="width:100%;padding:15px;background:linear-gradient(135deg,#FFD700,#FFA500);color:#0a0e1a;border:none;border-radius:50px;font-size:1rem;font-weight:800;cursor:pointer;letter-spacing:.5px;display:flex;align-items:center;justify-content:center;gap:8px;">
             <i class="fas fa-search" aria-hidden="true"></i> Buscar Mi Caso
@@ -213,7 +213,7 @@
           <div style="text-align:center;">
             <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#D946A6,#8E24AA);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-weight:900;color:#fff;">1</div>
             <h4 style="color:#e2e8f0;font-size:.95rem;font-weight:700;margin-bottom:4px;">Ingresa tu N.° de orden</h4>
-            <p style="color:#94a3b8;font-size:1rem;line-height:1.5;margin:0;">Formato <strong style="color:#94a3b8;">PROD-2026-XXXX</strong> del WhatsApp.</p>
+            <p style="color:#94a3b8;font-size:1rem;line-height:1.5;margin:0;">Empieza por <strong style="color:#94a3b8;">CAD-, PROD- o LAB-</strong>; viene en el WhatsApp.</p>
           </div>
           <div class="seg-step-arrow">→</div>
           <div style="text-align:center;">
@@ -915,7 +915,7 @@
         <button type="button" class="modal-x" onclick="cerrarModalNoEncontrado()" aria-label="Cerrar">✕</button>
         <div class="modal-icon">❌</div>
         <h3 id="modal-titulo">Caso No Encontrado</h3>
-        <p>No encontramos un caso con ese número de orden.<br>Verifica que sea el código exacto que te enviamos por WhatsApp (ej: <strong style="color:#FFD700">PROD-2026-0042</strong>).</p>
+        <p>No encontramos un caso con ese número de orden.<br>Verifica que sea el código exacto que te enviamos por WhatsApp (ej: <strong style="color:#FFD700">CAD-7F3A9C21B4</strong>).</p>
         <div class="modal-btns">
           <button type="button" class="btn-retry" onclick="cerrarModalNoEncontrado()">
             🔍 Intentar de nuevo
