@@ -2,7 +2,6 @@
 "_nota": "Traducción técnica (odontología digital / CAD-CAM) hecha a mano. Clave = texto en español tal como está en la página. Se aplica solo en las páginas de «paginas»; lo que no esté aquí queda en español. Al cambiar un texto en español, agrega aquí su traducción. «patrones»: textos que cambian (precios, fechas, pasos) — expresión regular → traducción con $1, $2.",
 "paginas": [
 "/envia-tu-scanner",
-"/preguntas",
 "/soporte",
 "/portafolio",
 "/flujo-diseno"

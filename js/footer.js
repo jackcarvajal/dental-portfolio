@@ -169,7 +169,7 @@
           '<li><a href="/envia-tu-scanner">Envía tu Escaneo</a></li>' +
           '<li><a href="/seguimiento-caso">Seguimiento en Vivo</a></li>' +
           '<li><a href="/escaneo-fotogrametria">Escaneo a domicilio & Fotogrametría</a></li>' +
-          '<li><a href="/preguntas"><i class="fas fa-circle-question" style="color:#D946A6;margin-right:5px;" aria-hidden="true"></i>Preguntas Frecuentes</a></li>' +
+          '<li><a href="' + (location.pathname === '/en' || location.pathname.indexOf('/en/') === 0 ? '/en/faq' : '/preguntas') + '"><i class="fas fa-circle-question" style="color:#D946A6;margin-right:5px;" aria-hidden="true"></i>Preguntas Frecuentes</a></li>' +
           '<li><a href="/impresion-3d"><i class="fas fa-print" style="color:#fb923c;margin-right:5px;" aria-hidden="true"></i>Impresión 3D Dental</a></li>' +
           '<li><a href="/alineadores-cad">Alineadores Invisibles CAD</a></li>' +
         '</ul>' +
