@@ -47,7 +47,7 @@
       case 'INCIDENCIA_CLIENTE':   return R('recepcion', 'doctor', 'Necesitamos un dato tuyo', 'Tenemos una pregunta sobre tu caso; escríbenos para seguir.', 'Escribir por WhatsApp', 'wa');
       case 'EN_DISENO':            return R('diseno', 'lab', 'Diseñando tu caso', 'El diseñador trabaja tu restauración en Exocad.');
       case 'DISENO_FINALIZADO':    return R('diseno', 'lab', 'Revisión interna del diseño', 'Lo verificamos antes de enviártelo.');
-      case 'REVISION_CLIENTE':     return R('diseno', 'doctor', 'Tu diseño está listo para revisar', 'Apruébalo o pide cambios (2 revisiones sin costo) desde tu panel de cliente; el caso sigue apenas respondas.', 'Revisar y aprobar en mi panel');
+      case 'REVISION_CLIENTE':     return R('diseno', 'doctor', 'Tu diseño está listo para revisar', 'Apruébalo o pide cambios (2 revisiones incluidas) desde tu panel de cliente; el caso sigue apenas respondas.', 'Revisar y aprobar en mi panel');
       case 'CAMBIOS_SOLICITADOS':  return R('diseno', 'lab', 'Aplicando tus cambios', 'Ajustamos el diseño según lo que pediste.');
       case 'DISENO_APROBADO':      return fab ? R(fab, 'lab', fab === 'fresado' ? 'En cola de fresado' : 'En cola de impresión', 'Diseño aprobado: tu caso entra a la máquina.')
                                               : R('entrega', 'lab', 'Diseño aprobado', 'Preparamos tus archivos finales (STL y visor 3D).');

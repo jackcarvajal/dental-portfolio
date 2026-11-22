@@ -506,8 +506,8 @@
       pt: 'Posso ver o design antes de recebê-lo?'
     },
     'cad.a3': {
-      es: 'Sí. Enviamos capturas del diseño antes de la entrega final. Si algo no convence, ajustamos sin costo adicional.',
-      en: 'Yes. We send design screenshots before final delivery. If something doesn\'t look right, we adjust at no extra cost.',
+      es: 'Sí. Enviamos capturas del diseño antes de la entrega final. Si algo no convence, lo ajustamos: 2 revisiones van incluidas en el precio.',
+      en: 'Yes. We send design screenshots before final delivery. If something doesn\'t look right, we adjust it: 2 revisions are included in the price.',
       pt: 'Sim. Enviamos capturas do design antes da entrega final. Se algo não convencer, ajustamos sem custo adicional.'
     },
     'cad.q4': {

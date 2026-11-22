@@ -51,7 +51,7 @@ function email_disenoListo(emailDoctor, codigo, revision) {
   return enviarEmail(
     emailDoctor,
     `🎨 Tu diseño está listo — Caso #${codigo} (Rev ${revision})`,
-    `El diseño CAD de tu caso #${codigo} está listo (revisión ${revision} de 2, sin costo adicional). Entra a tu portal para revisarlo en 3D y aprobarlo o solicitar ajustes.`,
+    `El diseño CAD de tu caso #${codigo} está listo (revisión ${revision} de 2, incluida en el precio). Entra a tu portal para revisarlo en 3D y aprobarlo o solicitar ajustes.`,
     'diseno_listo'
   );
 }
@@ -78,7 +78,7 @@ function email_cambiosAplicados(emailDoctor, codigo, revision) {
   return enviarEmail(
     emailDoctor,
     `✏️ Cambios aplicados — Caso #${codigo} Rev ${revision} lista`,
-    `Aplicamos los cambios solicitados al caso #${codigo}. Por favor revisa la nueva versión y confirma tu aprobación.${revision >= 2 ? ' Nota: esta es tu última revisión sin costo adicional.' : ''}`,
+    `Aplicamos los cambios solicitados al caso #${codigo}. Por favor revisa la nueva versión y confirma tu aprobación.${revision >= 2 ? ' Nota: es tu última revisión incluida. Si después de esta pides más cambios, cada revisión adicional cuesta el 20 % del valor del diseño.' : ''}`,
     'cambios_aplicados'
   );
 }

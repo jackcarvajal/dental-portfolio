@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-22 (f) — Sin «ajustes sin costo» ni envío gratis; auditoría más estricta
+
+- 🟡 Textos que prometían ajustes ilimitados o «sin costo» → «2 revisiones incluidas en el precio» (y el 20 % después de la segunda donde aplica): diseno-cad (+ diccionario EN), diseno-remoto (FAQ, tarjeta, flujo), envia-tu-scanner (garantía: error nuestro = se corrige sin cargo), guias-quirurgicas (paso 3, FAQ, HowTo), js/i18n.js, js/caso-etapas.js, js/emailnotif.js (correo de revisión: «última revisión incluida; después, 20 %»), i18n/en.json, app/panel-interno-operaciones y app/papeleria (WhatsApp «2 revisiones incluidas»), revision-express.
+- 🟡 /en/ full-arch, implant-crowns, index y veneers decían «One re-design round included» → «2 design revisions included». en/veneer-terms: sin «free shipping on 12+ units» (el envío se cotiza con el caso).
+- 🟡 tools/audit.mjs sección 7: además bloquea «free shipping / envío gratis», «una ronda de ajustes», «1 revisión incluida», «revisiones/ajustes … sin costo» y «at no extra cost» en revisiones.
+- ?v= emailnotif 20261122a (client-panel), i18n.js 20261122a (diseno-cad, mantenimiento), caso-etapas 20261122a (seguimiento-caso).
+
 ## 2026-11-22 (e) — La revisión adicional solo se cobra si la piden + cifras reales
 
 - 🟡 Aclaración de Alejandro: el 20 % aplica solo si, DESPUÉS de recibir la segunda revisión, el cliente pide más cambios. Nada se cobra por adelantado; se le avisa al pedir la 1.ª y la 2.ª. Términos (2 secciones), /preguntas, /en/faq, asistente y articles.js reescritos así.
