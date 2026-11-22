@@ -161,6 +161,30 @@ if (existsSync(hf)) readFileSync(hf, 'utf8').split(/\r?\n/).forEach((l, i) => {
 critical += hdrIssues;
 if (!hdrIssues) console.log('   \x1b[32m✓ todas las líneas caben (≤ 2.000)\x1b[0m');
 
+/* ── 7. Política comercial: nada gratis · revisión adicional = 20 % (crítico) ──── */
+// Decisión de Alejandro (22-nov-2026): ningún caso, consulta ni evaluación es gratis (la valoración del caso es opcional
+// y con costo) y, tras las 2 revisiones incluidas, cada revisión cuesta el 20 %. Las páginas llegaron a prometer
+// «Primera consulta gratis», «si no te gusta, no pagas» o «Sin riesgo», y otras decían 50 %.
+hdr('7) Política comercial: nada gratis · revisión adicional = 20 %');
+const GRATIS = /primera consulta gratis|consulta gratis|evaluaci[oó]n gratis|valoraci[oó]n gratis|primer caso gratis|caso de prueba gratis|(caso|dise[nñ]o|consulta)\s*[—–-]?\s*es gratis|first (consultation|case|quote|design)[^.<]{0,20}\bfree\b|free (consultation|test case|trial case|first case|evaluation|assessment|case review)|you don.t pay|no te (gusta|satisface)[^.<]{0,20}no pagas|paga solo si|primer ajuste gratis|\b(sin riesgo|no risk)\s*[.!<—]/gi;
+const REV_PCT = /(revisi[oó]n|revisiones|revisions?)[^.<'"{}]{0,140}?(\d{1,3})\s?%/gi;
+let polIssues = 0;
+for (const f of htmlFiles) {
+  if (rel(f).startsWith('temporal/')) continue;
+  const t = readFileSync(f, 'utf8');
+  for (const m of t.matchAll(GRATIS)) {
+    const pre = t.slice(Math.max(0, m.index - 300), m.index), post = t.slice(m.index, m.index + 160);
+    if (/data-q="[^"]*$/.test(pre)) continue;   // palabras clave del buscador de preguntas
+    if (/^[^.<!]*\?/.test(post)) continue;      // es la pregunta («¿Hacen un caso de prueba gratis?»), no una oferta
+    polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m promete algo gratis: «' + t.slice(m.index, m.index + 70).replace(/\s+/g, ' ') + '»');
+  }
+  for (const m of t.replace(/<\/?(strong|b|em|i|a|span|small)\b[^>]*>/gi, '').replace(/<[^>]+>/g, '. ').matchAll(REV_PCT)) if (m[2] !== '20') {
+    polIssues++; console.log('   \x1b[31m✗ ' + rel(f) + ':\x1b[0m revisión adicional al ' + m[2] + ' % (la política es 20 %): «' + m[0].slice(-90).replace(/\s+/g, ' ') + '»');
+  }
+}
+critical += polIssues;
+if (!polIssues) console.log('   \x1b[32m✓ sin ofertas gratis ni revisiones a un porcentaje distinto del 20 %\x1b[0m');
+
 /* ── RESUMEN ───────────────────────────────────────────────── */
 console.log('\n' + '─'.repeat(50));
 console.log(`Páginas: ${htmlFiles.length} · Hallazgos críticos: ${critical} · Avisos SEO: ${seoIssues}`);

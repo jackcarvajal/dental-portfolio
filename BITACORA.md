@@ -9,13 +9,22 @@
 
 ---
 
+## 2026-11-22 (d) — Revisión adicional = 20 % y valoración según el caso
+
+- 🟡 Decisión de Alejandro (22-nov): tras las 2 revisiones incluidas, cada revisión cuesta el **20 %** del valor del diseño (antes los términos decían 20 % en un lado y 50 % en otro). Unificado en terminos-y-legal (2 secciones), /preguntas, /en/faq, asistente, articles.js y calculadora-diseno (la opción «Revisión adicional» ahora suma 20 % del diseño, no $5 fijos).
+- 🟡 Valoración del caso: su valor depende del caso y del tipo de servicio (se confirma por WhatsApp antes de empezar) en /preguntas, /en/faq, guias-quirurgicas y asistente. Guías quirúrgicas: «Pedir valoración previa (opcional)» abre WhatsApp con el mensaje listo.
+- 🟡 Barra «Order in … receive today» de 4 /en/: tampoco sale en festivos colombianos (js/fechas-habiles.js, solo lectura; calcularFechaEntrega() intacta).
+- 🟡 tools/audit.mjs (y el de Alejandro), sección 7 CRÍTICA: bloquea el push si una página promete algo gratis («Primera consulta gratis», «you don't pay», «Sin riesgo», «Evaluación gratis»…) o pone la revisión adicional a un % distinto de 20. Excluye las preguntas («¿Hacen un caso de prueba gratis?») y las palabras clave del buscador.
+- 🔴 **SQL pendiente de correr:** `sql/creditos-revision-20-2026.sql` — regla revision_extra de Alejandro 0,5 → 0,2 crédito. Hasta correrlo, una 3.ª revisión pagada con créditos descuenta 0,5. `sql/creditos-diseno-2026.sql` ya trae 0,2 en la semilla y los respaldos.
+- ?v= header 20261122e, articles 20261122b.
+
 ## 2026-11-22 (c) — Nada gratis + horario del sábado
 
 - ✅ Decisión de Alejandro (22-nov): ningún servicio es gratis, tampoco el primer caso (horas del equipo, software, materiales). Valoración del caso = opcional y con costo (se confirma por WhatsApp); el trabajo empieza con el pago. Nueva pregunta «¿Hacen un caso de prueba gratis?» en /preguntas y /en/faq; fuera «First consultation free / you don't pay / No risk», «es gratis», «Evaluación gratis» (guías), «First quote free»; «revisiones gratuitas/free/sin costo» → «incluidas (en el precio)»; asistente: nunca ofrecer gratis.
 - ✅ Horario: L-V 8 a.m.-5 p.m.; sábado sin atención al público, a puerta cerrada (~9-12, recepción y despacho según el flujo); lo del sábado/domingo/festivo queda con fecha del lunes (martes si el lunes es festivo). Alineados nosotros, envia-alineadores, envia-tu-scanner, escaneo-fotogrametria, escaner-domicilio (sin sábados), flujo-lab, /preguntas, /en/faq y el asistente.
 - ✅ Barra «Order in … receive today» de 4 /en/: usaba la hora del visitante y se mostraba en sábado → hora de Colombia (UTC-5) y sin sábados.
 - 💡 Se dejan gratis (no usan tiempo del equipo): crear cuenta, cotizador, instalar la app, guías descargables del Journal, evaluador de implantes con IA. Refinamiento de alineadores <6 meses = política del tratamiento.
-- 🔴 Por decidir: términos de diseño dicen revisión extra = 20 % del valor; sección Revisiones / Alejandro = 50 % desde la tercera.
+- ✅ Decidido en (d): revisión adicional = 20 %.
 
 ## 2026-11-22 (b) — Sin repetir «100 % anticipado»
 
@@ -37,7 +46,7 @@
 - ✅ Asistente IA (header.js _pgBuildPrompt): pagos y política nuevos, 2 revisiones en 48 h, garantía, seguro de repetición, horario L-V 8-5 + recepción 24/7, 31 preguntas, formato de código. ?v= header.js → 20261121a en todas las páginas.
 - ✅ Código de pedido real en /seguimiento-caso y preguntas: CAD-/PROD-/LAB- + hexadecimal (antes mostraba «PROD-2026-XXXX», que ningún flujo genera).
 - ✅ Internos: centro de ayuda (politica-pago, ?v=20261121a), client-panel, clientes (WhatsApp de estado de cuenta), emailnotif.js (?v=20261121a).
-- 🔴 Por decidir: términos de diseño dicen revisión extra = 20 % del valor; la sección de revisiones dice 50 % desde la tercera.
+- ✅ Decidido en (d): revisión adicional = 20 %.
 
 ## 2026-11-21 (a) — Preguntas frecuentes al día con lo nuevo
 

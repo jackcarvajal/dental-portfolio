@@ -10,7 +10,7 @@
 --     Full Arch, guías y diseño de sonrisa se cotizan por caso: el administrador fija los créditos.
 --   · Los créditos NO vencen. Si pasan 90 días sin enviar casos, el saldo se CONGELA; se reactiva con la compra
 --     de cualquier plan (la compra nueva cuenta como actividad). Se gastan primero los lotes más antiguos (FIFO).
---   · 2 revisiones incluidas por caso; cada revisión adicional cuesta 0,5 crédito.
+--   · 2 revisiones incluidas por caso; cada revisión adicional cuesta 0,2 crédito (20 %; decisión del 22-nov-2026).
 --   · Plazo (SLA) al cobrar: simple 24 h · simple urgente 6 h · medio (implante o más de 3 unidades) 48 h.
 --
 -- Diseño:
@@ -99,7 +99,7 @@ INSERT INTO public.creditos_reglas (negocio, clave, valor, nota) VALUES
   ('alejandrocadcam','factor_implante'        , 1.5 , 'Corona o pilar sobre implante'),
   ('alejandrocadcam','factor_urgente'         , 1.5 , 'Urgencia en caso simple (sin recargo en plata/oro/platino)'),
   ('alejandrocadcam','factor_urgente_medio'   , 2   , 'Urgencia en caso medio, solo con cupo'),
-  ('alejandrocadcam','revision_extra'         , 0.5 , 'Desde la tercera revisión'),
+  ('alejandrocadcam','revision_extra'         , 0.2 , 'Desde la tercera revisión: 20 % del valor de la unidad'),
   ('alejandrocadcam','revisiones_incluidas'   , 2   , NULL),
   ('alejandrocadcam','dias_congelamiento'     , 90  , 'Días sin enviar casos'),
   ('alejandrocadcam','max_unidades_simple'    , 3   , 'Hasta 3 unidades = caso simple'),
@@ -289,7 +289,7 @@ BEGIN
                             'sla_horas', v_sla, 'entrega_limite', CASE WHEN v_sla IS NULL THEN NULL ELSE now() + make_interval(hours => v_sla::int) END);
 END $$;
 
--- Revisión pedida por el cliente: las 2 primeras van incluidas; desde la tercera cuesta 0,5 crédito.
+-- Revisión pedida por el cliente: las 2 primeras van incluidas; desde la tercera cuesta 0,2 crédito (regla revision_extra).
 CREATE OR REPLACE FUNCTION public.creditos_cobrar_revision(p_pedido uuid, p_revision_num integer)
 RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
 DECLARE v_ped pedidos%ROWTYPE; v_cli uuid; v_neg text; v_incl numeric; v_costo numeric; v_e record; v_ref text;
@@ -312,7 +312,7 @@ BEGIN
   IF EXISTS (SELECT 1 FROM creditos_movimientos WHERE referencia = v_ref) THEN
     RETURN jsonb_build_object('ok', true, 'cobrada', true, 'ya_cobrada', true);
   END IF;
-  v_costo := COALESCE(creditos_regla(v_neg, 'revision_extra'), 0.5);
+  v_costo := COALESCE(creditos_regla(v_neg, 'revision_extra'), 0.2);
   SELECT * INTO v_e FROM creditos_estado(v_cli, v_neg);
   IF v_e.disponibles < v_costo THEN RAISE EXCEPTION 'SALDO_INSUFICIENTE: la revisión adicional cuesta % crédito', v_costo; END IF;
   PERFORM creditos_descontar_fifo(v_cli, v_neg, v_costo, p_pedido, 'revision_extra', v_ref, 'Revisión adicional #' || p_revision_num);
@@ -475,7 +475,7 @@ BEGIN
 END $$;
 
 -- 7b. Revisiones adicionales cobradas EN LA BASE: cuando un pedido pagado con créditos pasa la revisión incluida
---     (revisiones_usadas sube más allá de 2), se descuenta 0,5 crédito por cada una. No depende del navegador.
+--     (revisiones_usadas sube más allá de 2), se descuenta la regla revision_extra (0,2 crédito) por cada una. No depende del navegador.
 --     Idempotente por referencia «<pedido>:rev:<n>» (la misma que usa creditos_cobrar_revision).
 CREATE OR REPLACE FUNCTION public.creditos_trg_revision()
 RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$
@@ -485,7 +485,7 @@ BEGIN
   IF NOT EXISTS (SELECT 1 FROM creditos_movimientos WHERE pedido_id = NEW.id AND tipo = 'consumo') THEN RETURN NEW; END IF;
   v_neg   := COALESCE(NEW.negocio, 'alejandrocadcam');
   v_incl  := COALESCE(creditos_regla(v_neg, 'revisiones_incluidas'), 2)::int;
-  v_costo := COALESCE(creditos_regla(v_neg, 'revision_extra'), 0.5);
+  v_costo := COALESCE(creditos_regla(v_neg, 'revision_extra'), 0.2);
   v_cli   := COALESCE(NEW.cliente_id, NEW.doctor_uid, NEW.user_id);
   FOR v_n IN GREATEST(COALESCE(OLD.revisiones_usadas, 0) + 1, v_incl + 1) .. NEW.revisiones_usadas LOOP
     v_ref := NEW.id::text || ':rev:' || v_n;
