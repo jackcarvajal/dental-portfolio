@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-11-23 — Todas las páginas públicas con su imagen para compartir nueva
+
+- 🟡 tools/og-generar.mjs: +21 imágenes (cotizador de diseño, alineadores CAD, calidad, carillas, coronas sobre implantes, coronas de zirconio, férulas, escáner a domicilio, fotogrametría, guía técnica, app, Journal, nosotros, referidos, Full Arch, seguimiento, servicios y 4 en inglés). Fuera «Más de 8.000 casos» (nosotros), «$30.000 COP» (referidos) y «20 micras» (calidad) de las imágenes. Solo flujo-diseno conserva la suya (al día desde el 22-nov).
+- tools/og-generar.mjs: --aplicar ahora encuentra la meta aunque tenga otros atributos antes (article.html usa id="og-image"); soporte de object-position por foto.
+
 ## 2026-11-22 (i) — Imágenes para compartir con fotos reales, sin precios
 
 - 🟡 Las og:image en español mostraban precios y promesas que ya no aplican: guías «desde $180.000», fresado «desde $60.000 COP por unidad» (precios suspendidos), calculadora «$60K COP», «Entrega 24h/48h», «98 % aprobación», «Respuesta en menos de 2h», «unirse gratis», y las páginas /en/ usaban imágenes en español. Estilo «hecho con IA» (brillos, etiquetas, pills).

@@ -47,6 +47,28 @@ const IMAGENES = [
   { slug: 'en-aligners', pie: 'Real case · print-ready models', foto: PLACA2, t: 'Clear aligner CAD design', s: 'Staging, attachments and IPR planning from your STL scans.', paginas: ['en/dental-aligners'] },
   { slug: 'en-guides', pie: 'Real design in exocad', foto: GUIA, t: 'Surgical guide design from CBCT', s: 'Fully guided implant planning, checked by a technician in exocad.', paginas: ['en/surgical-guides'] },
   { slug: 'en-zirconia', pie: 'Real design in exocad', foto: 'local:catalogo/cad-3.jpg', t: 'Zirconia crown and bridge design', s: 'Anatomic contours and precise margins, in exocad and 3Shape.', paginas: ['en/zirconia-crowns'] },
+  // Resto de páginas (22-nov-2026)
+  { slug: 'cotiza-diseno', ...CAD, foto: 'local:catalogo/cad-4.jpg', t: 'Cotiza tu diseño CAD', s: 'Corona, carilla, puente o Full Arch: conoce el valor antes de enviarlo.', paginas: ['calculadora-diseno'] },
+  { slug: 'alineadores-cad', ...IMPRIMIR, foto: PLACA, t: 'Diseño CAD de alineadores', s: 'Planificación en exocad Ortho, con modelos listos para imprimir.', paginas: ['alineadores-cad'] },
+  { slug: 'calidad', ...CASO, foto: 'local:catalogo/caso1-despues.jpg', t: 'Calidad y estándares', s: 'Cómo revisamos cada restauración antes de que salga del laboratorio.', paginas: ['calidad'] },
+  { slug: 'carillas-lab', ...LAB, foto: 'local:links-gallery/lentes-ceramicos.jpg', t: 'Carillas para tu clínica', s: 'Disilicato, feldespáticas o zirconia, con diseño de sonrisa previo.', paginas: ['carillas'] },
+  { slug: 'coronas-implantes', ...CAD, foto: 'caso-1784766305902/gallery/foto-2.jpeg', t: 'Coronas sobre implantes', s: 'Atornilladas o cementadas, en zirconia o disilicato, sobre la base de titanio.', paginas: ['coronas-sobre-implantes'] },
+  { slug: 'coronas-zirconia', ...CAD, foto: 'caso-1784774363552/gallery/foto-15.jpeg', t: 'Coronas de zirconio', s: 'Diseño y fresado, con márgenes, oclusión y color que calzan.', paginas: ['coronas-zirconio'] },
+  { slug: 'ferulas', ...CAD, foto: 'caso-1784774716081/gallery/foto-6.jpeg', t: 'Férulas oclusales', s: 'Michigan, NTI y para bruxismo, en PMMA fresado o resina 3D.', paginas: ['ferulas-oclusales'] },
+  { slug: 'escaneo-domicilio', ...CASO, foto: 'local:catalogo/caso2-despues.jpg', t: 'Escaneo intraoral a domicilio', s: 'Vamos a tu consultorio en Bogotá y el archivo queda listo para el laboratorio.', paginas: ['escaner-domicilio'] },
+  { slug: 'fotogrametria', ...LAB, foto: 'local:og-fuentes/barra-hibrida.jpg', t: 'Fotogrametría para Full Arch', s: 'Para multi-unit y All-on-X. Próximamente; hoy, escaneo intraoral a domicilio.', paginas: ['escaneo-fotogrametria'] },
+  { slug: 'guia-envio', ...CAD, foto: 'local:catalogo/cad-2.jpg', t: 'Guía técnica de envío', s: 'Cómo exportar el STL desde exocad, 3Shape y tu escáner intraoral.', paginas: ['guia-tecnica'] },
+  { slug: 'app', ...CAD, foto: 'local:catalogo/cad-3.jpg', t: 'Instala la app de PRODIGY', s: 'Pedidos, cotizador y seguimiento de tus casos desde el celular.', paginas: ['instalar-app'] },
+  { slug: 'journal-lab', ...CAD, foto: 'local:catalogo/cad-1.jpg', t: 'PRODIGY Journal', s: 'Odontología digital al día, con referencias científicas verificadas.', paginas: ['journal', 'article'] },
+  { slug: 'nosotros-lab', ...LAB, foto: 'local:og-fuentes/hibrida-lado.jpg', t: 'Sobre el laboratorio', s: 'Diseño, fresado e impresión 3D bajo un mismo techo, en Bogotá.', paginas: ['nosotros'] },
+  { slug: 'referidos-lab', ...LAB, foto: 'local:og-fuentes/hibrida-frente.jpg', t: 'Programa de referidos', s: 'Refiere a un colega y recibe crédito para tus próximos pedidos.', paginas: ['referidos'] },
+  { slug: 'full-arch-lab', ...LAB, foto: 'local:og-fuentes/barra-hibrida.jpg', t: 'Rehabilitación Full Arch sobre implantes', s: 'All-on-4 y All-on-6: barra de titanio, zirconia monolítica y provisional inmediato.', paginas: ['rehabilitacion-sobre-implantes'] },
+  { slug: 'seguimiento', ...CAD, foto: 'local:catalogo/cad-4.jpg', t: 'Seguimiento de tu caso', s: 'Consulta en qué etapa está tu diseño, fresado o impresión.', paginas: ['seguimiento-caso'] },
+  { slug: 'en-implant-crowns', pie: 'Real design in exocad', foto: 'caso-1784766305902/gallery/foto-2.jpeg', t: 'Implant crowns and custom abutments', s: 'Screw-retained or cemented, in zirconia or lithium disilicate.', paginas: ['en/implant-crowns'] },
+  { slug: 'en-full-arch', pie: 'Real lab work', foto: 'local:og-fuentes/barra-hibrida.jpg', t: 'All-on-4 and All-on-6 full-arch bridges', s: 'Titanium hybrid bars, monolithic zirconia and immediate-load provisionals.', paginas: ['en/full-arch'] },
+  { slug: 'en-veneers', pie: 'Real lab work', foto: 'local:links-gallery/lentes-ceramicos.jpg', t: 'Veneers for your clinic', s: 'Lithium disilicate, feldspathic or translucent zirconia, designed and milled.', paginas: ['en/veneers'] },
+  { slug: 'en-faq', pie: 'Real design in exocad', foto: 'local:catalogo/cad-2.jpg', t: 'Dental CAD lab FAQ', s: 'Files, turnaround, revisions, USD payment and shipping.', paginas: ['en/faq'] },
+  { slug: 'servicios', ...LAB, foto: 'local:catalogo/carillas-lentes.jpg', t: 'Servicios del laboratorio', s: 'Diseño CAD, fresado, impresión 3D y laboratorio completo, en Bogotá.', paginas: ['servicios'] },
 ];
 
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
@@ -67,7 +89,7 @@ h1{font-size:${i.t.length > 34 ? 46 : 54}px;line-height:1.08;font-weight:800;col
 p{margin-top:22px;font-size:22px;line-height:1.45;color:#aeb4bf;font-weight:500}
 .web{font-size:20px;font-weight:600;color:#D946A6}
 .foto{position:absolute;left:520px;top:0;right:0;bottom:0;overflow:hidden;background:#1a1a1d}
-.foto img{width:100%;height:100%;object-fit:cover;object-position:center}
+.foto img{width:100%;height:100%;object-fit:cover;object-position:${i.pos || 'center'}}
 .pie{position:absolute;right:0;bottom:0;padding:9px 16px;background:rgba(7,7,8,.78);color:#e7e7e7;font-size:15px;font-weight:500}
 </style></head><body>
 <div class="panel"><div class="marca">${GEMA}<strong>PRODIGY</strong><span>Lab Dental</span></div>
@@ -127,7 +149,7 @@ if (args.includes('--aplicar')) {
   for (const i of lista) for (const p of i.paginas) {
     const f = join(ROOT, p + '.html'); let t = readFileSync(f, 'utf8'); const antes = t;
     const url = `https://prodigylabdental.com/assets/og-${i.slug}.jpg`;
-    t = t.replace(/(<meta property="og:image" content=")[^"]+(")/, `$1${url}$2`).replace(/(<meta name="twitter:image" content=")[^"]+(")/, `$1${url}$2`);
+    t = t.replace(/(<meta\b[^>]*\bproperty="og:image"[^>]*\bcontent=")[^"]+(")/, `$1${url}$2`).replace(/(<meta\b[^>]*\bname="twitter:image"[^>]*\bcontent=")[^"]+(")/, `$1${url}$2`);
     if (t !== antes) { writeFileSync(f, t); console.log('  → ' + p + '.html'); } else console.log('  = ' + p + '.html (sin cambio)');
   }
 }
