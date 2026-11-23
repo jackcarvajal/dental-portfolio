@@ -61,7 +61,7 @@ const IMAGENES = [
   { slug: 'guia-envio', ...CAD, foto: 'local:catalogo/cad-2.jpg', t: 'Guía técnica de envío', s: 'Cómo exportar el STL desde exocad, 3Shape y tu escáner intraoral.', paginas: ['guia-tecnica'] },
   { slug: 'app', ...CAD, foto: 'local:catalogo/cad-3.jpg', t: 'Instala la app de PRODIGY', s: 'Pedidos, cotizador y seguimiento de tus casos desde el celular.', paginas: ['instalar-app'] },
   { slug: 'journal-lab', ...CAD, foto: 'local:catalogo/cad-1.jpg', t: 'PRODIGY Journal', s: 'Odontología digital al día, con referencias científicas verificadas.', paginas: ['journal', 'article'] },
-  { slug: 'nosotros-lab', ...LAB, foto: 'local:og-fuentes/hibrida-lado.jpg', t: 'Sobre el laboratorio', s: 'Diseño, fresado e impresión 3D bajo un mismo techo, en Bogotá.', paginas: ['nosotros'] },
+  { slug: 'nosotros-lab', ...LAB, foto: 'local:og-fuentes/hibrida-lado.jpg', t: 'Sobre el laboratorio', s: 'Unas 150 unidades de diseño al mes, con fresado e impresión 3D bajo el mismo techo, en Bogotá.', paginas: ['nosotros'] },
   { slug: 'referidos-lab', ...LAB, foto: 'local:og-fuentes/hibrida-frente.jpg', t: 'Programa de referidos', s: 'Refiere a un colega y recibe crédito para tus próximos pedidos.', paginas: ['referidos'] },
   { slug: 'full-arch-lab', ...LAB, foto: 'local:og-fuentes/barra-hibrida.jpg', t: 'Rehabilitación Full Arch sobre implantes', s: 'All-on-4 y All-on-6: barra de titanio, zirconia monolítica y provisional inmediato.', paginas: ['rehabilitacion-sobre-implantes'] },
   { slug: 'seguimiento', ...CAD, foto: 'local:catalogo/cad-4.jpg', t: 'Seguimiento de tu caso', s: 'Consulta en qué etapa está tu diseño, fresado o impresión.', paginas: ['seguimiento-caso'] },
