@@ -12,6 +12,7 @@
 ## 2026-11-23 — Todas las páginas públicas con su imagen para compartir nueva
 
 - 🟡 tools/og-generar.mjs: +21 imágenes (cotizador de diseño, alineadores CAD, calidad, carillas, coronas sobre implantes, coronas de zirconio, férulas, escáner a domicilio, fotogrametría, guía técnica, app, Journal, nosotros, referidos, Full Arch, seguimiento, servicios y 4 en inglés). Fuera «Más de 8.000 casos» (nosotros), «$30.000 COP» (referidos) y «20 micras» (calidad) de las imágenes. Solo flujo-diseno conserva la suya (al día desde el 22-nov).
+- 🟡 7 páginas sin twitter:card/twitter:image u og:image:width/height: --aplicar los agrega si faltan (--solo-metas aplica sin regenerar). JSON-LD de index y escaner-domicilio apuntaba a imágenes viejas → corregido.
 - tools/og-generar.mjs: --aplicar ahora encuentra la meta aunque tenga otros atributos antes (article.html usa id="og-image"); soporte de object-position por foto.
 
 ## 2026-11-22 (i) — Imágenes para compartir con fotos reales, sin precios
