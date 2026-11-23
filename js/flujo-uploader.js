@@ -23,6 +23,12 @@
         return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
     }
 
+// El bucket solo acepta estos tipos MIME (storage.buckets.allowed_mime_types). Un PDF, un .ply o un .dcm
+    // llegan con otro tipo (o vacío) y el storage los rechazaba: se suben como binario genérico (23-nov-2026).
+    const MIME_OK = ['model/stl', 'application/octet-stream', 'application/zip', 'application/x-zip-compressed',
+                     'application/vnd.ms-pki.stl', 'image/jpeg', 'image/png', 'image/webp'];
+    function tipoPermitido(f) { return MIME_OK.includes(f && f.type) ? f.type : 'application/octet-stream'; }
+
     function sanitizeFilename(name) {
         return name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 100);
     }
@@ -78,7 +84,7 @@
                 const { error } = await sb.storage
                     .from(BUCKET)
                     .upload(path, f, {
-                        contentType: f.type || 'application/octet-stream',
+                        contentType: tipoPermitido(f),
                         upsert: true
                     });
                 uploadError = error;
@@ -170,5 +176,36 @@
         });
     }
 
-    window.FlujoUploader = { upload, uploadAsync, registrarEnPedido };
+
+    /**
+     * Sube UN archivo suelto (los de «Archivos requeridos» del flujo de diseño) al mismo bucket que el visor.
+     * Antes esos archivos iban con fetch directo a dental-cases (PRODIGY: no admite anon) o disenos-cad
+     * (Alejandro: el bucket no existe) y fallaban SIEMPRE; como eran obligatorios, el pedido no se podía
+     * enviar (23-nov-2026). Devuelve { bucket, ruta, nombre, file } para pedido_archivos; si falla, lanza
+     * un Error con un mensaje para el doctor.
+     */
+    async function subirUno(file, subcarpeta) {
+        if (!file) throw new Error('Sin archivo');
+        if (window.PFormatos && window.PFormatos.validarCompleto) {
+            const chk = await window.PFormatos.validarCompleto(file, 'cliente_caso');
+            if (!chk.ok) throw new Error(chk.error);
+        }
+        const sb = getSb();
+        const { data: { session } } = await sb.auth.getSession();
+        const uid = (session && session.user && session.user.id) || 'anon';
+        const ruta = uid + '/' + String(subcarpeta || 'requeridos').replace(/[^a-zA-Z0-9_-]/g, '-') + '/' + Date.now() + '_' + sanitizeFilename(file.name);
+        let error = null;
+        for (let intento = 1; intento <= 3; intento++) {
+            ({ error } = await sb.storage.from(BUCKET).upload(ruta, file, { contentType: tipoPermitido(file), upsert: false }));
+            if (!error) break;
+            if (intento < 3) await new Promise(r => setTimeout(r, 1000 * intento));
+        }
+        if (error) {
+            if (window.ProdigyReport) ProdigyReport.log('archivos', 'Falló ' + file.name + ' (requerido): ' + (error.message || 'sin detalle'));
+            throw new Error('No se pudo subir «' + file.name + '». Revisa tu conexión o pega un link de Drive / WeTransfer.');
+        }
+        return { bucket: BUCKET, ruta, nombre: file.name, file };
+    }
+
+    window.FlujoUploader = { upload, uploadAsync, registrarEnPedido, subirUno };
 })();

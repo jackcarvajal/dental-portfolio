@@ -38,7 +38,8 @@ BEGIN
     'public.diseno_tareas_sin_tomar()',
     'public.generar_codigo_referido(text)',
     'public.generar_url_firmada(text)',
-    'public.pedido_existe(text)',
+    -- 'public.pedido_existe(text)' NO: la usa la política de Storage da_revision_sube; sin permiso fallan TODAS
+    -- las subidas desde la web (corregido en sql/storage-pedido-existe-2026.sql, 23-nov-2026).
     'public.prodigy_cotizaciones_por_vencer(integer)',
     'public.prodigy_detectar_churn(integer, integer)',
     'public.prodigy_get_image_url(text, integer, integer, integer)',

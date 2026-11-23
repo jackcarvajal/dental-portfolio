@@ -411,7 +411,8 @@
                 submaterialContainer.classList.add('hidden');
                 otroContainer.classList.remove('hidden');
                 procesoAccordion.classList.add('hidden');
-                document.getElementById('proceso-content').innerHTML = '';
+                const _pcO = document.getElementById('proceso-content');   // ya no existe en la página: no romper
+                if (_pcO) _pcO.innerHTML = '';
                 return;
             }
 
@@ -423,7 +424,8 @@
                 if (_tlsm) _tlsm.style.display = 'none';
                 generarSubMateriales(tipo);
                 STATE.proceso = 'crudo';
-                document.getElementById('proceso-content').innerHTML = '';
+                const _pcC = document.getElementById('proceso-content');
+                if (_pcC) _pcC.innerHTML = '';
                 updateTimeline();
                 calcularTotal();
                 return;
@@ -439,7 +441,10 @@
             if (_bg) _bg.style.display = (tipo === 'zirc') ? 'flex' : 'none';
             generarSubMateriales(tipo);
 
-            document.getElementById('proceso-content').innerHTML = 
+            // #proceso-content ya no existe (la resolución es la sección fija «3. RESOLUCIÓN»): sin esta guarda,
+            // elegir cualquier resina lanzaba TypeError, no recalculaba el total y mandaba un reporte de error (23-nov-2026).
+            const _pcN = document.getElementById('proceso-content');
+            if (_pcN) _pcN.innerHTML =
                 '<p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">Selecciona un material específico</p>';
 
             updateTimeline();
@@ -1769,8 +1774,19 @@
                 selected.style.background = 'rgba(255,215,0,0.05)';
                 selected.setAttribute('aria-pressed','true');
             }
-            
-            calcularTotalModelosV4();
+
+            // La sección «3. RESOLUCIÓN» se ve con CUALQUIER resina, pero calcularTotalModelosV4() es del
+            // configurador de MODELOS: arma su nombre y su precio. Antes se llamaba siempre y un pedido de resina
+            // definitiva (p. ej. Rodin, $50.000) quedaba guardado como «Modelo solido_full» a $35.000 (23-nov-2026).
+            // Para las demás resinas la resolución va en STATE.proceso, que calcularTotal() ya cobra (25 µm = recargo).
+            if (STATE.materialTipo === 'resina_modelo') {
+                calcularTotalModelosV4();
+            } else {
+                STATE.proceso = micras === 25 ? '25_micras' : '50_micras';
+                if (typeof actualizarVisibilidadColor === 'function') actualizarVisibilidadColor();
+                if (typeof updateTimeline === 'function') updateTimeline();
+                calcularTotal();
+            }
         }
 
         function selectColor(color) {
@@ -2346,7 +2362,7 @@
             
             texto += `🖨️ *RESINA:* ${sanitizar(STATE.submaterialNombre || 'N/A')}\n`;
             texto += `🔖 *Tipo:* ${tipoResina}\n`;
-            texto += `📏 *Resolución:* ${STATE.proceso || 'Standard'}\n`;
+            texto += `📏 *Resolución:* ${String(STATE.proceso || '50_micras').replace('_micras', ' micras')}\n`;
             texto += `🎨 *Color VITA:* ${STATE.colorVita || 'Estándar de Calidad PRODIGY (Según disponibilidad)'}\n`;
             texto += `🔢 *Cantidad:* ${STATE.cantidad} unidades\n\n`;
             
@@ -2491,6 +2507,13 @@
                                 etapa: 'cliente_caso',
                                 subidoPor: STATE.whatsappCliente || null
                             });
+                        }
+                        // El comprobante que pide el formulario no se guardaba en ningún lado (23-nov-2026): queda en el pedido.
+                        const _compImp = document.getElementById('comprobante')?.files?.[0];
+                        if (_pedId && !_e && _compImp && window.FlujoUploader?.subirUno && window.PRegArchivos) {
+                            window.FlujoUploader.subirUno(_compImp, 'comprobantes')
+                                .then(info => window.PRegArchivos.registrar(_sb, _pedId, [{ ...info, tipo: 'comprobante' }], { etapa: 'cliente_caso', subidoPor: STATE.whatsappCliente || null }))
+                                .catch(err => console.warn('[PRODIGY] Comprobante no subido:', err && err.message));
                         }
 
                         if (!_e) {

@@ -9,6 +9,26 @@
 
 ---
 
+## 2026-11-23 (b) — Auditoría de punta a punta de los flujos de pedido (diseño, impresión, fresado, Laboratorio Full)
+
+Método: cada flujo se recorrió en la página real con un navegador automático que deja pasar las lecturas y atrapa
+TODA escritura (pedido, archivos, avisos, WhatsApp, analítica): nada llegó a la base ni al equipo. Luego cada pedido
+capturado se insertó en la base como anon / cliente dentro de una transacción que se revierte (RLS, triggers y
+restricciones de verdad) y se verificó que no quedó nada (0 pedidos, 0 avisos, 0 archivos).
+
+- 🔴 **Ninguna subida de archivos funciona desde el 18-nov** (escáner, alineadores, flujos, comprobantes, equipo): sql/seguridad-rpc-publicas-2026.sql le quitó a anon/authenticated pedido_existe(), que usa la política de Storage da_revision_sube → «permission denied for function pedido_existe». ⏳ **sql/storage-pedido-existe-2026.sql** (pendiente de correr). seguridad-rpc-publicas ya no lo quita.
+- 🔴 Diseño (las dos webs): los «Archivos requeridos» iban con fetch + anon key a dental-cases (no admite anon) / disenos-cad (no existe) → fallaban siempre y, al ser obligatorios, el pedido NO se podía enviar. Ahora van con FlujoUploader.subirUno() a pedidos-archivos, quedan en stl_url y en pedido_archivos. El link ya no es obligatorio si subió archivos (PRODIGY lo exigía; Alejandro no contaba esos archivos para habilitar «Enviar»). El link que pega el doctor ya no se pierde al subir desde el visor. ZIP del caso (Alejandro) igual.
+- 🔴 Impresión: elegir una resina lanzaba TypeError (#proceso-content ya no existe) y «3. RESOLUCIÓN» llamaba al configurador de modelos → un pedido de Rodin ($50.000) quedaba guardado como «Modelo solido_full» a $35.000. Ahora la resolución va en STATE.proceso para las resinas (25 µm cobra el recargo) y el configurador solo con modelos.
+- 🟡 Fresado («a cotizar»): el pedido se guardaba con el precio interno y el portal le pedía pagarlo → precio 0 + «Precio a cotizar por PRODIGY»; app/client-panel muestra «A cotizar».
+- 🟡 Impresión y fresado: el comprobante que exige el formulario no se guardaba → se sube y queda en pedido_archivos (tipo comprobante).
+- 🟡 Laboratorio Full: con sesión no guardaba user_id/email (no aparecía en el portal) ni paciente, color, antagonista, oclusión, vía ni observaciones → ahora sí.
+- 🟡 /api/cuenta-implicita: creaba la cuenta pero no le asignaba el pedido anónimo (el correo dice «tu portal está listo» y salía vacío) → vincula email (y user_id si la cuenta es nueva).
+- 🟡 Diseño: «Transferencia directa» venía desmarcada → quien indicaba Nequi quedaba con +3 % Wompi; ahora se marca al elegir Nequi/Daviplata/Nu/Bre-B. Alineadores: «Refinamiento Gratis <6 meses» → «Incluido en el plan» (audit.mjs ya lo detecta dentro de etiquetas).
+- 🟡 Visores 3D (multi-visor de los flujos, visor-universal del portal y ficha, ar-viewer de caso/revisión): los loaders de three importaban 'three' sin import map y fallaban siempre → jsDelivr /+esm (una sola instancia de Three, verificado).
+- 🟡 Envía tu escáner: aceptaba OBJ/DICOM que el bucket rechaza → solo STL/PLY/ZIP (OBJ/DICOM en .zip).
+- ?v=: flujo-uploader, stl-multi-viewer, visor-universal, ar-viewer y flujo-impresion 20261123a.
+- Sin cambio y anotado: fresado escribe «Fecha … 10:00 AM» con turno «Mediodía 12 PM» (calcularFechaEntrega es intocable); diseño guarda pais 'CO' también para el exterior.
+
 ## 2026-11-23 — Todas las páginas públicas con su imagen para compartir nueva
 
 - 🟡 tools/og-generar.mjs: +21 imágenes (cotizador de diseño, alineadores CAD, calidad, carillas, coronas sobre implantes, coronas de zirconio, férulas, escáner a domicilio, fotogrametría, guía técnica, app, Journal, nosotros, referidos, Full Arch, seguimiento, servicios y 4 en inglés). Fuera «Más de 8.000 casos» (nosotros), «$30.000 COP» (referidos) y «20 micras» (calidad) de las imágenes. Solo flujo-diseno conserva la suya (al día desde el 22-nov).

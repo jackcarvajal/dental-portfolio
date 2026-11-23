@@ -22,7 +22,7 @@
     <script src="../js/auth-guard.js?v=20260929"></script>
     <script src="../js/formatos.js?v=20261001"></script>
     <script src="../js/upload-guard.js?v=20261001"></script>
-    <script src="../js/visor-universal.js?v=20260718"></script>
+    <script src="../js/visor-universal.js?v=20261123a"></script>
     <style>
         body { overflow-x: hidden; overflow-x: clip; }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -762,6 +762,8 @@ let _pedidosDoc  = [];
 /* ── UTILS ─────────────────────────────────────────────────── */
 function escH(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
+// Pedido sin precio (fresado en modo «cotizar»: PRODIGY lo fija después): «A cotizar», no «$ 0» (23-nov-2026)
+function precioPedido(p) { return Number(p && p.precio_total) > 0 ? fmtCOP(p.precio_total) : 'A cotizar'; }
 function fmtCOP(n) {
     if (!n && n !== 0) return '—';
     return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(n);
@@ -988,7 +990,7 @@ function renderTablas(pedidos) {
                 <td>${escH(p.nombre_paciente || '—')}</td>
                 <td style="font-size:.75rem;">${escH(p.tipo_trabajo || p.material || '—')}</td>
                 <td style="font-size:.75rem;color:#94a3b8;">${fmtFecha(p.created_at)}</td>
-                <td style="color:var(--neon);font-weight:700;">${fmtCOP(p.precio_total)}</td>
+                <td style="color:var(--neon);font-weight:700;">${precioPedido(p)}</td>
                 <td>${estadoBadge(p)}</td>
                 <td style="display:flex;gap:5px;flex-wrap:wrap;">
                     <a href="../seguimiento-caso?id=${escH(p.codigo||p.id)}" class="btn-sm btn-gold">Ver</a>
@@ -1120,13 +1122,14 @@ function renderFacturacion(pedidos) {
         const cod = escH(p.codigo || p.id?.slice(0,8) || '—');
         const est = p.pago_estado || 'pendiente';
         if (est === 'pago_confirmado') {
-            return `<div class="pago-card"><h4>Caso #${cod} — ${fmtCOP(p.precio_total)}</h4><span class="comp-status confirmado">✅ Pago confirmado</span></div>`;
+            return `<div class="pago-card"><h4>Caso #${cod} — ${precioPedido(p)}</h4><span class="comp-status confirmado">✅ Pago confirmado</span></div>`;
         }
         if (est === 'pago_subido') {
-            return `<div class="pago-card"><h4>Caso #${cod} — ${fmtCOP(p.precio_total)}</h4><span class="comp-status subido">⏳ Comprobante enviado · En revisión</span></div>`;
+            return `<div class="pago-card"><h4>Caso #${cod} — ${precioPedido(p)}</h4><span class="comp-status subido">⏳ Comprobante enviado · En revisión</span></div>`;
         }
         return `<div class="pago-card">
-            <h4>Caso #${cod} — ${fmtCOP(p.precio_total)}</h4>
+            <h4>Caso #${cod} — ${precioPedido(p)}</h4>
+            ${Number(p.precio_total) > 0 ? '' : '<p class="inst">Te enviamos el valor por WhatsApp. Cuando lo apruebes, paga y sube aquí el comprobante.</p>'}
             <p class="inst">Transfiere al Nequi <strong style="color:#D4AF37">3212816716</strong> con referencia: <strong style="color:var(--cyan)">${cod}</strong></p>
             <div class="upload-area">
                 <input type="file" accept="image/*,application/pdf" id="comp-${escH(p.id)}" aria-label="Comprobante de pago del caso ${cod}">

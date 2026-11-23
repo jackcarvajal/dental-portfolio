@@ -1085,10 +1085,19 @@ async function generarOrdenReal(doctor, paciente, tel, fecha, color, obs, antago
     var _sb = window.ProdigyAuth ? window.ProdigyAuth.getSb() : null;
     if (_sb) {
       var _pedId = (crypto.randomUUID ? crypto.randomUUID() : (function(){var b=crypto.getRandomValues(new Uint8Array(16));b[6]=(b[6]&0x0f)|0x40;b[8]=(b[8]&0x3f)|0x80;var h=[].map.call(b,function(x){return x.toString(16).padStart(2,'0');});return h[0]+h[1]+h[2]+h[3]+'-'+h[4]+h[5]+'-'+h[6]+h[7]+'-'+h[8]+h[9]+'-'+h[10]+h[11]+h[12]+h[13]+h[14]+h[15];})());
+      // Con sesión, el pedido queda del doctor (si no, no le aparece en su portal ni cuenta como cliente recurrente).
+      // Paciente, color, antagonista, oclusión, vía y observaciones solo viajaban en el WhatsApp: ahora quedan en la base.
+      var _duenioLab = {};
+      try { var _sL = (await _sb.auth.getSession()).data.session; if (_sL && _sL.user) _duenioLab = { email: _sL.user.email, user_id: _sL.user.id }; } catch (_) {}
+      var _notasLab = [color ? 'Color: ' + color : '', antagonista ? 'Antagonista: ' + antagonista : '', oclusion ? 'Oclusión: ' + oclusion : '',
+                       'Vía: ' + viaActual, hasQuote ? 'Hay ítems por cotizar' : '', obs ? 'Obs: ' + obs : ''].filter(Boolean).join(' · ').slice(0, 1000);
       _sb.from('pedidos').insert([{ ...((window.ModoPrueba && ModoPrueba.camposPedido()) || {}),  /* modo prueba: es_prueba + pago ficticio (igual que diseño) */
         id:        _pedId,
         codigo:    ordenId,
         nombre_doctor: doctor,
+        nombre_paciente: paciente || null,
+        notas:     _notasLab || null,
+        ..._duenioLab,
         telefono:  tel || null,
         tipo_trabajo: lines.length ? lines.map(function(l){ return l.split(' — ')[0]; }).join(', ') : 'Lab Full',
         material:  'lab',
@@ -1159,9 +1168,9 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').cat
 <script src="js/modo-prueba.js?v=20260719"></script>
 <script src="js/registro-archivos.js?v=20260718"></script>
 <script src="js/upload-guard.js?v=20261001"></script>
-<script src="js/stl-multi-viewer.js?v=20261008"></script>
+<script src="js/stl-multi-viewer.js?v=20261123a"></script>
 <script>ProdigyMultiViewer.init('pmv-lab');</script>
-<script src="js/flujo-uploader.js?v=20260924"></script>
+<script src="js/flujo-uploader.js?v=20261123a"></script>
 
 <!-- MODAL ÉXITO LAB -->
 <div id="modal-exito-lab" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:9000;justify-content:center;align-items:center;">

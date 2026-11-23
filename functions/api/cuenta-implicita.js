@@ -62,11 +62,20 @@ export async function onRequestPost({ request, env }) {
       user_metadata: { nombre, clinica, whatsapp, rol_solicitado: 'client', primera_vez: true } }),
   });
   const u = await ru.json().catch(() => ({}));
+  // El pedido anónimo se guardó sin correo: sin esto NO le aparecía al doctor en su portal (el panel filtra por
+  // user_id / email), aunque el correo de bienvenida le dice que ya está ahí (23-nov-2026). Solo filas de ESE
+  // código, de prodigy, sin correo todavía; con cuenta nueva también queda el user_id.
+  const vincular = (uid) => b.origen !== 'pedido' ? Promise.resolve() : fetch(
+    `${c.URL}/rest/v1/pedidos?codigo=eq.${cod}&negocio=eq.prodigy&email=is.null&user_id=is.null`,
+    { method: 'PATCH', headers: { ...adminH(c.SERVICE), Prefer: 'return=minimal' },
+      body: JSON.stringify(uid ? { email, user_id: uid } : { email }) }).catch(() => {});
   if (!ru.ok) {
-    if (ru.status === 422 || /registered|exists/i.test(u.msg || u.message || u.error_code || '')) return J({ existe: true }, 200, h);
+    if (ru.status === 422 || /registered|exists/i.test(u.msg || u.message || u.error_code || '')) { await vincular(null); return J({ existe: true }, 200, h); }
     console.error('[cuenta-implicita] crear usuario:', ru.status, u.error_code || u.msg);
     return J({ error: 'No se pudo crear la cuenta' }, 502, h);
   }
+
+  await vincular(u.id);
 
   // Perfil del doctor (id = auth.users.id)
   await fetch(`${c.URL}/rest/v1/doctores_perfil?on_conflict=id`, {

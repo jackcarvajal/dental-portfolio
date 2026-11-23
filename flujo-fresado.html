@@ -4258,6 +4258,9 @@ if(window.ProdigyAuth){
                 _descCuponFrs  = _cupFrs ? Math.min(Math.max(0, Number(_cupFrs.monto) || 0), _precioBaseFrs) : 0;
                 _precioTotalFrs = Math.max(0, _precioBaseFrs - _descCuponFrs);
             } catch (_) { /* defensivo: si algo falla, el pedido sigue con 0 y el staff lo corrige */ }
+            // Modo «cotizar» (precios de fresado en ajuste): el cliente no ve precio, así que el pedido tampoco lo lleva.
+            // Antes quedaba con el valor interno y su portal le pedía pagar ese monto (23-nov-2026). PRODIGY lo fija al cotizar.
+            if (window.FRESADO_COTIZAR) { _precioBaseFrs = 0; _descCuponFrs = 0; _precioTotalFrs = 0; }
 
             if (!window.FRESADO_COTIZAR) {
             texto += `💰 *CONFIRMACIÓN DE PAGO*\n`;
@@ -4304,6 +4307,7 @@ if(window.ProdigyAuth){
                         const _ciu = (document.getElementById('ciudad')?.value || '').trim();
                         if (_ciu) _pf.push('Ciudad: ' + _ciu);
                         if (STATE.timeSlotName) _pf.push('Turno: ' + STATE.timeSlotName);
+                        if (window.FRESADO_COTIZAR) _pf.push('Precio a cotizar por PRODIGY');
                         if (!window.FRESADO_COTIZAR) {
                             const _pg = [STATE.pagoMetodo, STATE.pagoTitular, STATE.pagoReferencia].filter(Boolean).join(' / ');
                             if (_pg) _pf.push('Pago: ' + _pg);
@@ -4373,9 +4377,16 @@ if(window.ProdigyAuth){
                                 subidoPor: STATE.whatsappCliente || STATE.nombreCliente || null
                             });
                         }
+                        // El comprobante adjunto no se guardaba en ningún lado (23-nov-2026): queda en el pedido.
+                        const _compFrs = document.getElementById('comprobante')?.files?.[0];
+                        if (_pedId && !_e && _compFrs && window.FlujoUploader?.subirUno && window.PRegArchivos) {
+                            FlujoUploader.subirUno(_compFrs, 'comprobantes')
+                                .then(info => PRegArchivos.registrar(_sb, _pedId, [{ ...info, tipo: 'comprobante' }], { etapa: 'cliente_caso', subidoPor: STATE.whatsappCliente || null }))
+                                .catch(err => console.warn('[PRODIGY] Comprobante no subido:', err && err.message));
+                        }
 
                         if (!_e) {
-                            if(window._trackEvent) _trackEvent('pedido_creado',{flujo:'fresado',total:STATE.total,material:STATE.materialTipo});
+                            if(window._trackEvent) _trackEvent('pedido_creado',{flujo:'fresado',total:window.FRESADO_COTIZAR ? 'a cotizar' : STATE.total,material:STATE.materialTipo});
                             // Aviso al staff por WhatsApp (destinatarios en env; inerte si no está configurado)
                             fetch('/api/notify-staff', { method:'POST', headers:{ 'Content-Type':'application/json' },
                                 body: JSON.stringify({ doctor: STATE.nombreCliente, servicio: CONFIG.materiales[STATE.materialTipo]?.nom || STATE.materialTipo, whatsapp: STATE.whatsappCliente, codigo: STATE.ordenId, tipo:'Nuevo pedido (fresado)' }) }).catch(()=>{});
@@ -5184,9 +5195,9 @@ if(window.ProdigyAuth){
         }
     </script>
 
-    <script src="js/stl-multi-viewer.js?v=20261008"></script>
+    <script src="js/stl-multi-viewer.js?v=20261123a"></script>
     <script>ProdigyMultiViewer.init('pmv-fresado');</script>
-    <script src="js/flujo-uploader.js?v=20260924"></script>
+    <script src="js/flujo-uploader.js?v=20261123a"></script>
     <script>
     (function(){
       const SURL='https://zgihrwqfyvgyapbwzkvw.supabase.co';

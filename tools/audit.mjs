@@ -170,7 +170,7 @@ const GRATIS = /primera consulta gratis|consulta gratis|evaluaci[oó]n gratis|va
 // Las 2 revisiones incluidas (22-nov-2026): nada de «una ronda de ajustes», «1 revisión incluida» ni «revisiones sin costo».
 const REV_N = /una ronda de (ajustes|revisi[oó]n)|\b1 revisi[oó]n incluida|revisiones sin costo|one re-?design round|one round of (revisions|adjustments)|\b(ajustes|ajustamos|revisi[oó]n|revisiones|cambios|rondas?)\b[^.<'"]{0,50}sin costo|\b(revisions?|changes|adjust)\b[^.<'"]{0,40}at no (extra |additional )?cost/gi;
 // Lo que va en el precio se dice «incluido» (22-nov-2026): el refinamiento de alineadores, el retiro en sede, etc.
-const INCL = /refinamientos? (sin costo|gratis)|uno sin costo si se solicita|entrega personal[^.]{0,80}sin costo|retiro en sede \(gratis\)|free refinement/gi;
+const INCL = /refinamiento(?:<[^>]*>|s)*gratis|refinamientos? (sin costo|gratis)|uno sin costo si se solicita|entrega personal[^.]{0,80}sin costo|retiro en sede \(gratis\)|free refinement/gi;
 const JS_POL = existsSync(join(ROOT, 'js')) ? readdirSync(join(ROOT, 'js')).filter(n => n.endsWith('.js')).map(n => join(ROOT, 'js', n)) : [];
 // Política de pago (21-nov-2026): diseño, fresado e impresión 100 % anticipado; el 50/50 solo existe en Laboratorio Full.
 const PAGO50 = /abona el 50 ?%|paga el 50 ?%|pagas el 50 ?% restante|50 ?% (inicio|para iniciar|al iniciar|de anticipo)/gi;

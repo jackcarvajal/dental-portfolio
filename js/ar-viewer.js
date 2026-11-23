@@ -15,9 +15,9 @@
 window.ProdigyAR = (function() {
     'use strict';
 
-    const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
-    const STL_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js';
-    const GLTF_EXP  = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/exporters/GLTFExporter.js';
+    const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.165.0/+esm';
+    const STL_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js/+esm';
+    const GLTF_EXP  = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/exporters/GLTFExporter.js/+esm';
 
     let _arOverlay = null;
     let _renderer  = null;

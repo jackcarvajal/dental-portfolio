@@ -21,11 +21,11 @@
  * Depende de js/formatos.js (PFormatos) para saber qué visor toca cada extensión.
  */
 (function () {
-    const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
-    const STL_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js';
-    const OBJ_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/OBJLoader.js';
-    const PLY_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/PLYLoader.js';
-    const ORBIT_CDN = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js';
+    const THREE_CDN = 'https://cdn.jsdelivr.net/npm/three@0.165.0/+esm';
+    const STL_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js/+esm';
+    const OBJ_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/OBJLoader.js/+esm';
+    const PLY_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/PLYLoader.js/+esm';
+    const ORBIT_CDN = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js/+esm';
 
     let THREE_MOD, LOADERS = {}, ORBIT, tresReady = false;
     let _activos = [];   // renderers vivos, para limpiarlos al cerrar

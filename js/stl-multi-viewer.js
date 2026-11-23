@@ -16,9 +16,9 @@
  */
 (function () {
     /* ── CONSTANTES ────────────────────────────────────── */
-    const THREE_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
-    const STL_CDN     = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js';
-    const ORBIT_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js';
+    const THREE_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/+esm';
+    const STL_CDN     = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/loaders/STLLoader.js/+esm';
+    const ORBIT_CDN   = 'https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/controls/OrbitControls.js/+esm';
     const MAX_MB      = 250;
     // Se toma de js/formatos.js (fuente única). El literal es solo el respaldo
     // por si la página no cargó formatos.js — antes esta lista contradecía al

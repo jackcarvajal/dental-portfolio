@@ -1431,7 +1431,7 @@ window.submitOrden     = window.submitOrden      || function(){};
         };
         const PG_PROTOCOLO_HTML = {
             guia_quirurgica:`<div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#00d2ff;text-transform:uppercase;margin-bottom:14px">📋 Protocolo — Guía Quirúrgica</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.15);border-radius:9px;padding:14px;font-size:.85rem;color:#e2e8f0;line-height:1.9"><strong style="color:#00FF41">🦷 Dentosoportada</strong><br><strong style="color:#00d2ff">DICOM:</strong> TAC maxilar · Sin contacto oclusal · Sep. cortes 0.5mm · Res. 150μ<br><strong style="color:#00d2ff">STL:</strong> Escaneo intraoral 2 maxilares (PLY o STL)</div><div style="background:rgba(217,70,166,.04);border:1px solid rgba(217,70,166,.15);border-radius:9px;padding:14px;font-size:.85rem;color:#e2e8f0;line-height:1.9"><strong style="color:#D946A6">🦴 Mucosoportada — 2 TAC:</strong><br><strong>TAC 1</strong> con prótesis + marcadores (min. 4 vest + 4 pal) · 0.5mm · 150μ<br><strong>TAC 2</strong> solo la prótesis marcada<br><span style="color:#fbbf24;font-size:.7rem">⚠️ Marcadores: resina fotocurada Ø3mm o gutapercha</span></div></div></div>`,
-            alineadores:`<div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px">📋 Protocolo — Setup Alineadores</div><div style="font-size:.85rem;color:#e2e8f0;line-height:1.9;margin-bottom:12px">✅ STL 2 maxilares &nbsp;✅ Fotos: frontal · oclusal · lateral &nbsp;✅ Rx panorámica y perfil &nbsp;✅ Indicaciones ortodoncista &nbsp;✅ Decisión IPR y attachments</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.72rem"><div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.15);border-radius:8px;padding:10px"><strong style="color:#00d2ff">Valoración</strong><br>Vigencia 3–4 meses</div><div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.15);border-radius:8px;padding:10px"><strong style="color:#D946A6">Replaneación</strong><br>+$80.000–$160.000 COP</div><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;padding:10px"><strong style="color:#00FF41">Refinamiento</strong><br>Gratis &lt;6 meses · +$160K después</div></div></div>`
+            alineadores:`<div style="background:rgba(212,175,55,.06);border:1px solid rgba(212,175,55,.25);border-radius:12px;padding:18px;margin:16px 0;"><div style="font-size:.72rem;font-weight:800;letter-spacing:1px;color:#D4AF37;text-transform:uppercase;margin-bottom:12px">📋 Protocolo — Setup Alineadores</div><div style="font-size:.85rem;color:#e2e8f0;line-height:1.9;margin-bottom:12px">✅ STL 2 maxilares &nbsp;✅ Fotos: frontal · oclusal · lateral &nbsp;✅ Rx panorámica y perfil &nbsp;✅ Indicaciones ortodoncista &nbsp;✅ Decisión IPR y attachments</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.72rem"><div style="background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.15);border-radius:8px;padding:10px"><strong style="color:#00d2ff">Valoración</strong><br>Vigencia 3–4 meses</div><div style="background:rgba(217,70,166,.06);border:1px solid rgba(217,70,166,.15);border-radius:8px;padding:10px"><strong style="color:#D946A6">Replaneación</strong><br>+$80.000–$160.000 COP</div><div style="background:rgba(0,255,65,.04);border:1px solid rgba(0,255,65,.12);border-radius:8px;padding:10px"><strong style="color:#00FF41">Refinamiento</strong><br>Incluido en el plan <br>Incluido en el plan &lt;6 meses · +$160K despuéslt;6 meses · +$160K después</div></div></div>`
         };
         /* ── FLUJO DE 2 ETAPAS: Viabilidad → Diseño ──
            Guías quirúrgicas y Setup alineadores.
@@ -1711,19 +1711,15 @@ window.submitOrden     = window.submitOrden      || function(){};
 
             if (estado) { estado.innerHTML = '<i class="fas fa-spinner fa-spin" style="color:#D4AF37"></i> Subiendo…'; }
 
-            // Nombre seguro: solo alphanumeric, guiones y extensión
-            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,80);
-            const path = `casos/${Date.now()}_${safeName}`;
             try {
-                const SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
-                const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
-                const res = await fetch(`${SURL}/storage/v1/object/dental-cases/${path}`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${SKEY}`, 'apikey': SKEY, 'x-upsert': 'true' },
-                    body: file
-                });
-                if (!res.ok) throw new Error('Upload error');
+                // Antes: fetch directo con la anon key a un bucket que no la admite (fallaba SIEMPRE y, como estos
+                // archivos son obligatorios, el pedido no se podía enviar). Ahora: el mismo bucket del visor 3D.
+                if (!window.FlujoUploader || !window.FlujoUploader.subirUno) throw new Error('No se pudo subir. Pega un link de Drive / WeTransfer.');
+                const _info = await window.FlujoUploader.subirUno(file, 'requeridos');
+                const path = _info.ruta;
                 window._archivosSubidos[id] = path;
+                // Para el pedido: ruta + nombre (se registran en pedido_archivos y van en el WhatsApp)
+                (window._archivosSubidosInfo = window._archivosSubidosInfo || {})[id] = _info;
                 if (estado) { const _fn=String(file.name||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); estado.innerHTML = `<span style="color:#00FF41"><i class="fas fa-check-circle"></i> ${_fn.length>20?_fn.slice(0,20)+'…':_fn}</span>`; }
                 if (lbl) { lbl.style.background = 'rgba(0,255,65,.1)'; lbl.style.borderColor = 'rgba(0,255,65,.3)'; lbl.style.color = '#00FF41'; }
                 validarChecks();
@@ -1733,7 +1729,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                   else if(window.celebrateFlujo){ window.celebrateFlujo('diseno', estado||lbl||input, {toast:false, sides:false, particleCount:45}); }
                 }catch(_e){}
             } catch(e) {
-                if (estado) { estado.innerHTML = '<span style="color:#f87171"><i class="fas fa-times"></i> Error — intenta de nuevo</span>'; }
+                if (estado) { const _m = String((e && e.message) || 'Error — intenta de nuevo').replace(/&/g,'&amp;').replace(/</g,'&lt;'); estado.innerHTML = '<span style="color:#f87171"><i class="fas fa-times"></i> ' + _m + '</span>'; }
             }
         }
 
@@ -2022,7 +2018,11 @@ const lineWompi = document.getElementById('line-wompi');
             if (!paciente)       { showErr('nombrePaciente', 'Nombre del paciente requerido'); return; }
             if (!espec)          { showErr('especialidad',   'Selecciona especialidad'); return; }
             if (!STATE.subtipoId){ document.getElementById('acc-diseno').classList.add('active'); fdToast('Selecciona el tipo de diseño CAD.'); return; }
-            if (!link)           { showErr('linkSTL',        'Link de archivos requerido'); return; }
+            // El link es opcional si subió los archivos en la página (lo mismo que dice validarChecks): antes el botón
+            // se habilitaba y luego «Enviar» no hacía nada sin link (23-nov-2026).
+            const _hayArchivos = Object.values(window._archivosSubidos || {}).some(Boolean)
+                || (window.ProdigyMultiViewer && window.ProdigyMultiViewer.getFiles().length > 0);
+            if (!link && !_hayArchivos) { showErr('linkSTL', 'Sube los archivos o pega el link'); return; }
             // PSE / tarjeta (Wompi): se paga DESPUÉS de registrar la orden → aún no hay datos de pago que pedir
             const _pagaWompi = (typeof _eligioWompiDis === 'function') && _eligioWompiDis();
             if (!_pagaWompi && (!pMetodo || !pTitular)) { fdToast('Completa el método de pago y nombre del titular en el resumen.'); return; }
@@ -2102,11 +2102,22 @@ const lineWompi = document.getElementById('line-wompi');
                     const urls = await FlujoUploader.upload(STATE.ordenId, (n, total) => {
                         if (btn) btn.textContent = `⏳ Subiendo archivo ${n+1}/${total}...`;
                     });
-                    if (urls.length > 0) STATE.linkSTL = urls.join(' | ');
+                    // Se suma al link que pegó el doctor (antes lo reemplazaba y el link se perdía)
+                    if (urls.length > 0) STATE.linkSTL = [STATE.linkSTL, ...urls].filter(Boolean).join(' | ');
                     // Se guarda para registrar en `pedido_archivos` una vez creado el
                     // pedido — aquí todavía no existe su UUID.
                     STATE._subida = urls;
                 } catch(e) { console.warn('[PRODIGY] Upload error:', e); }
+            }
+            // Archivos de «Archivos requeridos» (bucket dental-cases): antes quedaban sueltos en el storage, sin
+            // aparecer en el pedido ni en el WhatsApp, y el laboratorio no los veía (23-nov-2026).
+            const _reqSub = Object.values(window._archivosSubidosInfo || {});
+            if (_reqSub.length) {
+                STATE.linkSTL = [STATE.linkSTL, 'Subidos en la página (' + _reqSub.length + '): ' + _reqSub.map(a => a.nombre).join(', ')].filter(Boolean).join(' | ');
+                const _sub = STATE._subida || Object.assign([], { subidos: [], fallidos: [] });
+                _sub.subidos = (_sub.subidos || []).concat(_reqSub);
+                if (!_sub.fallidos) _sub.fallidos = [];
+                STATE._subida = _sub;
             }
 
             if (btn) btn.textContent = '⏳ Generando orden...';
@@ -2725,9 +2736,9 @@ const lineWompi = document.getElementById('line-wompi');
 <script src="js/modo-prueba.js?v=20260719"></script>
     <script src="js/registro-archivos.js?v=20260718"></script>
     <script src="js/upload-guard.js?v=20261001"></script>
-    <script src="js/stl-multi-viewer.js?v=20261008"></script>
+    <script src="js/stl-multi-viewer.js?v=20261123a"></script>
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
-    <script src="js/flujo-uploader.js?v=20260924"></script>
+    <script src="js/flujo-uploader.js?v=20261123a"></script>
     <script src="js/dientes.js?v=20261008b"></script>
     <script>window.ODO_CFG = {"v": "20261122a", "archivosGuia": {"dientes": "guia_1", "edentulo": "guia_edentulo"}, "mapa": {"Diseño de sonrisa 3D": ["cad_quirurgica", "sonrisa_3d"], "Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Póntico cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (solo pilar)": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {"Diseño de sonrisa 3D": 1}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
     <script src="js/odontograma-flujo.js?v=20261010h"></script>
@@ -2774,6 +2785,21 @@ document.addEventListener('DOMContentLoaded', function () {
       p[map[id]] = el.value; localStorage.setItem('prodigy_profile', JSON.stringify(p));
     });
   });
+});
+</script>
+<script>
+/* El 3 % de Wompi es solo para PSE / tarjeta. «Transferencia directa» viene desmarcada, así que quien pagaba por
+   Nequi y lo indicaba en «¿Por dónde pagaste?» quedaba con el pedido en +3 % (23-nov-2026). Al elegir un medio de
+   transferencia (o abrir sus datos) se marca la casilla; con «PSE / Tarjeta», se desmarca. */
+document.addEventListener('DOMContentLoaded', function () {
+  var pm = document.getElementById('pago_metodo'), chk = document.getElementById('chk-transferencia');
+  if (!pm || !chk) return;
+  function poner(v) { if (chk.checked !== v) { chk.checked = v; if (typeof calcularTotal === 'function') calcularTotal(); } }
+  pm.addEventListener('change', function () {
+    if (['Nequi', 'Daviplata', 'Nu', 'Breb'].indexOf(pm.value) !== -1) poner(true);
+    else if (pm.value === 'PSE / Tarjeta') poner(false);
+  });
+  document.querySelectorAll('#pago-co .payment-btn').forEach(function (b) { b.addEventListener('click', function () { poner(true); }); });
 });
 </script>
 </body>

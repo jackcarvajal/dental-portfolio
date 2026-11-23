@@ -629,13 +629,13 @@
                 </div>
 
                 <!-- Drop zone -->
-                <div class="fg"><label for="fileInput">Archivos de escaneo (.stl, .obj, .ply, .dcm, .zip)</label></div>
+                <div class="fg"><label for="fileInput">Archivos de escaneo (.stl, .ply, .zip)</label></div>
                 <button type="button" class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()" aria-label="Seleccionar archivo de escaneo" aria-describedby="file-hint">
                     <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
                     <p><strong>Arrastra aquí</strong> o haz clic para seleccionar</p>
-                    <small id="file-hint">STL, OBJ, PLY, DCM, ZIP — máx. 50 MB</small>
+                    <small id="file-hint">STL, PLY o ZIP — máx. 50 MB (OBJ o DICOM: comprímelos en un .zip)</small>
                 </button>
-                <input type="file" id="fileInput" accept=".stl,.obj,.ply,.dcm,.zip" aria-describedby="file-hint">
+                <input type="file" id="fileInput" accept=".stl,.ply,.zip" aria-describedby="file-hint">
 
                 <div class="fpill" id="fpill">
                     <i class="fas fa-file-alt"></i>
@@ -843,8 +843,8 @@ fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fil
 
 function setFile(f) {
     const ext = f.name.split('.').pop().toLowerCase();
-    if (!['stl','obj','ply','dcm','zip'].includes(ext)) {
-        pubToast('Formato no permitido. Acepta: STL, OBJ, PLY, DCM, ZIP'); return;
+    if (!['stl','ply','zip'].includes(ext)) {   // el bucket solo admite estos (OBJ/DICOM fallaban al subir: van en .zip)
+        pubToast('Formato no permitido. Acepta STL, PLY o ZIP (OBJ o DICOM: comprímelos en un .zip)'); return;
     }
     if (f.size > 52428800) {
         pubToast('El archivo supera 50 MB. Comprime en ZIP o pega el link de descarga en las notas.'); return;
