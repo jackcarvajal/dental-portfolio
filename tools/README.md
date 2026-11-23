@@ -114,6 +114,14 @@ PRODIGY (canónico). Informativo: no falla ni modifica nada. `--repo <ruta>` par
 `audit.mjs` §5 además falla si un origen CORS se acepta por substring (`.includes('.pages.dev')`) o si hay
 enlaces a un `*.pages.dev` que no es nuestro.
 
+## og-generar.mjs — imágenes para compartir (og:image)
+
+`node tools/og-generar.mjs [--solo slug1,slug2] [--aplicar]` genera `assets/og-<slug>.jpg` (1200×630) con una
+foto real (portafolio en Supabase o archivo del repo) y el texto de cada página; `--aplicar` cambia `og:image` y
+`twitter:image` de las páginas listadas. Necesita Chrome o Edge. Reglas: español sin precios ni promesas de
+tiempo, un solo acento (magenta), nada de brillos ni etiquetas decorativas. Gemelo de `tools/og-generar.mjs` de Alejandro CAD/CAM.
+Al crear una página nueva: agregarla a la lista `IMAGENES` (o a `paginas` de una existente) y correr con `--aplicar`.
+
 ## indice-busqueda.mjs
 Genera `buscar-indice.json` (raíz) para la lupa del menú (`js/buscador-web.js`): páginas públicas + artículos del blog.
 Lo corre solo el cron del blog; a mano al crear o quitar una página: `node tools/indice-busqueda.mjs`.

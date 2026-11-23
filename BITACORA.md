@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-22 (i) — Imágenes para compartir con fotos reales, sin precios
+
+- 🟡 Las og:image en español mostraban precios y promesas que ya no aplican: guías «desde $180.000», fresado «desde $60.000 COP por unidad» (precios suspendidos), calculadora «$60K COP», «Entrega 24h/48h», «98 % aprobación», «Respuesta en menos de 2h», «unirse gratis», y las páginas /en/ usaban imágenes en español. Estilo «hecho con IA» (brillos, etiquetas, pills).
+- 🟡 Nuevo tools/og-generar.mjs: 21 imágenes 1200×630 con foto real (híbrida y barra del video del lab, casos de assets/catalogo, portafolio de Supabase), acento magenta y gema del logo; `--aplicar` cambia og:image y twitter:image en 29 páginas. Fotos fuente en assets/og-fuentes/.
+- Paridad: lo mismo en Alejandro (26 imágenes, acento dorado).
+- Sin tocar: og-referidos (el crédito del programa es la oferta), og-escaner-domicilio (datos del equipo), og-flujo-diseno (ya al día).
+
 ## 2026-11-22 (h) — Sin 50/50 fuera de Laboratorio Full; auditoría de política ampliada
 
 - 🟡 Diseño, fresado e impresión son 100 % anticipado: fuera «abona el 50 % / 50 % contra entrega» de los HowTo (index, nosotros, envia-tu-scanner, alineadores-cad, impresion-3d), las FAQ de ferulas-oclusales y rehabilitacion-sobre-implantes y las plantillas de WhatsApp de app/clientes y app/bandeja-solicitudes. Sin repetir la regla (se quita la coletilla; vive en términos, /preguntas, panel y correo).
