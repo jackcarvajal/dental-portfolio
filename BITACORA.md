@@ -11,6 +11,8 @@
 
 ## 2026-11-23 (b) — Auditoría de punta a punta de los flujos de pedido (diseño, impresión, fresado, Laboratorio Full)
 
+- ⚠️ Caché: las URL ?v=20261123a se pidieron antes del despliegue (prueba local) y el CDN guardó la versión vieja → subidas a ?v=20261123c (stl-multi-viewer de PRODIGY a b). Verificado en vivo descomprimiendo la variante br. Recorrido final en vivo de todos los flujos: todos ✓, 0 errores.
+
 Método: cada flujo se recorrió en la página real con un navegador automático que deja pasar las lecturas y atrapa
 TODA escritura (pedido, archivos, avisos, WhatsApp, analítica): nada llegó a la base ni al equipo. Luego cada pedido
 capturado se insertó en la base como anon / cliente dentro de una transacción que se revierte (RLS, triggers y
