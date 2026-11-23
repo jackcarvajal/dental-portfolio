@@ -2,6 +2,7 @@
 //
 //   node tools/og-generar.mjs            → crea/actualiza assets/og-<slug>.jpg
 //   node tools/og-generar.mjs --aplicar  → además apunta og:image y twitter:image de cada página a su imagen
+//                                          (y agrega og:image:width/height y twitter:card si faltan); --solo-metas no regenera
 //   node tools/og-generar.mjs --solo laboratorio,fresado   → solo esas
 //
 // Reglas (22-nov-2026): español sin precios ni promesas de tiempo (los precios cambian y la imagen queda vieja
@@ -127,7 +128,7 @@ const solo = args.includes('--solo') ? args[args.indexOf('--solo') + 1].split(',
 const lista = IMAGENES.filter(i => !solo || solo.includes(i.slug));
 const tmp = mkdtempSync(join(tmpdir(), 'og-html-'));
 
-await conCDP(async ({ send, cargado }) => {
+if (!args.includes('--solo-metas')) await conCDP(async ({ send, cargado }) => {   // --solo-metas: no regenera, solo --aplicar
   for (const i of lista) {
     const f = join(tmp, i.slug + '.html'); writeFileSync(f, plantilla(i));
     let ok = false;
@@ -145,11 +146,22 @@ await conCDP(async ({ send, cargado }) => {
 });
 rmSync(tmp, { recursive: true, force: true });
 
+// Tamaño (WhatsApp arma la vista previa sin descargar la imagen primero) y tarjeta grande de X, si faltan.
+function completarMetas(t, url) {
+  const m = t.match(/^([ \t]*)<meta\b[^>]*\bproperty="og:image"[^>]*>/m); if (!m) return t;
+  const eol = t.includes('\r\n') ? '\r\n' : '\n', extra = [];
+  if (!/property="og:image:width"/.test(t)) extra.push('<meta property="og:image:width" content="1200">', '<meta property="og:image:height" content="630">');
+  if (!/name="twitter:card"/.test(t)) extra.push('<meta name="twitter:card" content="summary_large_image">');
+  if (!/name="twitter:image"/.test(t)) extra.push(`<meta name="twitter:image" content="${url}">`);
+  return extra.length ? t.replace(m[0], m[0] + extra.map(e => eol + m[1] + e).join('')) : t;
+}
+
 if (args.includes('--aplicar')) {
   for (const i of lista) for (const p of i.paginas) {
     const f = join(ROOT, p + '.html'); let t = readFileSync(f, 'utf8'); const antes = t;
     const url = `https://prodigylabdental.com/assets/og-${i.slug}.jpg`;
     t = t.replace(/(<meta\b[^>]*\bproperty="og:image"[^>]*\bcontent=")[^"]+(")/, `$1${url}$2`).replace(/(<meta\b[^>]*\bname="twitter:image"[^>]*\bcontent=")[^"]+(")/, `$1${url}$2`);
+    t = completarMetas(t, url);
     if (t !== antes) { writeFileSync(f, t); console.log('  → ' + p + '.html'); } else console.log('  = ' + p + '.html (sin cambio)');
   }
 }
