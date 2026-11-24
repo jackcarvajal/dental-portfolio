@@ -178,6 +178,9 @@
             border: 1px solid rgba(217,70,166,0.35);
         }
         .role-tab i { display: block; font-size: 1.1rem; margin-bottom: 4px; }
+        /* Pestañas Operador/Admin solo para el equipo (23-nov-2026): el público ve solo el ingreso de cliente. */
+        .role-tabs.solo-equipo { display: none !important; }
+        .acceso-equipo { background: none; border: none; color: #94a3b8; font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; text-decoration: underline; padding: 6px 4px; }
         .rol-ayuda { font-size: .78rem; color: #94a3b8; text-align: center; margin: -6px 0 14px; line-height: 1.5; }
         #aviso-rol { border: 1px solid rgba(212,175,55,.45); background: rgba(212,175,55,.08); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; font-size: .86rem; line-height: 1.55; color: #f0e6c8; }
         #aviso-rol b { color: #D4AF37; }
@@ -478,7 +481,7 @@
     <!-- ============ PANEL: INGRESAR ============ -->
     <div class="tab-panel active" id="panel-login">
         <!-- Selector de rol -->
-        <div class="role-tabs" id="role-tabs">
+        <div class="role-tabs solo-equipo" id="role-tabs">
             <div class="role-tab active" role="button" tabindex="0" aria-pressed="true" onclick="setRole('client',this)">
                 <i class="fas fa-user"></i>Cliente
             </div>
@@ -523,6 +526,7 @@
                 ¿Olvidaste tu contraseña?
             </button>
         </p>
+        <p style="text-align:center;margin-top:4px;"><button type="button" class="acceso-equipo" id="btn-acceso-equipo" onclick="mostrarAccesoEquipo()">Acceso del equipo</button></p>
 
         <!-- PANEL RESET (oculto por defecto) -->
         <div id="reset-panel" style="display:none;margin-top:14px;background:rgba(212,175,55,0.05);border:1px solid rgba(212,175,55,0.25);border-radius:12px;padding:16px;">
@@ -652,6 +656,14 @@
 
     // Banner si viene desde guard
     const params = new URLSearchParams(window.location.search);
+    function mostrarAccesoEquipo() {
+        const t = document.getElementById('role-tabs'); if (t) t.classList.remove('solo-equipo');
+        const b = document.getElementById('btn-acceso-equipo'); if (b) b.parentElement.hidden = true;
+    }
+    (function () {
+        const dest = params.get('redirect') || '';
+        if (params.has('equipo') || (dest.indexOf('/app/') !== -1 && dest.indexOf('client-panel') === -1 && dest.indexOf('cliente') === -1)) mostrarAccesoEquipo();
+    })();
     document.getElementById('banner-cotizar').style.display =
         (params.get('msg') === 'cotizar' || params.get('msg') === 'sesion') ? 'flex' : 'none';
 

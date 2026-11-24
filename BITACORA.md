@@ -16,6 +16,13 @@
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
 - ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
+## 2026-11-24 — Mejoras aprobadas del informe visual (4 parcial y 5)
+
+- app/login: las pestañas Operador/Admin ya no las ve el público; el equipo entra con «Acceso del equipo», con ?equipo=1 o cuando el guard manda a una página interna (redirect a /app/ que no es del cliente). Las cifras 200+ / 24 h / 98 % se quedan (Alejandro confirma que son reales). Mismo cambio en Alejandro.
+- Tolerancia de fresado única ±20 µm (la de la garantía en Términos): fresado-cam decía ±10 µm «garantizada» y el portafolio ±50 µm. Los ±10 µm de nosotros/seguimiento describen la fresadora y se dejan; los ±50 µm de impresión 3D son de otro proceso.
+- portafolio: la Ñ de «DISEÑOS» se cortaba (texto con degradado recortado a la caja) → padding-top.
+- ⏳ **sql/portafolio-textos-2026.sql** (pendiente de correr): corrige 13 títulos/descripciones del portafolio («Cronas», «All for X», «protipo par aluego», «Rehailitaion», «zironia», «Carilla inferiores», dobles espacios) y el tipo vacío de un plan de alineadores. Verificación: errores_restantes 0, corregidos 13.
+
 ## 2026-11-23 (f) — PageSpeed móvil: accesibilidad (contraste y orden de títulos) + aviso «English»
 
 - Pie: títulos de columna h4 → h2 (Lighthouse: salto de nivel) con los estilos globales de h2 anulados; línea «International · English» y texto del aviso de cookies #64748b → #94a3b8 (4,3:1 → 7,9:1).
