@@ -9,6 +9,19 @@
 
 ---
 
+## 2026-11-23 (d) — Barrido de precios: cada opción de cada flujo y de cada calculadora contra el catálogo
+
+Método: navegador automático que selecciona TODAS las opciones (nada se envía) y compara lo que la página cobra con
+las tablas catalogo / config_precios de la base.
+
+- ✅ sql/pedidos-avisos-y-permisos-cliente-2026.sql corrido por Alejandro y verificado en vivo (comprobante del cliente, abuso bloqueado, equipo, webhook: OK).
+- ✓ Diseño: 29/29 opciones = catálogo; ×2, express (+20.000) y Wompi (+3 %) bien. ✓ Impresión: 18/18 = catálogo. ✓ Fresado: 21/21 = catálogo.
+- 🟡 Guías por nº de implantes: la página usaba una fórmula y no las filas del catálogo → «diseño + impresa» de 2–5 implantes salía $10.000–$40.000 más barata (460k vs 470k… 700k vs 740k) y «solo diseño» de 7+ implantes más cara que «6+» (540k/600k vs 480k). Ahora usa guia_2…guia_5, guia_6mas y sus «_impresa» del catálogo.
+- 🟡 Fresado: elegir CrCo o PEEK marca «material externo» a la fuerza; al cambiar luego a titanio quedaba marcado → −30 % y «material del cliente» sin que el doctor lo pidiera. Ahora se desmarca.
+- 🟡 calculadora-fresado mostraba $180.000 por corona (y un JSON-LD con oferta de $238.000) aunque los precios de fresado están suspendidos desde el 19-nov → modo «Cotizar» (FRESADO_COTIZAR), WhatsApp pide cotización con lo elegido.
+- 🟡 calculadora (general): su sync leía corona/carilla del catálogo de DISEÑO (corona $15.000) → solo filas flujo='calculadora'.
+- ⏳ Decisión de Alejandro: calculadora-impresion no coincide con el flujo (férula 100k vs 75k, guía 130k vs 85k, provisional 80k vs 45k, cubeta 70k vs 45k); el configurador de modelos 3D usa precios fijos en el código (base 24k–35k, Geller +8k) que no son los del catálogo (mod_*); calculadora-diseno en USD de PRODIGY ≠ catálogo (precio_usd en 0 en 20 ítems) ≠ la de Alejandro; «diseño + impresa» de guías cobra anticipo del 50 %.
+
 ## 2026-11-23 (c) — Auditoría del ciclo del pedido: pagos, etapas y permisos (pruebas revertidas)
 
 Método: en la base, dentro de transacciones que se revierten, con usuarios temporales (cliente, operador, servidor):
@@ -17,7 +30,7 @@ cada cambio que hace un portal, el equipo o un webhook. Verificado que no quedó
 - 🔴 **Ningún cambio de etapa ni de pago funcionaba**: prodigy_notif_pedido comparaba pedidos.estado (enum Pendiente/Pagado…) con estados de operación ('CAMBIOS_SOLICITADOS'…) → «invalid input value for enum». Fallaban: el cliente subiendo el comprobante, el equipo confirmando pagos o cambiando de etapa, los webhooks. Los avisos por etapa nunca salían.
 - 🔴 **Los pagos en línea nunca quedaban confirmados**: el trigger de seguridad trataba la llave service_role (webhooks de Wompi y PayPal) como cliente → «Clientes no pueden confirmar pago».
 - 🔴 **El cliente podía cambiar 25+ campos internos de su pedido** desde el navegador: revisiones_usadas (revisiones gratis), servicios_pagados (marcar fresado/impresión como pagados), cantidad, precio_base, fecha_pago, timestamp_pago_confirmado, factura_*, es_prueba, negocio, departamento_actual, operador_id, link_diseno… (lista negra) → ahora lista blanca para updates directos.
-- ⏳ **sql/pedidos-avisos-y-permisos-cliente-2026.sql** (pendiente de correr): arregla los tres. Probado entero en transacción revertida: 10/10 acciones legítimas del cliente pasan, 18/18 abusos bloqueados, el equipo cambia etapa y confirma pago (7 avisos generados), webhook con service_role confirma, las RPC de revisión siguen igual.
+- ✅ **sql/pedidos-avisos-y-permisos-cliente-2026.sql** (corrido el 23-nov): arregla los tres. Probado entero en transacción revertida: 10/10 acciones legítimas del cliente pasan, 18/18 abusos bloqueados, el equipo cambia etapa y confirma pago (7 avisos generados), webhook con service_role confirma, las RPC de revisión siguen igual.
 - 🟡 PayPal (captura y webhook): escribía 'paypal' en pago_confirmado_por (uuid) → el PATCH fallaba siempre; ahora va en nota_confirmacion_pago. Mismo arreglo en Alejandro.
 - Comprobado y bien: un cliente no ve ni modifica pedidos ajenos; anónimo no ve pedidos, archivos ni solicitudes; prodigy-files solo deja subir comprobantes a pedidos propios.
 - Anotado: modalidad_cobro tiene default 'contra_entrega' aunque la política es 100 % anticipado (no se usa para cobrar; revisar si algún panel lo muestra).

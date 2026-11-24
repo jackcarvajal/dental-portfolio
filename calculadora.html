@@ -891,7 +891,9 @@ renderResult();
 (async function syncPrecios() {
   try {
     if (!sb) return;
-    const { data } = await sb.from('catalogo').select('id,precio,activo').in('id',
+    // Solo filas propias de esta calculadora (producto terminado). Antes leía corona/carilla/… del catálogo de DISEÑO
+    // (corona $15.000 = solo el diseño) y, si cargaba, una corona terminada habría salido a $15.000 (23-nov-2026).
+    const { data } = await sb.from('catalogo').select('id,precio,activo').eq('flujo', 'calculadora').in('id',
       ['corona','carilla','inlay','puente','provisional','modelo']
     );
     if (!data || !data.length) return;

@@ -44,7 +44,7 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
   <link rel="dns-prefetch" href="https://zgihrwqfyvgyapbwzkvw.supabase.co">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Cotizador Fresado CAD/CAM Dental","description":"Cotiza tu corona de zirconio, disilicato de litio, puente CAD/CAM o provisional PMMA. Fresado de alta precisión en Bogotá. Entrega 24h en Colombia.","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","streetAddress":"Calle 147A #54-52","addressLocality":"Bogotá","addressCountry":"CO"}},"areaServed":"Colombia","serviceType":"CAD/CAM Milling","offers":{"@type":"Offer","priceCurrency":"COP","price":"238000"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Cotizador Fresado CAD/CAM Dental","description":"Cotiza tu corona de zirconio, disilicato de litio, puente CAD/CAM o provisional PMMA. Fresado de alta precisión en Bogotá. Entrega 24h en Colombia.","provider":{"@type":"LocalBusiness","name":"PRODIGY Lab Dental","telephone":"+573212816716","address":{"@type":"PostalAddress","streetAddress":"Calle 147A #54-52","addressLocality":"Bogotá","addressCountry":"CO"}},"areaServed":"Colombia","serviceType":"CAD/CAM Milling"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://prodigylabdental.com/"},{"@type":"ListItem","position":2,"name":"Cotizador Fresado","item":"https://prodigylabdental.com/calculadora-fresado"}]}</script>
   <link rel="preload" href="assets/font-awesome/fa.css?v=20261118" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="assets/font-awesome/fa.css?v=20261118"></noscript>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.min.js" integrity="sha384-sgcvElP/LlNRtORGYFLO/9K/bENcpJK19HgvqslWXog6d8f/Va4TpltGiBlGntCM" crossorigin="anonymous"></script>
@@ -307,19 +307,19 @@ html,body{overflow-x:clip;}
     <div class="res-card" aria-live="polite" aria-atomic="true" role="status">
       <div class="res-label">Estimado de precio</div>
       <div class="res-srv" id="resSrv">Corona Monolítica · Zirconio 3Y</div>
-      <div class="res-total" id="resTotal">$180.000</div>
+      <div class="res-total" id="resTotal">Cotizar</div>
       <div class="res-sub">COP · precio de referencia · IVA no incluido</div>
 
       <div class="res-bd">
-        <div class="res-bd-row"><span>Precio unitario</span><span id="bdUnit">$180.000</span></div>
+        <div class="res-bd-row"><span>Precio unitario</span><span id="bdUnit">—</span></div>
         <div class="res-bd-row"><span>Cantidad</span><span id="bdQty">× 1</span></div>
         <div class="res-bd-row"><span>Extras</span><span id="bdExtras">$0</span></div>
-        <div class="res-bd-row total"><span>Total estimado</span><span id="bdTotal">$180.000</span></div>
+        <div class="res-bd-row total"><span>Total estimado</span><span id="bdTotal">—</span></div>
       </div>
 
       <div class="abono-row" style="margin-bottom:20px;">
         <span>Pago al confirmar (100%)</span>
-        <strong id="bdTotal2" style="color:var(--gold);">$180.000</strong>
+        <strong id="bdTotal2" style="color:var(--gold);">Cotizar</strong>
       </div>
 
       <button type="button" class="btn-wa" onclick="abrirWA()">
@@ -378,6 +378,7 @@ const MAT_LBL = {
   'titanio':       'Titanio CNC',
 };
 const EXTRAS = { urgente:40000, glaze:30000, envio:20000 };
+const FRESADO_COTIZAR = true;   // false = vuelve a mostrar precios (cuando se fijen los de fresado)
 
 let ST = { srv:'corona-mono', mat:'zirconio-mono', qty:1, urgente:false, glaze:false, envio:false };
 
@@ -398,12 +399,16 @@ function calcTotal() {
 
 function render() {
   const { unit, qty, extras, total, p } = calcTotal();
-  const cotizar = total === 0;
+  // Precios de fresado suspendidos (19-nov-2026, igual que FRESADO_COTIZAR en /flujo-fresado): la calculadora
+  // mostraba $180.000 por corona y otras cifras que el flujo ya no cobra. Hasta fijarlos, todo es «Cotizar».
+  const cotizar = FRESADO_COTIZAR || total === 0;
   document.getElementById('resSrv').textContent = p.lbl + ' · ' + MAT_LBL[ST.mat];
   document.getElementById('resTotal').textContent = cotizar ? 'Cotizar' : fmt(total);
   document.getElementById('bdUnit').textContent   = cotizar ? '—' : fmt(unit);
   document.getElementById('bdQty').textContent    = '× ' + qty;
-  document.getElementById('bdExtras').textContent = extras > 0 ? fmt(extras) : '$0';
+  document.getElementById('bdExtras').textContent = cotizar ? '—' : (extras > 0 ? fmt(extras) : '$0');
+  const sub = document.querySelector('.res-sub');
+  if (sub && FRESADO_COTIZAR) sub.textContent = 'Precios de fresado en ajuste: te enviamos el valor por WhatsApp';
   document.getElementById('bdTotal').textContent  = cotizar ? '—' : fmt(total);
   var bd2 = document.getElementById('bdTotal2');
   if (bd2) bd2.textContent = cotizar ? 'Cotizar' : fmt(total);
@@ -443,10 +448,10 @@ function abrirWA() {
   }
   const { unit, qty, extras, total, p } = calcTotal();
   const srv = p.lbl + ' · ' + MAT_LBL[ST.mat];
-  const cotizar = total === 0;
+  const cotizar = FRESADO_COTIZAR || total === 0;
   let msg;
   if (cotizar) {
-    msg = `Hola PRODIGY, necesito cotizar *${srv}* — ¿me pueden dar precio?`;
+    msg = `Hola PRODIGY, necesito cotizar *${srv}* (${qty} unidad${qty > 1 ? 'es' : ''})` + (ST.urgente ? ', urgente' : '') + (ST.glaze ? ', con glaze' : '') + (ST.envio ? ', con envío' : '') + ` — ¿me pueden dar el precio?`;
   } else {
     msg = `Hola PRODIGY, quiero confirmar mi pedido de fresado:\n\n` +
       `🦷 *Servicio:* ${srv}\n` +

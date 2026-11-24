@@ -1221,6 +1221,12 @@ window.submitOrden     = window.submitOrden      || function(){};
                     .from('catalogo').select('id,precio,activo,precio_oferta,oferta_desde,oferta_hasta').eq('flujo', 'diseno');
                 if (items && items.length) {
                     const mapa = Object.fromEntries(items.map(i => [i.id, i]));
+                    // Guías por número de implantes: el catálogo tiene filas propias (guia_2…guia_5, guia_6mas y sus
+                    // «_impresa») que la página ignoraba y calculaba con una fórmula distinta (23-nov-2026).
+                    const _pr = id => { const r = mapa[id]; if (!r || r.activo === false) return null; return window.Promo ? window.Promo.resolver(r).precio : r.precio; };
+                    window._guiaCatalogo = { d: {}, i: {} };
+                    for (let n = 2; n <= 5; n++) { window._guiaCatalogo.d[n] = _pr('guia_' + n); window._guiaCatalogo.i[n] = _pr('guia_' + n + '_impresa'); }
+                    window._guiaCatalogo.d6 = _pr('guia_6mas');
                     for (const cat of Object.values(MATERIAL_DATA_MUT)) {
                         for (const [sid, sub] of Object.entries(cat.subtipos)) {
                             const row = mapa[sid];
@@ -1790,11 +1796,19 @@ window.submitOrden     = window.submitOrden      || function(){};
             const subs = MATERIAL_DATA_MUT.cad_quirurgica.subtipos;
             const n = _guiaImplantes;
             const sufijo = `— ${n} implante${n>1?'s':''}`;
+            const cat = window._guiaCatalogo || { d: {}, i: {} };
             if (_guiaImpresa) {
-                const precio = subs.guia_1_impresa.precio + (n-1)*80000;
+                // Precio del catálogo para 2–5 implantes; desde 6, sigue el mismo paso que el catálogo (5 − 4).
+                const i4 = cat.i[4], i5 = cat.i[5];
+                const precio = (n >= 2 && n <= 5 && cat.i[n]) ? cat.i[n]
+                    : (n > 5 && i4 && i5) ? i5 + (n - 5) * (i5 - i4)
+                    : subs.guia_1_impresa.precio + (n-1)*80000;
                 return { id:'guia_1_impresa', nombre:`Guía Quirúrgica ${sufijo} (diseño + impresa)`, precio, anticipo: Math.round(precio/2) };
             }
-            const precio = subs.guia_1.precio + (n-1)*60000;
+            // Solo diseño: catálogo para 2–5 y «6+ implantes» (guia_6mas) desde 6
+            const precio = (n >= 2 && n <= 5 && cat.d[n]) ? cat.d[n]
+                : (n >= 6 && cat.d6) ? cat.d6
+                : subs.guia_1.precio + (n-1)*60000;
             return { id:'guia_1', nombre:`Guía Quirúrgica ${sufijo}`, precio, anticipo: subs.guia_1.anticipo };
         }
 
