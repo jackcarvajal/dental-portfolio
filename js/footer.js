@@ -21,14 +21,18 @@
       'gap:40px;',
       'max-width:1260px;margin:0 auto 48px;padding:0 28px;',
     '}',
-    '#pfoot-root .pfoot-col h4{',
+    '#pfoot-root .pfoot-col h2{',
       'color:#D4AF37;font-size:12px;font-weight:800;',
       'text-transform:uppercase;letter-spacing:1.5px;',
       'margin:0 0 18px;',
       'padding-bottom:8px;',
       'border-bottom:1px solid rgba(212,175,55,.25);',
       'display:inline-block;',
+      // h2 (antes h4: Lighthouse marcaba el salto de nivel). Se anulan los estilos globales de h2 de cada página.
+      'line-height:1.3;text-align:left;font-family:inherit;text-shadow:none;background:none;',
+      '-webkit-text-fill-color:currentColor;max-width:none;width:auto;',
     '}',
+    '#pfoot-root .pfoot-col h2::before,#pfoot-root .pfoot-col h2::after{content:none;display:none;}',
     '#pfoot-root .pfoot-col ul{list-style:none;padding:0;margin:0;}',
     '#pfoot-root .pfoot-col li{padding:5px 0;color:#94a3b8;font-size:13.5px;}',
     '#pfoot-root .pfoot-col a{',
@@ -144,7 +148,7 @@
 
       /* Col 2 — Servicios */
       '<div class="pfoot-col">' +
-        '<h4>Servicios</h4>' +
+        '<h2>Servicios</h2>' +
         '<ul>' +
           '<li><a href="/diseno-cad">Diseño CAD — Exocad · 3Shape</a></li>' +
           '<li><a href="/diseno-remoto">🌍 Diseño CAD Remoto</a></li>' +
@@ -161,7 +165,7 @@
 
       /* Col 3 — Portafolio y Recursos */
       '<div class="pfoot-col">' +
-        '<h4>Portafolio y Recursos</h4>' +
+        '<h2>Portafolio y Recursos</h2>' +
         '<ul>' +
           '<li><a href="/portafolio">Portafolio de Casos</a></li>' +
           '<li><a href="/journal">PRODIGY Journal — Blog</a></li>' +
@@ -177,7 +181,7 @@
 
       /* Col 3b — Empresa */
       '<div class="pfoot-col">' +
-        '<h4>Empresa</h4>' +
+        '<h2>Empresa</h2>' +
         '<ul>' +
           '<li><a href="/nosotros">Nosotros · Equipo</a></li>' +
           '<li><a href="/nosotros#contacto">Contacto</a></li>' +
@@ -192,7 +196,7 @@
 
       /* Col 4 — Portal Profesional */
       '<div class="pfoot-col">' +
-        '<h4>Portal Profesional</h4>' +
+        '<h2>Portal Profesional</h2>' +
         '<a href="/app/login.html" class="pfoot-cta"><i class="fas fa-key"></i> Acceso Doctores</a>' +
         '<ul>' +
           '<li><a href="https://wa.me/573212816716?text=Hola%20PRODIGY%2C%20necesito%20soporte%20t%C3%A9cnico" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px"></i>Soporte Técnico</a></li>' +
@@ -203,7 +207,7 @@
       '</div>' +
     '</div>' +
 
-    '<div style="max-width:1200px;margin:0 auto;padding:14px 20px 0;border-top:1px solid rgba(255,255,255,.07);font-size:12.5px;color:#64748b;text-align:center;line-height:2.1;">' +
+    '<div style="max-width:1200px;margin:0 auto;padding:14px 20px 0;border-top:1px solid rgba(255,255,255,.07);font-size:12.5px;color:#94a3b8;text-align:center;line-height:2.1;">' +
       '<span style="color:#94a3b8;font-weight:700;">🌐 International · English:</span> ' +
       '<a href="/en/" style="color:#94a3b8;">Services hub</a> · ' +
       '<a href="/en/veneers" style="color:#94a3b8;">Veneers</a> · ' +
@@ -238,7 +242,7 @@
   }
   _loadScript('/js/utm-tracker.js?v=20260528');
   _loadScript('/js/conversions.js?v=20261120b');
-  _loadScript('/js/geo-detect.js?v=20261113');
+  _loadScript('/js/geo-detect.js?v=20261123e');
   _loadScript('/js/content-protection.js?v=20260528');
   /* GSAP + ScrollTrigger + animaciones PRODIGY */
   function _loadGSAP() {
@@ -346,7 +350,7 @@
           '<div style="font-size:1.4rem;flex-shrink:0;line-height:1;">📊</div>' +
           '<div>' +
             '<div style="font-size:.84rem;font-weight:800;color:#f8fafc;margin-bottom:4px;">Ayúdanos a mejorar</div>' +
-            '<div style="font-size:.72rem;color:#64748b;line-height:1.5;">' +
+            '<div style="font-size:.72rem;color:#94a3b8;line-height:1.5;">' +
               'Usamos cookies de analítica y de anuncios para ver qué te sirve y mostrar nuestros servicios a otros colegas. ' +
               '<strong style="color:#94a3b8;">Puedes rechazarlas.</strong> ' +
               '<a href="/terminos-y-legal#privacidad" style="color:rgba(217,70,166,.8);text-decoration:none;">Ver política →</a>' +

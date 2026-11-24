@@ -78,12 +78,12 @@ window.ProdigyGeo = (function () {
 
     var banner = document.createElement('div');
     banner.id = 'pg-lang-banner';
-    banner.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:9999;max-width:calc(100vw - 24px);background:rgba(13,21,37,.97);border:1px solid rgba(0,210,255,.32);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:11px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.82rem;color:#e2e8f0;box-shadow:0 8px 32px rgba(0,0,0,.5);';
+    banner.style.cssText = 'position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:9999;width:max-content;max-width:calc(100vw - 24px);box-sizing:border-box;background:rgba(13,21,37,.97);border:1px solid rgba(0,210,255,.32);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:11px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:.82rem;color:#e2e8f0;box-shadow:0 8px 32px rgba(0,0,0,.5);';
     banner.innerHTML =
       '<span style="font-size:1.1rem;">🌍</span>' +
       '<span>This site is also available in <b>English</b>.</span>' +
       '<a href="' + dest + '" style="background:linear-gradient(135deg,#00a7cc,#9333ea);color:#fff;text-decoration:none;padding:6px 13px;border-radius:8px;font-weight:700;font-size:.78rem;white-space:nowrap;">View in English &rarr;</a>' +
-      '<button type="button" aria-label="Close" style="background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;padding:0 2px;line-height:1;">&times;</button>';
+      '<button type="button" aria-label="Close" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1.1rem;padding:6px;line-height:1;">&times;</button>';
     banner.querySelector('button').onclick = function () { banner.remove(); try { localStorage.setItem('pg_lang_banner', 'off'); } catch (e) {} };
     banner.querySelector('a').addEventListener('click', function () { try { localStorage.setItem('pg_lang_banner', 'off'); } catch (e) {} });
     document.body.appendChild(banner);

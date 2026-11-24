@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-23 (f) — PageSpeed móvil: accesibilidad (contraste y orden de títulos) + aviso «English»
+
+- Pie: títulos de columna h4 → h2 (Lighthouse: salto de nivel) con los estilos globales de h2 anulados; línea «International · English» y texto del aviso de cookies #64748b → #94a3b8 (4,3:1 → 7,9:1).
+- Portada: etiqueta «Estética» de las tarjetas del portafolio #D946A6 → #e46abb (3,99:1 → 5,3:1 sobre la tarjeta).
+- geo-detect: el aviso «This site is also available in English» se encogía a media pantalla (left:50% sin ancho) y el texto quedaba en columna angosta → width:max-content; la ✕ más grande y legible.
+- ?v=20261123e en footer.js (58 páginas) y geo-detect.js. Verificado con axe sobre las páginas en vivo + archivos locales: 0 fallos de orden de títulos y de contraste en el pie.
+
 ## 2026-11-23 (e) — «No llega nada»: diagnóstico y avisos del portal que nunca salían
 
 - 🔴 Los avisos del portal del doctor (comprobante subido, diseño aprobado, cambios pedidos, pedido nuevo) usaban js/callmebot.js con apikey «PENDIENTE» → nunca salieron. Ahora van por /api/notify-staff (números en Cloudflare, respaldo por correo). Mismo arreglo en Alejandro.
