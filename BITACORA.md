@@ -14,7 +14,7 @@
 - 💡 Alejandro (24-nov): toda unidad cementada (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = **USD 12**; guías quirúrgicas desde **USD 60**; casos simples en menos de 24 h; hasta 2 revisiones del diseño incluidas.
 - /en/ (global-design, zirconia-crowns, surgical-guides, dental-aligners): la web decía a la vez $4, $10, $14 y $16 para coronas/carillas, y guías $59 → todo a $12 / $60 (meta, JSON-LD `lowPrice`, hero «from $12», tabla). `buscar-indice.json` igual. SW prodigy-v46 (`/en/global-design` está precacheada).
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
-- 🔴 Sin tocar (decisión de Alejandro): alineadores en /en/ ($10 viabilidad + $100 plan, «from $25») ≠ USD 30 + 120 del protocolo; «Bar over Implants $45» en /en/ ≠ barra USD 150 del protocolo.
+- ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
 ## 2026-11-23 (f) — PageSpeed móvil: accesibilidad (contraste y orden de títulos) + aviso «English»
 
