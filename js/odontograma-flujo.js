@@ -28,7 +28,7 @@
   function fdiLista(items) { return items.map(function (i) { return String(i.d); }).filter(function (x, i, a) { return a.indexOf(x) === i; }).sort(function (a, b) { return a - b; }); }
   function mostrar(lista) { return window.Dientes ? (Dientes.mostrar(lista) || lista.join(', ')) : lista.join(', '); }
 
-  var activo = false, piezasFDI = [], ultimo = null, orden = null;
+  var activo = false, piezasFDI = [], ultimo = null, orden = null, detalle = '';
   function aplicar(x) {
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
@@ -37,7 +37,17 @@
     var hay = cobrables.length || g || m;
     if (!hay && !activo) return;                                    // aún no se usa: no pisa un servicio ya elegido
     var total = 0, vistos = {}, cotizar = [];
+    var grupos = [], idx = {};                                      // para el nombre corto: «Corona anatómica en zirconio ×2 + Pilar personalizado»
+    function contar(nom) { if (idx[nom] == null) { idx[nom] = grupos.length; grupos.push([nom, 0]); } grupos[idx[nom]][1]++; }
     cobrables.forEach(function (it) {
+      contar(it.ind + (it.mat ? ' en ' + String(it.mat).toLowerCase() : ''));
+      // Corona (u otra pieza) sobre PILAR PERSONALIZADO: el pilar también se diseña → se cobra aparte (antes solo la corona, 24-nov-2026)
+      if (it.impl === 'Pilar personalizado' && !/^Pilar personalizado/.test(it.ind)) {
+        contar('Pilar personalizado');
+        var sp = sub(mapa['Pilar personalizado (solo pilar)']), kp = it.d + '·pilar';
+        if (sp && !vistos[kp]) { vistos[kp] = 1; total += sp.precio || 0; } else if (!sp && cotizar.indexOf('pilar personalizado') < 0) cotizar.push('pilar personalizado');
+      }
+      if (it.impl === 'Post y core' && cotizar.indexOf('perno-muñón') < 0) cotizar.push('perno-muñón');
       var s = sub(mapa[it.ind]);
       if (!s) { if (cotizar.indexOf(it.ind) < 0) cotizar.push(it.ind); return; }
       var clave = porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? (typeof porCaso[it.ind] === 'string' ? porCaso[it.ind] : it.ind) : it.d + '·' + it.ind);   // porCaso con nombre: varias indicaciones, un solo cobro
@@ -51,15 +61,17 @@
       if (gs) total += gs.precio || 0; else cotizar.push(gNom);
     }
     piezasFDI = fdiLista(cobrables);
-    var partes = [];
-    if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
+    var partes = [], corto = [];
+    if (cobrables.length) { partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen); corto.push(grupos.map(function (gr) { return gr[0] + (gr[1] > 1 ? ' ×' + gr[1] : ''); }).join(' + ')); }
     if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.arcada === 'edentulo' ? 'edéntulo total (doble CBCT)' : (g.arcada === 'con_dientes' ? 'arcada con dientes' : ''), g.abordaje].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · implantes (FDI): ' + g.dientes.map(function (f) { return f + ((g.implantes || {})[f] ? ' ' + g.implantes[f] : ' (a sugerir)'); }).join(', ') : ''));
+    if (g) corto.push((g.pide === 'plan' ? 'Planificación: ' : 'Guía quirúrgica: ') + gNom);
     var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
     if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
-    if (cotizar.length) partes.push('A cotizar: ' + cotizar.join(', '));
+    if (cotizar.length) { partes.push('A cotizar: ' + cotizar.join(', ')); corto.push('a cotizar: ' + cotizar.join(', ')); }
+    detalle = hay ? partes.join(' · ') : '';
     STATE.categoriaId = 'cad_diseno'; STATE.categoriaKey = 'cad_diseno_odontograma'; STATE.categoriaNombre = 'Diseño CAD (por diente)';
     STATE.subtipoId = hay ? 'odontograma' : null;
-    STATE.subtipoNombre = hay ? partes.join(' · ') : null;
+    STATE.subtipoNombre = hay ? corto.join(' · ') : null;   // corto: el detalle por diente va en _odoDetalle() → notas del pedido
     STATE.subtipoPrecio = total;
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
@@ -116,6 +128,8 @@
       if (sb) sb.from('pedidos').select('odontograma').limit(0).then(function (r) { window._odoColumna = !r.error; }); } catch (e) {}
   });
   window._odoOrden = function () { return activo && orden ? orden : null; };
+  // Detalle completo (material, proceso, tipo de implante por diente) para las notas del pedido y el laboratorio
+  window._odoDetalle = function () { return activo ? detalle : ''; };
 
   // Lo que usan la confirmación, el WhatsApp y el pedido (pedidos.piezas en FDI)
   window._piezasFDI = function () { return activo && piezasFDI.length ? piezasFDI.slice() : null; };

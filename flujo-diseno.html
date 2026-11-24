@@ -654,7 +654,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                             <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
                                 <input type="checkbox" id="express-cad" onchange="calcularTotal()" style="width:18px;height:18px;accent-color:#ef4444;cursor:pointer;flex-shrink:0;">
                                 <div>
-                                    <strong style="color:#f87171;">⚡ Entrega Express 24h</strong>
+                                    <strong style="color:#f87171;">⚡ Entrega express · 2 a 4 horas hábiles</strong>
                                     <p style="font-size:.85rem;color:var(--text-secondary);margin-top:2px;font-weight:400 !important;">Recargo fijo de +$20.000 COP. Aplica para diseños unitarios y fija simple.</p>
                                 </div>
                                 <span style="margin-left:auto;color:#f87171;font-weight:900;font-size:.88rem;white-space:nowrap;">+$20.000</span>
@@ -709,15 +709,16 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <div class="timeline-slots" role="group" aria-label="Tiempo de entrega">
                     <button type="button" class="timeline-slot" data-slot="48h" onclick="selectSlot('48h')" aria-pressed="false">
                         <span class="slot-badge">ESTÁNDAR</span>
-                        <h4>📅 48 horas hábiles</h4>
+                        <h4>📅 24 horas hábiles</h4>
                         <p>Coronas, carillas, puentes, unitarios y pilares personalizados</p>
                     </button>
                     <button type="button" class="timeline-slot" data-slot="72h" onclick="selectSlot('72h')" aria-pressed="false">
                         <span class="slot-badge">COMPLEJO</span>
-                        <h4>📅 72 horas hábiles</h4>
+                        <h4>📅 36 a 48 horas hábiles</h4>
                         <p>Full arch, barras, guías quirúrgicas y diseño de sonrisa 3D</p>
                     </button>
                 </div>
+                <p style="font-size:.88rem;color:var(--text-secondary);margin:10px 2px 0">El tiempo cuenta desde que el caso está completo y pagado (corte 5:00 PM, hora Colombia).</p>
             </div>
 
             <!-- ── 4. CHECKLIST DE ARCHIVOS ── -->
@@ -884,7 +885,7 @@ window.submitOrden     = window.submitOrden      || function(){};
                 <span class="value" id="calc-subtotal">$0</span>
             </div>
             <div class="calc-line hidden" id="line-express">
-                <span class="label">Express 24h:</span>
+                <span class="label">Express (2–4 h):</span>
                 <span class="value" id="calc-express">+$20.000</span>
             </div>
             <div class="calc-line hidden" id="line-anticipo" style="border-top:1px solid rgba(217,70,166,.3);padding-top:6px;margin-top:4px;">
@@ -2084,7 +2085,7 @@ const lineWompi = document.getElementById('line-wompi');
                 <p><strong>Cantidad:</strong> ${cantidad} unidades</p>
                 ${window._piezasTexto && _piezasTexto() ? '<p><strong>Piezas:</strong> ' + _piezasTexto() + '</p>' : ''}
                 <p><strong>Entrega:</strong> ${slotLabel}</p>
-                ${STATE.express ? '<p><strong>Express 24h:</strong> ⚡ SÍ</p>' : ''}
+                ${STATE.express ? '<p><strong>Express (2–4 h):</strong> ⚡ SÍ</p>' : ''}
                 <p><strong>Total:</strong> ${total}</p>
                 ${_pagaWompi ? '<p><strong>Pago:</strong> PSE / tarjeta (Wompi) al registrar la orden · incluye 3 %</p>' : ''}
             `;
@@ -2138,7 +2139,7 @@ const lineWompi = document.getElementById('line-wompi');
             cerrarModal('modal-confirm');
 
             const cantidad   = parseInt(document.getElementById('cantidad').value,10) || 1;
-            const slotNombre = { '48h':'📅 Estándar 48h hábiles', '72h':'📅 Complejo 72h hábiles' }[STATE.slot] || '📅 Estándar';
+            const slotNombre = { '48h':'📅 Estándar · 24 h hábiles', '72h':'📅 Complejo · 36 a 48 h hábiles' }[STATE.slot] || '📅 Estándar';
 
             const _esIntl = !esLocal;
             let msg = _esIntl
@@ -2156,7 +2157,7 @@ const lineWompi = document.getElementById('line-wompi');
             msg += `🔢 ${_esIntl ? '*Qty:*' : '*Cantidad:*'} ${cantidad} ${_esIntl ? 'units' : 'unidades'}\n`;
             if (window._piezasTexto && _piezasTexto()) msg += `🦷 ${_esIntl ? '*Teeth:*' : '*Piezas:*'} ${_piezasTexto()}\n`;
             msg += `⏱️ ${_esIntl ? '*Delivery:*' : '*Entrega:*'} ${slotNombre}\n`;
-            if (STATE.express) msg += `⚡ *Express 24h:* ${_esIntl ? 'YES' : 'SÍ'} (+$20.000)\n`;
+            if (STATE.express) msg += `⚡ *Express (2–4 h):* ${_esIntl ? 'YES' : 'SÍ'} (+$20.000)\n`;
             msg += `\n💰 ${_esIntl ? '*PAYMENT CONFIRMATION*' : '*CONFIRMACIÓN DE PAGO*'}\n`;
             msg += `• ${_esIntl ? 'Method' : 'Medio'}: ${STATE.pagoMetodo}\n`;
             msg += `• ${_esIntl ? 'Holder' : 'Titular'}: ${STATE.pagoTitular}\n`;
@@ -2238,6 +2239,8 @@ const lineWompi = document.getElementById('line-wompi');
                         if (_wompiDis) _pf.push('Incluye comisión Wompi 3 %');
                         // El cupón DEBE quedar en notas: prodigy_consumir_cupon_pedido() lo exige para gastarlo
                         if (_cupDis) _pf.push('Cupón: ' + _cupDis.cupon + ' (-$' + _descCuponDis.toLocaleString('es-CO') + ')');
+                        // Detalle por diente (material, proceso, implante): el nombre del servicio ahora es corto (24-nov-2026)
+                        if (window._odoDetalle && _odoDetalle()) _pf.push('Detalle: ' + _odoDetalle());
                         if (STATE.observaciones) _pf.push('Obs: ' + String(STATE.observaciones).trim());
                         _notasDis = _pf.join(' · ').slice(0, 1000);
                     } catch (_) { _notasDis = ''; }
@@ -2755,7 +2758,7 @@ const lineWompi = document.getElementById('line-wompi');
     <script src="js/flujo-uploader.js?v=20261123c"></script>
     <script src="js/dientes.js?v=20261008b"></script>
     <script>window.ODO_CFG = {"v": "20261122a", "archivosGuia": {"dientes": "guia_1", "edentulo": "guia_edentulo"}, "mapa": {"Diseño de sonrisa 3D": ["cad_quirurgica", "sonrisa_3d"], "Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Póntico cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (solo pilar)": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {"Diseño de sonrisa 3D": 1}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
-    <script src="js/odontograma-flujo.js?v=20261010h"></script>
+    <script src="js/odontograma-flujo.js?v=20261124a"></script>
 <div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;

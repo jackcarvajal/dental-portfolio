@@ -16,6 +16,12 @@
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
 - ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
+## 2026-11-24 (f) — Odontograma: pilar personalizado se cobra y nombre corto (paridad con Alejandro)
+
+- Odontograma (js/odontograma-flujo.js, igual en ambas webs): una corona (u otra pieza) marcada sobre «Pilar personalizado» cobraba solo la corona; ahora suma el pilar (catálogo pilar_pers: US$18 / $25.000). «Post y core» pasa a «a cotizar: perno-muñón». El nombre del servicio queda corto («Corona anatómica en zirconio + Pilar personalizado · a cotizar: modelo impreso»); el detalle por diente (material, proceso, implante) va a las notas del pedido con window._odoDetalle().
+- Tiempos alineados con el estimador y la promesa; «Express 24h» → «Express 2 a 4 horas hábiles» (lo que ya calculaba).
+- Tarjetas de entrega: Estándar 24 h hábiles · Complejo 36 a 48 h hábiles (el estimador ya decía 24 h) + nota del corte de las 5 PM.
+
 ## 2026-11-24 (e) — Traducciones solo cuando hacen falta
 
 - header.js ya no carga js/i18n.js (15 KB) en todas las páginas: solo si la página se muestra en inglés (/en/… o EN elegido en una de las páginas de _IDIOMA_CFG.paginasEn). PT lo traduce Google y nunca lo usó.
