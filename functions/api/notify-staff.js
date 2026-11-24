@@ -71,16 +71,21 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ ok: false, error: 'Faltan datos del caso' }), { status: 400, headers: h });
   }
   const contexto = escL(body.contexto) || '';
+  // Panel de destino según el origen del aviso (lista fija: el request no puede poner un enlace cualquiera).
+  const PANELES = { solicitudes: 'bandeja-solicitudes.html', operaciones: 'panel-interno-operaciones.html' };
+  const panel = 'prodigylabdental.com/app/' + (PANELES[body.panel] || PANELES.solicitudes);
+  const waDig = waLead.replace(/\D/g, '');
 
+  // Sin WhatsApp del cliente (avisos del portal) no se manda «WhatsApp: s/n» ni un wa.me/ vacío.
   const mensaje =
     `🔔 *${tipo} — PRODIGY Lab Dental*\n\n` +
     (codigo ? `Nº caso: *${codigo}*\n` : '') +
     `Servicio: ${servicio}\n` +
     `Dr(a): ${doctor}\n` +
-    `WhatsApp: ${waLead}${pais ? `\nPaís: ${pais}` : ''}\n` +
+    (waDig ? `WhatsApp: ${waLead}\n` : '') + (pais ? `País: ${pais}\n` : '') +
     (contexto ? `\n${contexto}\n` : '') +
-    `\nResponde rápido 👉 wa.me/${waLead.replace(/\D/g, '')}\n` +
-    `Panel: prodigylabdental.com/app/bandeja-solicitudes.html`;
+    (waDig ? `\nResponde rápido 👉 wa.me/${waDig}\n` : '\n') +
+    `Panel: ${panel}`;
 
   const resultados = await Promise.all(staff.map(async ({ phone, key }) => {
     try {

@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-23 (e) — «No llega nada»: diagnóstico y avisos del portal que nunca salían
+
+- 🔴 Los avisos del portal del doctor (comprobante subido, diseño aprobado, cambios pedidos, pedido nuevo) usaban js/callmebot.js con apikey «PENDIENTE» → nunca salieron. Ahora van por /api/notify-staff (números en Cloudflare, respaldo por correo). Mismo arreglo en Alejandro.
+- notify-staff: sin WhatsApp del cliente ya no manda «WhatsApp: s/n» ni un wa.me/ vacío; panel de destino por lista fija (solicitudes / operaciones). Simulado en local (red falsa), sin avisos reales.
+- Diagnóstico (30 días): ≈113 visitas humanas (≈4/día, incluidas las propias), 12 desde Google, 0 de anuncios (sin gclid/fbclid), 1 wa_click por /wa/ (prueba del sistema); 0 pedidos, 0 leads, última cotización 25-jul. Variables STAFF_1..3 y RESEND presentes en Cloudflare.
+
 ## 2026-11-23 (d) — Barrido de precios: cada opción de cada flujo y de cada calculadora contra el catálogo
 
 Método: navegador automático que selecciona TODAS las opciones (nada se envía) y compara lo que la página cobra con

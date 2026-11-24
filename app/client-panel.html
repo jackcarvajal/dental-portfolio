@@ -1696,7 +1696,7 @@ async function aprobarDiseno() {
     const pedido = _pedidosDoc.find(p => p.id === _dapId);
     const { error } = await sb.from('pedidos_doctor').update({ diseno_aprobado: true, estado: 'en_fresado' }).eq('id', _dapId);
     if (error) { toast('Error al aprobar: ' + error.message, 'error'); return; }
-    if (typeof notif_disenoAprobado === 'function') notif_disenoAprobado(pedido.id, _nombreDoctor || 'Cliente');
+    if (typeof notif_disenoAprobado === 'function') notif_disenoAprobado('PD-' + String(pedido.id).slice(0, 8).toUpperCase(), pedido.doctor_nombre || _nombreDoctor || 'Cliente');
     if (typeof email_disenoAprobado === 'function') email_disenoAprobado(pedido.id, window.PRD_EMAIL || '');
     cerrarAprobacion();
     toast('¡Diseño aprobado! Pasa a producción.', 'ok');
@@ -1713,7 +1713,7 @@ async function enviarCambios() {
     if (rev > 2) { toast('Ya usaste las 2 revisiones incluidas. Cada revisión adicional cuesta el 20 % del valor del diseño: escríbenos por WhatsApp.', 'error'); return; }
     const { error } = await sb.from('pedidos_doctor').update({ notas_cambios: notas, revisiones_usadas: rev }).eq('id', _dapId);
     if (error) { toast('Error: ' + error.message, 'error'); return; }
-    if (typeof notif_cambiosSolicitados === 'function') notif_cambiosSolicitados(pedido.id, _nombreDoctor || 'Cliente', notas, rev);
+    if (typeof notif_cambiosSolicitados === 'function') notif_cambiosSolicitados('PD-' + String(pedido.id).slice(0, 8).toUpperCase(), pedido.doctor_nombre || _nombreDoctor || 'Cliente', notas, rev);
     cerrarAprobacion();
     toast('Cambios enviados al laboratorio (revisión ' + rev + '/2)', 'ok');
     const { data: { session } } = await sb.auth.getSession();
@@ -1846,7 +1846,7 @@ function avisoSoloColombia(servicio){
 </style>
 
 <script defer src="../js/content-guard.js?v=20260528"></script>
-<script defer src="../js/callmebot.js?v=20260528"></script>
+<script defer src="../js/callmebot.js?v=20261123d"></script>
 <script defer src="../js/emailnotif.js?v=20261122a"></script>
 <script defer src="../js/webpush.js?v=20260929b"></script>
 <script>
