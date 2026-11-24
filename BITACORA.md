@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-24 (h) — Precios de diseño para Colombia (tabla aprobada), escaneo de modelos y fuera «15 min»
+
+- 💡 Tabla aprobada por Alejandro (solo diseño, pesos; referencia Sindekar): pieza cementada (corona, cofia, carilla, incrustación, póntico, endocrown) $30.000 · pieza con conexión a implante (corona sobre pilar personalizado, atornillada o pilar de aditamiento) $50.000 · pilar personalizado solo $25.000 · provisional $20.000 · encerado/mockup por diente $15.000 · barra $250.000 · sonrisa 3D $150.000 y férula $35.000 sin cambio. Vale igual para Alejandro en Colombia.
+- 🟡 sql/catalogo-precios-colombia-2026.sql (solo catalogo.precio, flujo diseno; precio_usd intacto) — PENDIENTE de correr. flujo-diseno.html: MATERIAL_DATA con los mismos valores (respaldo si el catálogo no carga).
+- js/odontograma-flujo.js: la corona sobre implante se cobra como corona_ator (antes corona + pilar); calcula también el total en pesos para Alejandro (STATE.subtipoPrecioCOP, reglas copId/copPorDiente/copGuias en su ODO_CFG). ?v=20261124b. Probado local con los precios nuevos: pilar $50.000 · 2 carillas $60.000 · 4 encerados $60.000 · atornillada $50.000 · cáscara de huevo $20.000 (+3 % Wompi aparte).
+- flujo-lab.html: «Escaneo de modelo» $15.000 (sup./inf./mordida) y «Escaneo con implantes» $20.000 en Impresión 3D.
+- Fuera «desde 15 min» / «15 min a 2 h» (paridad con Alejandro): diseno-remoto, preguntas, términos, buscar-indice, en/faq, en/global-design, en/dental-aligners, en/surgical-guides, en/zirconia-crowns y el chatbot de header.js → normal 24 a 48 h hábiles, express desde 2 h con costo adicional, Full Arch y guías se acuerdan por caso. ?v= header.js 20261124d · SW prodigy-v48.
+
 ## 2026-11-24 — Precios en USD unificados: unidad cementada USD 12, guías desde USD 60
 
 - 💡 Alejandro (24-nov): toda unidad cementada (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = **USD 12**; guías quirúrgicas desde **USD 60**; casos simples en menos de 24 h; hasta 2 revisiones del diseño incluidas.

@@ -21,9 +21,23 @@
   // Informativas: no se cobran por diente (la planificación de implantes se cobra con la guía o la planificación del caso)
   var INFO = { 'Antagonista': 1, 'Diente adyacente': 1, 'Omitir en el puente': 1, 'Planificación de implantes': 1 };
   var porArcada = C.porArcada || {}, porCaso = C.porCaso || {}, mapa = C.mapa || {}, guias = C.guias || {};
+  // Pesos (tabla de Colombia, 24-nov-2026). Alejandro cobra en dólares y muestra pesos en Colombia: algunas indicaciones
+  // tienen su propio precio en pesos (copId → id del catálogo), el encerado/mockup se cobra por diente (copPorDiente)
+  // y las guías toman el precio en pesos de su id (copGuias). PRODIGY no los necesita: su catálogo ya está en pesos.
+  var AC = C.sitio === 'ac', copId = C.copId || {}, copPorDiente = C.copPorDiente || {}, copGuias = C.copGuias || {};
 
   function cat() { return (typeof MATERIAL_DATA_MUT !== 'undefined') ? MATERIAL_DATA_MUT : ((typeof MATERIAL_DATA !== 'undefined') ? MATERIAL_DATA : null); }
   function sub(par) { var c = cat(); return (par && c && c[par[0]] && c[par[0]].subtipos && c[par[0]].subtipos[par[1]]) || null; }
+  // Precio en pesos: 1) el del catálogo por id (window._catCOP, lo llena Alejandro); 2) precio_cop del subtipo; 3) el precio
+  // del subtipo (PRODIGY ya está en pesos; en Alejandro es dólar → × 4.000 solo como respaldo si el catálogo no cargó)
+  function cop(s, id) {
+    var k = window._catCOP && id && Number(window._catCOP[id]);
+    if (k > 0) return k;
+    if (!s) return 0;
+    if (Number(s.precio_cop) > 0) return Number(s.precio_cop);
+    return (Number(s.precio) || 0) * (AC ? 4000 : 1);
+  }
+  window._odoCOP = cop;
   function resumenEl() { return document.getElementById('odo-resumen'); }
   function fdiLista(items) { return items.map(function (i) { return String(i.d); }).filter(function (x, i, a) { return a.indexOf(x) === i; }).sort(function (a, b) { return a - b; }); }
   function mostrar(lista) { return window.Dientes ? (Dientes.mostrar(lista) || lista.join(', ')) : lista.join(', '); }
@@ -36,29 +50,33 @@
     var m = x.modelo || null;                                       // modelos impresos (hueco/sólido, zócalo, troqueles, implantes, articulador); se cotiza con el caso
     var hay = cobrables.length || g || m;
     if (!hay && !activo) return;                                    // aún no se usa: no pisa un servicio ya elegido
-    var total = 0, vistos = {}, cotizar = [];
+    var total = 0, totalCOP = 0, vistos = {}, vistosC = {}, cotizar = [];
     var grupos = [], idx = {};                                      // para el nombre corto: «Corona anatómica en zirconio ×2 + Pilar personalizado»
     function contar(nom) { if (idx[nom] == null) { idx[nom] = grupos.length; grupos.push([nom, 0]); } grupos[idx[nom]][1]++; }
     cobrables.forEach(function (it) {
-      contar(it.ind + (it.mat ? ' en ' + String(it.mat).toLowerCase() : ''));
-      // Corona (u otra pieza) sobre PILAR PERSONALIZADO: el pilar también se diseña → se cobra aparte (antes solo la corona, 24-nov-2026)
-      if (it.impl === 'Pilar personalizado' && !/^Pilar personalizado/.test(it.ind)) {
-        contar('Pilar personalizado');
-        var sp = sub(mapa['Pilar personalizado (solo pilar)']), kp = it.d + '·pilar';
-        if (sp && !vistos[kp]) { vistos[kp] = 1; total += sp.precio || 0; } else if (!sp && cotizar.indexOf('pilar personalizado') < 0) cotizar.push('pilar personalizado');
-      }
+      // Corona sobre implante (pilar personalizado, atornillada o pilar de aditamiento) = «pieza con conexión a implante»:
+      // se cobra la corona atornillada del catálogo en vez de la corona cementada (24-nov-2026, tabla aprobada: $50.000).
+      // En dólares (Alejandro, exterior) la corona sobre pilar personalizado sigue siendo corona + pilar (dos diseños).
+      var enImpl = it.impl && /^(Pilar personalizado|Atornillado oclusal|Pilar de aditamiento)$/.test(it.impl) && mapa[it.ind] && mapa[it.ind][1] === 'corona';
+      contar(it.ind + (enImpl ? ' sobre implante' : '') + (it.mat ? ' en ' + String(it.mat).toLowerCase() : ''));
       if (it.impl === 'Post y core' && cotizar.indexOf('perno-muñón') < 0) cotizar.push('perno-muñón');
-      var s = sub(mapa[it.ind]);
+      var s = enImpl ? (sub(['cad_implantes', 'corona_ator']) || sub(mapa[it.ind])) : sub(mapa[it.ind]);
       if (!s) { if (cotizar.indexOf(it.ind) < 0) cotizar.push(it.ind); return; }
-      var clave = porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? (typeof porCaso[it.ind] === 'string' ? porCaso[it.ind] : it.ind) : it.d + '·' + it.ind);   // porCaso con nombre: varias indicaciones, un solo cobro
+      var clave = porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? (typeof porCaso[it.ind] === 'string' ? porCaso[it.ind] : it.ind) : it.d + '·' + it.ind);
+      var claveC = copPorDiente[it.ind] ? it.d + '·' + it.ind : clave;          // pesos: encerado y mockup por diente
+      if (!vistosC[claveC]) { vistosC[claveC] = 1; totalCOP += cop(s, enImpl ? 'corona_ator' : copId[it.ind]); }
       if (vistos[clave]) return;
-      vistos[clave] = 1; total += s.precio || 0;
+      vistos[clave] = 1;
+      if (AC && enImpl && it.impl === 'Pilar personalizado') {
+        var sc0 = sub(mapa[it.ind]), sp0 = sub(['cad_implantes', 'pilar_pers']);
+        total += ((sc0 && sc0.precio) || 0) + ((sp0 && sp0.precio) || 0);
+      } else total += s.precio || 0;
     });
     var gNom = '';
     if (g) {
       var gs = sub(guias[g.tipo]);
       gNom = (gs && gs.nombre) || g.tipoNom || g.tipo;
-      if (gs) total += gs.precio || 0; else cotizar.push(gNom);
+      if (gs) { total += gs.precio || 0; totalCOP += cop(gs, copGuias[g.tipo]); } else cotizar.push(gNom);
     }
     piezasFDI = fdiLista(cobrables);
     var partes = [], corto = [];
@@ -73,6 +91,7 @@
     STATE.subtipoId = hay ? 'odontograma' : null;
     STATE.subtipoNombre = hay ? corto.join(' · ') : null;   // corto: el detalle por diente va en _odoDetalle() → notas del pedido
     STATE.subtipoPrecio = total;
+    STATE.subtipoPrecioCOP = totalCOP;   // pesos del catálogo (Alejandro los muestra en Colombia; PRODIGY = el mismo total)
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
       piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null, barra_interna: it.barra || null }; }),
@@ -115,6 +134,7 @@
     window.selectSubtipo = function () {
       var r = orig.apply(this, arguments);
       activo = false; piezasFDI = []; orden = null;
+      try { var cc = cat(), sc = cc && cc[STATE.categoriaKey] && cc[STATE.categoriaKey].subtipos && cc[STATE.categoriaKey].subtipos[STATE.subtipoId]; STATE.subtipoPrecioCOP = sc ? cop(sc, STATE.subtipoId) : null; } catch (e) { STATE.subtipoPrecioCOP = null; }
       var rp = resumenEl(); if (rp && STATE.subtipoNombre) rp.textContent = T.otro + STATE.subtipoNombre;
       return r;
     };

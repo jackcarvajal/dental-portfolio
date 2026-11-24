@@ -1097,7 +1097,7 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
       '• /en/global-design — English landing for international clients\n' +
       '• /guia-tecnica — guías exportación STL por software\n' +
       '• /seguimiento-caso — tracking pedidos\n\n' +
-      'TIEMPOS (hábiles, desde la confirmación del pago): diseño simple 15 min a 2 h · puente de 3-4 piezas 2-4 h · Full Arch 4-8 h · guía quirúrgica 4-8 h más planificación. Fresado e impresión: el flujo de pedido muestra la fecha estimada.\n' +
+      'TIEMPOS (hábiles, desde la confirmación del pago): diseño normal 24 a 48 h según el caso y los trabajos en cola · express con costo adicional desde 2 h en diseños unitarios y fija simple (nunca prometas «15 minutos») · Full Arch y guías quirúrgicas: plazo acordado por caso. Fresado e impresión: el flujo de pedido muestra la fecha estimada.\n' +
       'FORMATOS ACEPTADOS: STL, OBJ, PLY, Exocad .constructioninfo, 3Shape .3oxz, iTero, Medit, Trios, DICOM.\n' +
       'PAGOS: en la página al registrar el pedido (Wompi: PSE o tarjeta, +3 %) o por transferencia (Nequi, Daviplata, Bancolombia) sin comisión: el cliente envía el comprobante por WhatsApp y por ahí se coordinan los detalles del caso. Exterior: PayPal (también tarjeta) o Wise, en USD, +7 %. Stripe NO se usa.\n' +
       'POLÍTICA DE PAGO: diseño CAD, fresado e impresión 3D (modelos incluidos) 100 % anticipado para todos los clientes. Laboratorio completo: primer pedido 100 %, clientes recurrentes 50 % de abono y 50 % contra entrega. El fresado se cotiza por caso: no des precio de fresado. Menciona la política de pago solo si preguntan por pagos o cómo empezar; no la repitas en cada respuesta.\n' +
