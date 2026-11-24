@@ -94,4 +94,75 @@
     var ren = [[/2\. TIPO DE DISEÑO CAD/, '1. ¿Qué diseño necesitas?'], [/3\. TIEMPO DE ENTREGA ESTIMADO/, '2. Tiempo de entrega'], [/4\. CHECKLIST DE ARCHIVOS/, '3. Archivos del caso'], [/1\. DATOS DEL PROFESIONAL/, '4. Tus datos'], [/5\. CONFIRMACIÓN FINAL/, '5. Confirmar y pagar']];
     [].forEach.call(w.querySelectorAll('h2'), function (h) { ren.forEach(function (r) { if (r[0].test(h.textContent)) h.textContent = r[1]; }); });
   });
+
+  /* ── Portadas del portafolio: comparar en vivo (portada y /portafolio) ──
+     Actual = la portada que hay hoy (cara completa). Sonrisa = la misma foto recortada a la boca (el punto se calcula
+     buscando el diseño amarillo/verde sobre los dientes). Diseño = la tercera foto de la galería (vista frontal en Exocad). */
+  if (ruta === '/' || ruta === '/portafolio') listo(function () {
+    var SURL = 'https://zgihrwqfyvgyapbwzkvw.supabase.co';
+    var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634';
+    var render = function (u, w) { return u && u.indexOf('/object/public/') > -1 ? u.replace('/object/public/', '/render/image/public/') + (u.indexOf('?') > -1 ? '&' : '?') + 'width=' + (w || 700) + '&quality=75' : u; };
+    var galeria = {}, foco = {}, modo = 'actual';
+    try { modo = sessionStorage.getItem('vp_portadas') || 'actual'; } catch (e) {}
+    fetch(SURL + '/rest/v1/casos_portafolio?select=id,gallery&visible=eq.true', { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
+      .then(function (r) { return r.json(); }).then(function (filas) { (filas || []).forEach(function (f) { galeria[f.id] = f.gallery || []; }); aplicar(); }).catch(function () {});
+
+    // Centro del diseño (píxeles amarillos o verdes saturados) en una copia chica de la portada
+    function buscarBoca(src, cb) {
+      var im = new Image(); im.crossOrigin = 'anonymous';
+      im.onload = function () {
+        try {
+          var c = document.createElement('canvas'), W = 120, H = Math.round(120 * im.naturalHeight / im.naturalWidth) || 90; c.width = W; c.height = H;
+          var x = c.getContext('2d'); x.drawImage(im, 0, 0, W, H); var d = x.getImageData(0, 0, W, H).data, sx = 0, sy = 0, k = 0;
+          for (var i = 0; i < d.length; i += 4) {
+            var r = d[i], g = d[i + 1], b = d[i + 2], px = (i / 4) % W, py = Math.floor(i / 4 / W);
+            if (py < H * 0.45) continue;   // arriba están los lentes con el logo dorado: la boca siempre queda abajo
+            if ((r > 170 && g > 140 && b < 90) || (g > 170 && r < 140 && b > 90 && b < 200 && g - r > 60)) { sx += px; sy += py; k++; }
+          }
+          cb(k > 25 ? [Math.round(100 * sx / k / W), Math.round(100 * sy / k / H)] : [50, 72]);
+        } catch (e) { cb([50, 72]); }
+      };
+      im.onerror = function () { cb([50, 72]); };
+      im.src = render(src, 240) || src;
+    }
+
+    function tarjetas() {
+      return [].slice.call(document.querySelectorAll('#idx-port-grid a[href*="caso?id="], #casesGrid a.case-card')).map(function (a) {
+        var id = decodeURIComponent((a.getAttribute('href').split('id=')[1] || '').split('&')[0]);
+        return { id: id, img: a.querySelector('img') };
+      }).filter(function (t) { return t.id && t.img; });
+    }
+    function aplicar() {
+      tarjetas().forEach(function (t) {
+        var im = t.img;
+        if (!im.dataset.vpOrig) im.dataset.vpOrig = im.getAttribute('src');
+        var orig = im.dataset.vpOrig;
+        im.style.transition = 'none';
+        if (modo === 'diseno') {
+          var g = galeria[t.id] || [], u = g[2] || g[1] || g[0];
+          im.style.transform = ''; im.style.objectPosition = '';
+          if (u) im.src = render(u, 700);
+        } else {
+          if (im.getAttribute('src') !== orig) im.src = orig;
+          if (modo === 'sonrisa') {
+            var pon = function (p) { im.style.objectFit = 'cover'; im.style.objectPosition = p[0] + '% ' + p[1] + '%'; im.style.transformOrigin = p[0] + '% ' + p[1] + '%'; im.style.transform = 'scale(2.2)'; };
+            if (foco[t.id]) pon(foco[t.id]); else buscarBoca(orig, function (p) { foco[t.id] = p; if (modo === 'sonrisa') pon(p); });
+          } else { im.style.transform = ''; im.style.objectPosition = ''; im.style.transformOrigin = ''; }
+        }
+      });
+      [].forEach.call(document.querySelectorAll('#vp-portadas button'), function (b) { b.setAttribute('aria-pressed', b.dataset.m === modo ? 'true' : 'false'); });
+    }
+
+    css('#vp-portadas{position:fixed;right:max(12px,env(safe-area-inset-right,0px));top:calc(var(--alto-menu,130px) + 12px);z-index:100000;background:#1a2332;border:1px solid #D4AF37;border-radius:14px;padding:8px;font:600 13px Inter,system-ui,sans-serif;color:#e2e8f0;box-shadow:0 8px 24px rgba(0,0,0,.5)}' +
+      '#vp-portadas p{margin:0 0 6px;color:#D4AF37;font-size:12px;letter-spacing:.04em}#vp-portadas div{display:flex;gap:4px}' +
+      '#vp-portadas button{border:1px solid rgba(255,255,255,.15);background:#0d1525;color:#cbd5e1;border-radius:9px;padding:7px 10px;font:inherit;cursor:pointer}' +
+      '#vp-portadas button[aria-pressed="true"]{background:#D4AF37;color:#111;border-color:#D4AF37}');
+    var p = document.createElement('div'); p.id = 'vp-portadas';
+    p.innerHTML = '<p>PORTADAS DEL PORTAFOLIO</p><div><button type="button" data-m="actual">Actual</button><button type="button" data-m="sonrisa">Sonrisa</button><button type="button" data-m="diseno">Diseño</button></div>';
+    p.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; modo = b.dataset.m; try { sessionStorage.setItem('vp_portadas', modo); } catch (er) {} aplicar(); });
+    document.body.appendChild(p);
+    // Las tarjetas llegan después (y el portafolio las vuelve a pintar al filtrar o cambiar de página)
+    ['idx-port-grid', 'casesGrid'].forEach(function (id) { var g = document.getElementById(id); if (g) new MutationObserver(function () { setTimeout(aplicar, 50); }).observe(g, { childList: true }); });
+    aplicar();
+  });
 })();
