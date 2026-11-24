@@ -9,6 +9,19 @@
 
 ---
 
+## 2026-11-23 (c) — Auditoría del ciclo del pedido: pagos, etapas y permisos (pruebas revertidas)
+
+Método: en la base, dentro de transacciones que se revierten, con usuarios temporales (cliente, operador, servidor):
+cada cambio que hace un portal, el equipo o un webhook. Verificado que no quedó nada (0 pedidos/usuarios/funciones de prueba).
+
+- 🔴 **Ningún cambio de etapa ni de pago funcionaba**: prodigy_notif_pedido comparaba pedidos.estado (enum Pendiente/Pagado…) con estados de operación ('CAMBIOS_SOLICITADOS'…) → «invalid input value for enum». Fallaban: el cliente subiendo el comprobante, el equipo confirmando pagos o cambiando de etapa, los webhooks. Los avisos por etapa nunca salían.
+- 🔴 **Los pagos en línea nunca quedaban confirmados**: el trigger de seguridad trataba la llave service_role (webhooks de Wompi y PayPal) como cliente → «Clientes no pueden confirmar pago».
+- 🔴 **El cliente podía cambiar 25+ campos internos de su pedido** desde el navegador: revisiones_usadas (revisiones gratis), servicios_pagados (marcar fresado/impresión como pagados), cantidad, precio_base, fecha_pago, timestamp_pago_confirmado, factura_*, es_prueba, negocio, departamento_actual, operador_id, link_diseno… (lista negra) → ahora lista blanca para updates directos.
+- ⏳ **sql/pedidos-avisos-y-permisos-cliente-2026.sql** (pendiente de correr): arregla los tres. Probado entero en transacción revertida: 10/10 acciones legítimas del cliente pasan, 18/18 abusos bloqueados, el equipo cambia etapa y confirma pago (7 avisos generados), webhook con service_role confirma, las RPC de revisión siguen igual.
+- 🟡 PayPal (captura y webhook): escribía 'paypal' en pago_confirmado_por (uuid) → el PATCH fallaba siempre; ahora va en nota_confirmacion_pago. Mismo arreglo en Alejandro.
+- Comprobado y bien: un cliente no ve ni modifica pedidos ajenos; anónimo no ve pedidos, archivos ni solicitudes; prodigy-files solo deja subir comprobantes a pedidos propios.
+- Anotado: modalidad_cobro tiene default 'contra_entrega' aunque la política es 100 % anticipado (no se usa para cobrar; revisar si algún panel lo muestra).
+
 ## 2026-11-23 (b) — Auditoría de punta a punta de los flujos de pedido (diseño, impresión, fresado, Laboratorio Full)
 
 - ⚠️ Caché: las URL ?v=20261123a se pidieron antes del despliegue (prueba local) y el CDN guardó la versión vieja → subidas a ?v=20261123c (stl-multi-viewer de PRODIGY a b). Verificado en vivo descomprimiendo la variante br. Recorrido final en vivo de todos los flujos: todos ✓, 0 errores.

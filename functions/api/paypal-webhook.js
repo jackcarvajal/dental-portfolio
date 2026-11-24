@@ -113,7 +113,7 @@ export async function onRequestPost(context) {
     // Solo si sigue sin confirmar: si la captura síncrona ganó la carrera, no se duplica el registro ni el aviso.
     const up = await fetch(`${env.SUPABASE_URL}/rest/v1/pedidos?id=eq.${pedido.id}&pago_estado=neq.pago_confirmado&select=id`, {
       method: 'PATCH', headers: { ...sbH(env), Prefer: 'return=representation' },
-      body: JSON.stringify({ pago_estado: 'pago_confirmado', estado: 'Pagado', timestamp_pago_confirmado: new Date().toISOString(), pago_confirmado_por: 'paypal-webhook' }),
+      body: JSON.stringify({ pago_estado: 'pago_confirmado', estado: 'Pagado', timestamp_pago_confirmado: new Date().toISOString(), nota_confirmacion_pago: 'PayPal (webhook)' }),
     });
     if (up.ok && !((await up.json()) || []).length) return new Response('ya procesado', { status: 200 });
     await fetch(`${env.SUPABASE_URL}/rest/v1/pagos`, {

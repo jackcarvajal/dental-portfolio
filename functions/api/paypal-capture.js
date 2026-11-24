@@ -185,7 +185,7 @@ export async function onRequestPost(context) {
       method: 'PATCH', headers: { ...sbHeaders(env), Prefer: 'return=representation' },
       body: JSON.stringify({
         pago_estado: 'pago_confirmado', estado: 'Pagado',
-        timestamp_pago_confirmado: new Date().toISOString(), pago_confirmado_por: 'paypal',
+        timestamp_pago_confirmado: new Date().toISOString(), nota_confirmacion_pago: 'PayPal (captura)',   // pago_confirmado_por es uuid: 'paypal' hacía fallar el PATCH
       }),
     });
     if (up.ok && !((await up.json()) || []).length) return json({ ok: true, ya_confirmado: true }, 200);
