@@ -127,12 +127,12 @@ Decir siempre **"precio de referencia, la cotización exacta depende del caso"**
 ### Diseño CAD remoto (USD · ≈ ×4.000 para COP)
 | Trabajo | Desde | Entrega |
 |---|---|---|
-| Corona / Inlay | USD 14 | 24 h |
-| Carilla | USD 16 | 24 h |
-| Onlay / Overlay | USD 16 | 24 h |
-| Endocrown | USD 18 | 24 h |
-| Provisional CAD | USD 12 | 24 h |
-| Puente 3 piezas | USD 32 | 24–48 h |
+| Corona / Inlay | USD 12 | menos de 24 h |
+| Carilla | USD 12 | menos de 24 h |
+| Onlay / Overlay | USD 12 | menos de 24 h |
+| Endocrown | USD 12 | menos de 24 h |
+| Provisional CAD | USD 12 | menos de 24 h |
+| Puente (por unidad) | USD 12 c/u (3 piezas = 36) | 24–48 h |
 | Abutment CAD | USD 35 | 24 h |
 | Supraestructura atornillada | USD 45 | 24 h |
 | Maryland | USD 40 | 24–48 h |
@@ -142,6 +142,17 @@ Decir siempre **"precio de referencia, la cotización exacta depende del caso"**
 | Alineadores · planificación ambas arcadas + STL por etapa | USD 150 (30 + 120, ver abajo) | 48–72 h |
 | DSD / Smile Design | USD 80 | 48 h |
 | Full Arch Rehab | Cotización | 48–72 h |
+
+> **Unidades cementadas (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = USD 12 parejo** (24-nov-2026, Alejandro).
+> Casos simples: menos de 24 h.
+>
+> **Revisión del diseño:** antes del STL final le enviamos el diseño al cliente para revisarlo; si hace falta, hasta
+> **2 rondas de revisión** con los cambios que pida (incluidas). Desde la 3.ª, 20 % de la unidad (solo en términos, no en el primer mensaje).
+>
+> **Planes prepagados (clientes con volumen · 1 crédito = 1 unidad cementada · pago anticipado):**
+> Suelta USD 12 · **Bronce** 50 u = USD 500 (10 c/u) · **Plata** 100 u = USD 950 (9,50 c/u) · **Oro** 250 u = USD 2.250 (9 c/u).
+> **Platino** 500 u = USD 4.000 (8 c/u): solo con volumen confirmado, no se anuncia de entrada.
+> Los créditos no vencen; se congelan tras 90 días sin enviar casos y se reactivan con cualquier plan.
 
 > **Alineadores — pago en 2 partes (aplica también a cliente nuevo, excepción a la regla del 100%):**
 > 1. **USD 30 — viabilidad y valoración**, es lo primero que se paga. Si el caso no se ejecuta, es lo único que se cobra.

@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-24 — Precios en USD unificados: unidad cementada USD 12, guías desde USD 60
+
+- 💡 Alejandro (24-nov): toda unidad cementada (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = **USD 12**; guías quirúrgicas desde **USD 60**; casos simples en menos de 24 h; hasta 2 revisiones del diseño incluidas.
+- /en/ (global-design, zirconia-crowns, surgical-guides, dental-aligners): la web decía a la vez $4, $10, $14 y $16 para coronas/carillas, y guías $59 → todo a $12 / $60 (meta, JSON-LD `lowPrice`, hero «from $12», tabla). `buscar-indice.json` igual. SW prodigy-v46 (`/en/global-design` está precacheada).
+- docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
+- 🔴 Sin tocar (decisión de Alejandro): alineadores en /en/ ($10 viabilidad + $100 plan, «from $25») ≠ USD 30 + 120 del protocolo; «Bar over Implants $45» en /en/ ≠ barra USD 150 del protocolo.
+
 ## 2026-11-23 (f) — PageSpeed móvil: accesibilidad (contraste y orden de títulos) + aviso «English»
 
 - Pie: títulos de columna h4 → h2 (Lighthouse: salto de nivel) con los estilos globales de h2 anulados; línea «International · English» y texto del aviso de cookies #64748b → #94a3b8 (4,3:1 → 7,9:1).
