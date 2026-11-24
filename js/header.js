@@ -1748,3 +1748,34 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   st.textContent = css;
   (document.head || document.documentElement).appendChild(st);
 })();
+
+/* ── VISTA PREVIA (SOLO en la rama vista-previa; nunca en producción) ────────────────────────────────────────────
+   1) Nada se guarda: los envíos a la base (insertar/editar tablas), las subidas de archivos y las /api/ se responden
+      con un aviso y no llegan a ningún lado. Las lecturas (precios, portafolio) y el inicio de sesión siguen igual.
+   2) Carga js/vista-previa.js, que aplica las mejoras propuestas sobre la página real. */
+(function () {
+  var _f = window.fetch;
+  if (_f && !window._vpFetch) {
+    window._vpFetch = true;
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : (input && input.url) || '';
+      var m = String((init && init.method) || (input && input.method) || 'GET').toUpperCase();
+      var escribe = m !== 'GET' && m !== 'HEAD' && m !== 'OPTIONS';
+      var bloquear = escribe && (/supabase\.co\/rest\/v1\/(?!rpc\/)/.test(url) || /supabase\.co\/storage\/v1\/object\//.test(url) || /(^|\/\/[^/]+)\/api\//.test(url));
+      if (!bloquear) return _f.apply(this, arguments);
+      // la analítica propia: en silencio (las visitas a la vista previa no cuentan)
+      if (/\/api\/track-event/.test(url)) return Promise.resolve(new Response(null, { status: 204 }));
+      try {
+        var t = document.getElementById('vp-toast');
+        if (!t) { t = document.createElement('div'); t.id = 'vp-toast'; t.setAttribute('role', 'status'); t.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100001;background:#1a2332;color:#f5e6b3;border:1px solid #D4AF37;border-radius:12px;padding:10px 14px;font:600 14px/1.4 Inter,system-ui,sans-serif;max-width:calc(100% - 32px);box-shadow:0 8px 24px rgba(0,0,0,.5)'; document.body.appendChild(t); }
+        t.textContent = 'Vista previa: esto no se envía ni se guarda.';
+        clearTimeout(window._vpT); window._vpT = setTimeout(function () { t.remove(); }, 3500);
+      } catch (e) {}
+      return Promise.resolve(new Response(JSON.stringify({ message: 'Vista previa: no se guarda nada', code: 'vista_previa' }), { status: 400, headers: { 'Content-Type': 'application/json' } }));
+    };
+  }
+  if (navigator.sendBeacon) { var _b = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function (u, d) { return /\/api\//.test(String(u)) ? true : _b(u, d); }; }
+  try { if (location.pathname.indexOf('flujo-diseno') > -1) localStorage.setItem('tour_visto_flujo-diseno.html', 'skip'); } catch (e) {}
+  var s = document.createElement('script'); s.src = '/js/vista-previa.js?v=1'; s.defer = true;
+  (document.head || document.documentElement).appendChild(s);
+})();
