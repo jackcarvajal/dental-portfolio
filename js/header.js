@@ -1325,8 +1325,10 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     });
   };
 
-  /* Cargar i18n.js en todas las páginas si aún no está */
-  if (!window.i18n) {
+  /* i18n.js (diccionario data-i18n, 15 KB) solo cuando la página se muestra en inglés (/en/… o EN elegido en una página
+     que lo admite). En español el HTML ya trae el texto: antes se bajaba en cada visita y además cambiaba textos nuevos
+     del HTML por versiones viejas de su diccionario (p. ej. «unidades de diseño al año» → «casos/año»). 24-nov-2026. */
+  if (!window.i18n && window._phdrIdiomaPagina && window._phdrIdiomaPagina() === 'en') {
     var _i18nS = document.createElement('script');
     _i18nS.src = '/js/i18n.js?v=20261008';
     _i18nS.defer = true;

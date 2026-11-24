@@ -16,6 +16,13 @@
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
 - ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
+## 2026-11-24 (e) — Traducciones solo cuando hacen falta
+
+- header.js ya no carga js/i18n.js (15 KB) en todas las páginas: solo si la página se muestra en inglés (/en/… o EN elegido en una de las páginas de _IDIOMA_CFG.paginasEn). PT lo traduce Google y nunca lo usó.
+- Bug que se va con esto: en español i18n.js reemplazaba 13 textos del HTML por versiones viejas de su diccionario (diseno-cad: «unidades de diseño al año» → «casos/año», «Precios» → «Servicios», testimonios; index: «Servicios de Laboratorio Digital» → «Servicios de Diseño CAD/CAM»). git confirma que el HTML es lo más nuevo en todos los casos revisados.
+- diseno-cad.html cargaba i18n.js por su cuenta: quitado. mantenimiento.html lo sigue cargando (usa i18n.set en sus botones).
+- Probado: /, /diseno-cad, /fresado-cam y /flujo-diseno en PT no lo bajan; /en/, /en/veneers y /flujo-diseno en EN sí y quedan en inglés. Sin errores. ?v=20261124c header.js.
+
 ## 2026-11-24 (d) — Sin GSAP en las páginas y sin Cloudflare Web Analytics
 
 - js/animations.js v3: las mismas entradas al bajar (subir + aparecer, cascada en tarjetas y pasos, cifras con rebote) con IntersectionObserver + Web Animations del navegador. footer.js ya no descarga GSAP + ScrollTrigger (~40 KB y 2 pedidos a jsDelivr por página). Lo que ya está a la vista al cargar no se anima (antes parpadeaba) y nada queda oculto si el archivo falla. /links conserva su GSAP (carrusel de tarjetas). Probado: portada 17 animaciones, fresado-cam 6, diseño remoto 5; 0 elementos ocultos; sin errores.
