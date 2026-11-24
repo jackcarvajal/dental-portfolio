@@ -16,6 +16,12 @@
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
 - ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
+## 2026-11-24 (c) — Google Ads solo con permiso de cookies (−440 KB de JS)
+
+- Lighthouse Treemap de la portada: 1,1 MiB de JS, de los que el gtag de GA4 es el 50 % y un segundo gtag de Google Ads (AW-18130335500) el 38 %. El de Ads se cargaba para todos, aunque sin permiso de cookies no sirve (no hay públicos ni cookies de anuncios) y las conversiones principales se importan desde GA4.
+- Ahora header.js lo configura solo si la persona ya aceptó (window._pgCargarAds) y footer.js lo llama al aceptar el aviso. Probado en navegador: sin decidir o rechazado → solo G-3N0ZZE5V10; aceptó antes o acepta en el aviso → G + AW.
+- ?v=20261124b header.js, ?v=20261124a footer.js. Alejandro no carga etiqueta de Ads (nada que portar).
+
 ## 2026-11-24 (b) — Letra legible en el celular y menos efectos (mejora 6, aprobada)
 
 - Capa compartida al final de js/header.js (id legible-css), solo ≤ 700 px: texto de lectura ≥ 15 px y datos secundarios ≥ 13 px. Cubre los style="font-size:.6–.86rem / 9–13px" en línea y las clases chicas que se repiten (faq-body, step-desc, product-desc, section-subtitle, pie, etc.). En todas las anchuras: sin text-shadow en textos de secciones, sin sombras en tarjetas/botones de secciones (salvo al pasar el mouse) y sin rótulos encima de un título (.label con raya, .sec-tag, .eyebrow, .section-label solo si el título va justo debajo). El hero no se toca.
@@ -28,7 +34,7 @@
 - app/login: las pestañas Operador/Admin ya no las ve el público; el equipo entra con «Acceso del equipo», con ?equipo=1 o cuando el guard manda a una página interna (redirect a /app/ que no es del cliente). Las cifras 200+ / 24 h / 98 % se quedan (Alejandro confirma que son reales). Mismo cambio en Alejandro.
 - Tolerancia de fresado única ±20 µm (la de la garantía en Términos): fresado-cam decía ±10 µm «garantizada» y el portafolio ±50 µm. Los ±10 µm de nosotros/seguimiento describen la fresadora y se dejan; los ±50 µm de impresión 3D son de otro proceso.
 - portafolio: la Ñ de «DISEÑOS» se cortaba (texto con degradado recortado a la caja) → padding-top.
-- ⏳ **sql/portafolio-textos-2026.sql** (pendiente de correr): corrige 13 títulos/descripciones del portafolio («Cronas», «All for X», «protipo par aluego», «Rehailitaion», «zironia», «Carilla inferiores», dobles espacios) y el tipo vacío de un plan de alineadores. Verificación: errores_restantes 0, corregidos 13.
+- ✅ **sql/portafolio-textos-2026.sql** (corrido el 24-nov: errores_restantes 0, corregidos 13; verificado en la base): corrige 13 títulos/descripciones del portafolio («Cronas», «All for X», «protipo par aluego», «Rehailitaion», «zironia», «Carilla inferiores», dobles espacios) y el tipo vacío de un plan de alineadores. Verificación: errores_restantes 0, corregidos 13.
 
 ## 2026-11-23 (f) — PageSpeed móvil: accesibilidad (contraste y orden de títulos) + aviso «English»
 

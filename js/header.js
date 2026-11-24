@@ -227,10 +227,12 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     try { if (localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1') gtag('consent','update',{analytics_storage:'granted',ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted'}); } catch (e) {}
     gtag('js', new Date());
     gtag('config', GA_ID, {anonymize_ip:true});
-    // Google Ads (AW-18130335500): conversiones y públicos (remarketing) SOLO si la persona acepta el aviso de
-    // cookies (footer.js concede ad_storage/ad_user_data/ad_personalization; antes los dejaba denegados con el
-    // texto «Sin anuncios»). Rechazar deja todo denegado. Las conversiones principales se importan desde GA4.
-    gtag('config', 'AW-18130335500');
+    // Google Ads (AW-18130335500): públicos (remarketing) y conversiones propias de Ads. Se configura SOLO si la persona
+    // acepta el aviso de cookies (aquí si ya aceptó antes; footer.js en el momento de aceptar). Sin ese permiso no
+    // sirve (no hay públicos ni cookies de anuncios) y cargaba un segundo gtag.js de ~440 KB: el 38 % de todo el JS
+    // de la portada (Lighthouse Treemap, 24-nov-2026). Las conversiones principales se importan desde GA4.
+    window._pgCargarAds = function () { if (window._pgAdsOk) return; window._pgAdsOk = true; gtag('config', 'AW-18130335500'); };
+    try { if (localStorage.getItem('pg_cookies_decision') === 'accepted' || localStorage.getItem('prodigy_cookies_ok') === '1') window._pgCargarAds(); } catch (e) {}
   }
   function _cargar() {
     if (!document.getElementById('prodigy-ga4-script')) {
