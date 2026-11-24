@@ -144,7 +144,7 @@ Decir siempre **"precio de referencia, la cotización exacta depende del caso"**
 | Full Arch Rehab | Cotización | 48–72 h |
 
 > **Unidades cementadas (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = USD 12 parejo** (24-nov-2026, Alejandro).
-> Casos simples: menos de 24 h.
+> Casos simples: menos de 24 h · complejos (implantes, guías, full arch): de 24 a 72 h.
 >
 > **Revisión del diseño:** antes del STL final le enviamos el diseño al cliente para revisarlo; si hace falta, hasta
 > **2 rondas de revisión** con los cambios que pida (incluidas). Desde la 3.ª, 20 % de la unidad (solo en términos, no en el primer mensaje).
