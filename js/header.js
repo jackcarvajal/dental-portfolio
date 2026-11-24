@@ -1709,3 +1709,38 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     } catch (err) {}
   }, true);
 })();
+
+/* ── LETRA LEGIBLE EN EL CELULAR Y MENOS EFECTOS (24-nov-2026, aprobado por Alejandro) ─────────────────────────
+   Medido en 24 páginas con un navegador de prueba: entre el 26 % y el 91 % del texto quedaba por debajo de 14 px en el
+   celular. Vienen de dos lados: estilos en línea (style="font-size:.72rem" y similares) y clases de 12–13 px que se
+   repiten entre páginas. Regla: texto de lectura ≥ 15 px; datos secundarios (fechas, roles, etiquetas) ≥ 13 px.
+   Solo en pantallas ≤ 700 px. En todas las anchuras: sin destellos (text-shadow) en los textos de las secciones, sin
+   sombras de colores en tarjetas y botones de las secciones (el único botón que brilla es «Haz tu pedido»: lo que es
+   distinto es lo que se ve) y sin los rótulos pequeños encima de los títulos (solo cuando el título está justo debajo). El hero no se toca: es la identidad. */
+(function () {
+  if (document.getElementById('legible-css')) return;
+  var fuera = ':not(i):not(svg):not(#pheader-v2 *):not(#nav-topbar *)';
+  var enLinea = ['.6', '.7', '.8rem', '.82', '.84', '.85', '.86', '0.6', '0.7', '0.8rem', '0.85', ' .7', ' .8rem', ' .85', '9px', '10px', '11px', '12px', '13px']
+    .map(function (v) { return '[style*="font-size:' + v + '"]' + fuera; }).join(',');
+  var lectura = ['.section-subtitle', '.faq-body', '.step-desc', '.product-desc', '.p-desc', '.fc-item', '.usos', '.resina-uso',
+    '.precio-desc', '.feature-card p', '.price-features li', '.nota-precio', '.nota', '.desc', '.timeline-slot', '.check-item',
+    '.system-desc', '.tog-info', '.hero-sub', '.fdesc', '.pfoot-desc', '.sub2', '.vflow-sub', '.mflow-sub', '.production-card p',
+    '.step p', '.c > p', '.rol-ayuda', '.hero-desc', '.check-item label', '.timeline-slot p', '.form-group label', '.tog-info small', '.work-name', '#pfoot-root .pfoot-col li', '#ac-footer-root li'].map(function (s) { return s + fuera; }).join(',');
+  var secundario = ['.step-time', '.trust-l', '.card-date', '.card-type-badge', '.review-role', '.review-badge', '.mat-tag',
+    '.hero-badges span', '.rev-role', '.rev-author', '.cad-sbrand', '.spec-lbl', '.eco-cat', '.eco-name', '.hstat-l', '.test-role',
+    '.prc', '.cd-sb', '.lbl', '.habeas-label', '.habeas-wrap', '.pg-chat-aviso', '.pfoot-copy', '.fcopy', '.nav-item', '.scanner-brand', '.time', '.product-time', '.work-price', '.var-btn', '.portfolio-meta', '.stat-label', '.price-period', '.habeas label', '.review-author', '.rating-sub', '.vflow-day', '.vflow-title', '.hero-badge', '.ftag', '.chip',
+    '[style*="text-transform:uppercase"][style*="font-size:"]'].map(function (s) { return s + fuera; }).join(',');
+  var css =
+    '@media (max-width:700px){' +
+      enLinea + '{font-size:15px!important;line-height:1.5!important}' +
+      lectura + '{font-size:15px!important;line-height:1.55!important}' +
+      secundario + '{font-size:13px!important;line-height:1.4!important}' +
+    '}' +
+    ':is(main,section) :is(h2,h3,p):not(.hero *),.section-header{text-shadow:none!important}' +
+    ':is(main,section) :is([class*="card"],[class*="btn"]):not(:hover):not(.hero *){box-shadow:none!important}' +
+    ':is(.label:has(> span:empty),.sec-tag,.eyebrow,.section-label):has(+ :is(h1,h2,h3)){display:none!important}';
+  var st = document.createElement('style');
+  st.id = 'legible-css';
+  st.textContent = css;
+  (document.head || document.documentElement).appendChild(st);
+})();

@@ -16,6 +16,13 @@
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
 - ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
+## 2026-11-24 (b) — Letra legible en el celular y menos efectos (mejora 6, aprobada)
+
+- Capa compartida al final de js/header.js (id legible-css), solo ≤ 700 px: texto de lectura ≥ 15 px y datos secundarios ≥ 13 px. Cubre los style="font-size:.6–.86rem / 9–13px" en línea y las clases chicas que se repiten (faq-body, step-desc, product-desc, section-subtitle, pie, etc.). En todas las anchuras: sin text-shadow en textos de secciones, sin sombras en tarjetas/botones de secciones (salvo al pasar el mouse) y sin rótulos encima de un título (.label con raya, .sec-tag, .eyebrow, .section-label solo si el título va justo debajo). El hero no se toca.
+- Medido en 24 páginas (texto < 14 px en el celular, antes → después): portada PRODIGY 66 → 22 %, impresión 3D 80 → 21 %, flujo de diseño 80 → 19 %, corona-cad de Alejandro 82 → 18 %, calculadora de Alejandro 91 → 61 % (sus tarjetas quedan en 13 px a propósito). Sin desborde horizontal en ninguna.
+- Portada: la barra «Envía tu caso» se oculta en el celular (quedaba tapada detrás de «Haz tu pedido»).
+- ?v=20261124a en header.js.
+
 ## 2026-11-24 — Mejoras aprobadas del informe visual (4 parcial y 5)
 
 - app/login: las pestañas Operador/Admin ya no las ve el público; el equipo entra con «Acceso del equipo», con ?equipo=1 o cuando el guard manda a una página interna (redirect a /app/ que no es del cliente). Las cifras 200+ / 24 h / 98 % se quedan (Alejandro confirma que son reales). Mismo cambio en Alejandro.
