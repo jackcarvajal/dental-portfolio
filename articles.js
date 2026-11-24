@@ -2,10 +2,193 @@
    PRODIGY — Base de artículos técnicos
    Para agregar un artículo manualmente: copia un objeto del array
    y llena los campos. article.html lo renderiza automáticamente.
-   Última actualización automática: 2026-11-19
+   Última actualización automática: 2026-11-24
    ============================================================ */
 
 const ARTICLES = [
+
+/* ─────────────────────────────────────────────────── */
+{
+  "id": "impresion-3d-guias-modelo-2026-11-24-9878",
+  "titulo": "Impresión 3D en Odontología Digital: Modelos, Guías y Provisionales",
+  "subtitulo": "Exploración de las aplicaciones clínicas de la fabricación aditiva en el laboratorio dental moderno, analizando la precisión, fiabilidad y biocompatibilidad de los materiales impresos en 3D para modelos, guías quirúrgicas y restauraciones provisionales.",
+  "categoria": "impresion3d",
+  "chip": "3D Laboratorio",
+  "fecha": "2026-11-24",
+  "lectura": "7 min",
+  "vistas": "0",
+  "emoji": "🖨️",
+  "grad": "grad-1",
+  "og_img": "",
+  "img_credit": "",
+  "img_link": "",
+  "autor": "Alejandro Carvajal",
+  "instagram": "jackcarvajal",
+  "contenido": [
+    {
+      "t": "p",
+      "c": "La odontología digital ha transformado el laboratorio dental moderno, integrando tecnologías como el diseño asistido por computadora (CAD) y la fabricación asistida por computadora (CAM) para optimizar la producción de restauraciones y dispositivos (Alghazzawi, 2016). Dentro de este paradigma, la fabricación aditiva (AM), comúnmente conocida como impresión 3D, ha emergido como una herramienta fundamental. Esta tecnología permite construir objetos 3D a partir de un diseño CAD utilizando diversas categorías de procesos, incluyendo la estereolitografía (SLA), el procesamiento digital de luz (DLP), la inyección de material (MJ) y la extrusión de material (ME), que son ampliamente aplicadas con polímeros en odontología (Revilla-León et al., 2019). La impresión 3D ofrece ventajas significativas, como la creación de modelos digitales y la integración con articuladores virtuales (Alghazzawi, 2016), abriendo nuevas vías para la producción de modelos de estudio y trabajo, guías quirúrgicas y restauraciones provisionales."
+    },
+    {
+      "t": "h2",
+      "c": "Modelos de Estudio y Trabajo Impresos en 3D: Precisión y Fiabilidad"
+    },
+    {
+      "t": "p",
+      "c": "Los modelos de trabajo derivados de datos digitales, obtenidos mediante escáneres intraorales (IOS), son componentes esenciales en los flujos de trabajo digitales e híbridos. Estos modelos pueden ser producidos mediante fresado o impresión 3D (Appiani et al., 2024). La impresión 3D, utilizando tecnologías como SLA y DLP, permite la fabricación de modelos de resina con una precisión y fiabilidad que son críticas para la elaboración de prótesis dentales fijas (FDPs) tanto sobre dientes naturales como sobre implantes (Appiani et al., 2024). Sin embargo, la fiabilidad de estos modelos puede verse comprometida por diversos factores, y es crucial implementar procedimientos adecuados para asegurar resultados satisfactorios (Appiani et al., 2024). La literatura destaca la importancia de analizar críticamente las diferencias en precisión y fiabilidad entre los modelos fresados y los impresos en 3D, tanto sólidos como alveolares (Appiani et al., 2024)."
+    },
+    {
+      "t": "table",
+      "headers": [
+        "Característica",
+        "Modelos Fresados",
+        "Modelos Impresos en 3D",
+        "Fuente"
+      ],
+      "rows": [
+        [
+          "Origen",
+          "Datos digitales (IOS)",
+          "Datos digitales (IOS)",
+          "(Appiani et al., 2024)"
+        ],
+        [
+          "Método de Fabricación",
+          "Sustracción (fresado)",
+          "Adición (impresión 3D)",
+          "(Revilla-León et al., 2019)"
+        ],
+        [
+          "Precisión y Fiabilidad",
+          "Analizadas críticamente",
+          "Analizadas críticamente",
+          "(Appiani et al., 2024)"
+        ],
+        [
+          "Tipos",
+          "Sólidos y alveolares",
+          "Sólidos y alveolares",
+          "(Appiani et al., 2024)"
+        ],
+        [
+          "Consideraciones",
+          "Pueden presentar problemas",
+          "Pueden presentar problemas",
+          "(Appiani et al., 2024)"
+        ]
+      ]
+    },
+    {
+      "t": "h2",
+      "c": "Guías Quirúrgicas Implantares Impresas en 3D: Planificación y Materiales"
+    },
+    {
+      "t": "p",
+      "c": "La planificación de implantes dentales se beneficia enormemente de la imagen tridimensional (3D) obtenida mediante tomografía computarizada de haz cónico (CBCT), que proporciona datos volumétricos detallados de los huesos maxilares y los dientes con dosis de radiación relativamente bajas (Jacobs et al., 2018). Esta información es fundamental para el diseño de guías quirúrgicas precisas. Las guías quirúrgicas impresas en 3D, fabricadas a partir de polímeros biocompatibles, son una aplicación clínica establecida de la impresión 3D en odontología (Anadioti et al., 2024). La fabricación aditiva, mediante procesos como SLA o DLP, permite la creación de estas guías con la precisión necesaria para la colocación guiada de implantes (Revilla-León et al., 2019). Es importante destacar que, si bien la evidencia apoya su aplicación clínica, la optimización y justificación de la imagen CBCT son cruciales antes de su uso clínico, dada la variabilidad en la calidad de imagen y dosis entre los diferentes sistemas CBCT (Jacobs et al., 2018)."
+    },
+    {
+      "t": "h2",
+      "c": "Restauraciones Provisionales Impresas en Polímeros"
+    },
+    {
+      "t": "p",
+      "c": "La impresión 3D de polímeros ha ampliado las opciones para la fabricación de restauraciones provisionales en el laboratorio dental. Las aplicaciones clínicas de polímeros impresos en 3D incluyen la producción de restauraciones provisionales, para las cuales existe evidencia que respalda su uso clínico (Anadioti et al., 2024). Estas restauraciones, fabricadas mediante tecnologías de fabricación aditiva, ofrecen una alternativa a los métodos convencionales y fresados, permitiendo una producción eficiente y personalizada (Revilla-León et al., 2019). La revisión de Anadioti et al. (2024) categoriza las aplicaciones de impresión 3D de materiales poliméricos, identificando aquellas con suficiente base de evidencia para su adopción clínica, entre las que se encuentran las restauraciones provisionales."
+    },
+    {
+      "t": "h2",
+      "c": "Biocompatibilidad y Protocolos de Post-curado en Impresión 3D Dental"
+    },
+    {
+      "t": "p",
+      "c": "La biocompatibilidad de los materiales poliméricos utilizados en la impresión 3D dental es un factor crítico para su aplicación clínica. La revisión de Anadioti et al. (2024) examina las propiedades de los materiales y las aplicaciones clínicas de los polímeros impresos en 3D, señalando que algunas aplicaciones requieren una mayor base de evidencia o desarrollo adicional antes de su adopción generalizada. Aunque los resúmenes no detallan específicamente la norma ISO 10993, la evaluación de las propiedades del material es fundamental para asegurar la seguridad del paciente. Los procesos de fabricación aditiva para polímeros, como SLA y DLP, implican etapas de post-procesamiento, incluyendo el post-curado, que son esenciales para alcanzar las propiedades mecánicas y la biocompatibilidad deseadas del material final (Revilla-León et al., 2019). La precisión y el proceso de fabricación son aspectos clave que influyen en el rendimiento clínico de los objetos impresos en 3D (Revilla-León et al., 2019)."
+    },
+    {
+      "t": "h2",
+      "c": "Conclusiones y Perspectivas Futuras"
+    },
+    {
+      "t": "p",
+      "c": "La impresión 3D ha consolidado su posición como una tecnología indispensable en el laboratorio dental moderno, ofreciendo soluciones eficientes y precisas para una variedad de aplicaciones clínicas. Desde la creación de modelos de estudio y trabajo con una fiabilidad comparable a los métodos tradicionales (Appiani et al., 2024), hasta la fabricación de guías quirúrgicas implantares precisas basadas en datos CBCT (Jacobs et al., 2018), y la producción de restauraciones provisionales de polímeros (Anadioti et al., 2024), la fabricación aditiva está redefiniendo los flujos de trabajo. Es fundamental que los profesionales dentales comprendan las particularidades de cada tecnología de impresión 3D y los materiales asociados, así como la necesidad de una continua investigación para fortalecer la base de evidencia en áreas que aún requieren mayor desarrollo (Anadioti et al., 2024). La implementación de esta tecnología, aunque ventajosa, requiere una comprensión profunda de sus capacidades y limitaciones para asegurar resultados clínicos óptimos."
+    },
+    {
+      "t": "quote",
+      "c": "La tecnología CAD/CAM ofrece ventajas significativas, incluyendo impresiones y modelos digitales, y el uso de articuladores virtuales.",
+      "author": "Alghazzawi, J Prosthodont Res, 2016"
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ventajas ofrece la impresión 3D para la fabricación de modelos dentales en comparación con los métodos convencionales?",
+      "a": "La impresión 3D permite la creación de modelos de trabajo a partir de datos digitales obtenidos por escáneres intraorales, ofreciendo una alternativa a los modelos fresados. Aunque ambos métodos requieren una evaluación crítica de su precisión y fiabilidad, la impresión 3D se integra en un flujo de trabajo digital que optimiza la producción (Appiani et al., 2024; Alghazzawi, 2016)."
+    },
+    {
+      "q": "¿Son las guías quirúrgicas impresas en 3D suficientemente precisas para la colocación de implantes?",
+      "a": "Sí, las guías quirúrgicas impresas en 3D, fabricadas con polímeros biocompatibles, son una aplicación clínica establecida y respaldada por evidencia. Su diseño se basa en datos volumétricos de CBCT, lo que permite una planificación precisa y una colocación guiada de implantes (Jacobs et al., 2018; Anadioti et al., 2024)."
+    }
+  ],
+  "referencias": [
+    {
+      "autores": "Revilla-León M, Özcan M.",
+      "titulo": "Additive Manufacturing Technologies Used for Processing Polymers: Current Status and Potential Application in Prosthetic Dentistry",
+      "revista": "J Prosthodont",
+      "año": "2019",
+      "vol": "28",
+      "num": "2",
+      "pags": "146-158",
+      "doi": "10.1111/jopr.12801",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29682823/",
+      "verificada": true
+    },
+    {
+      "autores": "Alghazzawi TF.",
+      "titulo": "Advancements in CAD/CAM technology: Options for practical implementation",
+      "revista": "J Prosthodont Res",
+      "año": "2016",
+      "vol": "60",
+      "num": "2",
+      "pags": "72-84",
+      "doi": "10.1016/j.jpor.2016.01.003",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/26935333/",
+      "verificada": true
+    },
+    {
+      "autores": "Jacobs R, Salmon B, Codari M, Hassan B, Bornstein MM.",
+      "titulo": "Cone beam computed tomography in implant dentistry: recommendations for clinical use",
+      "revista": "BMC Oral Health",
+      "año": "2018",
+      "vol": "18",
+      "num": "1",
+      "pags": "88",
+      "doi": "10.1186/s12903-018-0523-5",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/29764458/",
+      "verificada": true
+    },
+    {
+      "autores": "Appiani A, Scattarelli P, Ori G, Noe G, Gracis S.",
+      "titulo": "Working Models in the Digital Workflow: Are They Reliable?",
+      "revista": "Int J Prosthodont",
+      "año": "2024",
+      "vol": "37",
+      "num": "7",
+      "pags": "227-241",
+      "doi": "10.11607/ijp.8932",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38787588/",
+      "verificada": true
+    },
+    {
+      "autores": "Anadioti E, Odaimi T, O'Toole S.",
+      "titulo": "Clinical Applications of 3D-Printed Polymers in Dentistry: A Scoping Review",
+      "revista": "Int J Prosthodont",
+      "año": "2024",
+      "vol": "37",
+      "num": "7",
+      "pags": "209-219",
+      "doi": "10.11607/ijp.8829",
+      "pubmed": "https://pubmed.ncbi.nlm.nih.gov/38787586/",
+      "verificada": true
+    }
+  ]
+},
 
 /* ─────────────────────────────────────────────────── */
 {
