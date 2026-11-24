@@ -287,6 +287,7 @@
   <div class="procsel" id="procsel"></div>
   <div class="exodatos" id="exodatos"></div>
   <div class="procsel" id="barraint" hidden></div>
+  <div class="procsel" id="enciaint" hidden></div>
   <div id="tonogrp"><div class="seclbl" style="margin-top:10px">Color / Tono <span class="mattag">— solo en Fresado / Impresión</span></div><div class="tono" id="tono"></div></div>
 </div>
 <div class="toast" id="toast"></div>
@@ -303,8 +304,8 @@
     if(window._guiaAuto)window._guiaAuto();
     if(!EMBED)return;
     var items=[],sub=0;
-    Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind){items.push({d:+f,ind:a.ind,mat:a.mat,cod:a.cod||null,proc:a.cod?procDe(a.cod):null,tono:a.tono||null,impl:a.implante||null,barra:a.barra?(MATS[a.barra]||[a.barra])[0]:null});sub+=(PRECIO_DIS[a.ind]||0);}});
-    var resumen=items.map(function(i){return i.d+' '+i.ind+' ('+(i.mat||'sin material')+(i.proc?(' · '+i.proc):'')+(i.tono?(' '+i.tono):'')+(i.impl?(' · '+i.impl):'')+(i.barra?(' · barra interna '+i.barra):'')+')';}).join('; ');
+    Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind){items.push({d:+f,ind:a.ind,mat:a.mat,cod:a.cod||null,proc:a.cod?procDe(a.cod):null,tono:a.tono||null,impl:a.implante||null,barra:a.barra?(MATS[a.barra]||[a.barra])[0]:null,encia:(a.encia&&ENC_WT[INDWT[a.ind]])?true:null});sub+=(PRECIO_DIS[a.ind]||0);}});
+    var resumen=items.map(function(i){return i.d+' '+i.ind+' ('+(i.mat||'sin material')+(i.proc?(' · '+i.proc):'')+(i.tono?(' '+i.tono):'')+(i.impl?(' · '+i.impl):'')+(i.barra?(' · barra interna '+i.barra):'')+(i.encia?' · con encía':'')+')';}).join('; ');
     var G=(typeof guia!=='undefined')?guia:null;
     try{parent.postMessage({__odo:1,total:sub,piezas:items.length,resumen:resumen,items:items,guia:(G&&G.tipo)?G:null,modelo:(typeof modeloDatos==='function'?modeloDatos():null),height:altoContenido()},'*');}catch(e){}
   }
@@ -375,7 +376,7 @@
   var TONOS4=["A","B","C","D","—"],TONOS=["A1","A2","A3","A3.5","A4","B1","B2","B3","B4","C1","C2","C3","C4","D2","D3","D4"];
   var PROCESOS=[["Diseño CAD","#a855f7"],["Fresado","#e0b23a"],["Impresión 3D","#00b8dd"],["Lab completo","#4fb477"]];
   // Precios REALES del flujo de diseño (COP) — de MATERIAL_DATA de flujo-diseno.html (se sincronizan de Supabase)
-  var PRECIO_DIS={"Corona anatómica":15000,"Cofia anatómica":15000,"Corona cáscara de huevo (prov.)":10000,"Póntico cáscara de huevo (prov.)":10000,"Overlay":15000,"Cofia":15000,"Póntico anatómico":15000,"Póntico reducido":15000,"Mockup":12000,"Incrustación/Onlay":15000,"Inlay de grosor mínimo":15000,"Carilla":25000,"Encerado anatómico":12000,"Encerado reducido":12000,"Encerado póntico":12000,"Dentadura completa":55000,"Esqueléticas parciales":60000,"Férula de descarga":35000,"Corona telescópica primaria":15000,"Corona telescópica secundaria":15000,"Atache":15000,"Pilar de barra":120000,"Segmento de barra":120000,"Subestructura Offset":15000,"Antagonista":0,"Diente adyacente":0,"Omitir en el puente":0};
+  var PRECIO_DIS={"Corona anatómica":30000,"Cofia anatómica":30000,"Corona cáscara de huevo (prov.)":20000,"Póntico cáscara de huevo (prov.)":20000,"Overlay":30000,"Cofia":30000,"Póntico anatómico":30000,"Póntico reducido":30000,"Mockup":15000,"Incrustación/Onlay":30000,"Inlay de grosor mínimo":30000,"Carilla":30000,"Encerado anatómico":15000,"Encerado reducido":15000,"Encerado póntico":15000,"Dentadura completa":55000,"Esqueléticas parciales":60000,"Férula de descarga":35000,"Corona telescópica primaria":30000,"Corona telescópica secundaria":30000,"Atache":25000,"Pilar de barra":250000,"Segmento de barra":250000,"Subestructura Offset":25000,"Antagonista":0,"Diente adyacente":0,"Omitir en el puente":0};
   function cop(n){return '$'+(n||0).toLocaleString('es-CO');}
   function computeTotal(){var tb=document.getElementById('totbox');if(!tb)return;
     if(proceso!=='Diseño CAD'){tb.innerHTML='<div class="totrow small">Precios de <b>'+proceso+'</b> se cargan de tu catálogo (Supabase) con sus bloqueos por país/zona.</div>';return;}
@@ -449,6 +450,8 @@
   function setMat(cod){var arr=selArr();if(!arr.length)return;arr.forEach(function(f){if(!estado[f])estado[f]=defTooth();var ok=matsDeInd(estado[f].ind);var c=ok.indexOf(cod)>=0?cod:(ok.indexOf(cod+"_3ax")>=0?cod+"_3ax":cod);estado[f].cod=c;estado[f].mat=(MATS[c]||[c])[0];});renderLeft();}
   // Barra interna (exocad 3.3: «¿Barra de diseño?» + «¿Material para barra?» en estas indicaciones de WorkParamsDB)
   var BAR_WT={AnatomicCrown:1,Coping:1,AnatomicPontic:1,ReducedPontic:1,AnatomicWaxup:1,ReducedWaxup:1,WaxupPontic:1},BAR_MATS=['TI','TI_L','NP','NP_L','ZI','PEEK'];
+  // Encía rosada en la prótesis (24-nov-2026): se cobra por unidad, con tope de «encía total» por arcada
+  var ENC_WT={AnatomicCrown:1,Coping:1,AnatomicPontic:1,ReducedPontic:1,ProvisionalCrown:1,ProvisionalPontic:1,AnatomicWaxup:1,ReducedWaxup:1,WaxupPontic:1};
   function ajustarMat(f){var e=estado[f],ok=matsDeInd(e.ind);if(e.barra&&!BAR_WT[INDWT[e.ind]])e.barra=null;if(!ok.length){e.cod=null;e.mat=null;return;}if(!e.cod||ok.indexOf(e.cod)<0){var b=e.cod&&e.cod.replace(/_3ax$/,"");e.cod=(b&&ok.indexOf(b)>=0)?b:(b&&ok.indexOf(b+"_3ax")>=0?b+"_3ax":primerMat(ok));e.mat=(MATS[e.cod]||[e.cod])[0];}}
 
   // ── Nomenclatura (oct-2026): el doctor ve su sistema; la orden sigue en FDI ──
@@ -542,6 +545,10 @@
     var bi=document.getElementById('barraint');if(bi){var okB=!!(ci&&ci!=='__mixed__'&&BAR_WT[INDWT[ci]]);bi.hidden=!okB;bi.innerHTML='';
       if(okB){var bv=a&&a.barra;bi.innerHTML='<span class="pslbl">Barra interna</span>'+'<button type="button" data-b="" aria-pressed="'+(!bv)+'">Sin barra</button>'+BAR_MATS.map(function(c){return '<button type="button" data-b="'+c+'" aria-pressed="'+(bv===c)+'">'+(MATS[c]||[c])[0]+'</button>';}).join('')+'<small class="bnota">Prótesis híbrida sobre implantes: la barra se diseña dentro de la prótesis final.</small>';
         [].forEach.call(bi.querySelectorAll('button'),function(x){x.onclick=function(){var v=x.getAttribute('data-b')||null;selArr().forEach(function(f){if(estado[f]&&BAR_WT[INDWT[estado[f].ind]])estado[f].barra=v;});renderLeft();};});}}
+    // Encía: por diente (dentro de la prótesis); se cobra por unidad y, si casi toda la arcada la lleva, como encía total
+    var ei=document.getElementById('enciaint');if(ei){var okE=!!(ci&&ci!=='__mixed__'&&ENC_WT[INDWT[ci]]);ei.hidden=!okE;ei.innerHTML='';
+      if(okE){var ev=!!(a&&a.encia);ei.innerHTML='<span class="pslbl">Encía</span><button type="button" data-e="" aria-pressed="'+(!ev)+'">Sin encía</button><button type="button" data-e="1" aria-pressed="'+ev+'">Con encía</button><small class="bnota">Encía rosada en la prótesis (puentes, híbridas, Full Arch). Se cobra por diente; si la lleva casi toda la arcada, se cobra como encía total.</small>';
+        [].forEach.call(ei.querySelectorAll('button'),function(x){x.onclick=function(){var v=!!x.getAttribute('data-e');selArr().forEach(function(f){if(estado[f]&&ENC_WT[INDWT[estado[f].ind]])estado[f].encia=v||null;});renderLeft();};});}}
     var ed=document.getElementById('exodatos');if(ed)ed.innerHTML=(selCod&&ci&&ci!=='__mixed__')?datosExo(ci,selCod):'';
     var ps=document.getElementById('procsel');if(ps){var vs=selBase?[selBase,selBase+'_3ax'].filter(function(c){return permit.indexOf(c)>=0;}):[];
       ps.innerHTML=selCod?('<span class="pslbl">Proceso de fabricación</span>'+(vs.length>1?vs.map(function(c){return '<button type="button" data-c="'+c+'" aria-pressed="'+(selCod===c)+'">'+procDe(c)+'</button>';}).join(''):'<b>'+procDe(selCod)+'</b>')):'';
@@ -562,7 +569,7 @@
     procs.appendChild(b);});
 
   function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove('show');},2200);}
-  function ordenJSON(){var o=[];Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind)o.push({diente:+f,indicacion:a.ind,material:a.mat,codigo_exocad:a.cod||null,proceso_fabricacion:a.cod?procDe(a.cod):null,tono:USA_COLOR[proceso]?a.tono:null,implante:a.implante||null,barra_interna:a.barra?(MATS[a.barra]||[a.barra])[0]:null});});return {proceso:proceso,piezas:o};}
+  function ordenJSON(){var o=[];Object.keys(POS).forEach(function(f){var a=estado[f];if(a&&a.ind)o.push({diente:+f,indicacion:a.ind,material:a.mat,codigo_exocad:a.cod||null,proceso_fabricacion:a.cod?procDe(a.cod):null,tono:USA_COLOR[proceso]?a.tono:null,implante:a.implante||null,barra_interna:a.barra?(MATS[a.barra]||[a.barra])[0]:null,encia:(a.encia&&ENC_WT[INDWT[a.ind]])?true:null});});return {proceso:proceso,piezas:o};}
   document.querySelectorAll('[data-act]').forEach(function(el){el.onclick=function(){var act=el.dataset.act,arr=selArr();
     if(act==='copiar'){if(!arr.length){toast('Selecciona un diente');return;}clip=Object.assign({},estado[arr[0]]);toast('Config del '+arr[0]+' copiada');}
     else if(act==='pegar'){if(!clip){toast('Primero copia una config');return;}if(!arr.length){toast('Selecciona destino');return;}arr.forEach(function(f){estado[f]=Object.assign({},clip);});pintaAll();renderLeft();toast('Pegada en '+arr.length+' diente(s)');}
@@ -597,7 +604,7 @@
       if(lista.length){if(fv.hidden||sv.getAttribute('data-de')!==modelo.articulador){sv.innerHTML=op('','La más adecuada para el caso')+lista.map(function(x){return op(x);}).join('');sv.setAttribute('data-de',modelo.articulador);}fv.hidden=false;modelo.version=sv.value;}
       else{fv.hidden=true;modelo.version='';}
     }
-    function pinta(){rs.textContent=modelo.disenar?('Modelo impreso: '+modeloPartes().join(' · ')+' — se cotiza con el caso'):'';}
+    function pinta(){rs.textContent=modelo.disenar?('Modelo impreso: '+modeloPartes().join(' · ')+' — el diseño del modelo se suma al total (por arcada; con implantes si lleva análogos o encía removible); la impresión, si la necesitas, va aparte'):'';}
     // Implantes en la orden → análogos y encía removible marcados (hasta que el doctor los toque). Lo llama emit().
     window._modeloAuto=function(){if(!modelo.disenar)return;var hay=Object.keys(estado).some(function(f){return estado[f]&&estado[f].implante;});
       [ca,ce].forEach(function(c){if(c.getAttribute('data-toc')!=='1')c.checked=hay;});leer();pinta();};

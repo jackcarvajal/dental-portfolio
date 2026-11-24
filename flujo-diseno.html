@@ -633,6 +633,11 @@ window.submitOrden     = window.submitOrden      || function(){};
                                 <h3>Removibles / Ortodoncia</h3>
                                 <p>Férulas, esqueletos PPR, cubetas, alineadores</p>
                             </button>
+                            <button type="button" class="categoria-card" id="cat-cad_modelos" onclick="selectCategoria('cad_modelos')" aria-pressed="false">
+                                <span class="cat-icon">🦷</span>
+                                <h3>Modelos</h3>
+                                <p>Modelos para imprimir, con o sin implantes, troqueles</p>
+                            </button>
                             <!-- Guías y planificación (exoplan) se piden en el odontograma: «Planificación de implantes». La categoría queda solo para cotizaciones viejas. -->
                             <button type="button" class="categoria-card" id="cat-cad_quirurgica" onclick="selectCategoria('cad_quirurgica')" aria-pressed="false" style="display:none">
                                 <span class="cat-icon">🩺</span>
@@ -1186,7 +1191,17 @@ window.submitOrden     = window.submitOrden      || function(){};
                     corona_ator: { nombre: "Corona Atornillada",              precio: 50000  },
                     pilar_pers:  { nombre: "Pilar Personalizado",             precio: 25000  },
                     barra:       { nombre: "Barra de Implantes (Primaria)",   precio: 250000 },
-                    all_on_4:    { nombre: "Estructura Híbrida / All-on-4",   precio: 150000 }
+                    all_on_4:    { nombre: "Full Arch / Híbrida (por unidad)", precio: 30000 },
+                    encia_unidad:{ nombre: "Encía (por unidad)",               precio: 10000  },
+                    encia_total: { nombre: "Encía total (por arcada)",         precio: 100000 }
+                }
+            },
+            cad_modelos: {
+                nombre: "Modelos para imprimir",
+                subtipos: {
+                    diseno_modelo:      { nombre: "Modelo sin implantes (por arcada)",                    precio: 20000 },
+                    diseno_modelo_impl: { nombre: "Modelo con implantes — análogos o encía (por arcada)", precio: 30000 },
+                    diseno_troquel:     { nombre: "Troquel (por pieza)",                                  precio: 7500  }
                 }
             },
             cad_removible: {
@@ -1636,6 +1651,19 @@ window.submitOrden     = window.submitOrden      || function(){};
             {id:'stl-intraoral', label:'STL — maxilares y prótesis escaneada', ext:'PLY/STL', req:true},
             {id:'datos-impl',    label:'Sistema implante a usar: fabricante + Ø + longitud + conexión (todos los implantes)', ext:'Texto en Notas', req:true, tip:'Indícalo en el odontograma (debajo de «Planificación de implantes») o en Notas. Si no lo tienes definido, lo sugerimos en la planificación'},
             {id:'foto-prot',     label:'Foto de la prótesis con los marcadores', ext:'JPG', req:false}
+        ];
+
+        // Encía y modelos (24-nov-2026): archivos según el caso base
+        ARCHIVOS_REQUERIDOS.encia_unidad = ARCHIVOS_REQUERIDOS.encia_total = ARCHIVOS_REQUERIDOS.all_on_4;
+        ARCHIVOS_REQUERIDOS.diseno_modelo = ARCHIVOS_REQUERIDOS.diseno_troquel = [
+            {id:'stl-sup', label:'STL maxilar superior', ext:'PLY/STL', req:true},
+            {id:'stl-inf', label:'STL maxilar inferior', ext:'PLY/STL', req:true},
+            {id:'stl-mord', label:'Registro de mordida (si se articulan)', ext:'STL', req:false}
+        ];
+        ARCHIVOS_REQUERIDOS.diseno_modelo_impl = [
+            {id:'stl-scanbody', label:'STL con los scan bodies en posición', ext:'PLY/STL', req:true, tip:'Para ubicar los análogos en el modelo'},
+            {id:'stl-ant', label:'STL antagonista', ext:'PLY/STL', req:true},
+            {id:'datos-impl', label:'Sistema de implante y análogo: fabricante + plataforma + conexión', ext:'Texto en Notas', req:true}
         ];
 
         function renderArchivosRequeridos(subtipoId) {
@@ -2771,8 +2799,8 @@ const lineWompi = document.getElementById('line-wompi');
     <script>ProdigyMultiViewer.init('pmv-diseno');</script>
     <script src="js/flujo-uploader.js?v=20261123c"></script>
     <script src="js/dientes.js?v=20261008b"></script>
-    <script>window.ODO_CFG = {"v": "20261122a", "archivosGuia": {"dientes": "guia_1", "edentulo": "guia_edentulo"}, "mapa": {"Diseño de sonrisa 3D": ["cad_quirurgica", "sonrisa_3d"], "Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Póntico cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (solo pilar)": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {"Diseño de sonrisa 3D": 1}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
-    <script src="js/odontograma-flujo.js?v=20261124b"></script>
+    <script>window.ODO_CFG = {"v": "20261124a", "archivosGuia": {"dientes": "guia_1", "edentulo": "guia_edentulo"}, "mapa": {"Diseño de sonrisa 3D": ["cad_quirurgica", "sonrisa_3d"], "Corona anatómica": ["cad_fija", "corona"], "Cofia anatómica": ["cad_fija", "corona"], "Cofia": ["cad_fija", "corona"], "Corona cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Póntico cáscara de huevo (prov.)": ["cad_fija", "provisional"], "Overlay": ["cad_fija", "inlay"], "Incrustación/Onlay": ["cad_fija", "inlay"], "Inlay de grosor mínimo": ["cad_fija", "inlay"], "Carilla": ["cad_fija", "carilla"], "Póntico anatómico": ["cad_fija", "puente"], "Póntico reducido": ["cad_fija", "puente"], "Mockup": ["cad_fija", "waxup"], "Encerado anatómico": ["cad_fija", "encerado"], "Encerado reducido": ["cad_fija", "encerado"], "Encerado póntico": ["cad_fija", "encerado"], "Dentadura completa": ["cad_removible", "sobredentadura"], "Esqueléticas parciales": ["cad_removible", "esqueleto"], "Férula de descarga": ["cad_removible", "ferula"], "Corona telescópica primaria": ["cad_fija", "corona"], "Corona telescópica secundaria": ["cad_fija", "corona"], "Atache": ["cad_implantes", "pilar_pers"], "Pilar de barra": ["cad_implantes", "barra"], "Segmento de barra": ["cad_implantes", "barra"], "Subestructura Offset": ["cad_implantes", "pilar_pers"], "Pilar personalizado (solo pilar)": ["cad_implantes", "pilar_pers"]}, "porArcada": {"Férula de descarga": 1, "Dentadura completa": 1, "Esqueléticas parciales": 1, "Pilar de barra": 1, "Segmento de barra": 1}, "porCaso": {"Diseño de sonrisa 3D": 1}, "guias": {"guia_1": ["cad_quirurgica", "guia_1"], "guia_sobredent": ["cad_quirurgica", "guia_sobredent"], "guia_hibrida": ["cad_quirurgica", "guia_hibrida"], "guia_reborde": ["cad_quirurgica", "guia_reborde"], "planif_unit": ["cad_quirurgica", "planif_unit"], "planif_fullarch": ["cad_quirurgica", "planif_fullarch"], "sonrisa_3d": ["cad_quirurgica", "sonrisa_3d"], "guia_1_impresa": ["cad_quirurgica", "guia_1_impresa"], "guia_sobredent_impresa": ["cad_quirurgica", "guia_sobredent_impresa"], "guia_hibrida_impresa": ["cad_quirurgica", "guia_hibrida_impresa"], "guia_reborde_impresa": ["cad_quirurgica", "guia_reborde_impresa"]}};</script>
+    <script src="js/odontograma-flujo.js?v=20261124c"></script>
 <div id="fd-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:13px 22px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:9999;opacity:0;transition:all .35s;pointer-events:none;max-width:400px;text-align:left;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);backdrop-filter:blur(8px);"></div>
 <script>
 let _fdToastT;

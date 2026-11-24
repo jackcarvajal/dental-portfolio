@@ -47,27 +47,39 @@
     var items = (x.items || []).filter(function (it) { return it && it.ind; });
     var cobrables = items.filter(function (it) { return !INFO[it.ind]; });
     var g = (x.guia && x.guia.tipo) ? x.guia : null;
-    var m = x.modelo || null;                                       // modelos impresos (hueco/sólido, zócalo, troqueles, implantes, articulador); se cotiza con el caso
+    var m = x.modelo || null;                                       // modelos impresos (hueco/sólido, zócalo, troqueles, implantes, articulador)
     var hay = cobrables.length || g || m;
     if (!hay && !activo) return;                                    // aún no se usa: no pisa un servicio ya elegido
     var total = 0, totalCOP = 0, vistos = {}, vistosC = {}, cotizar = [];
+    var enc = { sup: 0, inf: 0 }, arcs = {};                       // dientes con encía por arcada · arcadas con trabajo (¿implantes?)
     var grupos = [], idx = {};                                      // para el nombre corto: «Corona anatómica en zirconio ×2 + Pilar personalizado»
     function contar(nom) { if (idx[nom] == null) { idx[nom] = grupos.length; grupos.push([nom, 0]); } grupos[idx[nom]][1]++; }
     cobrables.forEach(function (it) {
+      var arc = it.d < 30 ? 'sup' : 'inf', A = arcs[arc] = arcs[arc] || { impl: false };
+      if ((it.impl && it.impl !== 'Post y core') || it.barra || /barra|Pilar personalizado/i.test(it.ind)) A.impl = true;
+      if (it.encia) enc[arc]++;
+      // Full Arch / híbrida (barra interna o subestructura de barra): se cobra POR UNIDAD (catálogo all_on_4, 24-nov-2026)
+      // y la barra interna una sola vez por arcada, como barra.
+      var fa = !!(it.barra || it.impl === 'Subestructura (barra)');
       // Corona sobre implante (pilar personalizado, atornillada o pilar de aditamiento) = «pieza con conexión a implante»:
       // se cobra la corona atornillada del catálogo en vez de la corona cementada (24-nov-2026, tabla aprobada: $50.000).
       // En dólares (Alejandro, exterior) la corona sobre pilar personalizado sigue siendo corona + pilar (dos diseños).
-      var enImpl = it.impl && /^(Pilar personalizado|Atornillado oclusal|Pilar de aditamiento)$/.test(it.impl) && mapa[it.ind] && mapa[it.ind][1] === 'corona';
-      contar(it.ind + (enImpl ? ' sobre implante' : '') + (it.mat ? ' en ' + String(it.mat).toLowerCase() : ''));
+      var enImpl = !fa && it.impl && /^(Pilar personalizado|Atornillado oclusal|Pilar de aditamiento)$/.test(it.impl) && mapa[it.ind] && mapa[it.ind][1] === 'corona';
+      contar((fa ? 'Full Arch (por unidad)' : it.ind + (enImpl ? ' sobre implante' : '')) + (it.mat ? ' en ' + String(it.mat).toLowerCase() : ''));
       if (it.impl === 'Post y core' && cotizar.indexOf('perno-muñón') < 0) cotizar.push('perno-muñón');
-      var s = enImpl ? (sub(['cad_implantes', 'corona_ator']) || sub(mapa[it.ind])) : sub(mapa[it.ind]);
+      var s = fa ? (sub(['cad_implantes', 'all_on_4']) || sub(mapa[it.ind])) : enImpl ? (sub(['cad_implantes', 'corona_ator']) || sub(mapa[it.ind])) : sub(mapa[it.ind]);
       if (!s) { if (cotizar.indexOf(it.ind) < 0) cotizar.push(it.ind); return; }
-      var clave = porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? (typeof porCaso[it.ind] === 'string' ? porCaso[it.ind] : it.ind) : it.d + '·' + it.ind);
+      if (it.barra && !vistos['barra·' + arc]) {                      // barra interna de la híbrida: una por arcada
+        var sb = sub(['cad_implantes', 'barra']);
+        if (sb) { vistos['barra·' + arc] = vistosC['barra·' + arc] = 1; total += sb.precio || 0; totalCOP += cop(sb, 'barra'); contar('Barra interna'); }
+      }
+      var esBarra = mapa[it.ind] && mapa[it.ind][1] === 'barra';      // pilar y segmento de barra: una barra por arcada
+      var clave = fa ? it.d + '·fa' : esBarra ? 'barra·' + arc : porArcada[it.ind] ? it.ind + (it.d < 30 ? '·sup' : '·inf') : (porCaso[it.ind] ? (typeof porCaso[it.ind] === 'string' ? porCaso[it.ind] : it.ind) : it.d + '·' + it.ind);
       var claveC = copPorDiente[it.ind] ? it.d + '·' + it.ind : clave;          // pesos: encerado y mockup por diente
-      if (!vistosC[claveC]) { vistosC[claveC] = 1; totalCOP += cop(s, enImpl ? 'corona_ator' : copId[it.ind]); }
+      if (!vistosC[claveC]) { vistosC[claveC] = 1; totalCOP += cop(s, fa ? 'all_on_4' : enImpl ? 'corona_ator' : copId[it.ind]); }
       if (vistos[clave]) return;
       vistos[clave] = 1;
-      if (AC && enImpl && it.impl === 'Pilar personalizado') {
+      if (AC && enImpl && it.impl === 'Pilar personalizado') {        // dólares: corona + pilar (dos diseños)
         var sc0 = sub(mapa[it.ind]), sp0 = sub(['cad_implantes', 'pilar_pers']);
         total += ((sc0 && sc0.precio) || 0) + ((sp0 && sp0.precio) || 0);
       } else total += s.precio || 0;
@@ -78,13 +90,43 @@
       gNom = (gs && gs.nombre) || g.tipoNom || g.tipo;
       if (gs) { total += gs.precio || 0; totalCOP += cop(gs, copGuias[g.tipo]); } else cotizar.push(gNom);
     }
+    // Encía (24-nov-2026): por diente, con tope «encía total» por arcada (lo que salga menos)
+    ['sup', 'inf'].forEach(function (k) {
+      var n = enc[k]; if (!n) return;
+      var su = sub(['cad_implantes', 'encia_unidad']), st = sub(['cad_implantes', 'encia_total']);
+      if (!su) { if (cotizar.indexOf('encía') < 0) cotizar.push('encía'); return; }
+      var cu = cop(su, 'encia_unidad') * n, ct = st ? cop(st, 'encia_total') : Infinity, esTot = ct <= cu;
+      total += esTot ? (st.precio || 0) : (su.precio || 0) * n;
+      totalCOP += Math.min(cu, ct);
+      if (esTot) contar('Encía total ' + (k === 'sup' ? 'superior' : 'inferior')); else for (var i = 0; i < n; i++) contar('Encía');
+    });
+    // Modelos (24-nov-2026): diseño del modelo por arcada (superior e inferior: el trabajo y su antagonista); «con implantes»
+    // si esa arcada lleva implantes y se pidieron análogos o encía removible. Troqueles: por pieza preparada.
+    var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
+    if (m) {
+      var ms = sub(['cad_modelos', 'diseno_modelo']), mi = sub(['cad_modelos', 'diseno_modelo_impl']);
+      var conImpl = !!(m.implantes && (m.implantes.analogos || m.implantes.encia));
+      if (!ms) cotizar.push('modelo impreso');
+      else {
+        ['sup', 'inf'].forEach(function (k) {
+          var ci = !!(conImpl && mi && arcs[k] && arcs[k].impl), sm = ci ? mi : ms;
+          total += sm.precio || 0; totalCOP += cop(sm, ci ? 'diseno_modelo_impl' : 'diseno_modelo');
+          contar('Modelo ' + (k === 'sup' ? 'superior' : 'inferior') + (ci ? ' con implantes' : ''));
+        });
+        var tro = m.troqueles && (m.troqueles.zanahoria || m.troqueles.adicionales);
+        var nt = tro ? cobrables.filter(function (it) { return !(it.impl && it.impl !== 'Post y core') && !it.barra && /^(Corona|Cofia|Overlay|Incrustación|Inlay|Carilla)/.test(it.ind); }).length : 0;
+        var ts = sub(['cad_modelos', 'diseno_troquel']);
+        if (nt && ts) { total += (ts.precio || 0) * nt; totalCOP += cop(ts, 'diseno_troquel') * nt; for (var j = 0; j < nt; j++) contar('Troquel'); }
+        else if (nt) cotizar.push('troqueles');
+      }
+    }
     piezasFDI = fdiLista(cobrables);
     var partes = [], corto = [];
-    if (cobrables.length) { partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen); corto.push(grupos.map(function (gr) { return gr[0] + (gr[1] > 1 ? ' ×' + gr[1] : ''); }).join(' + ')); }
+    if (cobrables.length) partes.push('Diseño CAD por diente (' + cobrables.length + ' pieza' + (cobrables.length > 1 ? 's' : '') + ', FDI): ' + x.resumen);
+    if (grupos.length) corto.push(grupos.map(function (gr) { return gr[0] + (gr[1] > 1 ? ' ×' + gr[1] : ''); }).join(' + '));
     if (g) partes.push((g.pide === 'plan' ? 'Planificación de implantes: ' : 'Guía quirúrgica: ') + gNom + ' (' + [g.sistema, g.arcada === 'edentulo' ? 'edéntulo total (doble CBCT)' : (g.arcada === 'con_dientes' ? 'arcada con dientes' : ''), g.abordaje].filter(Boolean).join(' · ') + ')' + (g.dientes && g.dientes.length ? ' · implantes (FDI): ' + g.dientes.map(function (f) { return f + ((g.implantes || {})[f] ? ' ' + g.implantes[f] : ' (a sugerir)'); }).join(', ') : ''));
     if (g) corto.push((g.pide === 'plan' ? 'Planificación: ' : 'Guía quirúrgica: ') + gNom);
-    var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
-    if (m) { partes.push(mNom); cotizar.push('modelo impreso'); }
+    if (m) partes.push(mNom);
     if (cotizar.length) { partes.push('A cotizar: ' + cotizar.join(', ')); corto.push('a cotizar: ' + cotizar.join(', ')); }
     detalle = hay ? partes.join(' · ') : '';
     STATE.categoriaId = 'cad_diseno'; STATE.categoriaKey = 'cad_diseno_odontograma'; STATE.categoriaNombre = 'Diseño CAD (por diente)';
@@ -94,7 +136,7 @@
     STATE.subtipoPrecioCOP = totalCOP;   // pesos del catálogo (Alejandro los muestra en Colombia; PRODIGY = el mismo total)
     STATE.odontograma = items; STATE.guia = g;
     orden = hay ? { v: 1, nomenclatura: window.Dientes ? Dientes.preferido() : 'fdi', proceso: 'Diseño CAD',
-      piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null, barra_interna: it.barra || null }; }),
+      piezas: items.map(function (it) { return { fdi: +it.d, indicacion: it.ind, material: it.mat || null, codigo_exocad: it.cod || null, proceso: it.proc || null, tono: it.tono || null, implante: it.impl || null, barra_interna: it.barra || null, encia: it.encia || null }; }),
       guia: g ? { tipo: g.tipo, nombre: gNom, sistema: g.sistema || null, soporte: g.soporte || null, guiado: g.guiado || null, manga: g.manga || null, pide: g.pide || 'guia', dientes: g.dientes || [], nota: g.nota || null, implantes: g.implantes || {}, arcada: g.arcada || null, abordaje: g.abordaje || null } : null,
       modelo: m } : null;
     activo = !!hay;
