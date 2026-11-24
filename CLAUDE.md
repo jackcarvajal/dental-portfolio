@@ -46,7 +46,7 @@ Patrones detallados con código (XSS, CORS, GRANT Supabase oct-2026, preconnect,
 
 ## 5. DISEÑO
 Colores: `#D946A6` magenta · `#D4AF37` gold · `#00d2ff` cyan · `#050505` bg · `#1a2332` card · `#00FF41` neon
-Animaciones: solo en idle (requestIdleCallback). Sin loops en eco-cards. Solo fade+scroll con GSAP.
+Animaciones: solo en idle (requestIdleCallback). Sin loops en eco-cards. Solo fade+scroll con `js/animations.js` (IntersectionObserver + Web Animations; GSAP ya no se carga en las páginas, solo /links para su carrusel).
 Todo cambio de UI: mostrar SIEMPRE un preview (captura headless; claro+oscuro+móvil si aplica) — skill `prodigy-preview-visual`.
 
 Toda página con `animation: X infinite` DEBE incluir al final del `<style>`:

@@ -244,23 +244,12 @@
   _loadScript('/js/conversions.js?v=20261120b');
   _loadScript('/js/geo-detect.js?v=20261123e');
   _loadScript('/js/content-protection.js?v=20260528');
-  /* GSAP + ScrollTrigger + animaciones PRODIGY */
-  function _loadGSAP() {
-    var g = document.createElement('script');
-    g.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js';
-    g.onload = function () {
-      var st = document.createElement('script');
-      st.src = 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js';
-      st.onload = function () { _loadScript('/js/animations.js?v=20261002'); };
-      document.body.appendChild(st);
-    };
-    document.body.appendChild(g);
-  }
-  /* Cargar GSAP solo cuando el browser esté idle */
+  /* Animaciones de entrada (js/animations.js v3): ya no usan GSAP + ScrollTrigger (~40 KB y 2 descargas a un CDN en
+     cada página, 24-nov-2026). Se cargan cuando el navegador está libre. */
   if ('requestIdleCallback' in window) {
-    requestIdleCallback(_loadGSAP, { timeout: 2000 });
+    requestIdleCallback(function () { _loadScript('/js/animations.js?v=20261124a'); }, { timeout: 2000 });
   } else {
-    setTimeout(_loadGSAP, 800);
+    setTimeout(function () { _loadScript('/js/animations.js?v=20261124a'); }, 800);
   }
 
   // ── GDPR — aviso adicional para visitantes de la Unión Europea ──

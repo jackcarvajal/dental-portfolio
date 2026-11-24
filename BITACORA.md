@@ -16,6 +16,12 @@
 - docs/PROTOCOLO-WHATSAPP.md: tabla USD actualizada + bloque de revisión del diseño + **planes prepagados** (Bronce/Plata/Oro; Platino solo con volumen confirmado).
 - ✅ (b) /en/ alineado con el protocolo: alineadores $30 viabilidad (primero; si no se ejecuta, es lo único) + $120 al aprobar = $150 (antes $10 + $100 y «from $25»); «Bar over Implants» $45 → $150; HowTo «Full Arch from $45» → $80; `highPrice` 150. Tarjeta nueva «Prepaid plans» (Bronze/Silver/Gold) junto a «Payment terms» en las 4 páginas. SW prodigy-v47. Copia del protocolo en Claude Docs: sección «Diseño CAD remoto (USD)» con planes y tiempos.
 
+## 2026-11-24 (d) — Sin GSAP en las páginas y sin Cloudflare Web Analytics
+
+- js/animations.js v3: las mismas entradas al bajar (subir + aparecer, cascada en tarjetas y pasos, cifras con rebote) con IntersectionObserver + Web Animations del navegador. footer.js ya no descarga GSAP + ScrollTrigger (~40 KB y 2 pedidos a jsDelivr por página). Lo que ya está a la vista al cargar no se anima (antes parpadeaba) y nada queda oculto si el archivo falla. /links conserva su GSAP (carrusel de tarjetas). Probado: portada 17 animaciones, fresado-cam 6, diseño remoto 5; 0 elementos ocultos; sin errores.
+- Cloudflare Web Analytics desactivado en las dos zonas (cf rum site-info update --enabled=false; auto_install sigue en true, se reactiva con --enabled=true): ~10 KB de beacon por visita que nadie consultaba; las visitas se miden con GA4 y analytics_events.
+- ?v=20261124b footer.js.
+
 ## 2026-11-24 (c) — Google Ads solo con permiso de cookies (−440 KB de JS)
 
 - Lighthouse Treemap de la portada: 1,1 MiB de JS, de los que el gtag de GA4 es el 50 % y un segundo gtag de Google Ads (AW-18130335500) el 38 %. El de Ads se cargaba para todos, aunque sin permiso de cookies no sirve (no hay públicos ni cookies de anuncios) y las conversiones principales se importan desde GA4.
