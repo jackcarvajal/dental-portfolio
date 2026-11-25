@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-11-25 (a) — Alineadores: se planifican en 3Shape (no exocad Ortho)
+
+- 💡 Alejandro (25-nov): «es con 3Shape la planificación y otras herramientas, no exocad Ortho». Corregido: portada (tarjeta «Setup en 3Shape»), chatbot (header.js, ?v=20261125a en las 104 páginas; ahora dice también que los fabricamos, solo Colombia), /en/dental-aligners («Human-verified planning in 3Shape»), buscador (entrada de /alineadores-cad) e imagen para compartir de alineadores (tools/og-generar.mjs → «Alineadores invisibles · Planificación en 3Shape…», regenerada). Alejandro: alineadores.html (8 menciones).
+- /alineadores-cad reescrita (alineadores: planificación + alineadores terminados, galería con 6 casos reales del portafolio, foto del alineador transparente) está en la vista previa esperando aprobación; NO publicada.
+
 ## 2026-11-24 (n) — Alineadores impresos: $55.000 por alineador terminado
 
 - ✅ sql/catalogo-alineadores-impresos-2026.sql corrido (3 filas). Celular: en flujo-impresion y flujo-fresado los datos del caso (cliente, paciente, «¿Cómo nos conociste?», cantidad) pasan a una columna cuando no caben (repeat(auto-fit, minmax(190–200px, 1fr))); antes el selector se cortaba. Hallazgo: /alineadores-cad tiene el título de alineadores pero el contenido es de impresión 3D (copia de /impresion-3d).

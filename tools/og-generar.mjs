@@ -50,7 +50,7 @@ const IMAGENES = [
   { slug: 'en-zirconia', pie: 'Real design in exocad', foto: 'local:catalogo/cad-3.jpg', t: 'Zirconia crown and bridge design', s: 'Anatomic contours and precise margins, in exocad and 3Shape.', paginas: ['en/zirconia-crowns'] },
   // Resto de páginas (22-nov-2026)
   { slug: 'cotiza-diseno', ...CAD, foto: 'local:catalogo/cad-4.jpg', t: 'Cotiza tu diseño CAD', s: 'Corona, carilla, puente o Full Arch: conoce el valor antes de enviarlo.', paginas: ['calculadora-diseno'] },
-  { slug: 'alineadores-cad', ...IMPRIMIR, foto: PLACA, t: 'Diseño CAD de alineadores', s: 'Planificación en exocad Ortho, con modelos listos para imprimir.', paginas: ['alineadores-cad'] },
+  { slug: 'alineadores-cad', ...IMPRIMIR, foto: PLACA, t: 'Alineadores invisibles', s: 'Planificación en 3Shape, con modelos listos para imprimir o alineadores terminados.', paginas: ['alineadores-cad'] },
   { slug: 'calidad', ...CASO, foto: 'local:catalogo/caso1-despues.jpg', t: 'Calidad y estándares', s: 'Cómo revisamos cada restauración antes de que salga del laboratorio.', paginas: ['calidad'] },
   { slug: 'carillas-lab', ...LAB, foto: 'local:links-gallery/lentes-ceramicos.jpg', t: 'Carillas para tu clínica', s: 'Disilicato, feldespáticas o zirconia, con diseño de sonrisa previo.', paginas: ['carillas'] },
   { slug: 'coronas-implantes', ...CAD, foto: 'caso-1784766305902/gallery/foto-2.jpeg', t: 'Coronas sobre implantes', s: 'Atornilladas o cementadas, en zirconia o disilicato, sobre la base de titanio.', paginas: ['coronas-sobre-implantes'] },
