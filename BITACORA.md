@@ -46,6 +46,9 @@
   - Video del «tren» de /fresado-cam sin póster → `assets/videos/barra-zircona-poster.webp`.
   - Celular: el aviso «Mueve el cursor sobre la forma» tapaba el pie de la foto del hero → oculto cuando hay foto. CSS `?v=20261125d`.
   - Se devolvió el BOM a article, journal, fresado-cam, guias-quirurgicas y diseno-cad (lo habían quitado reescrituras con PowerShell).
+  - articles.js: 5 URLs de Wikimedia con carpeta inventada/ancho no estándar → ruta real a 960 px (zirconio, consultorio) o fuera (2 archivos que no existen en Commons). Fotos dentro del artículo: si no cargan se quita la figura. Portada del Journal con «%2C» se codificaba dos veces. Portadas de respaldo de las categorías impresion3d y flujos (Unsplash retiradas) → fotos propias de `assets/trabajos/`. Captura del Aidite en 900 px para el celular (srcset). SW hasta `prodigy-v61`.
+  - Resultado final: 0 errores graves en las 102 páginas × 2 vistas.
+  - Paridad Alejandro CAD/CAM (auditada con la misma herramienta, 74 páginas): mismo arreglo del artículo en el celular, miniaturas de diseño remoto redimensionadas, foto de alineadores 2.560 → 720/1.280 px, SW `alejandro-v20`. 🟡 Su /carillas pide 6 fotos antes/después (`assets/carillas/case-1..6.jpg`) que aún no existen → 6 errores 404 por visita (la página muestra recuadros «próximamente»).
   - Sin tocar (a propósito): recortes de las tarjetas del portafolio (hay otra propuesta en la vista previa: «Actual / Sonrisa / Diseño») y de las miniaturas del Journal (formato de tarjeta).
 - 🚫 No se usó `IMG_5733.mov` (2 s). Los antes/después de esa carpeta ya estaban en la web.
 
