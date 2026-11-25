@@ -9,6 +9,15 @@
 
 ---
 
+## 2026-11-24 (n) — Fotos reales del laboratorio en 7 páginas de servicio
+
+- 💡 Alejandro mandó fotos a `Pictures\PRODIGY` (+3 de coronas con una sobre implante, mismo caso). Las páginas de servicio no tenían ni una foto real.
+- ✅ 25 fotos → `assets/trabajos/<nombre>-800.webp` (galería) y `-1600.webp` (visor), 1,5 MB en total, con `width/height` y `loading="lazy"`.
+- Componente compartido: `css/galeria-real.css` (mosaico por columnas, sin recortar) + `js/galeria-real.js` (visor `<dialog>` con flechas y Esc, sin salir de la página), `?v=20261124a`.
+- Páginas: coronas-sobre-implantes (3), coronas-zirconio (3), carillas (3), rehabilitacion-sobre-implantes (6), guias-quirurgicas (5, dentro de «Casos realizados»), impresion-3d (prototipos + certificado Bambu Lab), diseno-cad (3 estructuras metal-cerámica). Sección nueva sin eyebrow, título centrado.
+- 🚫 No se usó el logo «PRODIGY CADCAM ACADEMY» (la academia es de Alejandro CAD/CAM y lleva corona).
+- SW `prodigy-v52` (diseno-cad y guias están precacheadas).
+
 ## 2026-11-24 (m) — Alineadores en Colombia: $250.000 el caso ($50.000 + $200.000)
 
 - 💡 Alejandro (24-nov): alineadores en COLOMBIA = $250.000 el caso completo (ambas arcadas), $50.000 de viabilidad primero (si no sigue, es lo único) + $200.000 al aprobar («comencemos con ese a ver qué podemos captar»). Antes $80.000 por arco.
