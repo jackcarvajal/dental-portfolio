@@ -82,6 +82,8 @@ h1 em{font-style:normal;color:var(--mg);}
 .opciones{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:36px;align-items:start;}
 .opcion{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;}
 .opcion.destacada{border-color:rgba(217,70,166,.45);}
+.foto-op{margin:-8px -8px 18px;}
+.foto-op img{aspect-ratio:16/9;}
 .opcion h3{font-size:1.15rem;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
 .opcion h3 i{color:var(--mg);}
 .opcion > p{font-size:.95rem;color:var(--muted);margin-bottom:14px;}
@@ -133,8 +135,8 @@ summary::-webkit-details-marker{display:none;}
         </div>
       </div>
       <figure class="foto">
-        <img src="https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/render/image/public/portafolio/caso-1784826632765/gallery/foto-2.png?width=900&quality=72" alt="Modelos de todas las etapas de un caso de alineadores en la placa de impresión" width="900" height="675" fetchpriority="high" decoding="async">
-        <figcaption>Caso real: los modelos de cada etapa, listos para imprimir.</figcaption>
+        <img src="assets/trabajos/alineadores-transparentes-800.webp" srcset="assets/trabajos/alineadores-transparentes-800.webp 800w, assets/trabajos/alineadores-transparentes-1600.webp 1600w" sizes="(max-width: 860px) 92vw, 520px" alt="Alineador transparente terminado, sostenido entre los dedos" width="800" height="533" fetchpriority="high" decoding="async" style="aspect-ratio:3/2;">
+        <figcaption>Alineador terminado: lámina termoformada, recortada y pulida.</figcaption>
       </figure>
     </div>
   </section>
@@ -176,6 +178,10 @@ summary::-webkit-details-marker{display:none;}
       <p class="sec-sub">La planificación es la misma. Tú decides si imprimes en tu consultorio o si te los entregamos listos.</p>
       <div class="opciones">
         <div class="opcion">
+          <figure class="foto foto-op">
+            <img src="https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/render/image/public/portafolio/caso-1784826632765/gallery/foto-2.png?width=700&quality=72" alt="Modelos de todas las etapas de un caso de alineadores en la placa de impresión" width="700" height="525" loading="lazy" decoding="async">
+            <figcaption>Caso real: los modelos de cada etapa, listos para imprimir.</figcaption>
+          </figure>
           <h3><i class="fas fa-file-export" aria-hidden="true"></i> Para imprimir en tu consultorio</h3>
           <p>Si tienes impresora y termoformadora, te enviamos todo para producir en casa.</p>
           <ul class="lista">
@@ -186,6 +192,10 @@ summary::-webkit-details-marker{display:none;}
           <a class="enlace" href="/envia-alineadores">Enviar un caso →</a>
         </div>
         <div class="opcion destacada">
+          <figure class="foto foto-op">
+            <img src="https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/render/image/public/portafolio/caso-1784827436676/gallery/foto-2.png?width=700&quality=72" alt="Modelos numerados por etapa con los attachments ya ubicados" width="700" height="525" loading="lazy" decoding="async" style="object-position:50% 44%;">
+            <figcaption>Cada modelo va numerado por etapa, con los attachments ubicados.</figcaption>
+          </figure>
           <h3><i class="fas fa-tooth" aria-hidden="true"></i> Alineadores terminados</h3>
           <p>Los fabricamos en nuestro laboratorio de Bogotá y te los entregamos listos para el paciente.</p>
           <ul class="lista">
@@ -207,8 +217,8 @@ summary::-webkit-details-marker{display:none;}
       <p class="sec-sub" style="margin-bottom:34px;">Con los archivos completos la valoración sale más precisa y el plan se ajusta menos.</p>
       <div class="caso">
         <figure class="foto">
-          <img src="https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/render/image/public/portafolio/caso-1784827436676/gallery/foto-2.png?width=760&quality=72" alt="Modelos numerados por etapa con los attachments ya ubicados" width="760" height="570" loading="lazy" decoding="async" style="object-position:50% 44%;">
-          <figcaption>Cada modelo va numerado por etapa y con los attachments ubicados.</figcaption>
+          <img src="https://zgihrwqfyvgyapbwzkvw.supabase.co/storage/v1/render/image/public/portafolio/caso-1784823513121/cover.png?width=760&quality=72" alt="Planificación de alineadores: posición inicial y final de los dientes, con los attachments marcados en azul" width="760" height="504" loading="lazy" decoding="async" style="aspect-ratio:3/2;">
+          <figcaption>Caso real: inicio y final del plan, con los attachments en azul.</figcaption>
         </figure>
         <div>
           <div class="necesita" role="list">
