@@ -5662,8 +5662,7 @@ const ARTICLES = [
   "vistas": "1.876",
   "autor": "Alejandro Carvajal",
   "instagram": "jackcarvajal",
-  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Dental_implant_model.jpg/800px-Dental_implant_model.jpg",
-  "img_credit": "Wikimedia Commons",
+  "og_img": "",
   "referencias": [
     {
       "autores": "Tahmaseb A, Wu V, Wismeijer D, Coucke W, Evans C.",
@@ -5803,7 +5802,7 @@ const ARTICLES = [
   "vistas": "1.240",
   "autor": "Alejandro Carvajal",
   "instagram": "jackcarvajal",
-  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Zirconium_crystal_bar_and_1cm3_cube.jpg/800px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Zirconium_crystal_bar_and_1cm3_cube.jpg/960px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
   "img_credit": "Wikimedia Commons — Materialscientist",
   "referencias": [
     {
@@ -6156,7 +6155,7 @@ const ARTICLES = [
   "vistas": "0",
   "emoji": "💎",
   "grad": "grad-2",
-  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Zirconium_crystal_bar_and_1cm3_cube.jpg/1200px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Zirconium_crystal_bar_and_1cm3_cube.jpg/960px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
   "img_credit": "Zirconium — Wikimedia Commons (CC BY-SA)",
   "img_link": "https://en.wikipedia.org/wiki/Zirconium_dioxide_in_dentistry",
   "autor": "Alejandro Carvajal",
@@ -6168,7 +6167,7 @@ const ARTICLES = [
     },
     {
       "t": "img",
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Zirconium_crystal_bar_and_1cm3_cube.jpg/1200px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Zirconium_crystal_bar_and_1cm3_cube.jpg/960px-Zirconium_crystal_bar_and_1cm3_cube.jpg",
       "alt": "Zirconio — material base para prótesis dental CAD/CAM",
       "caption": "Zirconio metálico puro — la base del óxido de zirconio dental · Wikimedia Commons (CC BY-SA)"
     },
@@ -6316,21 +6315,13 @@ const ARTICLES = [
   "vistas": "0",
   "emoji": "🖨️",
   "grad": "grad-4",
-  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Desktop_3D_printer.jpg/1200px-Desktop_3D_printer.jpg",
-  "img_credit": "Impresora 3D de escritorio — Wikimedia Commons (CC BY-SA)",
-  "img_link": "https://en.wikipedia.org/wiki/3D_printing_in_dentistry",
+  "og_img": "",
   "autor": "Alejandro Carvajal",
   "instagram": "jackcarvajal",
   "contenido": [
     {
       "t": "p",
       "c": "Antes de la impresión 3D, una guía quirúrgica para implantes requería 4-7 días de fabricación en acrílico termopolimerizado, con una precisión angular de ±5°. Hoy, con resina dental fotoosensible y una impresora SLA de alta resolución, una guía sale en 2-4 horas con precisión angular documentada de ±1.5-2°. El ahorro no es solo de tiempo — es de riesgo clínico."
-    },
-    {
-      "t": "img",
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Desktop_3D_printer.jpg/1200px-Desktop_3D_printer.jpg",
-      "alt": "Impresora 3D de alta resolución para guías quirúrgicas dentales",
-      "caption": "Tecnología de impresión 3D de escritorio — base de la implantología guiada moderna · Wikimedia Commons"
     },
     {
       "t": "h2",
@@ -6467,7 +6458,7 @@ const ARTICLES = [
   "vistas": "0",
   "emoji": "📋",
   "grad": "grad-1",
-  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Dental_office.jpg/1200px-Dental_office.jpg",
+  "og_img": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Dental_office.jpg/960px-Dental_office.jpg",
   "img_credit": "Consultorio dental moderno — Wikimedia Commons (CC BY-SA)",
   "img_link": "https://en.wikipedia.org/wiki/CAD/CAM_dentistry",
   "autor": "Alejandro Carvajal",
@@ -6479,7 +6470,7 @@ const ARTICLES = [
     },
     {
       "t": "img",
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Dental_office.jpg/1200px-Dental_office.jpg",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Dental_office.jpg/960px-Dental_office.jpg",
       "alt": "Consultorio dental moderno con tecnología digital",
       "caption": "El flujo digital transforma la eficiencia del consultorio dental · Wikimedia Commons (CC BY-SA)"
     },
