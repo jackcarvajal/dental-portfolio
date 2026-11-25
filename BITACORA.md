@@ -11,6 +11,7 @@
 
 ## 2026-11-24 (n) — Alineadores impresos: $55.000 por alineador terminado
 
+- ✅ sql/catalogo-alineadores-impresos-2026.sql corrido (3 filas). Celular: en flujo-impresion y flujo-fresado los datos del caso (cliente, paciente, «¿Cómo nos conociste?», cantidad) pasan a una columna cuando no caben (repeat(auto-fit, minmax(190–200px, 1fr))); antes el selector se cortaba. Hallazgo: /alineadores-cad tiene el título de alineadores pero el contenido es de impresión 3D (copia de /impresion-3d).
 - 💡 Alejandro (24-nov) aprobó: alineador terminado $55.000 por arcada y por etapa (modelo impreso $35.000 + lámina, termoformado, recorte y pulido $20.000; ≈US$17, en la mitad de EE. UU.: US$15–20), plantilla de attachments $35.000 por arcada, retenedor final tipo Essix $55.000 por arcada. Solo Colombia (afuera, solo diseño).
 - flujo-impresion: categoría «Férulas, guías y alineadores» con las 3 tarjetas (js/flujo-impresion.js ?v=20261124a). Probado local: alineador ×24 (12 etapas, ambas arcadas) = $1.320.000, sin errores.
 - flujo-lab (Laboratorio Full): «Por Arco (modelo)» $115.000 → alineador terminado $55.000; + plantilla $35.000 y retenedor Essix $55.000; planificación $265.000 (1 o 2 arcadas) → $250.000 caso completo (viabilidad $50.000 incluida). Protocolo WhatsApp con la línea de alineadores impresos.
