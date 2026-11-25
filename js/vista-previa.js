@@ -51,7 +51,7 @@
   var FOTO_SERVICIO = {
     '/coronas-zirconio': ['coronas-posteriores-caracterizadas', 'Coronas posteriores hechas en PRODIGY, con fisuras caracterizadas a mano.', 'la corona', 'center'],
     '/carillas': ['carillas-estratificadas', 'Carillas estratificadas hechas en PRODIGY.', 'la carilla', 'center 60%'],
-    '/coronas-sobre-implantes': ['pilares-zirconia-tibase', 'Pilares de zirconia sobre Ti-base, hechos en PRODIGY.', 'la corona', 'center 62%'],
+    '/coronas-sobre-implantes': ['coronas-con-implante-frontal', 'Coronas sobre dientes naturales y una sobre implante, hechas en PRODIGY.', 'la corona', 'center'],
     '/rehabilitacion-sobre-implantes': ['full-arch-zirconia-barra', 'Arcada completa en zirconia con encía, hecha en PRODIGY.', 'la estructura', 'center']
   };
   if (FOTO_SERVICIO[ruta]) listo(function () {
@@ -59,7 +59,7 @@
     var fila = document.querySelector('.hero .cta-row'), badges = document.querySelector('.hero .hero-badges');
     if (!fila) return;
     css('.fx{margin:22px 0 0;border-radius:16px;overflow:hidden;border:1px solid rgba(212,175,55,.25);background:#0d1525;max-width:560px;pointer-events:auto}' +
-      '.fx img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}.fx figcaption{padding:10px 14px;font:500 .95rem/1.45 Inter,system-ui,sans-serif;color:#cbd5e1}' +
+      '.fx img{display:block;width:100%;height:auto}.fx figcaption{padding:10px 14px;font:500 .95rem/1.45 Inter,system-ui,sans-serif;color:#cbd5e1}' +
       '@media(min-width:1000px){.hero .hero-in{min-height:0}.hero .fx{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:min(36vw,440px);margin:0;box-shadow:0 18px 50px rgba(0,0,0,.55)}' +
       '.hero h1,.hero .hero-in > p,.hero .hero-badges,.hero .gx{max-width:calc(100% - min(36vw,440px) - 48px)}' +
       '.hero h1{font-size:clamp(2.2rem,4.6vw,3.9rem)}}' +
@@ -69,7 +69,7 @@
     g.innerHTML = '<i class="fas fa-shield-halved" aria-hidden="true"></i><span><b>Garantía de producción:</b> si ' + cfg[2] + ' no coincide con el diseño que aprobaste (±20 µm), la reponemos en 24 h. <a href="/terminos-y-legal">Condiciones</a></span>';
     fila.after(g);
     var f = document.createElement('figure'); f.className = 'fx';
-    f.innerHTML = '<img src="/assets/trabajos/' + cfg[0] + '-800.webp" alt="' + cfg[1] + '" width="800" height="600" fetchpriority="high" style="object-position:' + cfg[3] + '"><figcaption>' + cfg[1] + '</figcaption>';
+    f.innerHTML = '<img src="/assets/trabajos/' + cfg[0] + '-800.webp" alt="' + cfg[1] + '" fetchpriority="high"><figcaption>' + cfg[1] + '</figcaption>';
     (badges || g).after(f);
   });
 
