@@ -143,13 +143,14 @@
   }
   @media(max-width:600px){ .hero{justify-content:center;padding-top:90px} .hero-backdrop{top:28%} }
 </style>
-<link rel="stylesheet" href="css/galeria-real.css?v=20261125d">
+<link rel="stylesheet" href="css/galeria-real.css?v=20261125e">
 </head>
 <body>
 <script src="js/header.js?v=20261125b"></script>
 
 <!-- ── HERO ── -->
 <header class="hero">
+  <div class="hero-fondo-foto lado" aria-hidden="true"><img src="assets/trabajos/coronas-con-implante-frontal-1600.webp" alt="" width="800" height="424" decoding="async" fetchpriority="high"></div>
   <canvas id="phero" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
   <div class="hero-backdrop" aria-hidden="true">IMPLANTES</div>
   <div class="wrap hero-in">
@@ -168,6 +169,11 @@
   </div>
   <div class="hero-hint" aria-hidden="true">Mueve el cursor sobre la forma</div>
 </header>
+
+<!-- ── FOTO REAL (celular: debajo del hero; en computador va detrás del texto) ── -->
+<section class="franja-foto" aria-label="Trabajo real">
+  <figure><img src="assets/trabajos/coronas-con-implante-frontal-1600.webp" alt="Coronas sobre dientes naturales y una sobre implante, hechas en PRODIGY." width="800" height="424" decoding="async" loading="lazy"><figcaption>Coronas sobre dientes naturales y una sobre implante, hechas en PRODIGY.</figcaption></figure>
+</section>
 
 <!-- ── POR QUÉ ── -->
 <section class="sec-card">
@@ -264,6 +270,11 @@
       </div>
     </div>
   </div>
+</section>
+
+<!-- ── FOTO RESPIRO (a mitad de página, para cortar el texto) ── -->
+<section class="foto-respiro" aria-label="Trabajo real">
+  <figure><img src="assets/trabajos/coronas-anteriores-1-1600.webp" alt="El mismo caso con implante, de lado: la encía rosada del modelo marca el implante." width="800" height="432" decoding="async" loading="lazy"><figcaption>El mismo caso con implante, de lado: la encía rosada del modelo marca el implante.</figcaption></figure>
 </section>
 
 <!-- ── MATERIALES ── -->

@@ -21,19 +21,39 @@
 .gal-real .gal-vid:focus-visible{outline:2px solid #00d2ff;outline-offset:-2px;}
 .gal-nota{max-width:760px;margin:6px auto 0;font-size:.9rem;color:#94a3b8;text-align:center;}
 
-/* Foto real en el hero de las páginas de servicio (a la derecha en computador, debajo de los botones en el
-   celular). Foto completa, sin recorte. */
-.hero-foto{margin:24px 0 0;max-width:560px;border-radius:16px;overflow:hidden;border:1px solid rgba(212,175,55,.25);
-  background:#0d1525;pointer-events:auto;}
-.hero-foto img{display:block;width:100%;height:auto;}
-.hero-foto figcaption{padding:10px 14px;font-size:.95rem;line-height:1.45;color:#cbd5e1;}
-/* En el celular el aviso «Mueve el cursor sobre la forma» quedaba encima del pie de la foto */
-@media(max-width:999px){.hero:has(.hero-foto) .hero-hint{display:none;}}
+/* Foto real DETRÁS del texto del hero, como el robot de la portada (solo computador). Horizontal, sin marco y
+   fundida con el negro. .lado = a la derecha (heros con el texto a la izquierda); .centro = detrás del texto
+   centrado, más tenue. En el celular el texto quedaría encima: ahí la misma foto va en .franja-foto, debajo del hero. */
+.hero-fondo-foto{display:none;}
+.franja-foto,.foto-respiro{margin:0 auto;padding:30px 20px 8px;}
+.franja-foto{max-width:980px;}
+.franja-foto figure,.foto-respiro figure{margin:0;}
+.franja-foto img{display:block;width:100%;height:auto;border-radius:14px;}
+.franja-foto figcaption,.foto-respiro figcaption{margin-top:10px;text-align:center;font-size:.95rem;line-height:1.45;color:#94a3b8;}
+/* Foto «respiro» a mitad de página para cortar el texto: grande, con los bordes fundidos con el fondo */
+.foto-respiro{max-width:1200px;padding:56px 20px 40px;}
+.foto-respiro img{display:block;width:100%;height:auto;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 90%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0,#000 9%,#000 91%,transparent 100%),linear-gradient(180deg,transparent 0,#000 10%,#000 90%,transparent 100%);
+  mask-composite:intersect;}
 @media(min-width:1000px){
-  .hero-in:has(.hero-foto) > h1,.hero-in:has(.hero-foto) > p,.hero-in:has(.hero-foto) .hero-badges{max-width:calc(100% - min(34vw,420px) - 48px);}
-  .hero-in:has(.hero-foto) > h1{font-size:clamp(2.2rem,4.6vw,3.9rem);}
-  .hero-foto{position:absolute;right:20px;top:0;width:min(34vw,420px);margin:0;
-    box-shadow:0 18px 50px rgba(0,0,0,.55);}
+  .franja-foto{display:none;}
+  .hero:has(> .hero-fondo-foto){position:relative;overflow:hidden;}
+  .hero > .hero-fondo-foto{display:block;position:absolute !important;pointer-events:none;}
+  .hero-fondo-foto img{display:block;width:100%;height:auto;}
+  /* a la derecha, por encima del velo del hero y por debajo del texto */
+  .hero > .hero-fondo-foto.lado{z-index:2 !important;right:0;top:50%;transform:translateY(-50%);width:min(60vw,980px);
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%),linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0,#000 40%),linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%);
+    mask-composite:intersect;}
+  .hero:has(> .hero-fondo-foto.lado) .hero-in{z-index:3;}
+  /* centrada detrás del texto centrado, tenue para que se lea */
+  .hero:has(> .hero-fondo-foto.centro){isolation:isolate;}
+  .hero > .hero-fondo-foto.centro{z-index:-1 !important;left:50%;top:50%;transform:translate(-50%,-50%);width:min(78vw,1100px);opacity:.38;
+    -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 45%,transparent 100%);
+    mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 45%,transparent 100%);}
 }
 
 /* Visor */

@@ -50,6 +50,11 @@
   - Resultado final: 0 errores graves en las 102 páginas × 2 vistas.
   - Paridad Alejandro CAD/CAM (auditada con la misma herramienta, 74 páginas): mismo arreglo del artículo en el celular, miniaturas de diseño remoto redimensionadas, foto de alineadores 2.560 → 720/1.280 px, SW `alejandro-v20`. 🟡 Su /carillas pide 6 fotos antes/después (`assets/carillas/case-1..6.jpg`) que aún no existen → 6 errores 404 por visita (la página muestra recuadros «próximamente»).
   - Sin tocar (a propósito): recortes de las tarjetas del portafolio (hay otra propuesta en la vista previa: «Actual / Sonrisa / Diseño») y de las miniaturas del Journal (formato de tarjeta).
+- ✅ (6.ª vuelta, 25-nov) Alejandro, viendo la vista previa: «me gustó mucho, con las demás hacer lo mismo» + «en la mitad del scroll otra foto para romper tanto texto». En 8 páginas de servicio:
+  - **Foto detrás del texto del hero** en computador, como el robot de la portada (`.hero-fondo-foto`): `.lado` (a la derecha, fundida hacia el texto) en coronas-zirconio, carillas, coronas-sobre-implantes y Full Arch; `.centro` (tenue, detrás del texto centrado) en guías, impresión 3D, diseño CAD y fresado. Horizontal, sin marco, sin recorte.
+  - **En el celular** la misma foto va debajo del hero (`.franja-foto`), porque detrás el texto no se leía.
+  - **Foto «respiro» a mitad de página** (`.foto-respiro`, bordes fundidos con el fondo) en 7 páginas (no en impresión 3D, que es corta y ya tiene galería).
+  - Se quitó la foto en recuadro de coronas-zirconio. Sin el recuadro de garantía (sigue sin aprobar). CSS `?v=20261125e`, SW `prodigy-v62`.
 - 🚫 No se usó `IMG_5733.mov` (2 s). Los antes/después de esa carpeta ya estaban en la web.
 
 ## 2026-11-24 (m) — Alineadores en Colombia: $250.000 el caso ($50.000 + $200.000)
