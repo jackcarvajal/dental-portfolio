@@ -11,6 +11,7 @@
 
 ## 2026-11-24 (k) — Encía por diente, dólares en un solo criterio, bot en pesos para Colombia y CSP de YouTube
 
+- ✅ SQL de Full Arch/encía/modelos CORRIDO (7 filas bien) y publicado solo por el vigilante (03:12 UTC). Maryland: por unidad US$12 / $30.000 c/u como unidad cementada (Alejandro: «depende de las unidades»), en calculadoras y protocolo.
 - 💡 Encía SOLO por diente (Alejandro: «es mejor cobrar por diente»): $10.000 / US$3 cada diente, sin «encía total» ni tope (quitada del flujo, del SQL pendiente y del protocolo). Full Arch 12 u + barra + encía en los 12 = $730.000.
 - Dólares en un solo criterio: guía de 1 implante US$60 (decisión de Alejandro 24-nov: catálogo guia_1, flujo de Alejandro, calculadoras y bot), DSD US$80, supraestructura US$45, Maryland US$40, guía compleja US$90 (los del protocolo; las calculadoras de las dos webs decían cosas distintas entre sí) y pilar US$18 = 1,5 créditos (el protocolo decía 35). Alineadores no se tocó (su propio flujo).
 - Chatbot: desde Colombia (request.cf.country = CO) functions/api/gemini.js agrega la tabla de diseño EN PESOS leída del catálogo (caché 5 min) y le pide responder en pesos; afuera sigue en dólares. Bot de Alejandro: texto en dólares al día (express US$10 desde 2 h, guía US$60, férula US$25, Full Arch US$12/unidad); header.js ?v=20261124c.

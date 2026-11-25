@@ -154,7 +154,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Puente (por unidad) | USD 12 c/u (3 piezas = 36) | 24–48 h |
 | Abutment / pilar personalizado | USD 18 (1,5 créditos) | 24 h |
 | Supraestructura atornillada | USD 45 | 24 h |
-| Maryland | USD 40 | 24–48 h |
+| Maryland (por unidad) | USD 12 c/u | 24–48 h |
 | Guía quirúrgica | USD 60 | 48 h |
 | Guía compleja 4+ | USD 90 | 48 h |
 | Barra sobre implantes | USD 150 | 48–72 h |

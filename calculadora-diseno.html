@@ -287,7 +287,7 @@ html,body{overflow-x:clip;}
         </button>
         <button type="button" class="srv-btn" data-key="maryland" onclick="selSrv(this)">
           <div class="ico">🔗</div>
-          <div class="lbl">Maryland Bridge</div>
+          <div class="lbl">Maryland (por unidad)</div>
           <div class="prc" id="p-maryland">$33 USD</div>
           <div class="time">⏱ 24–48h</div>
         </button>
@@ -461,7 +461,7 @@ const PRECIOS_USD = {
   modelo:      { base:4,   lbl:'Modelo para imprimir (por arcada)',  fixedQty:false, time:'24h'    },
   endocrown:   { base:12,  lbl:'Endocrown',              fixedQty:false, time:'24h'    },
   onlay:       { base:13,  lbl:'Onlay / Overlay',        fixedQty:false, time:'24h'    },
-  maryland:    { base:40,  lbl:'Maryland Bridge',        fixedQty:true,  time:'24–48h' },
+  maryland:    { base:12,  lbl:'Maryland (por unidad)',  fixedQty:false, time:'24–48h' },   // = unidad cementada (Alejandro, 24-nov-2026)
   mockup:      { base:42,  lbl:'Mock-up / Encerado',     fixedQty:true,  time:'48h'    },
   guia_compleja:  { base:90,  lbl:'Guía Quirúrgica Compleja 4+', fixedQty:false, time:'48h' },
   guia_apilable:  { base:66,  lbl:'Guía Apilable (por nivel)',   fixedQty:false, time:'48h' },
@@ -482,7 +482,7 @@ let ST  = { srv:'corona', qty:1, urgente:false };
 // (la proporción de la corona: US$12 = $30.000), redondeado a $1.000. El dólar de lo que el catálogo tiene en dólares
 // también sale de ahí (unidad cementada US$12 pareja; Full Arch US$12 por unidad; modelo US$4 por arcada).
 const CAT_DEF = {
-  corona:['corona',1,1], carilla:['carilla',1,1], puente:['puente',3,0], abutment:['pilar_pers',1,1], guia:['guia_1',1,1],
+  corona:['corona',1,1], maryland:['puente',1,1], carilla:['carilla',1,1], puente:['puente',3,0], abutment:['pilar_pers',1,1], guia:['guia_1',1,1],
   fullarch:['all_on_4',1,1], alineadores:['setup_orto',1,0], provisional:['provisional',1,1], dsd:['sonrisa_3d',1,0],
   modelo:['diseno_modelo',1,1], endocrown:['endocrown',1,1], onlay:['inlay',1,1], mockup:['encerado',1,1],
   guia_compleja:['guia_4',1,1], guia_reduccion:['guia_reborde',1,1], barra_implante:['barra',1,0], ferula:['ferula',1,0],
