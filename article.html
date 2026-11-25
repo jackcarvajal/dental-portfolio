@@ -508,9 +508,10 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   const CAT_IMGS = {
     ia:          { src:'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — IA & tecnología dental' },
     materiales:  { src:'https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Laboratorio dental' },
-    impresion3d: { src:'https://images.unsplash.com/photo-1631695428240-fb4ba2de2cfc?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Impresión 3D' },
+    /* impresion3d y flujos: las fotos de Unsplash se retiraron (ERR_BLOCKED_BY_ORB, 25-nov-2026) → fotos propias del laboratorio */
+    impresion3d: { src:'/assets/trabajos/carillas-modelos-impresos-1600.webp', credit:'PRODIGY Lab Dental — modelos impresos en 3D' },
     equipo:      { src:'https://images.unsplash.com/photo-1588776814546-daab30f310ce?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Equipos dentales' },
-    flujos:      { src:'https://images.unsplash.com/photo-1606811841689-23dfddce3e58?auto=format&fit=crop&w=800&q=75', credit:'Unsplash — Flujo digital dental' }
+    flujos:      { src:'/assets/trabajos/diseno-full-arch-capas-1600.webp', credit:'PRODIGY Lab Dental — diseño en exocad' }
   };
   /* Artículos con captura de Exocad pendiente */
   const EXOCAD_PENDING = ['ia-exocad-cad-cam','3shape-automate-revision','margenes-digitales-exocad-tecnica-correcta','exocad-atajos-teclado-productividad-2026','occlusion-digital-articulador-virtual-exocad','workflow-carillas-emax-exocad-protocolo-completo','diseno-cad-principiantes-exocad-desde-cero','errores-comunes-exocad-como-resolverlos','exocad-vs-3shape-carillas-2026','full-arch-rehabilitacion-digital-protocolo-prodigy','flujo-100-digital-sin-yeso-cad-cam','abutments-cad-titanio-zirconia-cuando-cada-uno'];
