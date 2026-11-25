@@ -30,7 +30,7 @@
 @media(min-width:1000px){
   .hero-in:has(.hero-foto) > h1,.hero-in:has(.hero-foto) > p,.hero-in:has(.hero-foto) .hero-badges{max-width:calc(100% - min(34vw,420px) - 48px);}
   .hero-in:has(.hero-foto) > h1{font-size:clamp(2.2rem,4.6vw,3.9rem);}
-  .hero-foto{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:min(34vw,420px);margin:0;
+  .hero-foto{position:absolute;right:20px;top:0;width:min(34vw,420px);margin:0;
     box-shadow:0 18px 50px rgba(0,0,0,.55);}
 }
 
