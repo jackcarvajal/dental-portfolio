@@ -1776,6 +1776,6 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   }
   if (navigator.sendBeacon) { var _b = navigator.sendBeacon.bind(navigator); navigator.sendBeacon = function (u, d) { return /\/api\//.test(String(u)) ? true : _b(u, d); }; }
   try { if (location.pathname.indexOf('flujo-diseno') > -1) localStorage.setItem('tour_visto_flujo-diseno.html', 'skip'); } catch (e) {}
-  var s = document.createElement('script'); s.src = '/js/vista-previa.js?v=20261125f'; s.defer = true;
+  var s = document.createElement('script'); s.src = '/js/vista-previa.js?v=20261125g'; s.defer = true;
   (document.head || document.documentElement).appendChild(s);
 })();

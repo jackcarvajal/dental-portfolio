@@ -53,7 +53,7 @@
      · con ?foto=debajo: franja horizontal justo debajo del hero. La pastilla dorada de arriba cambia entre las dos. */
   var FOTO_SERVICIO = {
     '/coronas-zirconio': ['coronas-anteriores-1', 'Coronas anteriores hechas en PRODIGY.', 'la corona'],
-    '/carillas': ['carillas-estratificadas', 'Carillas estratificadas hechas en PRODIGY.', 'la carilla'],
+    '/carillas': ['carillas-inferiores-1', 'Carillas inferiores hechas en PRODIGY.', 'la carilla'],
     '/coronas-sobre-implantes': ['coronas-con-implante-frontal', 'Coronas sobre dientes naturales y una sobre implante, hechas en PRODIGY.', 'la corona'],
     '/rehabilitacion-sobre-implantes': ['full-arch-zirconia-barra', 'Arcada completa en zirconia con encía, hecha en PRODIGY.', 'la estructura']
   };
@@ -62,22 +62,26 @@
     var hero = document.querySelector('header.hero'), fila = hero && hero.querySelector('.cta-row');
     if (!hero || !fila) return;
     var modo = /[?&]foto=debajo/.test(location.search) ? 'debajo' : 'detras';
+    // En el celular el texto del hero quedaba encima de la foto: ahí siempre va debajo del hero.
+    var celular = window.matchMedia && window.matchMedia('(max-width: 999px)').matches;
+    var ubicar = celular ? 'debajo' : modo;
     var M_PC = 'linear-gradient(90deg,transparent 0,#000 40%),linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%)';
     var M_CEL = 'linear-gradient(180deg,transparent 0,#000 10%,#000 52%,transparent 100%)';
     css('.gx{display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.22);font:500 .95rem/1.5 Inter,system-ui,sans-serif;color:#e2e8f0;max-width:560px}' +
       '.gx i{color:#00FF41;margin-top:3px}.gx a{color:#00d2ff;font-weight:700}' +
-      '.fx-fondo{position:absolute;z-index:1;pointer-events:none;right:0;top:50%;transform:translateY(-50%);width:min(60vw,980px);' +
+      '.hero .hero-in{z-index:3}' +
+      '.fx-fondo{position:absolute;z-index:2;pointer-events:none;right:0;top:50%;transform:translateY(-50%);width:min(60vw,980px);' +
       '-webkit-mask-image:' + M_PC + ';-webkit-mask-composite:source-in;mask-image:' + M_PC + ';mask-composite:intersect}' +
       '.fx-fondo img{display:block;width:100%;height:auto}' +
       '@media(max-width:999px){.fx-fondo{top:64px;transform:none;width:100%;-webkit-mask-image:' + M_CEL + ';mask-image:' + M_CEL + '}}' +
-      '.fx-franja{max-width:1140px;margin:0 auto;padding:30px 20px 6px}.fx-franja figure{margin:0}.fx-franja img{display:block;width:100%;height:auto;border-radius:14px}' +
+      '.fx-franja{max-width:980px;margin:0 auto;padding:30px 20px 6px}.fx-franja figure{margin:0}.fx-franja img{display:block;width:100%;height:auto;border-radius:14px}' +
       '.fx-franja figcaption{margin-top:10px;text-align:center;font:500 .95rem/1.45 Inter,system-ui,sans-serif;color:#94a3b8}' +
       '.fx-cambio{position:fixed;top:146px;right:12px;z-index:99999;background:#D4AF37;color:#111;font:800 12px/1.2 Inter,system-ui,sans-serif;padding:9px 13px;border-radius:999px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.45)}');
     var g = document.createElement('p'); g.className = 'gx';
     g.innerHTML = '<i class="fas fa-shield-halved" aria-hidden="true"></i><span><b>Garantía de producción:</b> si ' + cfg[2] + ' no coincide con el diseño que aprobaste (±20 µm), la reponemos en 24 h. <a href="/terminos-y-legal">Condiciones</a></span>';
     fila.after(g);
     var src = '/assets/trabajos/' + cfg[0] + '-1600.webp';
-    if (modo === 'detras') {
+    if (ubicar === 'detras') {
       var d = document.createElement('div'); d.className = 'fx-fondo'; d.setAttribute('aria-hidden', 'true');
       d.innerHTML = '<img src="' + src + '" alt="" fetchpriority="high">';
       hero.insertBefore(d, hero.querySelector('.hero-in'));
