@@ -124,14 +124,33 @@ Decir siempre **"precio de referencia, la cotización exacta depende del caso"**
 | Cubeta individual | $70.000 |
 | Retenedor ortodoncia | $80.000 |
 
-### Diseño CAD remoto (USD · ≈ ×4.000 para COP)
+### Diseño CAD en pesos (Colombia · tabla aprobada por Alejandro el 24-nov-2026)
+La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo diseño.
+
+| Trabajo | Precio |
+|---|---|
+| Pieza cementada (corona, cofia, carilla, incrustación, póntico, endocrown) | $30.000 |
+| Pieza sobre implante (corona atornillada o sobre pilar personalizado) | $50.000 |
+| Pilar personalizado solo | $25.000 |
+| Provisional | $20.000 |
+| Encerado / mockup (por diente) | $15.000 |
+| Full Arch / híbrida (por unidad) | $30.000 (+ barra $250.000 por arcada si lleva barra) |
+| Encía | $10.000 por diente · tope $100.000 por arcada |
+| Barra | $250.000 |
+| Modelo para imprimir (por arcada) | $20.000 · con implantes $30.000 · troquel $7.500 c/u |
+| Sonrisa 3D | $150.000 |
+| Férula | $35.000 |
+| Escaneo de modelo en el laboratorio | $15.000 · con implantes $20.000 |
+| Express (desde 2 h hábiles) | +$20.000 |
+
+### Diseño CAD remoto (USD · clientes del exterior)
 | Trabajo | Desde | Entrega |
 |---|---|---|
-| Corona / Inlay | USD 12 | menos de 24 h |
-| Carilla | USD 12 | menos de 24 h |
-| Onlay / Overlay | USD 12 | menos de 24 h |
-| Endocrown | USD 12 | menos de 24 h |
-| Provisional CAD | USD 12 | menos de 24 h |
+| Corona / Inlay | USD 12 | 24–48 h |
+| Carilla | USD 12 | 24–48 h |
+| Onlay / Overlay | USD 12 | 24–48 h |
+| Endocrown | USD 12 | 24–48 h |
+| Provisional CAD | USD 12 | 24–48 h |
 | Puente (por unidad) | USD 12 c/u (3 piezas = 36) | 24–48 h |
 | Abutment CAD | USD 35 | 24 h |
 | Supraestructura atornillada | USD 45 | 24 h |
@@ -141,10 +160,10 @@ Decir siempre **"precio de referencia, la cotización exacta depende del caso"**
 | Barra sobre implantes | USD 150 | 48–72 h |
 | Alineadores · planificación ambas arcadas + STL por etapa | USD 150 (30 + 120, ver abajo) | 48–72 h |
 | DSD / Smile Design | USD 80 | 48 h |
-| Full Arch Rehab | Cotización | 48–72 h |
+| Full Arch / híbrida (por unidad) | USD 12 c/u (+ barra USD 150 por arcada) | 48–72 h |
 
 > **Unidades cementadas (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = USD 12 parejo** (24-nov-2026, Alejandro).
-> Casos simples: menos de 24 h · complejos (implantes, guías, full arch): de 24 a 72 h.
+> Tiempos: **normal 24 a 48 h hábiles · express desde 2 h** (+US$10 / +$20.000) · Full Arch y guías: se acuerda por caso. Nunca prometer «15 minutos» ni «máximo 24 h».
 >
 > **Revisión del diseño:** antes del STL final le enviamos el diseño al cliente para revisarlo; si hace falta, hasta
 > **2 rondas de revisión** con los cambios que pida (incluidas). Desde la 3.ª, 20 % de la unidad (solo en términos, no en el primer mensaje).

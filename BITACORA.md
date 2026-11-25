@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-24 (j) — Calculadora de diseño con los pesos del catálogo y modelos por arcada de trabajo
+
+- calculadora-diseno: los pesos salen del catálogo, los mismos del flujo (antes dólar × 3.400: una corona salía $40.800 y en el flujo $30.000). Lo que se cobra por unidad en pesos se cobra por unidad (encerado/mockup, Full Arch, modelo por arcada); lo que no está en el catálogo usa US$ × 2.500 (la proporción de la corona). El dólar de lo que el catálogo tiene en dólares también sale de ahí (unidad cementada US$12 pareja: puente 3 pzas US$36, onlay, endocrown y provisional US$12; Full Arch US$12 por unidad; modelo US$4 por arcada). Express $20.000 / US$10 como el flujo. Desde Colombia arranca en pesos (ProdigyGeo/ACGeo). La cotización guardada lleva la moneda real (antes siempre «USD»). Probado local: corona ×2 $60.000 · Full Arch ×12 $360.000 / US$144 · mockup ×6 $90.000 · express +$20.000 · sin errores.
+- Odontograma: «Arcadas: superior e inferior / solo la arcada de trabajo» en modelos (solo la de trabajo: 1 corona sup. + modelo + troquel = $57.500); la encía total dice cuántos dientes cubre. ODO_CFG.v 20261124b, odontograma-flujo ?v=20261124d.
+- docs/PROTOCOLO-WHATSAPP.md (PRODIGY): tabla de diseño en pesos para responder por WhatsApp; tabla en USD con 24–48 h y Full Arch por unidad; tiempos nuevos.
+- Se publica junto con el SQL de Full Arch/encía/modelos (vigilante: publica al detectar el catálogo nuevo).
+
 ## 2026-11-24 (j) — Video oficial del Aidite Rapid 5 en /escaner-domicilio
 
 - ✅ Alejandro pidió usar el video promocional del escáner (YouTube b8YoKAph-tU, canal oficial @Aidite). Se **incrusta** (no se descarga ni se re-sube: eso necesitaría permiso de Aidite) debajo de las cifras del equipo, como fachada ligera: miniatura `maxresdefault` con `loading="lazy"` y el iframe de youtube.com solo se crea al dar play (sin JS abre YouTube en otra pestaña). Rótulo «Video del fabricante (Aidite)».

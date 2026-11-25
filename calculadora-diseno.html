@@ -160,8 +160,8 @@
     <span class="intl-chip">🌍 +20 países</span>
   </div>
   <div class="currency-toggle">
-    <button type="button" class="cur-btn" id="btnCOP" onclick="setCur('COP')">COP $</button>
-    <button type="button" class="cur-btn active" id="btnUSD" onclick="setCur('USD')">USD $</button>
+    <button type="button" class="cur-btn" id="btnCOP" onclick="setCur('COP',1)">COP $</button>
+    <button type="button" class="cur-btn active" id="btnUSD" onclick="setCur('USD',1)">USD $</button>
   </div>
   <div class="breadcrumb">
     <a href="/">Inicio</a><span>›</span>
@@ -245,8 +245,8 @@ html,body{overflow-x:clip;}
         </button>
         <button type="button" class="srv-btn" data-key="fullarch" onclick="selSrv(this)">
           <div class="ico">🦷</div>
-          <div class="lbl">Full Arch Rehab</div>
-          <div class="prc" id="p-fullarch">Cotizar</div>
+          <div class="lbl">Full Arch (por unidad)</div>
+          <div class="prc" id="p-fullarch">$12 USD</div>
           <div class="time">⏱ 48–72h</div>
         </button>
         <button type="button" class="srv-btn" data-key="alineadores" onclick="selSrv(this)">
@@ -269,8 +269,8 @@ html,body{overflow-x:clip;}
         </button>
         <button type="button" class="srv-btn" data-key="modelo" onclick="selSrv(this)">
           <div class="ico">🦷</div>
-          <div class="lbl">Modelo 3D Diagnóstico</div>
-          <div class="prc" id="p-modelo">$5 USD</div>
+          <div class="lbl">Modelo para imprimir</div>
+          <div class="prc" id="p-modelo">$4 USD</div>
           <div class="time">⏱ 24h</div>
         </button>
         <button type="button" class="srv-btn" data-key="endocrown" onclick="selSrv(this)">
@@ -447,20 +447,19 @@ html,body{overflow-x:clip;}
 <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <script>
-// Precios en USD y COP (COP = USD × 4000 aprox)
-const USD_COP = 3400;
+// Precios en dólares (exterior); los pesos salen del catálogo (ver CAT_DEF más abajo)
 const PRECIOS_USD = {
   corona:      { base:12,  lbl:'Corona / Inlay',        fixedQty:false, time:'24h'    },
   carilla:     { base:12,  lbl:'Carilla / Lámina',      fixedQty:false, time:'24h'    },
   puente:      { base:26,  lbl:'Puente 3 piezas',       fixedQty:true,  time:'24–48h' },
   abutment:    { base:18,  lbl:'Abutment CAD',          fixedQty:false, time:'24h'    },
   guia:        { base:49,  lbl:'Guía Quirúrgica',       fixedQty:false, time:'48h'    },
-  fullarch:    { base:0,   lbl:'Full Arch Rehab',       fixedQty:true,  time:'48–72h' },
+  fullarch:    { base:12,  lbl:'Full Arch (por unidad)', fixedQty:false, time:'48–72h' },
   alineadores: { base:85,  lbl:'Setup Alineadores',     fixedQty:true,  time:'48–72h' },
-  provisional: { base:10,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
+  provisional: { base:12,  lbl:'Provisional CAD',       fixedQty:false, time:'24h'    },
   dsd:         { base:69,  lbl:'DSD / Smile Design',    fixedQty:true,  time:'48h'    },
-  modelo:      { base:5,   lbl:'Modelo 3D Diagnóstico',  fixedQty:false, time:'24h'    },
-  endocrown:   { base:15,  lbl:'Endocrown',              fixedQty:false, time:'24h'    },
+  modelo:      { base:4,   lbl:'Modelo para imprimir (por arcada)',  fixedQty:false, time:'24h'    },
+  endocrown:   { base:12,  lbl:'Endocrown',              fixedQty:false, time:'24h'    },
   onlay:       { base:13,  lbl:'Onlay / Overlay',        fixedQty:false, time:'24h'    },
   maryland:    { base:33,  lbl:'Maryland Bridge',        fixedQty:true,  time:'24–48h' },
   mockup:      { base:42,  lbl:'Mock-up / Encerado',     fixedQty:true,  time:'48h'    },
@@ -474,22 +473,56 @@ const PRECIOS_USD = {
   guia_desgaste: { base:21, lbl:'Guía de Desgaste',         fixedQty:false, time:'24h'    },
   plano_mordida: { base:21, lbl:'Plano de Mordida',         fixedQty:false, time:'24h'    },
 };
-const EXTRAS_USD = { urgente:8 };   // la revisión adicional (20 %) no se cotiza: solo se cobra si la piden tras la 2.ª (22-nov-2026)
+const EXTRAS_USD = { urgente:10 };   // la revisión adicional (20 %) no se cotiza: solo se cobra si la piden tras la 2.ª (22-nov-2026)
 let cur = 'USD';
 let ST  = { srv:'corona', qty:1, urgente:false };
 
-function fmtVal(v) {
+// PESOS (Colombia) = los del CATÁLOGO de diseño, los mismos del flujo (tabla aprobada 24-nov-2026); antes dólar × 3.400.
+// clave → [id del catálogo, multiplicador, ¿en pesos se cobra por unidad?]. Lo que no está en el catálogo: dólar × 2.500
+// (la proporción de la corona: US$12 = $30.000), redondeado a $1.000. El dólar de lo que el catálogo tiene en dólares
+// también sale de ahí (unidad cementada US$12 pareja; Full Arch US$12 por unidad; modelo US$4 por arcada).
+const CAT_DEF = {
+  corona:['corona',1,1], carilla:['carilla',1,1], puente:['puente',3,0], abutment:['pilar_pers',1,1], guia:['guia_1',1,1],
+  fullarch:['all_on_4',1,1], alineadores:['setup_orto',1,0], provisional:['provisional',1,1], dsd:['sonrisa_3d',1,0],
+  modelo:['diseno_modelo',1,1], endocrown:['endocrown',1,1], onlay:['inlay',1,1], mockup:['encerado',1,1],
+  guia_compleja:['guia_4',1,1], guia_reduccion:['guia_reborde',1,1], barra_implante:['barra',1,0], ferula:['ferula',1,0],
+  waxup:['waxup',1,1], implante_corona:['corona_ator',1,1]
+};
+// Respaldo [pesos, dólares] por id del catálogo (si no carga); se actualiza del catálogo al abrir
+const CAT = { corona:[30000,12], carilla:[30000,12], puente:[30000,12], pilar_pers:[25000,18], guia_1:[180000,0], all_on_4:[30000,12],
+  setup_orto:[80000,100], provisional:[20000,0], sonrisa_3d:[150000,0], diseno_modelo:[20000,4], endocrown:[30000,0], inlay:[30000,12],
+  encerado:[15000,50], guia_4:[360000,0], guia_reborde:[216000,0], barra:[250000,150], ferula:[35000,25], waxup:[15000,0], corona_ator:[50000,18] };
+let EXPRESS_COP = 20000;
+function copUnit(k) { const d = CAT_DEF[k], c = d && CAT[d[0]]; if (c && c[0] > 0) return c[0] * d[1]; const b = PRECIOS_USD[k] ? PRECIOS_USD[k].base : 0; return b ? Math.round(b * 2500 / 1000) * 1000 : 0; }
+function porUnidad(k) { const d = CAT_DEF[k]; return cur === 'COP' && d ? !!d[2] : !PRECIOS_USD[k].fixedQty; }
+function precioDe(k) { return cur === 'COP' ? copUnit(k) : PRECIOS_USD[k].base; }
+function usdDelCatalogo() { Object.keys(CAT_DEF).forEach(function (k) { const d = CAT_DEF[k], c = CAT[d[0]]; if (c && c[1] > 0 && PRECIOS_USD[k]) PRECIOS_USD[k].base = c[1] * d[1]; }); }
+usdDelCatalogo();
+(async function syncCatalogo() {
+  const U = 'https://zgihrwqfyvgyapbwzkvw.supabase.co', K = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnaWhyd3FmeXZneWFwYnd6a3Z3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzczNDksImV4cCI6MjA5MDg1MzM0OX0.9CzmFDQYeQKcbtAZoT1_n_OuJ1qPVJu3jImd938T634', H = { apikey: K, Authorization: 'Bearer ' + K };
+  try {
+    const [a, b] = await Promise.all([
+      fetch(U + '/rest/v1/catalogo?flujo=eq.diseno&activo=eq.true&select=id,precio,precio_usd', { headers: H }),
+      fetch(U + '/rest/v1/config_precios?id=eq.express_diseno&select=precio', { headers: H })]);
+    if (a.ok) (await a.json()).forEach(function (r) { if (CAT[r.id]) CAT[r.id] = [Number(r.precio) || 0, Number(r.precio_usd) || 0]; });
+    if (b.ok) { const e = await b.json(); if (e[0] && Number(e[0].precio) > 0) EXPRESS_COP = Number(e[0].precio); }
+    usdDelCatalogo(); render();
+  } catch (e) { /* sin red: quedan los de respaldo */ }
+})();
+// Desde Colombia arranca en pesos (el visitante puede cambiarlo)
+(function () { let k = 0; const iv = setInterval(function () { const G = window.ProdigyGeo; if (G && G.onReady) { clearInterval(iv); G.onReady(function (g) { if (g && g.esColombia && cur === 'USD' && !window._monedaTocada) setCur('COP'); }); } else if (++k > 40) clearInterval(iv); }, 250); })();
+
+function fmtVal(v) {   // v ya está en la moneda elegida
   if (cur === 'USD') return v === 0 ? 'Cotizar' : '$' + (Number.isInteger(v) ? v : v.toFixed(2)) + ' USD';
-  const cop = Math.round(v * USD_COP);
-  return v === 0 ? 'Cotizar' : '$' + cop.toLocaleString('es-CO') + ' COP';
+  return v === 0 ? 'Cotizar' : '$' + Math.round(v).toLocaleString('es-CO') + ' COP';
 }
 
 function calc() {
   const p = PRECIOS_USD[ST.srv];
-  const qty = p.fixedQty ? 1 : ST.qty;
-  const unit = p.base;
+  const qty = porUnidad(ST.srv) ? ST.qty : 1;
+  const unit = precioDe(ST.srv);
   let extras = 0;
-  if (ST.urgente)  extras += EXTRAS_USD.urgente;
+  if (ST.urgente)  extras += cur === 'COP' ? EXPRESS_COP : EXTRAS_USD.urgente;
   const total = unit === 0 ? 0 : unit * qty + extras;
   return { unit, qty, extras, total, p };
 }
@@ -504,16 +537,16 @@ function render() {
   document.getElementById('bdQty').textContent    = '× ' + qty;
   document.getElementById('bdExtras').textContent = extras > 0 ? fmtVal(extras) : '$0';
   document.getElementById('bdTotal').textContent  = cotizar ? '—' : fmtVal(total);
-  document.getElementById('tp-urgente').textContent  = cur === 'USD' ? '+$8 USD' : '+$' + (8*USD_COP).toLocaleString('es-CO');
+  document.getElementById('tp-urgente').textContent  = cur === 'USD' ? '+$' + EXTRAS_USD.urgente + ' USD' : '+$' + EXPRESS_COP.toLocaleString('es-CO') + ' COP';
   // Actualizar precios en botones de servicio
   Object.keys(PRECIOS_USD).forEach(function(key) {
     const el = document.getElementById('p-' + key);
-    if (el) el.textContent = PRECIOS_USD[key].base === 0 ? 'Cotizar' : fmtVal(PRECIOS_USD[key].base);
+    if (el) el.textContent = precioDe(key) === 0 ? 'Cotizar' : fmtVal(precioDe(key));
   });
 }
 
-function setCur(c) {
-  cur = c;
+function setCur(c, manual) {
+  cur = c; if (manual) window._monedaTocada = true;
   document.getElementById('btnUSD').classList.toggle('active', c === 'USD');
   document.getElementById('btnCOP').classList.toggle('active', c === 'COP');
   render();
@@ -601,7 +634,7 @@ render();
       id:_cotId,
       tipo:'diseno',negocio:'prodigy',
       items:[{servicio:p.lbl,cantidad:qty,extras}],
-      subtotal:total,total,moneda:'USD',estado:'borrador',
+      subtotal:total,total,moneda:cur,estado:'borrador',
       expira_at:_exp
     });
     btn.disabled=false;

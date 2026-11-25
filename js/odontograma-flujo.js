@@ -98,9 +98,9 @@
       var cu = cop(su, 'encia_unidad') * n, ct = st ? cop(st, 'encia_total') : Infinity, esTot = ct <= cu;
       total += esTot ? (st.precio || 0) : (su.precio || 0) * n;
       totalCOP += Math.min(cu, ct);
-      if (esTot) contar('Encía total ' + (k === 'sup' ? 'superior' : 'inferior')); else for (var i = 0; i < n; i++) contar('Encía');
+      if (esTot) contar('Encía total ' + (k === 'sup' ? 'superior' : 'inferior') + ' (' + n + ' dientes)'); else for (var i = 0; i < n; i++) contar('Encía');
     });
-    // Modelos (24-nov-2026): diseño del modelo por arcada (superior e inferior: el trabajo y su antagonista); «con implantes»
+    // Modelos (24-nov-2026): diseño del modelo por arcada (superior e inferior, o solo la de trabajo si así lo pide); «con implantes»
     // si esa arcada lleva implantes y se pidieron análogos o encía removible. Troqueles: por pieza preparada.
     var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';
     if (m) {
@@ -108,7 +108,8 @@
       var conImpl = !!(m.implantes && (m.implantes.analogos || m.implantes.encia));
       if (!ms) cotizar.push('modelo impreso');
       else {
-        ['sup', 'inf'].forEach(function (k) {
+        var lista = (m.arcadas === 'trabajo' && (arcs.sup || arcs.inf)) ? ['sup', 'inf'].filter(function (k) { return arcs[k]; }) : ['sup', 'inf'];
+        lista.forEach(function (k) {
           var ci = !!(conImpl && mi && arcs[k] && arcs[k].impl), sm = ci ? mi : ms;
           total += sm.precio || 0; totalCOP += cop(sm, ci ? 'diseno_modelo_impl' : 'diseno_modelo');
           contar('Modelo ' + (k === 'sup' ? 'superior' : 'inferior') + (ci ? ' con implantes' : ''));
