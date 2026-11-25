@@ -451,7 +451,7 @@
   function setMat(cod){var arr=selArr();if(!arr.length)return;arr.forEach(function(f){if(!estado[f])estado[f]=defTooth();var ok=matsDeInd(estado[f].ind);var c=ok.indexOf(cod)>=0?cod:(ok.indexOf(cod+"_3ax")>=0?cod+"_3ax":cod);estado[f].cod=c;estado[f].mat=(MATS[c]||[c])[0];});renderLeft();}
   // Barra interna (exocad 3.3: «¿Barra de diseño?» + «¿Material para barra?» en estas indicaciones de WorkParamsDB)
   var BAR_WT={AnatomicCrown:1,Coping:1,AnatomicPontic:1,ReducedPontic:1,AnatomicWaxup:1,ReducedWaxup:1,WaxupPontic:1},BAR_MATS=['TI','TI_L','NP','NP_L','ZI','PEEK'];
-  // Encía rosada en la prótesis (24-nov-2026): se cobra por unidad, con tope de «encía total» por arcada
+  // Encía rosada en la prótesis (24-nov-2026): se cobra por diente
   var ENC_WT={AnatomicCrown:1,Coping:1,AnatomicPontic:1,ReducedPontic:1,ProvisionalCrown:1,ProvisionalPontic:1,AnatomicWaxup:1,ReducedWaxup:1,WaxupPontic:1};
   function ajustarMat(f){var e=estado[f],ok=matsDeInd(e.ind);if(e.barra&&!BAR_WT[INDWT[e.ind]])e.barra=null;if(!ok.length){e.cod=null;e.mat=null;return;}if(!e.cod||ok.indexOf(e.cod)<0){var b=e.cod&&e.cod.replace(/_3ax$/,"");e.cod=(b&&ok.indexOf(b)>=0)?b:(b&&ok.indexOf(b+"_3ax")>=0?b+"_3ax":primerMat(ok));e.mat=(MATS[e.cod]||[e.cod])[0];}}
 
@@ -546,9 +546,9 @@
     var bi=document.getElementById('barraint');if(bi){var okB=!!(ci&&ci!=='__mixed__'&&BAR_WT[INDWT[ci]]);bi.hidden=!okB;bi.innerHTML='';
       if(okB){var bv=a&&a.barra;bi.innerHTML='<span class="pslbl">Barra interna</span>'+'<button type="button" data-b="" aria-pressed="'+(!bv)+'">Sin barra</button>'+BAR_MATS.map(function(c){return '<button type="button" data-b="'+c+'" aria-pressed="'+(bv===c)+'">'+(MATS[c]||[c])[0]+'</button>';}).join('')+'<small class="bnota">Prótesis híbrida sobre implantes: la barra se diseña dentro de la prótesis final.</small>';
         [].forEach.call(bi.querySelectorAll('button'),function(x){x.onclick=function(){var v=x.getAttribute('data-b')||null;selArr().forEach(function(f){if(estado[f]&&BAR_WT[INDWT[estado[f].ind]])estado[f].barra=v;});renderLeft();};});}}
-    // Encía: por diente (dentro de la prótesis); se cobra por unidad y, si casi toda la arcada la lleva, como encía total
+    // Encía: por diente (dentro de la prótesis), se cobra por diente
     var ei=document.getElementById('enciaint');if(ei){var okE=!!(ci&&ci!=='__mixed__'&&ENC_WT[INDWT[ci]]);ei.hidden=!okE;ei.innerHTML='';
-      if(okE){var ev=!!(a&&a.encia);ei.innerHTML='<span class="pslbl">Encía</span><button type="button" data-e="" aria-pressed="'+(!ev)+'">Sin encía</button><button type="button" data-e="1" aria-pressed="'+ev+'">Con encía</button><small class="bnota">Encía rosada en la prótesis (puentes, híbridas, Full Arch). Se cobra por diente; si la lleva casi toda la arcada, se cobra como encía total.</small>';
+      if(okE){var ev=!!(a&&a.encia);ei.innerHTML='<span class="pslbl">Encía</span><button type="button" data-e="" aria-pressed="'+(!ev)+'">Sin encía</button><button type="button" data-e="1" aria-pressed="'+ev+'">Con encía</button><small class="bnota">Encía rosada en la prótesis (puentes, híbridas, Full Arch). Se cobra por diente.</small>';
         [].forEach.call(ei.querySelectorAll('button'),function(x){x.onclick=function(){var v=!!x.getAttribute('data-e');selArr().forEach(function(f){if(estado[f]&&ENC_WT[INDWT[estado[f].ind]])estado[f].encia=v||null;});renderLeft();};});}}
     var ed=document.getElementById('exodatos');if(ed)ed.innerHTML=(selCod&&ci&&ci!=='__mixed__')?datosExo(ci,selCod):'';
     var ps=document.getElementById('procsel');if(ps){var vs=selBase?[selBase,selBase+'_3ax'].filter(function(c){return permit.indexOf(c)>=0;}):[];

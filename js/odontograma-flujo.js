@@ -90,16 +90,13 @@
       gNom = (gs && gs.nombre) || g.tipoNom || g.tipo;
       if (gs) { total += gs.precio || 0; totalCOP += cop(gs, copGuias[g.tipo]); } else cotizar.push(gNom);
     }
-    // Encía (24-nov-2026): por diente, con tope «encía total» por arcada (lo que salga menos)
-    ['sup', 'inf'].forEach(function (k) {
-      var n = enc[k]; if (!n) return;
-      var su = sub(['cad_implantes', 'encia_unidad']), st = sub(['cad_implantes', 'encia_total']);
-      if (!su) { if (cotizar.indexOf('encía') < 0) cotizar.push('encía'); return; }
-      var cu = cop(su, 'encia_unidad') * n, ct = st ? cop(st, 'encia_total') : Infinity, esTot = ct <= cu;
-      total += esTot ? (st.precio || 0) : (su.precio || 0) * n;
-      totalCOP += Math.min(cu, ct);
-      if (esTot) contar('Encía total ' + (k === 'sup' ? 'superior' : 'inferior') + ' (' + n + ' dientes)'); else for (var i = 0; i < n; i++) contar('Encía');
-    });
+    // Encía (24-nov-2026, Alejandro): se cobra por diente
+    var nEnc = enc.sup + enc.inf;
+    if (nEnc) {
+      var su = sub(['cad_implantes', 'encia_unidad']);
+      if (!su) cotizar.push('encía');
+      else { total += (su.precio || 0) * nEnc; totalCOP += cop(su, 'encia_unidad') * nEnc; for (var i = 0; i < nEnc; i++) contar('Encía'); }
+    }
     // Modelos (24-nov-2026): diseño del modelo por arcada (superior e inferior, o solo la de trabajo si así lo pide); «con implantes»
     // si esa arcada lleva implantes y se pidieron análogos o encía removible. Troqueles: por pieza preparada.
     var mNom = m ? 'Modelo impreso: ' + (m.resumen || [m.tipo, m.articulador || 'sin articulador', m.articulador ? m.version : ''].filter(Boolean).join(' · ')) : '';

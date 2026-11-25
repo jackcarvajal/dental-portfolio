@@ -135,7 +135,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Provisional | $20.000 |
 | Encerado / mockup (por diente) | $15.000 |
 | Full Arch / híbrida (por unidad) | $30.000 (+ barra $250.000 por arcada si lleva barra) |
-| Encía | $10.000 por diente · tope $100.000 por arcada |
+| Encía | $10.000 por diente |
 | Barra | $250.000 |
 | Modelo para imprimir (por arcada) | $20.000 · con implantes $30.000 · troquel $7.500 c/u |
 | Sonrisa 3D | $150.000 |
@@ -152,7 +152,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Endocrown | USD 12 | 24–48 h |
 | Provisional CAD | USD 12 | 24–48 h |
 | Puente (por unidad) | USD 12 c/u (3 piezas = 36) | 24–48 h |
-| Abutment CAD | USD 35 | 24 h |
+| Abutment / pilar personalizado | USD 18 (1,5 créditos) | 24 h |
 | Supraestructura atornillada | USD 45 | 24 h |
 | Maryland | USD 40 | 24–48 h |
 | Guía quirúrgica | USD 60 | 48 h |

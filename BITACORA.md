@@ -9,6 +9,14 @@
 
 ---
 
+## 2026-11-24 (k) — Encía por diente, dólares en un solo criterio, bot en pesos para Colombia y CSP de YouTube
+
+- 💡 Encía SOLO por diente (Alejandro: «es mejor cobrar por diente»): $10.000 / US$3 cada diente, sin «encía total» ni tope (quitada del flujo, del SQL pendiente y del protocolo). Full Arch 12 u + barra + encía en los 12 = $730.000.
+- Dólares en un solo criterio: guía de 1 implante US$60 (decisión de Alejandro 24-nov: catálogo guia_1, flujo de Alejandro, calculadoras y bot), DSD US$80, supraestructura US$45, Maryland US$40, guía compleja US$90 (los del protocolo; las calculadoras de las dos webs decían cosas distintas entre sí) y pilar US$18 = 1,5 créditos (el protocolo decía 35). Alineadores no se tocó (su propio flujo).
+- Chatbot: desde Colombia (request.cf.country = CO) functions/api/gemini.js agrega la tabla de diseño EN PESOS leída del catálogo (caché 5 min) y le pide responder en pesos; afuera sigue en dólares. Bot de Alejandro: texto en dólares al día (express US$10 desde 2 h, guía US$60, férula US$25, Full Arch US$12/unidad); header.js ?v=20261124c.
+- CSP (publicado aparte, ya en vivo): www.youtube.com permitido en script-src de la segunda CSP de las dos webs; la medición de video de GA4 carga iframe_api y quedaba bloqueada (reporte R-21 en /escaner-domicilio). Verificado en vivo: sin bloqueos, el video y sus botones funcionan.
+- ODO_CFG.v 20261124c · odontograma-flujo ?v=20261124e. Se publica con el SQL (vigilante).
+
 ## 2026-11-24 (j) — Calculadora de diseño con los pesos del catálogo y modelos por arcada de trabajo
 
 - calculadora-diseno: los pesos salen del catálogo, los mismos del flujo (antes dólar × 3.400: una corona salía $40.800 y en el flujo $30.000). Lo que se cobra por unidad en pesos se cobra por unidad (encerado/mockup, Full Arch, modelo por arcada); lo que no está en el catálogo usa US$ × 2.500 (la proporción de la corona). El dólar de lo que el catálogo tiene en dólares también sale de ahí (unidad cementada US$12 pareja: puente 3 pzas US$36, onlay, endocrown y provisional US$12; Full Arch US$12 por unidad; modelo US$4 por arcada). Express $20.000 / US$10 como el flujo. Desde Colombia arranca en pesos (ProdigyGeo/ACGeo). La cotización guardada lleva la moneda real (antes siempre «USD»). Probado local: corona ×2 $60.000 · Full Arch ×12 $360.000 / US$144 · mockup ×6 $90.000 · express +$20.000 · sin errores.

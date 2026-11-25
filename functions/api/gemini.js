@@ -41,6 +41,33 @@ async function conocimiento(c, cache) {
   await cache.put(k, new Response(JSON.stringify(lista), { headers: { 'Cache-Control': 'max-age=300' } }));
   return lista;
 }
+// Precios de DISEÑO en pesos para quien escribe desde Colombia (24-nov-2026): salen del catálogo, los mismos del flujo y la
+// calculadora. Afuera el asistente sigue en dólares. Caché 5 min.
+const PRECIOS_COP = [
+  ['corona', 'Pieza cementada (corona, cofia, carilla, incrustación, póntico, endocrown)'], ['corona_ator', 'Pieza sobre implante (atornillada o sobre pilar personalizado)'],
+  ['pilar_pers', 'Pilar personalizado solo'], ['provisional', 'Provisional'], ['encerado', 'Encerado o mockup, por diente'],
+  ['all_on_4', 'Full Arch / híbrida, por unidad'], ['encia_unidad', 'Encía, por diente'], ['barra', 'Barra sobre implantes, por arcada'],
+  ['diseno_modelo', 'Modelo para imprimir, por arcada'], ['diseno_modelo_impl', 'Modelo con implantes (análogos o encía removible), por arcada'],
+  ['diseno_troquel', 'Troquel, por pieza'], ['sonrisa_3d', 'Diseño de sonrisa 3D'], ['ferula', 'Férula'], ['guia_1', 'Guía quirúrgica, 1 implante']
+];
+async function preciosCOP(c, cache) {
+  const k = new Request(`https://rl.internal/precios-cop-diseno`);
+  const hit = await cache.match(k);
+  if (hit) return hit.text();
+  const ids = PRECIOS_COP.map(x => x[0]).join(',');
+  const [a, b] = await Promise.all([
+    fetch(`${c.URL}/rest/v1/catalogo?flujo=eq.diseno&activo=eq.true&id=in.(${ids})&select=id,precio`, { headers: adminH(c.SERVICE) }),
+    fetch(`${c.URL}/rest/v1/config_precios?id=eq.express_diseno&select=precio`, { headers: adminH(c.SERVICE) })]);
+  const filas = a.ok ? await a.json() : [], ex = b.ok ? await b.json() : [];
+  const m = Object.fromEntries(filas.map(f => [f.id, Number(f.precio) || 0]));
+  const fmt = n => '$' + Math.round(n).toLocaleString('es-CO');
+  const lineas = PRECIOS_COP.filter(x => m[x[0]] > 0).map(x => `• ${x[1]}: ${fmt(m[x[0]])}`);
+  const texto = lineas.length ? 'PRECIOS DE DISEÑO CAD EN PESOS COLOMBIANOS (la persona escribe desde Colombia: si pregunta precios de diseño, dalos en pesos con esta tabla, no en dólares; son solo diseño; el pedido final se confirma en /flujo-diseno o por WhatsApp):\n' +
+    lineas.join('\n') + (ex[0] && Number(ex[0].precio) > 0 ? `\n• Express (desde 2 h hábiles): +${fmt(ex[0].precio)}` : '') +
+    '\nTiempos: normal 24 a 48 h hábiles. Pago 100 % anticipado.' : '';
+  await cache.put(k, new Response(texto, { headers: { 'Cache-Control': 'max-age=300' } }));
+  return texto;
+}
 function relevantes(lista, pregunta, max) {
   const q = _palabras(pregunta);
   return lista.map(e => {
@@ -126,6 +153,10 @@ export async function onRequestPost(context) {
   const pregunta = ultimaPregunta(body);
   let usadas = [];
   const extra = ['PRIVACIDAD: si el usuario escribe datos de un paciente (nombre, documento, teléfono, fotos), no los repitas y recuérdale con amabilidad que no los comparta en este chat.'];
+  // Desde Colombia: precios de diseño en pesos (del catálogo)
+  if (String((request.cf && request.cf.country) || request.headers.get('CF-IPCountry') || '').toUpperCase() === 'CO' && c.SERVICE) {
+    try { const t = await preciosCOP(c, cache); if (t) extra.push(t); } catch (e) { /* sin tabla: el asistente sigue igual */ }
+  }
   if (c.SERVICE && pregunta) {
     try {
       const elegidas = relevantes(await conocimiento(c, cache), pregunta, 5);
