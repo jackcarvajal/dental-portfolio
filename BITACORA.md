@@ -9,6 +9,10 @@
 
 ---
 
+## 2026-11-25 (d) — El visor de fotos se abre centrado
+
+- Reporte de Alejandro: al tocar una foto de la galería, el visor salía en la esquina de arriba a la izquierda. Causa: el reinicio de estilos de las páginas (`*{margin:0}`) le quita al <dialog> el margen automático que lo centra. css/galeria-real.css: `.gal-visor` con position fixed, inset 0, margin auto y ancho/alto al contenido (ya no deja franjas negras a los lados). Mismo arreglo en el diálogo de numeración dental de /soporte. ?v=20261125g en las 9 páginas con galería. Probado local: centrado en escritorio y celular.
+
 ## 2026-11-25 (c) — /alineadores-cad publicada, con fotos de licencia libre
 
 - Portada: Alejandro eligió de fondo la foto del alineador de antes (la de banco, sin derechos claros; avisado) mezclada con el efecto animado «sonar» (js/hero-animado.js), con un velo oscuro para que el texto se lea. Es una <img> (assets/alineadores/alineador-fondo-*.webp), no un fondo CSS, para que el modo claro la re-invierta.

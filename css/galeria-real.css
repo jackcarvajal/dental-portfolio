@@ -57,7 +57,7 @@
 }
 
 /* Visor */
-.gal-visor{width:min(1200px,96vw);max-height:94vh;padding:0;border:0;border-radius:14px;background:#050505;color:#e2e8f0;overflow:visible;}
+.gal-visor{position:fixed;inset:0;margin:auto;width:fit-content;max-width:min(1200px,96vw);height:fit-content;max-height:94vh;padding:0;border:0;border-radius:14px;background:#050505;color:#e2e8f0;overflow:visible;}
 .gal-visor::backdrop{background:rgba(0,0,0,.86);}
 .gal-visor figure{margin:0;display:flex;flex-direction:column;align-items:center;}
 .gal-visor img{display:block;max-width:100%;max-height:82vh;width:auto;height:auto;border-radius:14px 14px 0 0;}
