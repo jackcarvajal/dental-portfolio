@@ -57,7 +57,11 @@ a{color:inherit;}
 main{position:relative;z-index:1;}
 .container{max-width:1100px;margin:0 auto;padding:0 20px;}
 /* Hero: texto + foto real del caso */
-.hero{padding:64px 0 56px;}
+.hero{position:relative;overflow:hidden;isolation:isolate;padding:64px 0 56px;}
+/* Fondo de la portada (25-nov-2026, pedido de Alejandro): la foto del alineador de antes + el efecto animado (sonar) mezclado.
+   Es una <img> y no un background para que el modo claro (filtro invertido) la re-invierta como al resto de fotos. */
+.hero-fondo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;z-index:-1;}
+.hero-velo{position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(5,5,5,.93) 0%,rgba(5,5,5,.8) 46%,rgba(5,5,5,.5) 100%);}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;}
 h1{font-size:clamp(1.9rem,4.2vw,3rem);font-weight:900;color:#fff;line-height:1.12;margin-bottom:16px;text-wrap:balance;}
 h1 em{font-style:normal;color:var(--mg);}
@@ -114,6 +118,7 @@ summary::-webkit-details-marker{display:none;}
 .below-fold{content-visibility:auto;contain-intrinsic-size:0 520px;}
 @media(max-width:860px){
   .hero{padding:40px 0 44px;}
+  .hero-velo{background:linear-gradient(180deg,rgba(5,5,5,.9) 0%,rgba(5,5,5,.78) 55%,rgba(5,5,5,.92) 100%);}
   .hero-grid,.caso{grid-template-columns:1fr;gap:28px;}
   .hero-sub{font-size:1rem;}
 }
@@ -126,7 +131,9 @@ summary::-webkit-details-marker{display:none;}
 <main id="main-content">
 
   <!-- HERO: lo que hacemos, con un caso real -->
-  <section class="hero" aria-label="Alineadores invisibles">
+  <section class="hero" aria-label="Alineadores invisibles" data-hero-fx="sonar">
+    <img class="hero-fondo" src="assets/alineadores/alineador-fondo-800.webp" srcset="assets/alineadores/alineador-fondo-800.webp 800w, assets/alineadores/alineador-fondo-1600.webp 1600w" sizes="100vw" alt="" aria-hidden="true" width="1600" height="1067" decoding="async">
+    <div class="hero-velo" aria-hidden="true"></div>
     <div class="container hero-grid">
       <div>
         <h1>Planificamos tus alineadores y, si quieres, <em>los fabricamos</em></h1>
@@ -307,6 +314,7 @@ summary::-webkit-details-marker{display:none;}
 
 <script src="js/footer.js?v=20261124b"></script>
 <script src="js/galeria-real.js?v=20261125a" defer></script>
+<script src="js/hero-animado.js?v=20261125a" defer></script>
 <script>
 /* PRODIGY Analytics — track-event */
 (function(){
