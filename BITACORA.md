@@ -27,6 +27,8 @@
 - 🚫 No se usó el logo «PRODIGY CADCAM ACADEMY» (la academia es de Alejandro CAD/CAM y lleva corona).
 - SW `prodigy-v52` (diseno-cad y guias están precacheadas).
 - ✅ (2.ª vuelta) El mosaico por columnas dejaba una columna vacía con 3 fotos → filas centradas (flex) de miniaturas 4:3 (`object-fit:cover`; las verticales con `object-position` propio; la foto completa en el visor). +3 carillas/coronas inferiores (carillas) y +1 coronas posteriores caracterizadas (coronas-zirconio). CSS `?v=20261124b`, SW `prodigy-v53`.
+- ✅ (3.ª vuelta, 25-nov) **Videos propios** de `Videos\marca prodigy` (Alejandro: «los trabajos son míos, ellos solo publicaron en cooperación» → @horus3d_/@laboshop eran colaboraciones; sin marcas de agua ni cierres de otra marca, revisado cuadro a cuadro). 11 clips a `assets/videos/<nombre>.mp4` (H.264 sin audio, 540 px vertical / 960 px horizontal, 17 MB en total, `preload="none"`) + póster `.webp`. En la galería: en silencio y en bucle, arrancan al verse y se pausan al salir; con «reducir movimiento» o ahorro de datos, solo con clic. Fresado CAM: sección nueva «La fresadora trabajando» (3 videos + piezas recién fresadas). Diseño CAD +2 (exocad), Full Arch +2 (iBar, arcada con encía), Impresión 3D +1 (híbrida impresa), Carillas +2 videos + foto del calibrador, Coronas de zirconio +1 (maquillaje presinterizado). CSS/JS `?v=20261125a`, SW `prodigy-v54`.
+- 🚫 No se usó `IMG_5733.mov` (2 s). Los antes/después de esa carpeta ya estaban en la web.
 
 ## 2026-11-24 (m) — Alineadores en Colombia: $250.000 el caso ($50.000 + $200.000)
 

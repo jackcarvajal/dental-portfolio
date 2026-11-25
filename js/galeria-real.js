@@ -43,7 +43,39 @@
     next.style.display = varias ? '' : 'none';
   }
 
+  /* Videos cortos (.gal-video): en silencio y en bucle; arrancan cuando se ven y se pausan al salir de pantalla.
+     Con «reducir movimiento» o ahorro de datos no arrancan solos: se reproducen con un clic. */
+  var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ahorro = navigator.connection && navigator.connection.saveData;
+  var videos = Array.prototype.slice.call(document.querySelectorAll('.gal-video video'));
+  function marcar(v) { var f = v.closest('.gal-video'); if (f) f.classList.toggle('pausado', v.paused); }
+  function reproducir(v) { var p = v.play(); if (p && p.catch) p.catch(function () { marcar(v); }); }
+  videos.forEach(function (v) {
+    v.muted = true;
+    v.addEventListener('play', function () { marcar(v); });
+    v.addEventListener('pause', function () { marcar(v); });
+    marcar(v);
+  });
+  if (videos.length && 'IntersectionObserver' in window && !quieto && !ahorro) {
+    var io = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (en) {
+        var v = en.target;
+        if (en.isIntersecting && en.intersectionRatio >= 0.5) { if (!v.dataset.pausaManual) reproducir(v); }
+        else if (!v.paused) v.pause();
+      });
+    }, { threshold: [0, 0.5] });
+    videos.forEach(function (v) { io.observe(v); });
+  }
+
   document.addEventListener('click', function (e) {
+    var cv = e.target && e.target.closest ? e.target.closest('.gal-real .gal-vid') : null;
+    if (cv) {
+      var v = cv.querySelector('video');
+      if (!v) return;
+      if (v.paused) { delete v.dataset.pausaManual; reproducir(v); }
+      else { v.dataset.pausaManual = '1'; v.pause(); }
+      return;
+    }
     var b = e.target && e.target.closest ? e.target.closest('.gal-real .gal-btn') : null;
     if (!b) return;
     if (!visor) crear();
