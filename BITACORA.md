@@ -11,6 +11,7 @@
 
 ## 2026-11-25 (c) — /alineadores-cad publicada, con fotos de licencia libre
 
+- Portada: Alejandro eligió de fondo la foto del alineador de antes (la de banco, sin derechos claros; avisado) mezclada con el efecto animado «sonar» (js/hero-animado.js), con un velo oscuro para que el texto se lea. Es una <img> (assets/alineadores/alineador-fondo-*.webp), no un fondo CSS, para que el modo claro la re-invierta.
 - 💡 Alejandro (25-nov): fotos de alineadores sin copyright. La foto anterior (Aligners-*.webp y dental-aligner2.jpg) parecía de banco con derechos: retirada del repo (en el historial de git). Nuevas fotos de Pexels (licencia libre, uso comercial, sin atribución obligatoria; se acredita igual en el pie): Arvind Philomin (alineador-colocacion), Laura Villela (alineadores-en-las-manos), Helia Ghaharian (alineador-pulido), Roberto Junior (alineador-transparente). WebP 800/1600 en assets/alineadores/.
 - ✅ Alejandro aprobó publicar /alineadores-cad (antes mostraba contenido de impresión 3D): planificación en 3Shape + alineadores terminados, galería con 6 casos reales del portafolio, foto de portada «alineadores en las manos» y «recorte y pulido» en la tarjeta de fabricación (Pexels, con crédito). /envia-alineadores enlaza a la página nueva.
 
