@@ -490,7 +490,7 @@ const CAT_DEF = {
 };
 // Respaldo [pesos, dólares] por id del catálogo (si no carga); se actualiza del catálogo al abrir
 const CAT = { corona:[30000,12], carilla:[30000,12], puente:[30000,12], pilar_pers:[25000,18], guia_1:[180000,60], all_on_4:[30000,12],
-  setup_orto:[80000,90], provisional:[20000,0], sonrisa_3d:[150000,80], diseno_modelo:[20000,4], endocrown:[30000,0], inlay:[30000,12],
+  setup_orto:[250000,90], provisional:[20000,0], sonrisa_3d:[150000,80], diseno_modelo:[20000,4], endocrown:[30000,0], inlay:[30000,12],
   encerado:[15000,50], guia_4:[360000,0], guia_reborde:[216000,0], barra:[250000,150], ferula:[35000,25], waxup:[15000,0], corona_ator:[50000,18] };
 let EXPRESS_COP = 20000;
 function copUnit(k) { const d = CAT_DEF[k], c = d && CAT[d[0]]; if (c && c[0] > 0) return c[0] * d[1]; const b = PRECIOS_USD[k] ? PRECIOS_USD[k].base : 0; return b ? Math.round(b * 2500 / 1000) * 1000 : 0; }

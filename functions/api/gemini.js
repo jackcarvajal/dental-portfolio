@@ -48,7 +48,7 @@ const PRECIOS_COP = [
   ['pilar_pers', 'Pilar personalizado solo'], ['provisional', 'Provisional'], ['encerado', 'Encerado o mockup, por diente'],
   ['all_on_4', 'Full Arch / híbrida, por unidad'], ['encia_unidad', 'Encía, por diente'], ['barra', 'Barra sobre implantes, por arcada'],
   ['diseno_modelo', 'Modelo para imprimir, por arcada'], ['diseno_modelo_impl', 'Modelo con implantes (análogos o encía removible), por arcada'],
-  ['diseno_troquel', 'Troquel, por pieza'], ['sonrisa_3d', 'Diseño de sonrisa 3D'], ['ferula', 'Férula'], ['guia_1', 'Guía quirúrgica, 1 implante']
+  ['diseno_troquel', 'Troquel, por pieza'], ['sonrisa_3d', 'Diseño de sonrisa 3D'], ['ferula', 'Férula'], ['guia_1', 'Guía quirúrgica, 1 implante'], ['setup_orto', 'Planificación de alineadores, caso completo con ambas arcadas (se paga primero la viabilidad de $50.000, que se descuenta; si el caso no sigue, es lo único que se cobra)']
 ];
 async function preciosCOP(c, cache) {
   const k = new Request(`https://rl.internal/precios-cop-diseno`);

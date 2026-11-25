@@ -58,6 +58,11 @@ Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago 
 - Al aprobarse: actualizar el trigger/RPC en `sql/alineadores-mayra-panel-2026.sql` y `PRECIOS` en `app/alineadores.html`. Revisión trimestral + cláusula piso: si USD/COP < 3.300, recalcular con `(margen_objetivo_COP + costo_Mayra_COP) ÷ tasa`.
 - Historial de precio: **$60/$20** → **$90/$30 (vigente)** → propuesta **$120/$40**.
 
+### A2) Clientes de COLOMBIA — **COP** (24-nov-2026, decisión de Alejandro para captar clientes)
+- **Valoración / viabilidad:** **$50.000** (si el caso no sigue, es lo único que se cobra).
+- **Caso completo** (valoración + plan + modelos, ambas arcadas): **$250.000** → $200.000 al aprobar.
+- ⚠️ El cobro AUTOMÁTICO del sistema (trigger `aln_casos_auto_cargos` y RPC `aln_completar_caso`) sigue en **USD 30/90** para todo cliente (hoy solo Panorámica). Antes del primer cliente colombiano: agregar la moneda por cliente en `alineadores_clientes` y cobrar en pesos (pendiente).
+
 ### B) Lo que PAGO a Mayra (técnica) — **COP**
 - **Valoración sola:** **$20.000 COP** (se re-cobra si pasan +4 meses y hay que re-valorar).
 - **Caso completo (planeación):** **$60.000 COP** (confirmado: 9 planeaciones = 540.000).

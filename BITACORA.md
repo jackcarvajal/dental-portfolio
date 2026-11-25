@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-24 (m) — Alineadores en Colombia: $250.000 el caso ($50.000 + $200.000)
+
+- 💡 Alejandro (24-nov): alineadores en COLOMBIA = $250.000 el caso completo (ambas arcadas), $50.000 de viabilidad primero (si no sigue, es lo único) + $200.000 al aprobar («comencemos con ese a ver qué podemos captar»). Antes $80.000 por arco.
+- Flujo de PRODIGY (chip), calculadoras (respaldo), chatbot en pesos (functions/api/gemini.js), protocolo WhatsApp y protocolo de alineadores (sección A2).
+- 🟡 sql/catalogo-alineadores-cop-2026.sql (setup_orto precio 250000 + nombre) pendiente de correr. El SQL en dólares (setup_orto US$90) ya está corrido.
+- ⚠️ El cobro automático del flujo de alineadores (trigger aln_casos_auto_cargos / aln_completar_caso) sigue en USD 30/90 para todos: antes del primer cliente colombiano hay que agregar la moneda por cliente.
+
 ## 2026-11-24 (l) — Alineadores afuera: US$90 el caso (US$30 + US$60)
 
 - 💡 Alejandro (24-nov): alineadores AFUERA = US$90 el caso completo (ambas arcadas), US$30 de viabilidad primero (si no se ejecuta, es lo único) y US$60 al aprobar — «queremos captar clientes; si no nos conocen, no competimos». Es lo que ya paga Panorámica: la propuesta de alza 120/40 queda DESCARTADA (docs/PROTOCOLO-ALINEADORES.md).
