@@ -57,14 +57,25 @@
     marcar(v);
   });
   if (videos.length && 'IntersectionObserver' in window && !quieto && !ahorro) {
+    /* 1) Precarga: cuando el video está a ~1 pantalla de aparecer, el navegador empieza a bajarlo completo.
+          Antes se bajaba recién al verse (preload="none") y con 3 videos a la vez se trababa al arrancar. */
+    var pre = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var v = en.target; pre.unobserve(v);
+        v.preload = 'auto';
+        try { v.load(); } catch (_) {}
+      });
+    }, { rootMargin: '900px 0px' });
+    /* 2) Reproducción: arranca cuando se ve al menos la mitad; se pausa al salir de pantalla. */
     var io = new IntersectionObserver(function (entradas) {
       entradas.forEach(function (en) {
         var v = en.target;
         if (en.isIntersecting && en.intersectionRatio >= 0.5) { if (!v.dataset.pausaManual) reproducir(v); }
-        else if (!v.paused) v.pause();
+        else if (!en.isIntersecting && !v.paused) v.pause();
       });
     }, { threshold: [0, 0.5] });
-    videos.forEach(function (v) { io.observe(v); });
+    videos.forEach(function (v) { pre.observe(v); io.observe(v); });
   }
 
   document.addEventListener('click', function (e) {

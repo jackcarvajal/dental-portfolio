@@ -70,6 +70,10 @@
 .gal-visor button:focus-visible{outline:2px solid #00d2ff;outline-offset:2px;}
 @media(max-width:600px){
   .gal-real figure{flex-basis:100%;max-width:none;}
+  /* videos verticales: dos por fila en el celular (a todo el ancho quedaban de 640 px de alto) */
+  .gal-real figure.gal-video{flex:0 1 calc(50% - 7px);}
+  .gal-real figure.gal-video[style*="--r:1"]{flex-basis:100%;}
+  .gal-real figure.gal-video figcaption{font-size:.85rem;padding:8px 10px 10px;}
   .gal-visor figcaption{padding:10px 14px 12px;font-size:.92rem;}
   .gal-visor .gal-prev,.gal-visor .gal-next{top:auto;bottom:-56px;}
   .gal-visor .gal-prev{left:calc(50% - 54px);}
