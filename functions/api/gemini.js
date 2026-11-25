@@ -63,7 +63,7 @@ async function preciosCOP(c, cache) {
   const fmt = n => '$' + Math.round(n).toLocaleString('es-CO');
   const lineas = PRECIOS_COP.filter(x => m[x[0]] > 0).map(x => `• ${x[1]}: ${fmt(m[x[0]])}`);
   const texto = lineas.length ? 'PRECIOS DE DISEÑO CAD EN PESOS COLOMBIANOS (la persona escribe desde Colombia: si pregunta precios de diseño, dalos en pesos con esta tabla, no en dólares; son solo diseño; el pedido final se confirma en /flujo-diseno o por WhatsApp):\n' +
-    lineas.join('\n') + (ex[0] && Number(ex[0].precio) > 0 ? `\n• Express (desde 2 h hábiles): +${fmt(ex[0].precio)}` : '') +
+    lineas.join('\n') + (ex[0] && Number(ex[0].precio) > 0 ? `\n• Express (desde 15 min en trabajos simples): +${fmt(ex[0].precio)}` : '') +
     '\nTiempos: normal 24 a 48 h hábiles. Pago 100 % anticipado.' : '';
   await cache.put(k, new Response(texto, { headers: { 'Cache-Control': 'max-age=300' } }));
   return texto;

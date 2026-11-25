@@ -143,7 +143,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Escaneo de modelo en el laboratorio | $15.000 · con implantes $20.000 |
 | Alineadores · planificación, caso completo (ambas arcadas) | **$250.000**: $50.000 de viabilidad primero (si no sigue, es lo único) + $200.000 al aprobar |
 | Alineadores impresos (fabricación, solo Colombia) | **$55.000** por alineador terminado (arcada y etapa) · plantilla de attachments $35.000 por arcada · retenedor Essix $55.000 por arcada |
-| Express (desde 2 h hábiles) | +$20.000 |
+| Express (desde 15 min en trabajos simples) | +$20.000 |
 
 ### Diseño CAD remoto (USD · clientes del exterior)
 | Trabajo | Desde | Entrega |
@@ -165,7 +165,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Full Arch / híbrida (por unidad) | USD 12 c/u (+ barra USD 150 por arcada) | 48–72 h |
 
 > **Unidades cementadas (corona, inlay/onlay, carilla, endocrown, provisional, unidad de puente) = USD 12 parejo** (24-nov-2026, Alejandro).
-> Tiempos: **normal 24 a 48 h hábiles · express desde 2 h** (+US$10 / +$20.000) · Full Arch y guías: se acuerda por caso. Nunca prometer «15 minutos» ni «máximo 24 h».
+> Tiempos: **normal 24 a 48 h hábiles · express desde 15 min en trabajos simples (una corona o un modelo) y desde 2 h en los demás** (+US$10 / +$20.000), sujeto a la carga de trabajo y al volumen interno · Full Arch y guías: se acuerda por caso. Decir siempre «desde» con la condición; nunca «máximo 24 h».
 >
 > **Revisión del diseño:** antes del STL final le enviamos el diseño al cliente para revisarlo; si hace falta, hasta
 > **2 rondas de revisión** con los cambios que pida (incluidas). Desde la 3.ª, 20 % de la unidad (solo en términos, no en el primer mensaje).

@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-11-25 (b) — Vuelve «desde 15 min», con condiciones
+
+- 💡 Alejandro (25-nov): «desde 15 minutos está bien, pero sujeto a condiciones de trabajo y volumen interno, y a tipos de trabajo como una corona o modelos». Regla: normal 24 a 48 h hábiles (incluido); express (con costo) desde 15 min en trabajos simples (una corona o un modelo) y desde 2 h en los demás, sujeto a la carga de trabajo y al volumen interno. Revierte el «sin 15 min» del 24-nov.
+- 97 cambios en las dos webs: flujos de diseño (tarjeta express «⚡ Desde 15 minutos», resumen, confirmación y WhatsApp), cifras de portada/diseño remoto/calculadora/soporte/reseñas («15 min* · desde, en trabajos simples»), /links, preguntas, términos, seguimiento, sobre mí, envía tu escáner, páginas /en/, buscador, chatbots (header.js y tabla en pesos de gemini.js), correo (emailnotif) y protocolo de WhatsApp. ?v= header PRODIGY 20261125b · Alejandro 20261125a · emailnotif 20261125a.
+
 ## 2026-11-25 (a) — Alineadores: se planifican en 3Shape (no exocad Ortho)
 
 - 💡 Alejandro (25-nov): «es con 3Shape la planificación y otras herramientas, no exocad Ortho». Corregido: portada (tarjeta «Setup en 3Shape»), chatbot (header.js, ?v=20261125a en las 104 páginas; ahora dice también que los fabricamos, solo Colombia), /en/dental-aligners («Human-verified planning in 3Shape»), buscador (entrada de /alineadores-cad) e imagen para compartir de alineadores (tools/og-generar.mjs → «Alineadores invisibles · Planificación en 3Shape…», regenerada). Alejandro: alineadores.html (8 menciones).
