@@ -1,25 +1,38 @@
 /* Galería de trabajo real (fotos propias del laboratorio) + visor ampliado.
-   Uso: <div class="gal-real"> con <figure><button class="gal-btn" data-grande="…-1600.webp"><img …-800.webp></button><figcaption>…</figcaption></figure>
-   El visor lo crea js/galeria-real.js. Filas centradas de miniaturas 4:3 (la foto completa se ve en el visor;
-   para mover el encuadre de una miniatura: style="object-position:center 65%" en su <img>). */
+   Uso: <div class="gal-real"> con <figure style="--r:1.5"><button class="gal-btn" data-grande="…-1600.webp"><img …-800.webp></button><figcaption>…</figcaption></figure>
+   --r = ancho/alto de la foto o del video. Filas justificadas: cada pieza crece en proporción a su forma, así que
+   todas las de una fila quedan de la misma altura y NINGUNA SE RECORTA (25-nov, pedido de Alejandro).
+   El visor lo crea js/galeria-real.js. */
 .gal-real{max-width:1100px;margin:30px auto 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;
   gap:14px;text-align:left;}
-.gal-real figure{flex:0 1 340px;min-width:0;margin:0;background:#0b1220;
-  border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;}
+.gal-real figure{flex:var(--r,1.33) 1 calc(var(--r,1.33) * 230px);max-width:calc(var(--r,1.33) * 400px);min-width:0;margin:0;
+  background:#0b1220;border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;}
 .gal-real .gal-btn{display:block;width:100%;padding:0;margin:0;border:0;background:#000;cursor:zoom-in;overflow:hidden;}
-.gal-real img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;transition:transform .35s ease;}
+.gal-real img{display:block;width:100%;height:auto;transition:transform .35s ease;}
 .gal-real .gal-btn:hover img,.gal-real .gal-btn:focus-visible img{transform:scale(1.03);}
 .gal-real .gal-btn:focus-visible{outline:2px solid #00d2ff;outline-offset:-2px;}
 .gal-real figcaption{padding:10px 14px 12px;font-size:.95rem;line-height:1.5;color:#cbd5e1;}
 /* Videos cortos: en silencio y en bucle, arrancan al verse (js/galeria-real.js); clic = pausa / sigue */
 .gal-real .gal-vid{position:relative;display:block;width:100%;padding:0;margin:0;border:0;background:#000;cursor:pointer;}
-.gal-real .gal-vid video{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;}
-.gal-real .gal-video.ancho .gal-vid video{aspect-ratio:16/9;}
+.gal-real .gal-vid video{display:block;width:100%;height:auto;aspect-ratio:var(--r,.5625);object-fit:cover;}
 .gal-real .gal-play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;
   background:rgba(5,5,5,.72);border:2px solid rgba(255,255,255,.85);display:none;align-items:center;justify-content:center;}
 .gal-real .gal-video.pausado .gal-play{display:flex;}
 .gal-real .gal-vid:focus-visible{outline:2px solid #00d2ff;outline-offset:-2px;}
 .gal-nota{max-width:760px;margin:6px auto 0;font-size:.9rem;color:#94a3b8;text-align:center;}
+
+/* Foto real en el hero de las páginas de servicio (a la derecha en computador, debajo de los botones en el
+   celular). Foto completa, sin recorte. */
+.hero-foto{margin:24px 0 0;max-width:560px;border-radius:16px;overflow:hidden;border:1px solid rgba(212,175,55,.25);
+  background:#0d1525;pointer-events:auto;}
+.hero-foto img{display:block;width:100%;height:auto;}
+.hero-foto figcaption{padding:10px 14px;font-size:.95rem;line-height:1.45;color:#cbd5e1;}
+@media(min-width:1000px){
+  .hero-in:has(.hero-foto) > h1,.hero-in:has(.hero-foto) > p,.hero-in:has(.hero-foto) .hero-badges{max-width:calc(100% - min(34vw,420px) - 48px);}
+  .hero-in:has(.hero-foto) > h1{font-size:clamp(2.2rem,4.6vw,3.9rem);}
+  .hero-foto{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:min(34vw,420px);margin:0;
+    box-shadow:0 18px 50px rgba(0,0,0,.55);}
+}
 
 /* Visor */
 .gal-visor{width:min(1200px,96vw);max-height:94vh;padding:0;border:0;border-radius:14px;background:#050505;color:#e2e8f0;overflow:visible;}
@@ -34,7 +47,7 @@
 .gal-visor .gal-next{right:10px;top:calc(50% - 40px);}
 .gal-visor button:focus-visible{outline:2px solid #00d2ff;outline-offset:2px;}
 @media(max-width:600px){
-  .gal-real figure{flex-basis:100%;}
+  .gal-real figure{flex-basis:100%;max-width:none;}
   .gal-visor figcaption{padding:10px 14px 12px;font-size:.92rem;}
   .gal-visor .gal-prev,.gal-visor .gal-next{top:auto;bottom:-56px;}
   .gal-visor .gal-prev{left:calc(50% - 54px);}
