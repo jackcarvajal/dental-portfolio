@@ -39,7 +39,11 @@
             'resina_ferulas_guias': [
                 { id: 'ferula_descarga',   nom: 'Férula Miorrelajante / Descarga Rígida',  subtitulo: 'Bruxismo / Splint', precio: 75000, fastReady: true, icon: '🛡️', info: '<strong>Biocompatibilidad Clase IIa</strong> - Alta resistencia al desgaste, totalmente cristalina. No esterilizar en autoclave > 121°C.' },
                 { id: 'ferula_quirurgica', nom: 'Guía Quirúrgica de Alta Precisión',        subtitulo: 'Implantes / Cirugía', precio: 0, cotizar: true, icon: '🎯', info: '<strong>Precisión Micrométrica</strong> - Transparente, biocompatible Clase IIa. Solo producimos el archivo recibido — el ajuste y resultado final dependen del diseño original.' },
-                { id: 'ferula_cubeta',     nom: 'Cubeta Individual de Impresión',           subtitulo: 'Impresión Definitiva', precio: 45000, fastReady: true, icon: '🥄', info: '<strong>Ajuste Anatómico Perfecto</strong> - Diseñada sobre modelo primario. Reduce gasto de silicona y mejora fidelidad en casos complejos.' }
+                { id: 'ferula_cubeta',     nom: 'Cubeta Individual de Impresión',           subtitulo: 'Impresión Definitiva', precio: 45000, fastReady: true, icon: '🥄', info: '<strong>Ajuste Anatómico Perfecto</strong> - Diseñada sobre modelo primario. Reduce gasto de silicona y mejora fidelidad en casos complejos.' },
+                // Alineadores impresos (24-nov-2026, Alejandro): terminados, por arcada y por etapa
+                { id: 'ali_impreso',   nom: 'Alineador Terminado',           subtitulo: 'Por arcada y por etapa', precio: 55000, icon: '😁', info: '<strong>Listo para entregar</strong> - Modelo impreso, lámina, termoformado, recorte y pulido. Envía el STL de cada etapa o pide la planificación.' },
+                { id: 'ali_plantilla', nom: 'Plantilla de Attachments',      subtitulo: 'Por arcada', precio: 35000, icon: '📍', info: '<strong>Para cementar los attachments</strong> - Lámina blanda sobre el modelo con los attachments del plan.' },
+                { id: 'ali_retenedor', nom: 'Retenedor Final (tipo Essix)',  subtitulo: 'Por arcada', precio: 55000, icon: '🛡️', info: '<strong>Contención al terminar</strong> - Retenedor transparente termoformado sobre el modelo de la última etapa.' }
             ]
         };
 
@@ -49,7 +53,7 @@
                 'resina_temporal': { nom: 'Temporales', desc: 'Provisionales y Prototipos' },
                 'resina_definitiva': { nom: 'Definitivas', desc: 'Carga Cerámica Alta Gama' },
                 'resina_calcinable': { nom: 'Calcinables', desc: 'Para Inyección / Fundición' },
-                'resina_ferulas_guias': { nom: 'Férulas y Guías', desc: 'Quirúrgicas y Splint' },
+                'resina_ferulas_guias': { nom: 'Férulas, Guías y Alineadores', desc: 'Splint, quirúrgicas y alineadores' },
                 'resina_biomodelos': { nom: 'Biomodelos', desc: 'Anatomía Ósea' }
             },
             precios_extras: {
@@ -466,7 +470,7 @@
                 resina_temporal: { titulo: "Temporales, Prototipos, JIG de Verificación y Rodetes", icono: "fa-hourglass-half", clase: "icon-temporales" },
                 resina_definitiva: { titulo: "Resinas Definitivas (Carga Cerámica)", icono: "fa-gem", clase: "icon-definitivas" },
                 resina_calcinable: { titulo: "Resinas Calcinables (Inyección / Fundición)", icono: "fa-fire", clase: "icon-calcinables" },
-                resina_ferulas_guias: { titulo: "Férulas y Guías Quirúrgicas", icono: "fa-crosshairs", clase: "icon-ferulas" },
+                resina_ferulas_guias: { titulo: "Férulas, Guías Quirúrgicas y Alineadores", icono: "fa-crosshairs", clase: "icon-ferulas" },
                 resina_biomodelos: { titulo: "Biomodelos Anatómicos", icono: "fa-bone", clase: "icon-biomodelos" }
             };
 

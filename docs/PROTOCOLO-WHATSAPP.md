@@ -142,6 +142,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Férula | $35.000 |
 | Escaneo de modelo en el laboratorio | $15.000 · con implantes $20.000 |
 | Alineadores · planificación, caso completo (ambas arcadas) | **$250.000**: $50.000 de viabilidad primero (si no sigue, es lo único) + $200.000 al aprobar |
+| Alineadores impresos (fabricación, solo Colombia) | **$55.000** por alineador terminado (arcada y etapa) · plantilla de attachments $35.000 por arcada · retenedor Essix $55.000 por arcada |
 | Express (desde 2 h hábiles) | +$20.000 |
 
 ### Diseño CAD remoto (USD · clientes del exterior)
