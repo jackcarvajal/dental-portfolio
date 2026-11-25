@@ -14,6 +14,7 @@
 - ✅ Alejandro pidió usar el video promocional del escáner (YouTube b8YoKAph-tU, canal oficial @Aidite). Se **incrusta** (no se descarga ni se re-sube: eso necesitaría permiso de Aidite) debajo de las cifras del equipo, como fachada ligera: miniatura `maxresdefault` con `loading="lazy"` y el iframe de youtube.com solo se crea al dar play (sin JS abre YouTube en otra pestaña). Rótulo «Video del fabricante (Aidite)».
 - `_headers`: `img-src` + `https://i.ytimg.com` (la miniatura); `frame-src` ya tenía youtube.com. SW `prodigy-v49` (la página está precacheada) + MAP.md.
 - 💡 El escáner llega ~25-nov: con video propio de una visita real se puede reemplazar o sumar a este.
+- ✅ (2.ª vuelta, pedido de Alejandro: «quitar botones de YouTube para que no salgan de la página») — reproductor con `controls=0`, controles propios (pausa/play con clic, sonido, pantalla completa, barra de avance) por la API de YouTube vía postMessage (sin cargar `iframe_api`, que el 2.º CSP bloquearía) y una capa encima que tapa título, logo y sugeridos. Si el navegador no deja sonar, arranca en silencio con botón «Activar sonido». Al terminar vuelve la portada (sin pantalla final de YouTube). Sin enlace a youtube.com. SW `prodigy-v50`.
 
 ## 2026-11-24 (h) — Precios de diseño para Colombia (tabla aprobada), escaneo de modelos y fuera «15 min»
 

@@ -204,7 +204,19 @@
 .yt-play{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;
   background:rgba(5,5,5,.72);border:2px solid rgba(255,255,255,.85);display:flex;align-items:center;
   justify-content:center;transition:transform .2s;}
-.yt-fachada:hover .yt-play,.yt-fachada:focus-visible .yt-play{transform:scale(1.08);}
+.yt-portada{position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;background:none;cursor:pointer;}
+.yt-portada:hover .yt-play,.yt-portada:focus-visible .yt-play{transform:scale(1.08);}
+/* Capa sobre el reproductor: tapa título, logo y sugeridos de YouTube; clic = pausa/reproduce */
+.yt-escudo{position:absolute;inset:0;z-index:2;width:100%;height:100%;padding:0;border:0;background:transparent;cursor:pointer;}
+.yt-escudo .yt-play{display:none;}
+.yt-escudo.pausado{background:rgba(0,0,0,.6);}
+.yt-escudo.pausado .yt-play{display:flex;}
+.yt-barra{position:absolute;right:0;bottom:6px;z-index:3;display:flex;gap:8px;padding:10px;}
+.yt-btn{height:40px;min-width:40px;padding:0 10px;border-radius:20px;border:1px solid rgba(255,255,255,.5);
+  background:rgba(5,5,5,.72);color:#fff;font-family:inherit;font-size:.85rem;font-weight:600;line-height:1;
+  cursor:pointer;display:flex;align-items:center;gap:6px;}
+.yt-btn.yt-mudo{border-color:var(--cyan);}
+.yt-progreso{position:absolute;left:0;bottom:0;z-index:3;height:3px;width:0;background:var(--cyan);transition:width .3s linear;}
 .yt-nota{color:var(--muted);font-size:.9rem;margin-top:10px;}
 
 /* ── PRECIOS ── */
@@ -479,28 +491,101 @@
                 <div style="color:var(--muted);font-size:.86rem;margin-top:6px">Puntas esterilizables<br>(hasta 100 ciclos)</div>
             </div>
         </div>
-        <!-- Video oficial de Aidite: fachada ligera, YouTube solo se carga al dar play -->
-        <a href="https://www.youtube.com/watch?v=b8YoKAph-tU" id="ytAidite" class="yt-fachada" target="_blank" rel="noopener" aria-label="Ver el video del escáner Aidite Rapid 5">
-            <img src="https://i.ytimg.com/vi/b8YoKAph-tU/maxresdefault.jpg" alt="Escáner intraoral Aidite Rapid 5 en uso" width="1280" height="720" loading="lazy" decoding="async">
-            <span class="yt-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
-        </a>
-        <p class="yt-nota">Video del fabricante (Aidite). Se carga solo cuando lo reproduces.</p>
+        <!-- Video oficial de Aidite. Sin botones de YouTube: controles propios y una capa encima del
+             reproductor que bloquea el título, el logo y los videos sugeridos (nadie sale de la página). -->
+        <div class="yt-fachada" id="ytAidite">
+            <button type="button" class="yt-portada" aria-label="Reproducir el video del escáner Aidite Rapid 5">
+                <img src="https://i.ytimg.com/vi/b8YoKAph-tU/maxresdefault.jpg" alt="Escáner intraoral Aidite Rapid 5" width="1280" height="720" loading="lazy" decoding="async">
+                <span class="yt-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
+            </button>
+        </div>
+        <p class="yt-nota">Video del fabricante (Aidite).</p>
         <script>
         (function(){
-            var a = document.getElementById('ytAidite');
-            if (!a) return;
-            a.addEventListener('click', function(e){
-                e.preventDefault();
-                var box = document.createElement('div');
-                box.className = 'yt-fachada';
+            var box = document.getElementById('ytAidite');
+            if (!box) return;
+            var ID = 'b8YoKAph-tU', YT = 'https://www.youtube.com', portadaHTML = box.innerHTML;
+            var SVG = function(d){ return '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#fff" d="' + d + '"/></svg>'; };
+            var I_PLAY = '<svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg>';
+            var I_SON = SVG('M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06A9 9 0 0 0 14 3.23z');
+            var I_MUDO = SVG('M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zM19 12c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.8 8.8 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a9 9 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z');
+            var I_FULL = SVG('M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z');
+
+            function boton(clase, etiqueta, icono){
+                var b = document.createElement('button');
+                b.type = 'button'; b.className = clase; b.setAttribute('aria-label', etiqueta); b.innerHTML = icono;
+                return b;
+            }
+
+            function iniciar(){
+                box.innerHTML = '';
                 var f = document.createElement('iframe');
-                f.src = 'https://www.youtube.com/embed/b8YoKAph-tU?autoplay=1&rel=0&playsinline=1';
+                f.src = YT + '/embed/' + ID + '?autoplay=1&controls=0&rel=0&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=' + encodeURIComponent(location.origin);
                 f.title = 'Aidite Rapid 5: video del fabricante';
-                f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-                f.allowFullscreen = true;
-                box.appendChild(f);
-                a.replaceWith(box);
-            });
+                f.allow = 'autoplay; encrypted-media; picture-in-picture';
+                f.setAttribute('tabindex', '-1');
+                var escudo = boton('yt-escudo', 'Pausar o reproducir el video', '<span class="yt-play">' + I_PLAY + '</span>');
+                var barra = document.createElement('div'); barra.className = 'yt-barra';
+                var bSon = boton('yt-btn', 'Activar o quitar el sonido', I_SON);
+                barra.appendChild(bSon);
+                var bFull = null;
+                if (document.fullscreenEnabled && box.requestFullscreen) { bFull = boton('yt-btn', 'Pantalla completa', I_FULL); barra.appendChild(bFull); }
+                var prog = document.createElement('div'); prog.className = 'yt-progreso';
+                box.appendChild(f); box.appendChild(escudo); box.appendChild(barra); box.appendChild(prog);
+
+                var estado = -1, mudo = false, dur = 0, conectado = false, intentos = 0;
+                function enviar(obj){ if (f.contentWindow) f.contentWindow.postMessage(JSON.stringify(obj), YT); }
+                function cmd(func, args){ enviar({ event: 'command', func: func, args: args || [], id: 1, channel: 'widget' }); }
+                function pintarSon(){
+                    bSon.innerHTML = mudo ? I_MUDO + '<span>Activar sonido</span>' : I_SON;
+                    bSon.classList.toggle('yt-mudo', mudo);
+                }
+                // Saludo con el reproductor (API de YouTube por postMessage, sin cargar scripts externos)
+                var saludo = setInterval(function(){
+                    if (conectado || ++intentos > 20) { clearInterval(saludo); return; }
+                    enviar({ event: 'listening', id: 1, channel: 'widget' });
+                }, 400);
+                function alMensaje(e){
+                    if (e.origin !== YT || e.source !== f.contentWindow) return;
+                    var d; try { d = JSON.parse(e.data); } catch (_) { return; }
+                    conectado = true;
+                    var info = (d && typeof d.info === 'object' && d.info) || {};
+                    var st = d.event === 'onStateChange' ? d.info : (typeof info.playerState === 'number' ? info.playerState : null);
+                    if (typeof info.duration === 'number' && info.duration > 0) dur = info.duration;
+                    if (typeof info.currentTime === 'number' && dur) prog.style.width = Math.min(100, info.currentTime / dur * 100) + '%';
+                    if (typeof info.muted === 'boolean' && info.muted !== mudo) { mudo = info.muted; pintarSon(); }
+                    if (typeof st === 'number') {
+                        estado = st;
+                        escudo.classList.toggle('pausado', st === 2);
+                        if (st === 0) terminar();
+                    }
+                }
+                window.addEventListener('message', alMensaje);
+                // Si el navegador no deja arrancar con sonido, arranca sin sonido y ofrece activarlo
+                setTimeout(function(){
+                    if (estado !== 1 && estado !== 3) { cmd('mute'); cmd('playVideo'); mudo = true; pintarSon(); }
+                }, 2500);
+                escudo.addEventListener('click', function(){
+                    if (estado === 1 || estado === 3) cmd('pauseVideo'); else cmd('playVideo');
+                });
+                bSon.addEventListener('click', function(){
+                    if (mudo) { cmd('unMute'); cmd('setVolume', [100]); mudo = false; } else { cmd('mute'); mudo = true; }
+                    pintarSon();
+                });
+                if (bFull) bFull.addEventListener('click', function(){
+                    if (document.fullscreenElement) document.exitFullscreen(); else box.requestFullscreen();
+                });
+                // Al terminar vuelve la portada (así no aparecen los videos sugeridos de YouTube)
+                function terminar(){
+                    window.removeEventListener('message', alMensaje);
+                    clearInterval(saludo);
+                    if (document.fullscreenElement) document.exitFullscreen();
+                    box.innerHTML = portadaHTML;
+                    enlazar();
+                }
+            }
+            function enlazar(){ box.querySelector('.yt-portada').addEventListener('click', iniciar); }
+            enlazar();
         })();
         </script>
     </div>
