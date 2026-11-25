@@ -864,7 +864,7 @@
       return '<a class="article-card" href="article?id='+encodeURIComponent(a.id)+'" data-cat="'+cat+'">' +
         '<div class="card-thumb">' +
           (typeof getArticleCover === 'function' && getArticleCover(a)
-            ? '<img src="'+encodeURI(getArticleCover(a))+'" alt="'+_jEscH(a.titulo)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"' +
+            ? '<img src="'+(function(u){ try { return encodeURI(decodeURI(u)); } catch(e) { return encodeURI(u); } })(getArticleCover(a))+'" alt="'+_jEscH(a.titulo)+'" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"' +
               (typeof getArticleCoverRespaldo === 'function' ? ' data-respaldo="'+_jEscH(getArticleCoverRespaldo(a))+'" onerror="if(this.dataset.respaldo&&this.src.indexOf(this.dataset.respaldo)<0){this.src=this.dataset.respaldo}else{this.onerror=null}"' : '') + '>'
             : '<div class="card-thumb-bg '+(a.grad||'grad-1')+'">'+_jEscH(a.emoji||'📄')+'</div>') +
           '<span class="chip cat-'+cat+'">'+label+'</span>' +

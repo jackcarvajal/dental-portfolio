@@ -36,7 +36,7 @@ const edge = spawn(EDGE, ['--headless=new', '--disable-gpu', '--no-first-run', '
 process.on('exit', () => { try { edge.kill(); } catch {} });
 await sleep(3500);
 
-let ws, id = 0; const pend = new Map(); let errs = [], net = [];
+let ws, id = 0; const pend = new Map(), urls = new Map(); let errs = [], net = [];
 const t = await (await fetch(`http://localhost:${CDP}/json`)).json();
 ws = new WebSocket(t.find(p => p.type === 'page').webSocketDebuggerUrl);
 ws.onmessage = e => {
@@ -46,7 +46,8 @@ ws.onmessage = e => {
     const r = d.params.response, ty = d.params.type;
     if (r.status >= 400 && /^(Image|Media|Font)$/.test(ty)) net.push(r.status + ' ' + ty + ' ' + r.url.replace(/\?.*/, '').slice(-80));
   }
-  if (d.method === 'Network.loadingFailed' && /^(Image|Media)$/.test(d.params.type) && !d.params.canceled) net.push('FALLÓ ' + d.params.type + ' ' + (d.params.errorText || ''));
+  if (d.method === 'Network.requestWillBeSent') { urls.set(d.params.requestId, d.params.request.url); if (urls.size > 3000) urls.clear(); }
+  if (d.method === 'Network.loadingFailed' && /^(Image|Media)$/.test(d.params.type) && !d.params.canceled) net.push('FALLÓ ' + d.params.type + ' ' + (d.params.errorText || '') + ' ' + String(urls.get(d.params.requestId) || '').replace(/\?.*/, '').slice(-80));
   if (d.id && pend.has(d.id)) { pend.get(d.id)(d.result); pend.delete(d.id); }
 };
 await new Promise(r => ws.onopen = r);
