@@ -48,29 +48,48 @@
 
   /* ── 2. Foto real del laboratorio en el hero (a la derecha en computador, debajo de los botones en el celular)
         + garantía junto al botón. 25-nov: fotos de assets/trabajos (las mismas de las galerías en producción). ── */
+  /* 25-nov (2.ª forma, pedido de Alejandro): foto horizontal y SIN cuadro. Dos variantes para comparar:
+     · por defecto «detrás»: la foto va detrás del texto y del efecto, como el robot de la portada, fundida con el negro;
+     · con ?foto=debajo: franja horizontal justo debajo del hero. La pastilla dorada de arriba cambia entre las dos. */
   var FOTO_SERVICIO = {
-    '/coronas-zirconio': ['coronas-posteriores-caracterizadas', 'Coronas posteriores hechas en PRODIGY, con fisuras caracterizadas a mano.', 'la corona', 'center'],
-    '/carillas': ['carillas-estratificadas', 'Carillas estratificadas hechas en PRODIGY.', 'la carilla', 'center 60%'],
-    '/coronas-sobre-implantes': ['coronas-con-implante-frontal', 'Coronas sobre dientes naturales y una sobre implante, hechas en PRODIGY.', 'la corona', 'center'],
-    '/rehabilitacion-sobre-implantes': ['full-arch-zirconia-barra', 'Arcada completa en zirconia con encía, hecha en PRODIGY.', 'la estructura', 'center']
+    '/coronas-zirconio': ['coronas-anteriores-1', 'Coronas anteriores hechas en PRODIGY.', 'la corona'],
+    '/carillas': ['carillas-estratificadas', 'Carillas estratificadas hechas en PRODIGY.', 'la carilla'],
+    '/coronas-sobre-implantes': ['coronas-con-implante-frontal', 'Coronas sobre dientes naturales y una sobre implante, hechas en PRODIGY.', 'la corona'],
+    '/rehabilitacion-sobre-implantes': ['full-arch-zirconia-barra', 'Arcada completa en zirconia con encía, hecha en PRODIGY.', 'la estructura']
   };
   if (FOTO_SERVICIO[ruta]) listo(function () {
     var cfg = FOTO_SERVICIO[ruta];
-    var fila = document.querySelector('.hero .cta-row'), badges = document.querySelector('.hero .hero-badges');
-    if (!fila) return;
-    css('.fx{margin:22px 0 0;border-radius:16px;overflow:hidden;border:1px solid rgba(212,175,55,.25);background:#0d1525;max-width:560px;pointer-events:auto}' +
-      '.fx img{display:block;width:100%;height:auto}.fx figcaption{padding:10px 14px;font:500 .95rem/1.45 Inter,system-ui,sans-serif;color:#cbd5e1}' +
-      '@media(min-width:1000px){.hero .hero-in{min-height:0}.hero .fx{position:absolute;right:20px;top:0;width:min(36vw,440px);margin:0;box-shadow:0 18px 50px rgba(0,0,0,.55)}' +
-      '.hero h1,.hero .hero-in > p,.hero .hero-badges,.hero .gx{max-width:calc(100% - min(36vw,440px) - 48px)}' +
-      '.hero h1{font-size:clamp(2.2rem,4.6vw,3.9rem)}}' +
-      '.gx{display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.22);font:500 .95rem/1.5 Inter,system-ui,sans-serif;color:#e2e8f0;max-width:560px}' +
-      '.gx i{color:#00FF41;margin-top:3px}.gx a{color:#00d2ff;font-weight:700}');
+    var hero = document.querySelector('header.hero'), fila = hero && hero.querySelector('.cta-row');
+    if (!hero || !fila) return;
+    var modo = /[?&]foto=debajo/.test(location.search) ? 'debajo' : 'detras';
+    var M_PC = 'linear-gradient(90deg,transparent 0,#000 40%),linear-gradient(180deg,transparent 0,#000 14%,#000 86%,transparent 100%)';
+    var M_CEL = 'linear-gradient(180deg,transparent 0,#000 10%,#000 52%,transparent 100%)';
+    css('.gx{display:flex;gap:10px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:rgba(0,255,65,.06);border:1px solid rgba(0,255,65,.22);font:500 .95rem/1.5 Inter,system-ui,sans-serif;color:#e2e8f0;max-width:560px}' +
+      '.gx i{color:#00FF41;margin-top:3px}.gx a{color:#00d2ff;font-weight:700}' +
+      '.fx-fondo{position:absolute;z-index:1;pointer-events:none;right:0;top:50%;transform:translateY(-50%);width:min(60vw,980px);' +
+      '-webkit-mask-image:' + M_PC + ';-webkit-mask-composite:source-in;mask-image:' + M_PC + ';mask-composite:intersect}' +
+      '.fx-fondo img{display:block;width:100%;height:auto}' +
+      '@media(max-width:999px){.fx-fondo{top:64px;transform:none;width:100%;-webkit-mask-image:' + M_CEL + ';mask-image:' + M_CEL + '}}' +
+      '.fx-franja{max-width:1140px;margin:0 auto;padding:30px 20px 6px}.fx-franja figure{margin:0}.fx-franja img{display:block;width:100%;height:auto;border-radius:14px}' +
+      '.fx-franja figcaption{margin-top:10px;text-align:center;font:500 .95rem/1.45 Inter,system-ui,sans-serif;color:#94a3b8}' +
+      '.fx-cambio{position:fixed;top:146px;right:12px;z-index:99999;background:#D4AF37;color:#111;font:800 12px/1.2 Inter,system-ui,sans-serif;padding:9px 13px;border-radius:999px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.45)}');
     var g = document.createElement('p'); g.className = 'gx';
     g.innerHTML = '<i class="fas fa-shield-halved" aria-hidden="true"></i><span><b>Garantía de producción:</b> si ' + cfg[2] + ' no coincide con el diseño que aprobaste (±20 µm), la reponemos en 24 h. <a href="/terminos-y-legal">Condiciones</a></span>';
     fila.after(g);
-    var f = document.createElement('figure'); f.className = 'fx';
-    f.innerHTML = '<img src="/assets/trabajos/' + cfg[0] + '-800.webp" alt="' + cfg[1] + '" fetchpriority="high"><figcaption>' + cfg[1] + '</figcaption>';
-    (badges || g).after(f);
+    var src = '/assets/trabajos/' + cfg[0] + '-1600.webp';
+    if (modo === 'detras') {
+      var d = document.createElement('div'); d.className = 'fx-fondo'; d.setAttribute('aria-hidden', 'true');
+      d.innerHTML = '<img src="' + src + '" alt="" fetchpriority="high">';
+      hero.insertBefore(d, hero.querySelector('.hero-in'));
+    } else {
+      var s = document.createElement('section'); s.className = 'fx-franja'; s.setAttribute('aria-label', 'Trabajo real');
+      s.innerHTML = '<figure><img src="' + src + '" alt="' + cfg[1] + '"><figcaption>' + cfg[1] + '</figcaption></figure>';
+      hero.after(s);
+    }
+    var sw = document.createElement('a'); sw.className = 'fx-cambio';
+    sw.href = ruta + (modo === 'detras' ? '?foto=debajo' : '');
+    sw.textContent = modo === 'detras' ? 'Ver la foto DEBAJO del hero →' : 'Ver la foto DETRÁS del texto →';
+    document.body.appendChild(sw);
   });
 
   /* ── 3. Flujo de diseño: primero el servicio, tus datos al final, tutorial a pedido ── */
