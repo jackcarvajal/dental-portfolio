@@ -9,6 +9,12 @@
 
 ---
 
+## 2026-11-24 (j) — Video oficial del Aidite Rapid 5 en /escaner-domicilio
+
+- ✅ Alejandro pidió usar el video promocional del escáner (YouTube b8YoKAph-tU, canal oficial @Aidite). Se **incrusta** (no se descarga ni se re-sube: eso necesitaría permiso de Aidite) debajo de las cifras del equipo, como fachada ligera: miniatura `maxresdefault` con `loading="lazy"` y el iframe de youtube.com solo se crea al dar play (sin JS abre YouTube en otra pestaña). Rótulo «Video del fabricante (Aidite)».
+- `_headers`: `img-src` + `https://i.ytimg.com` (la miniatura); `frame-src` ya tenía youtube.com. SW `prodigy-v49` (la página está precacheada) + MAP.md.
+- 💡 El escáner llega ~25-nov: con video propio de una visita real se puede reemplazar o sumar a este.
+
 ## 2026-11-24 (h) — Precios de diseño para Colombia (tabla aprobada), escaneo de modelos y fuera «15 min»
 
 - 💡 Tabla aprobada por Alejandro (solo diseño, pesos; referencia Sindekar): pieza cementada (corona, cofia, carilla, incrustación, póntico, endocrown) $30.000 · pieza con conexión a implante (corona sobre pilar personalizado, atornillada o pilar de aditamiento) $50.000 · pilar personalizado solo $25.000 · provisional $20.000 · encerado/mockup por diente $15.000 · barra $250.000 · sonrisa 3D $150.000 y férula $35.000 sin cambio. Vale igual para Alejandro en Colombia.
