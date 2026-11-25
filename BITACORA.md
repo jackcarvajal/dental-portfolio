@@ -26,6 +26,7 @@
 - Páginas: coronas-sobre-implantes (3), coronas-zirconio (3), carillas (3), rehabilitacion-sobre-implantes (6), guias-quirurgicas (5, dentro de «Casos realizados»), impresion-3d (prototipos + certificado Bambu Lab), diseno-cad (3 estructuras metal-cerámica). Sección nueva sin eyebrow, título centrado.
 - 🚫 No se usó el logo «PRODIGY CADCAM ACADEMY» (la academia es de Alejandro CAD/CAM y lleva corona).
 - SW `prodigy-v52` (diseno-cad y guias están precacheadas).
+- ✅ (2.ª vuelta) El mosaico por columnas dejaba una columna vacía con 3 fotos → filas centradas (flex) de miniaturas 4:3 (`object-fit:cover`; las verticales con `object-position` propio; la foto completa en el visor). +3 carillas/coronas inferiores (carillas) y +1 coronas posteriores caracterizadas (coronas-zirconio). CSS `?v=20261124b`, SW `prodigy-v53`.
 
 ## 2026-11-24 (m) — Alineadores en Colombia: $250.000 el caso ($50.000 + $200.000)
 

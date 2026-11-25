@@ -1,12 +1,13 @@
 /* Galería de trabajo real (fotos propias del laboratorio) + visor ampliado.
    Uso: <div class="gal-real"> con <figure><button class="gal-btn" data-grande="…-1600.webp"><img …-800.webp></button><figcaption>…</figcaption></figure>
-   El visor lo crea js/galeria-real.js. Columnas tipo mosaico: cada foto conserva su proporción (sin recortes). */
-.gal-real{max-width:1100px;margin:30px auto 0;columns:3 260px;column-gap:14px;text-align:left;}
-.gal-real.gal-n2{columns:2 280px;max-width:820px;}
-.gal-real figure{break-inside:avoid;display:inline-block;width:100%;margin:0 0 14px;background:#0b1220;
+   El visor lo crea js/galeria-real.js. Filas centradas de miniaturas 4:3 (la foto completa se ve en el visor;
+   para mover el encuadre de una miniatura: style="object-position:center 65%" en su <img>). */
+.gal-real{max-width:1100px;margin:30px auto 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;
+  gap:14px;text-align:left;}
+.gal-real figure{flex:0 1 340px;min-width:0;margin:0;background:#0b1220;
   border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;}
-.gal-real .gal-btn{display:block;width:100%;padding:0;margin:0;border:0;background:#000;cursor:zoom-in;}
-.gal-real img{display:block;width:100%;height:auto;transition:transform .35s ease;}
+.gal-real .gal-btn{display:block;width:100%;padding:0;margin:0;border:0;background:#000;cursor:zoom-in;overflow:hidden;}
+.gal-real img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;transition:transform .35s ease;}
 .gal-real .gal-btn:hover img,.gal-real .gal-btn:focus-visible img{transform:scale(1.03);}
 .gal-real .gal-btn:focus-visible{outline:2px solid #00d2ff;outline-offset:-2px;}
 .gal-real figcaption{padding:10px 14px 12px;font-size:.95rem;line-height:1.5;color:#cbd5e1;}
@@ -25,8 +26,7 @@
 .gal-visor .gal-next{right:10px;top:calc(50% - 40px);}
 .gal-visor button:focus-visible{outline:2px solid #00d2ff;outline-offset:2px;}
 @media(max-width:600px){
-  .gal-real{columns:1;}
-  .gal-real.gal-n2{columns:1;}
+  .gal-real figure{flex-basis:100%;}
   .gal-visor figcaption{padding:10px 14px 12px;font-size:.92rem;}
   .gal-visor .gal-prev,.gal-visor .gal-next{top:auto;bottom:-56px;}
   .gal-visor .gal-prev{left:calc(50% - 54px);}
