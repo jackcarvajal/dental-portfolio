@@ -83,6 +83,13 @@ const REVISAR = `(() => {
     if (im.naturalWidth > Math.max(1300, r.width * dpr * 2.6)) out.pesadas.push(src.slice(-70) + ' ' + im.naturalWidth + 'px para ' + Math.round(r.width) + 'px');
     if (r.right > W + 2 && !getComputedStyle(im.parentElement).overflow.match(/hidden|clip/)) out.fuera.push(src.slice(-70));
   }
+  // botones con el estilo por defecto del navegador (recuadro gris y letra Arial): les falta el «reset» de CSS
+  out.botones = [];
+  for (const b of document.querySelectorAll('button')) {
+    if (!visible(b)) continue;
+    const s = getComputedStyle(b), bg = s.backgroundColor;
+    if (/^rgb\\((107, 107, 107|239, 239, 239|240, 240, 240)\\)$/.test(bg) && (b.textContent || '').trim()) out.botones.push(corto(b) + ' «' + b.textContent.trim().slice(0, 40) + '»');
+  }
   for (const v of document.querySelectorAll('video')) {
     const src = (v.currentSrc || (v.querySelector('source') || {}).src || v.src || '').replace(location.origin, '');
     if (v.error) out.videos.push('ERROR ' + v.error.code + ' ' + src.slice(-60));
@@ -106,12 +113,12 @@ for (const vista of VISTAS) {
     let o = {}; try { o = JSON.parse(res.result.value); } catch { o = { error: 'no se pudo revisar' }; }
     o.js = [...new Set(errs)]; o.red = [...new Set(net)];
     const g = (o.overflow || []).length + (o.rotas || []).length + o.red.length + o.js.length + (o.videos || []).filter(v => v.startsWith('ERROR')).length + (o.fuera || []).length;
-    const leves = (o.sinAlt || []).length + (o.recortadas || []).length + (o.deformadas || []).length + (o.pesadas || []).length;
+    const leves = (o.sinAlt || []).length + (o.recortadas || []).length + (o.deformadas || []).length + (o.pesadas || []).length + (o.botones || []).length;
     if (g) graves++;
     informe.push({ vista: vista.nombre, ruta, ...o });
     const marca = g ? '\x1b[31m✗' : (leves ? '\x1b[33m·' : '\x1b[32m✓');
     const det = [];
-    for (const k of ['overflow', 'rotas', 'fuera', 'red', 'js', 'videos', 'recortadas', 'deformadas', 'pesadas', 'sinAlt']) if ((o[k] || []).length) det.push(k + ':' + o[k].length);
+    for (const k of ['overflow', 'rotas', 'fuera', 'red', 'js', 'videos', 'botones', 'recortadas', 'deformadas', 'pesadas', 'sinAlt']) if ((o[k] || []).length) det.push(k + ':' + o[k].length);
     console.log(`${marca} [${vista.nombre}] ${ruta}\x1b[0m ${det.join(' ')}`);
   }
 }
