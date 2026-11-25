@@ -38,6 +38,7 @@
 - `_headers`: `img-src` + `https://i.ytimg.com` (la miniatura); `frame-src` ya tenía youtube.com. SW `prodigy-v49` (la página está precacheada) + MAP.md.
 - 💡 El escáner llega ~25-nov: con video propio de una visita real se puede reemplazar o sumar a este.
 - ✅ (2.ª vuelta, pedido de Alejandro: «quitar botones de YouTube para que no salgan de la página») — reproductor con `controls=0`, controles propios (pausa/play con clic, sonido, pantalla completa, barra de avance) por la API de YouTube vía postMessage (sin cargar `iframe_api`, que el 2.º CSP bloquearía) y una capa encima que tapa título, logo y sugeridos. Si el navegador no deja sonar, arranca en silencio con botón «Activar sonido». Al terminar vuelve la portada (sin pantalla final de YouTube). Sin enlace a youtube.com. SW `prodigy-v50`.
+- ✅ (3.ª vuelta) **Subtítulos en español** propios (el video no trae pistas de subtítulos; solo textos en inglés en pantalla): 9 textos traducidos y sincronizados con el `currentTime` que manda el reproductor (tiempos medidos cuadro a cuadro), botón «CC» para ocultarlos. **Tarjeta final** «¿Quieres este escáner en tu consultorio?» con «Agenda tu escaneo» (→ `#agenda`) y «Ver de nuevo». SW `prodigy-v51`.
 
 ## 2026-11-24 (i) — Full Arch por unidad, encía y modelos con precio
 
