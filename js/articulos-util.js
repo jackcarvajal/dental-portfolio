@@ -44,8 +44,22 @@
     impresion3d: '/assets/journal/cover-impresion3d.svg', ia: '/assets/journal/cover-ia.svg',
     protocolo: '/assets/journal/cover-protocolo.svg', equipo: '/assets/journal/cover-equipo.svg'
   };
-  window.getArticleCover = function (article) {
-    if (article && article.og_img && String(article.og_img).trim()) return article.og_img;
+  /* Wikimedia (2025) solo sirve miniaturas en anchos estándar: 800px o 1200px responden 400 y la portada salía
+     rota. Se lleva al ancho estándar más cercano; si el archivo ya no existe, la tarjeta usa la portada de su
+     categoría (getArticleCoverRespaldo + onerror en journal.html y article.html). */
+  var WM_ANCHOS = [250, 330, 500, 960, 1280, 1920];
+  function anchoWikimedia(u) {
+    var m = /^(https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/thumb\/.+\/)(\d+)px-([^\/?#]+)(?:[?#].*)?$/.exec(u);
+    if (!m || WM_ANCHOS.indexOf(+m[2]) >= 0) return u;
+    var w = +m[2], std = WM_ANCHOS.filter(function (x) { return x >= Math.min(w, 960); })[0] || 1280;
+    return m[1] + std + 'px-' + m[3];
+  }
+  window.getArticleCoverRespaldo = function (article) {
     return PORTADAS[article && article.categoria] || '/assets/journal/cover-tecnologia.svg';
   };
+  window.getArticleCover = function (article) {
+    if (article && article.og_img && String(article.og_img).trim()) return anchoWikimedia(String(article.og_img).trim());
+    return window.getArticleCoverRespaldo(article);
+  };
+  window.arreglarImagenArticulo = anchoWikimedia;
 })();

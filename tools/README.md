@@ -10,6 +10,7 @@ IDs duplicados, enlaces rotos. Estas dos herramientas los detectan **antes** de 
 |---|---|---|---|
 | **1. Estática** (`audit.mjs`) | anon key desactualizada · IDs duplicados · enlaces internos rotos · SEO básico | Node puro, ~1s, sin navegador | **antes de cada `git push`** |
 | **2. Runtime** (`audit-live.mjs`) | errores JS de consola · llamadas Supabase/API 4xx · páginas vacías | headless Edge, ~3-4 min | **antes de cada deploy** / semanal |
+| **2c. Fotos, videos y pantalla** (`audit-media.mjs [--base URL] [--solo /ruta,/otra] [--json salida.json]`) | en la **web real**, a 1366×900 y 390×844: scroll horizontal y qué se sale · imágenes rotas, sin alt, recortadas (`cover` con otra proporción), deformadas o demasiado pesadas · videos que no cargan o sin póster · 4xx/ORB de imágenes, videos y fuentes · errores JS | headless Edge, ~15 min las 102 páginas | tras subir fotos/videos o tocar layouts; mensual |
 | **3. Backend/BD** (`audit-schema.mjs`) | contrato front↔BD: **columnas/tablas que el código usa y no existen** (schema drift), RPCs, redundancia | Node puro; validar necesita el esquema real | al tocar BD / periódico |
 | **3b. Backend/BD en vivo** (`audit-schema-live.mjs`) | igual pero **contra la base REAL** (columnas/RPCs/valores de enum inexistentes) — sin snapshot | Node + red, ~10s | **en cada `git push`** (hook) |
 | **3c. Gobernanza SQL** (`sql-map.mjs`) | código↔repo: RPC **duplicadas** en varios .sql, opacas (solo desplegadas), definiciones sin uso | Node puro, ~1s | al ordenar el `sql/` |

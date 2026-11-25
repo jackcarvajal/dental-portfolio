@@ -62,8 +62,10 @@
 
     /* ── LAYOUT ── */
     .page-wrap{max-width:1100px;margin:0 auto;padding:40px 24px 80px;
-      display:grid;grid-template-columns:1fr 300px;gap:48px;position:relative;z-index:1;}
-    @media(max-width:820px){.page-wrap{grid-template-columns:1fr;}}
+      display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:48px;position:relative;z-index:1;}
+    /* minmax(0,1fr): con «1fr» a secas una foto o tabla ancha estiraba la columna a 643 px en un celular de
+       390 px y el título y el texto quedaban cortados a la derecha (auditoría de medios, 25-nov-2026). */
+    @media(max-width:820px){.page-wrap{grid-template-columns:minmax(0,1fr);}}
 
     /* ── HERO ── */
     .hero{margin-bottom:32px;}
@@ -94,7 +96,10 @@
     .article-cover.is-ph{display:flex;align-items:center;justify-content:center;border:1px dashed rgba(212,175,55,.3);background:linear-gradient(135deg,rgba(212,175,55,.05),rgba(0,210,255,.04));}
 
     /* ── CONTENT ── */
-    .article-body{color:var(--text2);}
+    .article-body{color:var(--text2);overflow-wrap:break-word;}
+.article-body img,.article-body video,.article-body iframe{max-width:100%;height:auto;}
+.article-body table{display:block;max-width:100%;overflow-x:auto;}
+.article-body pre{max-width:100%;overflow-x:auto;}
     .article-body h2{color:var(--text);font-size:1.3rem;font-weight:800;
       margin:36px 0 12px;padding-left:14px;
       border-left:3px solid var(--magenta);}
@@ -305,7 +310,7 @@ html,body{overflow-x:clip;}
 </div>
 
 <script src="articles.js?v=20261122c"></script>
-<script src="js/articulos-util.js?v=20261002"></script>
+<script src="js/articulos-util.js?v=20261125a"></script>
 <script>
 const CAT_CLASS = {ia:'chip-ia', material:'chip-material', protocolo:'chip-protocolo', equipo:'chip-equipo'};
 const CAT_LABEL = {ia:'IA', material:'Materiales', protocolo:'Protocolo', equipo:'Equipos'};
@@ -510,7 +515,8 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
   /* Artículos con captura de Exocad pendiente */
   const EXOCAD_PENDING = ['ia-exocad-cad-cam','3shape-automate-revision','margenes-digitales-exocad-tecnica-correcta','exocad-atajos-teclado-productividad-2026','occlusion-digital-articulador-virtual-exocad','workflow-carillas-emax-exocad-protocolo-completo','diseno-cad-principiantes-exocad-desde-cero','errores-comunes-exocad-como-resolverlos','exocad-vs-3shape-carillas-2026','full-arch-rehabilitacion-digital-protocolo-prodigy','flujo-100-digital-sin-yeso-cad-cam','abutments-cad-titanio-zirconia-cuando-cada-uno'];
 
-  const imgSrc    = art.og_img || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].src : null);
+  const imgSrcBase = art.og_img || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].src : null);
+  const imgSrc    = (imgSrcBase && typeof arreglarImagenArticulo === 'function') ? arreglarImagenArticulo(imgSrcBase) : imgSrcBase;
   const imgCredit = art.img_credit || (CAT_IMGS[art.categoria] && !EXOCAD_PENDING.includes(art.id) ? CAT_IMGS[art.categoria].credit : null);
 
   /* Portada → va en el slot RESERVADO #article-cover (espacio apartado en el 1er pintado,
@@ -522,7 +528,17 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
     coverImg.alt = art.titulo;
     coverImg.loading = 'eager';
     coverImg.fetchPriority = 'high';
-    coverImg.onerror = function(){ coverSlot.remove(); };
+    // Si la portada no carga (miniaturas de Wikimedia retiradas o con un ancho que ya no sirven), se usa la
+    // portada de la categoría en el mismo espacio (sin salto); solo si esa tampoco carga se quita el espacio.
+    coverImg.onerror = function(){
+      const respaldo = (typeof getArticleCoverRespaldo === 'function') ? getArticleCoverRespaldo(art) : '';
+      if (respaldo && !coverImg.dataset.respaldo) {
+        coverImg.dataset.respaldo = '1';
+        coverImg.src = respaldo;
+        const cred = coverSlot.nextElementSibling;
+        if (cred && cred.textContent.indexOf('📷') === 0) cred.remove();
+      } else coverSlot.remove();
+    };
     coverSlot.appendChild(coverImg);
     if (imgCredit) {
       const cap = document.createElement('p');

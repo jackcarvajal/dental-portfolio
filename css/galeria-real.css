@@ -27,6 +27,8 @@
   background:#0d1525;pointer-events:auto;}
 .hero-foto img{display:block;width:100%;height:auto;}
 .hero-foto figcaption{padding:10px 14px;font-size:.95rem;line-height:1.45;color:#cbd5e1;}
+/* En el celular el aviso «Mueve el cursor sobre la forma» quedaba encima del pie de la foto */
+@media(max-width:999px){.hero:has(.hero-foto) .hero-hint{display:none;}}
 @media(min-width:1000px){
   .hero-in:has(.hero-foto) > h1,.hero-in:has(.hero-foto) > p,.hero-in:has(.hero-foto) .hero-badges{max-width:calc(100% - min(34vw,420px) - 48px);}
   .hero-in:has(.hero-foto) > h1{font-size:clamp(2.2rem,4.6vw,3.9rem);}
