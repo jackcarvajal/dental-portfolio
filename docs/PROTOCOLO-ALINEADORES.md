@@ -52,7 +52,7 @@ Cada caso genera hasta 2 cargos: uno que **cobro al cliente** y otro que **pago 
 - Cobro: **PayPal**, sumando **12 % de comisión** acordado (ej. US$90 → US$100,80). Global66 se les ofreció (8-jun-2026) pero **no quisieron** → descartado. El 12 % no quedó en el texto del chat (quizá nota de voz): conviene confirmarlo por escrito.
 - Cómo pagan (historial de WhatsApp): el cliente arma el reporte desde el último paciente del reporte anterior; su departamento de pagos lo autoriza (tarda semanas). Pagado hasta **mayo 2026** (confirmado 7-ago). Una valoración de un caso NO viable se cobra igual (confirmado 12-ago, Naomi Severino).
 
-**PROPUESTA de alza (enviada al cliente, PENDIENTE de aprobación — NO aplicar hasta que confirmen):**
+**PROPUESTA de alza — DESCARTADA (24-nov-2026): Alejandro deja afuera $90/$30 para captar clientes («si no nos conocen, no competimos»). Es también el precio público en /en/.**
 - Valoración **$40** · Caso completo **$120** · Replaneación **$25/$50** · Refinamiento **$50**.
 - Motivo: el dólar cayó de ~3.880 a ~3.180 (sep-2026) → el margen se comprimió ~31%. El precio $90 no es sostenible más allá de **nov-2026**.
 - Al aprobarse: actualizar el trigger/RPC en `sql/alineadores-mayra-panel-2026.sql` y `PRECIOS` en `app/alineadores.html`. Revisión trimestral + cláusula piso: si USD/COP < 3.300, recalcular con `(margen_objetivo_COP + costo_Mayra_COP) ÷ tasa`.

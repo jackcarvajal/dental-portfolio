@@ -158,7 +158,7 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 | Guía quirúrgica | USD 60 | 48 h |
 | Guía compleja 4+ | USD 90 | 48 h |
 | Barra sobre implantes | USD 150 | 48–72 h |
-| Alineadores · planificación ambas arcadas + STL por etapa | USD 150 (30 + 120, ver abajo) | 48–72 h |
+| Alineadores · planificación ambas arcadas + STL por etapa | USD 90 el caso (30 + 60, ver abajo) | 48–72 h |
 | DSD / Smile Design | USD 80 | 48 h |
 | Full Arch / híbrida (por unidad) | USD 12 c/u (+ barra USD 150 por arcada) | 48–72 h |
 
@@ -175,10 +175,10 @@ La misma del flujo de diseño y de la calculadora (salen del catálogo). Solo di
 
 > **Alineadores — pago en 2 partes (aplica también a cliente nuevo, excepción a la regla del 100%):**
 > 1. **USD 30 — viabilidad y valoración**, es lo primero que se paga. Si el caso no se ejecuta, es lo único que se cobra.
-> 2. **USD 120 restantes** al aprobar la planeación; con ese pago se envían los modelos (STL de cada etapa, reporte IPR y plantilla de attachments).
+> 2. **USD 60 restantes** al aprobar la planeación (caso completo = USD 90); con ese pago se envían los modelos (STL de cada etapa, reporte IPR y plantilla de attachments).
 >
 > Incluye 1 ronda de ajustes a la planeación. Extracciones o tratamientos muy largos: se confirma al ver el caso.
-> Precio por volumen: lo decide Alejandro (piso USD 90). Se pide: STL ambas arcadas + mordida, panorámica, lateral y fotos.
+> USD 90 es el precio para captar clientes en el exterior (Alejandro, 24-nov-2026); por volumen, lo decide Alejandro. Se pide: STL ambas arcadas + mordida, panorámica, lateral y fotos.
 
 ### Prototipo de prueba (antes del trabajo final)
 Antes de pasar al trabajo definitivo ofrecemos un **prototipo de prueba** para validar estética,

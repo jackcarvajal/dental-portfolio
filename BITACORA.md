@@ -9,6 +9,13 @@
 
 ---
 
+## 2026-11-24 (l) — Alineadores afuera: US$90 el caso (US$30 + US$60)
+
+- 💡 Alejandro (24-nov): alineadores AFUERA = US$90 el caso completo (ambas arcadas), US$30 de viabilidad primero (si no se ejecuta, es lo único) y US$60 al aprobar — «queremos captar clientes; si no nos conocen, no competimos». Es lo que ya paga Panorámica: la propuesta de alza 120/40 queda DESCARTADA (docs/PROTOCOLO-ALINEADORES.md).
+- PRODIGY /en/ (dental-aligners, global-design, surgical-guides, zirconia-crowns): $120 → $90 y «$150 total» → «$90 per case» (tarjeta, JSON-LD y meta). Alejandro /en/clear-aligners: «$100 per arch» → «$90 per case, both arches» (meta, JSON-LD, FAQ, tarjetas). Flujo de Alejandro y las dos calculadoras: US$90 caso completo. Protocolo WhatsApp: 30 + 60. SW prodigy-v49.
+- 🟡 sql/catalogo-alineadores-usd-2026.sql (setup_orto precio_usd 90) pendiente de correr; hasta entonces la calculadora y el flujo de Alejandro siguen mostrando US$100. Pesos de Colombia sin cambio (pendiente de decidir).
+- Referencia de mercado (solo diseño): OrthoAlign desde US$35, AlignerBase US$59, clear-aligners.guru ≈US$175, LabPronto US$89 por arcada; los laboratorios completos (con alineadores fabricados) cobran US$1.000–3.000 el caso.
+
 ## 2026-11-24 (k) — Encía por diente, dólares en un solo criterio, bot en pesos para Colombia y CSP de YouTube
 
 - ✅ SQL de Full Arch/encía/modelos CORRIDO (7 filas bien) y publicado solo por el vigilante (03:12 UTC). Maryland: por unidad US$12 / $30.000 c/u como unidad cementada (Alejandro: «depende de las unidades»), en calculadoras y protocolo.
