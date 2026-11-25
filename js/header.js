@@ -625,6 +625,8 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
     '@media(min-width:1261px) and (max-width:1340px){.pnav2-theme-btn,.pnav2-ia-btn{display:none!important;}.pnav2-left,.pnav2-right{gap:10px;}.pnav2-logo{padding:0 14px;}.pnav2-left>a,.pnav2-right>a,.pnav2-dd-btn{font-size:12.5px;letter-spacing:.5px;}.pnav2-ped-btn{padding-left:16px;padding-right:16px;}}',
     '@media(max-width:1260px){.pnav2-left>a:not(.pnav2-dd *){display:none;}.pnav2-right>a{display:none;}.pnav2-ham{display:block!important;}.pnav2-right{justify-content:flex-end!important;}}',
     ':focus-visible{outline:2px solid #D946A6;outline-offset:2px;border-radius:3px;}',
+    '@media(max-width:480px){#pheader-v2{top:46px;}}',
+    '@media(max-width:768px){#nav-topbar{transition:transform .25s ease;}#pheader-v2{transition:box-shadow .3s,top .25s ease;}html.tb-oculta #nav-topbar{transform:translateY(-100%);}html.tb-oculta #pheader-v2{top:0!important;}#scrollToTop,.scroll-to-top,#scroll-top-btn{display:none!important;}}',
   ].join('');
 
   var st = document.createElement('style');
@@ -1747,4 +1749,18 @@ if (location.pathname.indexOf('/app/') !== 0) { (function () { var s = document.
   st.id = 'legible-css';
   st.textContent = css;
   (document.head || document.documentElement).appendChild(st);
+})();
+
+/* Celular (25-nov-2026): la franja de Acceso/Registro se esconde al bajar y vuelve al subir; así el menú ocupa menos pantalla. */
+(function () {
+  var ult = window.scrollY || 0, raf = 0;
+  function revisar() {
+    raf = 0;
+    var y = window.scrollY || 0, h = document.documentElement;
+    if (window.innerWidth > 768 || y <= 160) h.classList.remove('tb-oculta');
+    else if (y > ult + 6) h.classList.add('tb-oculta');
+    else if (y < ult - 6) h.classList.remove('tb-oculta');
+    ult = y;
+  }
+  window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(revisar); }, { passive: true });
 })();

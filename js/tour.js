@@ -139,6 +139,8 @@
     + 'border:1px solid rgba(212,175,55,.4);color:#D4AF37;border-radius:100px;padding:8px 15px;'
     + 'font-size:.76rem;font-weight:700;cursor:pointer;font-family:inherit;}'
     + '@media(max-width:640px){#tr-card{max-width:calc(100vw - 28px);left:14px!important;right:14px;}}'
+    /* Celular (25-nov-2026): solo el ícono, más arriba, para no tapar el formulario ni los otros botones */
+    + '@media(max-width:640px){#tr-replay{font-size:0;width:44px;height:44px;padding:0;right:12px;bottom:140px;display:flex;align-items:center;justify-content:center;}#tr-replay::before{content:"↺";font-size:1.25rem;}}'
     + '@media(prefers-reduced-motion:reduce){#tr-mask,#tr-ring,#tr-card{transition:none;}}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
 
@@ -225,6 +227,7 @@
     b.id = 'tr-replay'; b.type = 'button';
     b.textContent = '↺ Ver tutorial';
     b.setAttribute('data-tip', 'Vuelve a mostrar el recorrido guiado de esta pantalla.');
+    b.setAttribute('aria-label', 'Ver tutorial');
     b.addEventListener('click', abrir);
     document.body.appendChild(b);
   }
