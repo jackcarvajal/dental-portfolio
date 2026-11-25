@@ -102,7 +102,7 @@ footer{border-top:1px solid rgba(255,255,255,.05);padding:28px 24px;text-align:c
 <script src="js/header.js?v=20261125b"></script>
 <main id="main-content">
 
-<section class="hero">
+<section class="hero" data-hero-fx="cintas">
   <div class="badge"><i class="fas fa-tooth"></i> Alineadores · Ortodoncia digital</div>
   <h1>Envía tu caso de <span class="hl">alineadores</span>.<br>Nosotros planificamos.</h1>
   <p class="hero-sub">Sube el STL, las radiografías, la indicación y las fotos. Te devolvemos la planificación / setup. Clínicas con convenio: <strong style="color:var(--text)">facturación mensual por corte de casos</strong>.</p>
@@ -372,5 +372,6 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catc
 <script>let _pubT;function pubToast(m){const e=document.getElementById('_pub-toast');e.textContent=m;e.style.opacity='1';clearTimeout(_pubT);_pubT=setTimeout(()=>{e.style.opacity='0';},3800);}</script>
 <noscript><p style="text-align:center;padding:2rem">Activa JavaScript o <a href="https://wa.me/573212816716" rel="noopener noreferrer">escríbenos por WhatsApp</a>.</p></noscript>
 <script src="js/recepcion-24h.js?v=20261119b" data-texto="Puedes subir archivos y enviar tu caso a cualquier hora, todos los días. Si llega antes de las 5:00 PM (hora Colombia) entra en el turno del día; si no, empieza el siguiente día hábil. Los tiempos de entrega se cuentan desde ese inicio." defer></script>
+<script src="js/hero-animado.js?v=20261125a" defer></script>
 </body>
 </html>

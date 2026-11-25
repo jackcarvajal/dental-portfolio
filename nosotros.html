@@ -224,7 +224,7 @@
 <main id="main-content">
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" data-hero-fx="cintas">
   <style>.hero{position:relative}.hero>*:not([data-bg-paths]){position:relative;z-index:1}</style>
   <div data-bg-paths style="color:#00d2ff"></div>
   <div class="hero-inner">
@@ -939,6 +939,7 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catc
     </div>
     <script>(function(){function t(){var l=document.body.classList.toggle('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent=l?'☀️':'🌙';sessionStorage.setItem('theme',l?'light':'dark');}window.toggleTheme=t;if(sessionStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}window.addEventListener('scroll',function(){var s=document.getElementById('scroll-top-btn');if(s)s.classList.toggle('visible',window.scrollY>400);});})();</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo trabajar con PRODIGY Lab Dental","description":"Proceso para comenzar a enviar casos a PRODIGY desde tu clínica o consultorio dental.","step":[{"@type":"HowToStep","position":1,"name":"Crea tu cuenta gratuita","text":"Regístrate en el portal con tu email clínico. El onboarding toma menos de 5 minutos."},{"@type":"HowToStep","position":2,"name":"Envía tu primer caso","text":"Sube el escaneado intraoral y la orden clínica. Recibes cotización en minutos."},{"@type":"HowToStep","position":3,"name":"Aprueba el diseño","text":"Revisas la vista previa del diseño CAD. Un clic para aprobarlo o solicitar ajustes."},{"@type":"HowToStep","position":4,"name":"Recibe el resultado","text":"Descarga el STL desde tu portal o recibe la pieza fresada/impresa en tu clínica."}]}</script>
+<script src="js/hero-animado.js?v=20261125a" defer></script>
 </body>
 </html>
 

@@ -181,7 +181,7 @@
 <main id="main-content">
 
 <!-- HERO -->
-<div class="hero sr">
+<div class="hero sr" data-hero-fx="particulas">
   <!-- Robot del asistente IA (js/robot-ia.js): sigue el cursor; al tocarlo abre el chat -->
   <button type="button" class="robot-ia" data-robot-ia data-pantalla="#00d2ff" data-antena="#D946A6" data-corazon="#D946A6" aria-label="Abrir asistente IA" title="Hola, soy el asistente IA · tócame"></button>
   <script src="js/robot-ia.js?v=20261008" defer></script>
@@ -478,6 +478,7 @@ if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catc
     </div>
     <script>(function(){function t(){var l=document.body.classList.toggle('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent=l?'☀️':'🌙';sessionStorage.setItem('theme',l?'light':'dark');}window.toggleTheme=t;if(sessionStorage.getItem('theme')==='light'){document.body.classList.add('light-mode');var b=document.getElementById('theme-btn');if(b)b.textContent='☀️';}window.addEventListener('scroll',function(){var s=document.getElementById('scroll-top-btn');if(s)s.classList.toggle('visible',window.scrollY>400);});})();</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Cómo abrir un ticket de soporte en PRODIGY","description":"Pasos para reportar un problema o solicitar ayuda técnica en la plataforma PRODIGY Lab Dental.","step":[{"@type":"HowToStep","position":1,"name":"Describe tu caso","text":"Completa el formulario de soporte con tu nombre, el asunto y una descripción detallada del problema o consulta."},{"@type":"HowToStep","position":2,"name":"Envía el ticket","text":"El sistema registra tu ticket en nuestra base de datos y lo asigna automáticamente al equipo de soporte."},{"@type":"HowToStep","position":3,"name":"Recibe respuesta","text":"Te contactamos por WhatsApp o email en un plazo máximo de 2 horas hábiles."}]}</script>
+<script src="js/hero-animado.js?v=20261125a" defer></script>
 </body>
 </html>
 
