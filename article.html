@@ -557,6 +557,15 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
 
   /* Body */
   document.getElementById('article-body').innerHTML = renderContent(art.contenido || []);
+  /* Fotos dentro del artículo: miniaturas de Wikimedia al ancho estándar y, si igual no cargan (archivo retirado),
+     se quita la figura completa en vez de dejar el ícono de imagen rota con su pie de foto. */
+  document.querySelectorAll('#article-body img').forEach(function (im) {
+    var quitar = function () { var f = im.closest('figure'); (f || im).remove(); };
+    var src = im.getAttribute('src') || '';
+    if (typeof arreglarImagenArticulo === 'function') { var nuevo = arreglarImagenArticulo(src); if (nuevo && nuevo !== src) im.src = nuevo; }
+    im.addEventListener('error', quitar, { once: true });
+    if (im.complete && im.naturalWidth === 0 && im.src) quitar();
+  });
 
   /* FAQ */
   if (art.faq && art.faq.length) {
