@@ -159,6 +159,31 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://prodigylabdental.com/carillas"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://prodigylabdental.com/en/veneers"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://prodigylabdental.com/carillas"/>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carillas-estratificadas-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carillas-inferiores-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carillas-inferiores-2-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carillas-inferiores-3-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carillas-modelos-impresos-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carillas-bandeja-coccion-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/carilla-grosor-calibrador-1600.webp</image:loc></image:image>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/carillas-modelo-giro.webp</video:thumbnail_loc>
+      <video:title>Veneers on the model, showing shape and gloss</video:title>
+      <video:description>Veneers on the model, showing shape and gloss.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/carillas-modelo-giro.mp4</video:content_loc>
+      <video:duration>16</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/carillas-giro.webp</video:thumbnail_loc>
+      <video:title>Finished veneers</video:title>
+      <video:description>Finished veneers.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/carillas-giro.mp4</video:content_loc>
+      <video:duration>11</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
 <url>
     <loc>https://prodigylabdental.com/evaluador-implantes/</loc>
@@ -209,6 +234,29 @@
     <lastmod>2026-11-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/estructura-metal-ceramica-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/estructura-metal-ceramica-2-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/estructura-metal-ceramica-3-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/diseno-full-arch-capas-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/diseno-barra-encia-1600.webp</image:loc></image:image>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/diseno-exocad-portatil.webp</video:thumbnail_loc>
+      <video:title>Designing in exocad: a framework on implants</video:title>
+      <video:description>Designing in exocad: a framework on implants.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/diseno-exocad-portatil.mp4</video:content_loc>
+      <video:duration>17</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/diseno-exocad-monitor.webp</video:thumbnail_loc>
+      <video:title>Anterior crowns in exocad, adjusting shape and contacts</video:title>
+      <video:description>Anterior crowns in exocad, adjusting shape and contacts.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/diseno-exocad-monitor.mp4</video:content_loc>
+      <video:duration>14</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
 <url>
     <loc>https://prodigylabdental.com/guia-tecnica</loc>
@@ -616,24 +664,78 @@
     <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/guia-apilable-anillas-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/guia-codiagnostix-planificacion-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/guia-exoplan-full-arch-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/guia-y-modelo-impresos-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/guia-apilable-armada-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-2-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-3-1600.webp</image:loc></image:image>
   </url>
 <url>
     <loc>https://prodigylabdental.com/en/zirconia-crowns</loc>
     <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/coronas-anteriores-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/coronas-anteriores-2-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/coronas-efectos-internos-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/coronas-posteriores-caracterizadas-1600.webp</image:loc></image:image>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/maquillaje-presinterizado.webp</video:thumbnail_loc>
+      <video:title>Staining pre-sintered zirconia before sintering</video:title>
+      <video:description>Staining pre-sintered zirconia before sintering.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/maquillaje-presinterizado.mp4</video:content_loc>
+      <video:duration>35</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
   <url>
     <loc>https://prodigylabdental.com/en/implant-crowns</loc>
     <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/coronas-con-implante-frontal-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/pilares-zirconia-tibase-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/corona-pilar-tibase-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-3-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/coronas-anteriores-1-1600.webp</image:loc></image:image>
   </url>
   <url>
     <loc>https://prodigylabdental.com/en/full-arch</loc>
     <lastmod>2026-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/full-arch-zirconia-barra-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/barra-titanio-zirconia-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/maquillaje-encia-zirconia-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/diseno-full-arch-capas-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/diseno-barra-encia-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/diseno-barra-envolvente-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-1-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-2-1600.webp</image:loc></image:image>
+    <image:image><image:loc>https://prodigylabdental.com/assets/trabajos/planificacion-protesica-3-1600.webp</image:loc></image:image>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/arcada-ibar-zirconia.webp</video:thumbnail_loc>
+      <video:title>Zirconia full arch on an iBar, just finished</video:title>
+      <video:description>Zirconia full arch on an iBar, just finished.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/arcada-ibar-zirconia.mp4</video:content_loc>
+      <video:duration>13</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
+    <video:video>
+      <video:thumbnail_loc>https://prodigylabdental.com/assets/videos/arcada-encia-giro.webp</video:thumbnail_loc>
+      <video:title>Full arch with gingiva, front view</video:title>
+      <video:description>Full arch with gingiva, front view.</video:description>
+      <video:content_loc>https://prodigylabdental.com/assets/videos/arcada-encia-giro.mp4</video:content_loc>
+      <video:duration>12</video:duration>
+      <video:publication_date>2026-11-25T12:00:00-05:00</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+    </video:video>
   </url>
 
   <url>
