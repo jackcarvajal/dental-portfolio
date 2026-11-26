@@ -40,7 +40,7 @@
       nombre: 'tu panel',
       pasos: [
         { sel: null, titulo: '¡Bienvenido a tu panel!',
-          texto: 'Aquí sigues tus casos, revisas diseños y consultas tu facturación. Te muestro lo principal en 5 pasos — puedes saltarlo cuando quieras.' },
+          texto: 'Aquí sigues tus casos, revisas diseños y consultas tu facturación. Te muestro lo principal en un minuto — puedes saltarlo cuando quieras.' },
         { sel: '#banner-accion, .nav-item[href*="flujo-diseno"]', titulo: 'Enviar un caso nuevo',
           texto: 'Desde el menú eliges el servicio (Diseño CAD, Fresado, Impresión 3D o Lab Full) y subes tu escaneo. Ahí empieza cada pedido.' },
         { sel: '#historial', titulo: 'Mis Casos',
