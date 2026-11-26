@@ -9,6 +9,16 @@
 
 ---
 
+## 2026-11-25 (e) — Auditoría audiovisual y de experiencia: celular, pedidos de prueba, medios y accesibilidad
+
+- ✅ Botones flotantes en el celular, revisados en vivo en 20 páginas de las dos webs (390 px): sin choques. Solo quedan el menú, «Haz tu pedido» y, en los formularios, «Reportar un problema».
+- ✅ Pedidos de prueba simulados (sin escribir nada: las escrituras se interceptan): diseño en las dos webs, lab, impresión, fresado (a cotizar, precio 0) y escáner en las dos webs (SC-…, solicitudes_scanner + aviso al equipo + cuenta implícita). Todos completan.
+- ✅ Medios: 5 videos recomprimidos (barra-zircona 3,8→1,1 MB a 540 px; lentes-ceramicos 1,45→0,9; hibrida 2,0→1,35; maquillaje 1,7→1,35; exocad-portatil 1,0→0,58), con ?v nuevo. Retrato de /nosotros y catálogo de /servicios en WebP (−50 a −70 %). width/height en las capturas Aidite, el QR de Nequi y el catálogo.
+- ✅ Accesibilidad (axe, WCAG AA) en / · /alineadores-cad · /escaner-domicilio · /envia-tu-scanner · /flujo-diseno · /nosotros · /coronas-zirconio: de 22 fallas a 0. Botón magenta con texto blanco #B8338C (5,4:1); botones de WhatsApp con texto verde oscuro (8,6:1); grises #64748b → #94a3b8; enlace a términos subrayado; turnos de entrega sin aria-pressed (son radio con aria-checked); nombre accesible en el cargador 3D (stl-multi-viewer ?v=20261125a); rejillas con scroll lateral de la home enfocables; contador del recorrido (tour ?v=20261125b).
+- 💡 Registro de medios en docs/REGISTRO-MEDIOS.md. ⚠ Por confirmar: el origen del fondo de /alineadores-cad (era la foto «de banco» retirada), las capturas Aidite y la música de 2 videos de /links.
+- 📊 Rendimiento (celular, CPU ×4, 4G lenta): las páginas internas tienen LCP de 1,8 a 3,1 s y CLS < 0,05. La home tiene LCP 3,4 s (portada del portafolio que llega por JS) y TBT ~1 s (el primer cálculo de diseño de un HTML de 192 KB): es lo próximo a aligerar.
+- 🔴 Fresado: el aviso interno (logs_incidencias) dice «Total: $55.000» aunque el pedido va «a cotizar» con precio 0, y el WhatsApp pone «Mediodía 12 PM» con la fecha a las 10:00 AM (calcularFechaEntrega, intocable: solo se anota).
+
 ## 2026-11-25 (d) — El visor de fotos se abre centrado
 
 - Reporte de Alejandro: al tocar una foto de la galería, el visor salía en la esquina de arriba a la izquierda. Causa: el reinicio de estilos de las páginas (`*{margin:0}`) le quita al <dialog> el margen automático que lo centra. css/galeria-real.css: `.gal-visor` con position fixed, inset 0, margin auto y ancho/alto al contenido (ya no deja franjas negras a los lados). Mismo arreglo en el diálogo de numeración dental de /soporte. ?v=20261125h en las 9 páginas con galería (la g quedó en la caché de Cloudflare con el CSS viejo porque se pidió antes de terminar el despliegue). Comprobado en vivo: centrado en escritorio y celular en alineadores, coronas de zirconio y carillas.

@@ -475,7 +475,7 @@
         container.className = (container.className + ' pmv-wrap').trim();
         container.innerHTML = `
 <div class="pmv-drop" id="pmv-drop-${cId}" onclick="document.getElementById('pmv-input-${cId}').click()">
-    <input type="file" id="pmv-input-${cId}" multiple accept="${ACCEPT_EXTS}"
+    <input type="file" id="pmv-input-${cId}" aria-label="Subir archivos 3D (STL, PLY u OBJ)" multiple accept="${ACCEPT_EXTS}"
            onclick="event.stopPropagation()"
            onchange="ProdigyMultiViewer._onInput(event)">
     <i class="fas fa-cloud-arrow-up pmv-drop-ico"></i>
