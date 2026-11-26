@@ -9,6 +9,15 @@
 
 ---
 
+## 2026-11-26 (a) — Accesibilidad en todo el sitio público, tema claro y aviso interno de fresado
+
+- ✅ axe (WCAG AA) sobre todas las URLs del sitemap, en celular: de 24/46 páginas con fallas (113 casos) a 3/46 (4 textos magenta al límite, 3,8–4,4:1: contador del Journal, «Advertencias» de alineadores y 2 en el flujo de impresión). Grises de texto #475569 / #64748b / #334155 → #8a96aa (5,9:1 o más sobre fondo oscuro); botones de WhatsApp verde plano con letra oscura; magenta como texto sobre tarjetas → #E672BD; barra de cuenta regresiva y BRE-B con fondo más profundo; enlaces dentro de un texto subrayados; roles ARIA sin hijos (feed/list/tab) corregidos; tablas con scroll lateral enfocables; nombres accesibles (WhatsApp de /fresado-cam, «material propio»). CSS del flujo de impresión ?v=20261126a.
+- ✅ Tema claro revisado en celular (/, /alineadores-cad, /nosotros, /flujo-diseno): se ve bien. El odontograma (iframe) queda oscuro a propósito.
+- ✅ Fresado: el aviso interno (logs_incidencias) decía «Total: $55.000» con el pedido «a cotizar» → ahora dice «a cotizar».
+- ✅ Home: preconnect a Supabase sin crossorigin, para la foto del portafolio (es la LCP en celular).
+- 💡 Cloudflare inyecta en PRODIGY su script de detección de bots (/cdn-cgi/challenge-platform/…/jsd/main.js): ~180 ms de CPU por carga en celular. Se puede apagar en Security → Bots (decisión de seguridad de Alejandro). Alejandro no lo tiene.
+- 💡 La barra «Pide en Xh y recibe hoy mismo» (/diseno-remoto y 4 páginas /en/) promete entrega el mismo día sin condiciones: revisar con Alejandro (regla del 25-nov: «desde 15 min, sujeto a carga»).
+
 ## 2026-11-25 (e) — Auditoría audiovisual y de experiencia: celular, pedidos de prueba, medios y accesibilidad
 
 - ✅ Botones flotantes en el celular, revisados en vivo en 20 páginas de las dos webs (390 px): sin choques. Solo quedan el menú, «Haz tu pedido» y, en los formularios, «Reportar un problema».

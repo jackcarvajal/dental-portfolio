@@ -920,7 +920,7 @@
             color: white;
             border: 2px solid rgba(255, 182, 193, 0.5);
         }
-        .btn-banco { background: var(--banco); color: white; }
+        .btn-banco { background: #1565C0; color: white; }
 
         .btn-submit {
             background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);

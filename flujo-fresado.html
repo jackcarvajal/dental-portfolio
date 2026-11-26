@@ -2243,7 +2243,7 @@ if(window.ProdigyAuth){
                                 <div class="toggle-header">
                                     <h3>Suministro de Material por el Cliente</h3>
                                     <label class="ios-switch">
-                                        <input type="checkbox" id="material-externo" onchange="toggleMaterialExterno()">
+                                        <input type="checkbox" id="material-externo" aria-label="Usaré material propio" onchange="toggleMaterialExterno()">
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
@@ -4395,7 +4395,7 @@ if(window.ProdigyAuth){
                             if (_pid) {
                                 Promise.resolve(_sb.from('logs_incidencias').insert({
                                     pedido_id: _pid, tipo:'PEDIDO_CREADO', severidad:'INFO',
-                                    descripcion:`Pedido fresado ${STATE.ordenId} creado por ${_email||STATE.whatsappCliente}. Material: ${STATE.materialTipo}. Total: ${STATE.total}.`,
+                                    descripcion:`Pedido fresado ${STATE.ordenId} creado por ${_email||STATE.whatsappCliente}. Material: ${STATE.materialTipo}. Total: ${window.FRESADO_COTIZAR ? 'a cotizar' : STATE.total}.`,
                                     resuelta: true
                                 })).catch(()=>{});
                             }

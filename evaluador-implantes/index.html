@@ -32,7 +32,7 @@
 <style>
   :root{
     --bg:#050505; --bg2:#0a0e14; --card:#0d1117; --card2:#111826; --line:rgba(255,255,255,.09);
-    --fg:#e8edf5; --muted:#94a3b8; --faint:#64748b;
+    --fg:#e8edf5; --muted:#94a3b8; --faint:#8a96aa;
     --mg:#D946A6; --mg-d:#B82F8B; --gold:#D4AF37; --cyan:#00d2ff; --neon:#00FF41;
     --ok:#22c55e; --warn:#fbbf24; --bad:#f87171;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -41,6 +41,7 @@
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
   a{color:var(--cyan);text-decoration:none}
+  p a{text-decoration:underline;text-underline-offset:2px}
 
   .topbar{position:sticky;top:0;z-index:50;padding:12px 20px;
     background:rgba(5,5,5,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(217,70,166,.22)}
@@ -50,7 +51,7 @@
   .topbar .sp{flex:1}
   .topbar a.nav{color:var(--muted);font-size:.84rem;font-weight:700}
   .topbar a.nav:hover{color:var(--cyan)}
-  .topbar a.wa{display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#fff;border-radius:999px;padding:8px 16px;font-size:.82rem;font-weight:800}
+  .topbar a.wa{display:inline-flex;align-items:center;gap:6px;background:#25D366;color:#04210f;border-radius:999px;padding:8px 16px;font-size:.82rem;font-weight:800}
   @media(max-width:720px){.topbar .hide-m{display:none}}
 
   .wrap{max-width:1040px;margin:0 auto;padding:0 18px 60px}

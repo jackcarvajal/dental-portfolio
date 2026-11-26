@@ -203,11 +203,11 @@
     <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin-bottom:24px;">Exportación por escáner / software</h2>
 
     <div class="sw-tabs">
-      <button type="button" class="sw-tab active" onclick="showSw('exocad')" aria-pressed="true" role="tab">Exocad</button>
-      <button type="button" class="sw-tab" onclick="showSw('3shape')" aria-pressed="false" role="tab">3Shape</button>
-      <button type="button" class="sw-tab" onclick="showSw('medit')" aria-pressed="false" role="tab">Medit i700</button>
-      <button type="button" class="sw-tab" onclick="showSw('itero')" aria-pressed="false" role="tab">iTero</button>
-      <button type="button" class="sw-tab" onclick="showSw('cerec')" aria-pressed="false" role="tab">Cerec</button>
+      <button type="button" class="sw-tab active" onclick="showSw('exocad')" aria-pressed="true">Exocad</button>
+      <button type="button" class="sw-tab" onclick="showSw('3shape')" aria-pressed="false">3Shape</button>
+      <button type="button" class="sw-tab" onclick="showSw('medit')" aria-pressed="false">Medit i700</button>
+      <button type="button" class="sw-tab" onclick="showSw('itero')" aria-pressed="false">iTero</button>
+      <button type="button" class="sw-tab" onclick="showSw('cerec')" aria-pressed="false">Cerec</button>
     </div>
 
     <div id="sw-exocad" class="sw-panel active">
@@ -221,7 +221,7 @@
             <li>Exportar el <strong>maxilar superior, inferior y registro de mordida</strong> por separado</li>
             <li>Alternativamente: enviar el <code>.constructionfile</code> completo — preferimos esto</li>
           </ol>
-          <div style="overflow-x:auto;">
+          <div style="overflow-x:auto;" tabindex="0" role="region" aria-label="Tabla comparativa">
           <table class="params-table">
             <thead><tr><th scope="col">Parámetro</th><th scope="col">Valor correcto</th><th scope="col">¿Por qué?</th></tr></thead>
             <tbody>
@@ -352,7 +352,7 @@
 
 <!-- BANNER LEAD MAGNET -->
 <div id="guia-banner" style="display:none;position:fixed;bottom:24px;right:24px;z-index:9000;background:linear-gradient(135deg,#0d1520,#1a0828);border:1px solid rgba(217,70,166,0.4);border-radius:16px;padding:18px 22px;max-width:300px;box-shadow:0 8px 32px rgba(0,0,0,.5);">
-  <button type="button" onclick="document.getElementById('guia-banner').style.display='none'" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#64748b;cursor:pointer;font-size:1rem;" aria-label="Cerrar">✕</button>
+  <button type="button" onclick="document.getElementById('guia-banner').style.display='none'" style="position:absolute;top:10px;right:12px;background:none;border:none;color:#8a96aa;cursor:pointer;font-size:1rem;" aria-label="Cerrar">✕</button>
   <div style="font-size:1.4rem;margin-bottom:8px;">📞</div>
   <div style="font-size:.95rem;font-weight:700;color:#e2e8f0;margin-bottom:6px;">¿Dudas con tu exportación?</div>
   <div style="font-size:.82rem;color:#94a3b8;margin-bottom:14px;line-height:1.5;">Agenda una videollamada técnica de 5 min con nuestro equipo.</div>

@@ -79,7 +79,7 @@
     @media(max-width:640px) { .scores-grid { grid-template-columns: repeat(2,1fr); } }
     .score-card { background: var(--card); border-radius: 18px; padding: 32px 20px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
     .score-label { font-size: .7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 14px; }
-    .score-sub { font-size: .92rem; color: #475569; margin-top: 4px; }
+    .score-sub { font-size: .92rem; color: #8a96aa; margin-top: 4px; }
 
     /* CERT CARDS */
     .cert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 18px; }
@@ -92,7 +92,7 @@
     .status-green { background: rgba(0,255,65,0.1); color: #00FF41; border: 1px solid rgba(0,255,65,0.3); }
     .status-blue  { background: rgba(0,210,255,0.1); color: var(--cyan); border: 1px solid rgba(0,210,255,0.3); }
     .status-gold  { background: rgba(212,175,55,0.1); color: var(--gold2); border: 1px solid rgba(212,175,55,0.3); }
-    .status-pink  { background: rgba(217,70,166,0.1); color: var(--gold); border: 1px solid rgba(217,70,166,0.3); }
+    .status-pink  { background: rgba(217,70,166,0.1); color: #E672BD; border: 1px solid rgba(217,70,166,0.3); }
 
     /* WCAG TABLE */
     .wcag-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
@@ -184,7 +184,7 @@
       </div>
     </div>
 
-    <p style="text-align:center;color:#475569;font-size:.85rem;">
+    <p style="text-align:center;color:#8a96aa;font-size:.85rem;">
       <i class="fas fa-external-link-alt" style="font-size:.7rem;"></i>
       <a href="https://pagespeed.web.dev/analysis?url=https://prodigylabdental.com" target="_blank" rel="noopener noreferrer" style="color:var(--cyan);margin-left:6px;">Verificar scores en tiempo real → PageSpeed Insights</a>
     </p>
@@ -267,7 +267,7 @@
   <section>
     <span style="font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);">Detalle</span>
     <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin:10px 0 32px;">Criterios WCAG 2.1 cumplidos</h2>
-    <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(255,255,255,0.06);">
+    <div style="overflow-x:auto;border-radius:14px;border:1px solid rgba(255,255,255,0.06);" tabindex="0" role="region" aria-label="Tabla de resultados">
       <table class="wcag-table">
         <thead>
           <tr>
@@ -299,27 +299,27 @@
     <h2 style="font-size:clamp(1.4rem,3vw,2rem);font-weight:900;margin:10px 0 32px;">Verifica tú mismo</h2>
     <div class="tools-grid">
       <a href="https://pagespeed.web.dev/analysis?url=https://prodigylabdental.com" target="_blank" rel="noopener noreferrer" class="tool-card">
-        <div><div style="font-size:.95rem;font-weight:700;">PageSpeed Insights</div><div style="color:#64748b;font-size:.9rem;">Performance + CWV</div></div>
+        <div><div style="font-size:.95rem;font-weight:700;">PageSpeed Insights</div><div style="color:#8a96aa;font-size:.9rem;">Performance + CWV</div></div>
         <i class="fas fa-external-link-alt" style="color:var(--cyan);font-size:.8rem;"></i>
       </a>
       <a href="https://search.google.com/test/mobile-friendly?url=https://prodigylabdental.com" target="_blank" rel="noopener noreferrer" class="tool-card">
-        <div><div style="font-size:.95rem;font-weight:700;">Mobile-Friendly Test</div><div style="color:#64748b;font-size:.9rem;">Google Search Console</div></div>
+        <div><div style="font-size:.95rem;font-weight:700;">Mobile-Friendly Test</div><div style="color:#8a96aa;font-size:.9rem;">Google Search Console</div></div>
         <i class="fas fa-external-link-alt" style="color:var(--cyan);font-size:.8rem;"></i>
       </a>
       <a href="https://validator.w3.org/nu/?doc=https://prodigylabdental.com" target="_blank" rel="noopener noreferrer" class="tool-card">
-        <div><div style="font-size:.95rem;font-weight:700;">W3C HTML Validator</div><div style="color:#64748b;font-size:.9rem;">Validación HTML5</div></div>
+        <div><div style="font-size:.95rem;font-weight:700;">W3C HTML Validator</div><div style="color:#8a96aa;font-size:.9rem;">Validación HTML5</div></div>
         <i class="fas fa-external-link-alt" style="color:var(--cyan);font-size:.8rem;"></i>
       </a>
       <a href="https://search.google.com/test/rich-results?url=https://prodigylabdental.com" target="_blank" rel="noopener noreferrer" class="tool-card">
-        <div><div style="font-size:.95rem;font-weight:700;">Rich Results Test</div><div style="color:#64748b;font-size:.9rem;">Schema.org Google</div></div>
+        <div><div style="font-size:.95rem;font-weight:700;">Rich Results Test</div><div style="color:#8a96aa;font-size:.9rem;">Schema.org Google</div></div>
         <i class="fas fa-external-link-alt" style="color:var(--cyan);font-size:.8rem;"></i>
       </a>
       <a href="https://securityheaders.com/?q=prodigylabdental.com" target="_blank" rel="noopener noreferrer" class="tool-card">
-        <div><div style="font-size:.95rem;font-weight:700;">Security Headers</div><div style="color:#64748b;font-size:.9rem;">CSP · HSTS · Headers</div></div>
+        <div><div style="font-size:.95rem;font-weight:700;">Security Headers</div><div style="color:#8a96aa;font-size:.9rem;">CSP · HSTS · Headers</div></div>
         <i class="fas fa-external-link-alt" style="color:var(--cyan);font-size:.8rem;"></i>
       </a>
       <a href="https://webaim.org/resources/contrastchecker/?fcolor=94A3B8&bcolor=050505" target="_blank" rel="noopener noreferrer" class="tool-card">
-        <div><div style="font-size:.95rem;font-weight:700;">Contrast Checker</div><div style="color:#64748b;font-size:.9rem;">WCAG AAA contraste</div></div>
+        <div><div style="font-size:.95rem;font-weight:700;">Contrast Checker</div><div style="color:#8a96aa;font-size:.9rem;">WCAG AAA contraste</div></div>
         <i class="fas fa-external-link-alt" style="color:var(--cyan);font-size:.8rem;"></i>
       </a>
     </div>
@@ -333,7 +333,7 @@
       <p>Esta web fue construida y auditada para cumplir con las <strong>Pautas de Accesibilidad para el Contenido Web (WCAG) 2.1, nivel AAA</strong>, publicadas por el World Wide Web Consortium (W3C).</p>
       <p>La auditoría fue realizada internamente en abril de 2026 y abarcó <strong>16 páginas públicas</strong>, verificando tipografía, contraste de color, responsive design, navegación por teclado, touch targets y estructura semántica del HTML.</p>
       <p>Si encuentras alguna barrera de accesibilidad, contáctanos en <strong>gerencia@prodigylabdental.com</strong> o por <a href="https://wa.me/573212816716" style="color:var(--cyan)">WhatsApp +57 321 281 6716</a>. Nos comprometemos a responder en 2 días hábiles.</p>
-      <p style="color:#475569;font-size:.85rem;margin-top:16px;">Fecha de la última revisión: <strong style="color:var(--muted);">5 de mayo de 2026</strong></p>
+      <p style="color:#8a96aa;font-size:.85rem;margin-top:16px;">Fecha de la última revisión: <strong style="color:var(--muted);">5 de mayo de 2026</strong></p>
     </div>
   </section>
 

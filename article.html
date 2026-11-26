@@ -543,14 +543,14 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
     coverSlot.appendChild(coverImg);
     if (imgCredit) {
       const cap = document.createElement('p');
-      cap.style.cssText = 'text-align:center;font-size:.72rem;color:#475569;margin:6px 0 0;font-style:italic;';
+      cap.style.cssText = 'text-align:center;font-size:.72rem;color:#8a96aa;margin:6px 0 0;font-style:italic;';
       cap.textContent = '📷 ' + imgCredit;
       coverSlot.after(cap);
     }
   } else if (coverSlot && EXOCAD_PENDING.includes(art.id)) {
     /* Screenshot de Exocad pendiente — mismo slot reservado */
     coverSlot.classList.add('is-ph');
-    coverSlot.innerHTML = '<div style="text-align:center;padding:16px;"><div style="font-size:2rem;margin-bottom:8px;">🖥️</div><div style="font-size:.8rem;font-weight:700;color:#D4AF37;margin-bottom:4px;">Captura de Exocad pendiente</div><div style="font-size:.72rem;color:#475569;">Imagen del flujo real en Exocad — próximamente</div></div>';
+    coverSlot.innerHTML = '<div style="text-align:center;padding:16px;"><div style="font-size:2rem;margin-bottom:8px;">🖥️</div><div style="font-size:.8rem;font-weight:700;color:#D4AF37;margin-bottom:4px;">Captura de Exocad pendiente</div><div style="font-size:.72rem;color:#8a96aa;">Imagen del flujo real en Exocad — próximamente</div></div>';
   } else if (coverSlot) {
     /* Slot reservado pero sin contenido → liberar el espacio (no debería ocurrir: el servidor ya lo quita) */
     coverSlot.remove();
@@ -595,7 +595,7 @@ function _aEscH(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
         <a href="/article?id=${encodeURIComponent(r.id)}" class="hover-card-mg" style="display:block;background:var(--bg-card,#1a2332);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;text-decoration:none;">
           <div style="font-size:1.5rem;margin-bottom:8px;">${_aEscH(r.emoji || CAT_EMOJI[r.categoria] || '📄')}</div>
           <div style="font-size:.82rem;font-weight:700;color:var(--text,#e2e8f0);line-height:1.35;margin-bottom:6px;">${_aEscH(r.titulo)}</div>
-          <div style="font-size:.72rem;color:#64748b;">${_aEscH(r.chip)} · ${_aEscH(r.lectura)}</div>
+          <div style="font-size:.72rem;color:#8a96aa;">${_aEscH(r.chip)} · ${_aEscH(r.lectura)}</div>
         </a>`).join('');
     } else {
       document.getElementById('related-section').style.display = 'none';

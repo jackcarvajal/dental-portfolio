@@ -814,7 +814,7 @@
           aria-label="Buscar en el journal"
           style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;padding:10px 14px 10px 40px;font-size:16px;font-family:inherit;outline:none;"
           oninput="if(typeof searchJournal==='function')searchJournal(this.value)">
-        <i class="fas fa-search" aria-hidden="true" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#475569;pointer-events:none;"></i>
+        <i class="fas fa-search" aria-hidden="true" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#8a96aa;pointer-events:none;"></i>
       </div>
     </div>
     <div class="filter-tags" role="group" aria-label="Filtrar artículos por categoría">
@@ -833,7 +833,7 @@
     </div>
   </div>
 
-  <div class="articles-track" id="articlesTrack" role="feed" aria-label="Artículos técnicos PRODIGY Journal" aria-live="polite">
+  <div class="articles-track" id="articlesTrack" role="region" aria-label="Artículos técnicos PRODIGY Journal" aria-live="polite">
     <!-- Generado dinámicamente por articles.js -->
   </div>
 </section>
@@ -892,7 +892,7 @@
       var cats = ALIAS[cat] || [cat];
       return cats.indexOf(a.categoria) !== -1;
     }).length;
-    if (count > 0) btn.innerHTML += ' <span style="font-size:.65em;opacity:.6;font-weight:600;">('+count+')</span>';
+    if (count > 0) btn.innerHTML += ' <span style="font-size:.65em;opacity:.85;font-weight:600;">('+count+')</span>';
   });
 
   renderAll(ARTICLES);
@@ -926,7 +926,7 @@
     <div style="margin-top:10px;">
       <label class="habeas-label" style="justify-content:center;">
         <input type="checkbox" id="notifyHabeas" style="width:13px;height:13px;flex-shrink:0;accent-color:#D946A6;cursor:pointer;">
-        <span>Autorizo uso de mi número para notificaciones de PRODIGY. <a href="/terminos-y-legal#privacidad" style="color:#D946A6">Ver política</a></span>
+        <span>Autorizo uso de mi número para notificaciones de PRODIGY. <a href="/terminos-y-legal#privacidad" style="color:#D946A6;text-decoration:underline">Ver política</a></span>
       </label>
     </div>
     <div class="form-msg" id="notifyMsg" style="margin-top:12px;font-size:0.82rem;text-align:center;min-height:20px;"></div>
