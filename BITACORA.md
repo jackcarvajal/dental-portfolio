@@ -9,6 +9,11 @@
 
 ---
 
+## 2026-11-27 (a) — Planes de créditos de Alejandro: escalera nueva
+
+- 🟡 SQL sql/creditos-planes-escalera-2026.sql (pendiente de correr): Bronce 50 u USD 600 · Plata 100 u USD 1.100 · Oro 200 u USD 2.000 · Platino 500 u USD 4.500 (12 → 11 → 10 → 9 por unidad); urgencias simples sin recargo solo en Oro y Platino; Bronce ya no dice «máximo 24 h». Definición canónica de creditos_cotizar_pedido corregida igual en sql/creditos-diseno-2026.sql.
+- 💡 Alejandro trabaja de lunes a viernes; el sábado solo entrega urgentes pedidos el viernes en la mañana con todo completo. Propuesta de diseño en 24 h desde que recibe el caso completo y pagado. Falta llevarlo a términos, /preguntas, /en/faq y al chatbot de su web.
+
 ## 2026-11-26 (a) — Accesibilidad en todo el sitio público, tema claro y aviso interno de fresado
 
 - ✅ axe (WCAG AA) sobre todas las URLs del sitemap, en celular: de 24/46 páginas con fallas (113 casos) a 3/46 (4 textos magenta al límite, 3,8–4,4:1: contador del Journal, «Advertencias» de alineadores y 2 en el flujo de impresión). Grises de texto #475569 / #64748b / #334155 → #8a96aa (5,9:1 o más sobre fondo oscuro); botones de WhatsApp verde plano con letra oscura; magenta como texto sobre tarjetas → #E672BD; barra de cuenta regresiva y BRE-B con fondo más profundo; enlaces dentro de un texto subrayados; roles ARIA sin hijos (feed/list/tab) corregidos; tablas con scroll lateral enfocables; nombres accesibles (WhatsApp de /fresado-cam, «material propio»). CSS del flujo de impresión ?v=20261126a.

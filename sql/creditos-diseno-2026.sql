@@ -88,10 +88,10 @@ CREATE INDEX IF NOT EXISTS creditos_mov_pedido_idx  ON public.creditos_movimient
 
 -- ── 2. Datos base (Alejandro CAD/CAM) ───────────────────────────────────────
 INSERT INTO public.creditos_planes (negocio, codigo, nombre, unidades, precio_usd, publico, orden, beneficios) VALUES
-  ('alejandrocadcam','bronce' ,'Bronce' , 50, 500 , true , 1, '["Entrega máximo 24 h en casos simples"]'),
-  ('alejandrocadcam','plata'  ,'Plata'  ,100, 950 , true , 2, '["Prioridad","Urgencias simples sin recargo"]'),
-  ('alejandrocadcam','oro'    ,'Oro'    ,250, 2250, true , 3, '["Prioridad","Urgencias simples sin recargo","Mismo día en casos simples antes de las 12"]'),
-  ('alejandrocadcam','platino','Platino',500, 4000, false, 4, '["Todo lo de Oro","Solo por volumen confirmado"]')
+  ('alejandrocadcam','bronce' ,'Bronce' , 50, 600 , true , 1, '["Pagas una sola vez y cada caso arranca sin esperar pago"]'),   -- escalera 27-nov-2026
+  ('alejandrocadcam','plata'  ,'Plata'  ,100, 1100, true , 2, '["Ahorras USD 100 frente a la unidad suelta"]'),
+  ('alejandrocadcam','oro'    ,'Oro'    ,200, 2000, true , 3, '["Ahorras USD 400","Prioridad en la cola","Urgencias simples sin recargo"]'),
+  ('alejandrocadcam','platino','Platino',500, 4500, true , 4, '["Ahorras USD 1.500","Todo lo de Oro","Lo que envías en la tarde se trabaja a primera hora (según cupo)"]')
 ON CONFLICT (negocio, codigo) DO NOTHING;
 
 INSERT INTO public.creditos_reglas (negocio, clave, valor, nota) VALUES
@@ -157,7 +157,7 @@ BEGIN
     v_cli := COALESCE(v_ped.cliente_id, v_ped.doctor_uid, v_ped.user_id);
     SELECT plan_actual INTO v_plan FROM creditos_estado(v_cli, v_neg);
     IF v_factor = 1 AND v_u <= COALESCE(creditos_regla(v_neg, 'max_unidades_simple'), 3) THEN
-      IF COALESCE(v_plan, '') NOT IN ('plata','oro','platino') THEN
+      IF COALESCE(v_plan, '') NOT IN ('oro','platino') THEN   -- 27-nov-2026: solo Oro y Platino (ver creditos-planes-escalera-2026.sql)
         v_factor := v_factor * COALESCE(creditos_regla(v_neg, 'factor_urgente'), 1.5);
       END IF;
     ELSE
