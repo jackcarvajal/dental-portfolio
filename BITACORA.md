@@ -12,6 +12,8 @@
 ## 2026-11-27 (a) — Planes de créditos de Alejandro: escalera nueva
 
 - 🟡 SQL sql/creditos-planes-escalera-2026.sql (pendiente de correr): Bronce 50 u USD 600 · Plata 100 u USD 1.100 · Oro 200 u USD 2.000 · Platino 500 u USD 4.500 (12 → 11 → 10 → 9 por unidad); urgencias simples sin recargo solo en Oro y Platino; Bronce ya no dice «máximo 24 h». Definición canónica de creditos_cotizar_pedido corregida igual en sql/creditos-diseno-2026.sql.
+- ✅ SQL de la escalera corrido y verificado (27-nov): 50/100/200/500 a USD 600/1.100/2.000/4.500.
+- 🟡 SQL sql/creditos-planes-modelos-2026.sql (pendiente de correr): planes SOLO de modelos con saldo aparte (Modelos 50 USD 175 · 100 USD 300 · 200 USD 500; suelto USD 4; con implantes = 2 modelos; troquel 0,5; sin saldo de modelos → 1 crédito de diseño = 3 modelos). El cobro con créditos ahora sí cobra los modelos del odontograma (antes solo contaba dientes). Portal de Alejandro listo y tolerante (creditos.js ?v=20261127a).
 - 💡 Alejandro trabaja de lunes a viernes; el sábado solo entrega urgentes pedidos el viernes en la mañana con todo completo. Propuesta de diseño en 24 h desde que recibe el caso completo y pagado. Falta llevarlo a términos, /preguntas, /en/faq y al chatbot de su web.
 
 ## 2026-11-26 (a) — Accesibilidad en todo el sitio público, tema claro y aviso interno de fresado

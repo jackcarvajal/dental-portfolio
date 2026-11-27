@@ -1,4 +1,8 @@
 -- ════════════════════════════════════════════════════════════════════════════
+-- ⚠️ 27-nov-2026: creditos_estado, creditos_cotizar_pedido, creditos_descontar_fifo, creditos_mi_estado,
+--    creditos_solicitar_plan, creditos_consumir_pedido y creditos_cargar_plan tienen versión más nueva (planes de MODELOS
+--    con saldo aparte) en sql/creditos-planes-modelos-2026.sql: esa es la canónica. Si vuelves a correr ESTE archivo,
+--    corre después creditos-planes-modelos-2026.sql (los dos son idempotentes).
 -- CRÉDITOS DE DISEÑO PREPAGADOS (planes Bronce / Plata / Oro / Platino)
 -- ════════════════════════════════════════════════════════════════════════════
 -- Para qué: laboratorios y odontólogos compran créditos por adelantado (1 crédito = 1 unidad cementada:
